@@ -1,3 +1,9 @@
+/* 
+TODO:
+1. 로그인 전 둘러보기 버튼 누르면 메인 페이지로 이동
+2. 소셜로그인 구현
+*/
+
 import React from "react";
 import { View, Text, Image, Pressable, StyleSheet, Alert } from "react-native";
 import tw from "twrnc";

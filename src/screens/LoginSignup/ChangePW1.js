@@ -1,3 +1,9 @@
+/* 
+TODO:
+1. 이후 비밀번호 재설정 안내 이메일 변경
+2. 선 색깔 수정
+*/
+
 import React from "react";
 import { View, Text, Image, Pressable, StyleSheet, ScrollView } from "react-native";
 import tw from "twrnc";
@@ -13,7 +19,7 @@ export default function Login1() {
 
     return (
         <View style={styles.container}>
-            <View style={tw`flex-row items-center justify-between mt-6`}>
+            <View style={tw`flex-row items-center justify-between mt-5 mb-3`}>
                 <Pressable onPress={goBack} style={tw`flex-row items-center`}>
                     <Image source={require("@images/chevron_left.png")} style={tw`mx-2`}></Image>
                     <Text style={tw`text-[#F5F8F5] text-sm`}>로그인</Text>
@@ -24,6 +30,7 @@ export default function Login1() {
                     <Text style={tw`text-[#3A3D52] text-sm mr-2`}>로그인</Text>
                 </View>
             </View>
+            <View style={tw`border-solid border-b border-[#2a2b38]`}></View>
 
             <Image source={require("@images/logo_small.png")} style={tw`self-center mt-10 mb-6`}></Image>
 

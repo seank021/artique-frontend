@@ -24,3 +24,24 @@ export default function ButtonForm(props) {
         </Pressable>
     );
 }
+
+// props: borderColor, buttonColor, textColor, text, onPress
+export function VerifyButtonForm(props) {
+    const buttonStyles = {
+        ...tw`w-[81px] h-[26px] rounded-3xl self-center justify-center items-center`,
+        borderWidth: 1.5,
+        borderColor: props.borderColor,
+        backgroundColor: props.buttonColor,
+    }
+
+    const textStyles = {
+        ...tw`text-sm`,
+        color: props.textColor,
+    }
+
+    return (
+        <Pressable onPress={props.onPress} style={buttonStyles}>
+            <Text style={textStyles}>{props.text}</Text>
+        </Pressable>
+    );
+}
