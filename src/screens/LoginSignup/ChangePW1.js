@@ -1,7 +1,6 @@
 /* 
 TODO:
 1. 이후 비밀번호 재설정 안내 이메일 변경
-2. 선 색깔 수정
 */
 
 import React from "react";
@@ -30,7 +29,7 @@ export default function Login1() {
                     <Text style={tw`text-[#3A3D52] text-sm mr-2`}>로그인</Text>
                 </View>
             </View>
-            <View style={tw`border-solid border-b border-[#2a2b38]`}></View>
+            <View style={tw`border-solid border-b border-[#323546]`}></View>
 
             <Image source={require("@images/logo_small.png")} style={tw`self-center mt-10 mb-6`}></Image>
 

@@ -3,7 +3,6 @@ TODO:
 1. 아이디 중복확인 로직 구현, 팝업 메시지 띄우기(AlertForm 이용)
 2. 회원가입 로직 구현 --> 회원가입 후 메인 페이지로 이동
 3. 약관
-4. 선 색깔 수정
 */
 
 import React, { useState } from "react";
@@ -134,7 +133,7 @@ export default function Login1() {
                     <Text style={tw`text-[#3A3D52] text-sm mr-2`}>로그인</Text>
                 </View>
             </View>
-            <View style={tw`border-solid border-b border-[#2a2b38]`}></View>
+            <View style={tw`border-solid border-b border-[#323546]`}></View>
 
             <Image source={require("@images/logo_small.png")} style={tw`self-center mt-7 mb-7`}></Image>
 

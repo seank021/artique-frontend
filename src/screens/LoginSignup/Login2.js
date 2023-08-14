@@ -3,7 +3,6 @@ TODO:
 1. 자동로그인 기능 구현
 2. 로그인 로직 구현 --> 로그인 후 메인 페이지로 이동
 3. 로그인 버튼 클릭 시 배경 흰색으로 변화
-4. 선 색깔 수정
 */
 
 import React, { useState } from "react";
@@ -58,7 +57,7 @@ export default function Login1() {
                 <Text style={tw`text-[#F5F8F5] text-lg`}>로그인</Text>
                 <Image source={require("@images/x.png")} style={tw`mr-2 tint-[#3A3D52]`}></Image>
             </View>
-            <View style={tw`border-solid border-b border-[#2a2b38]`}></View>
+            <View style={tw`border-solid border-b border-[#323546]`}></View>
 
             <Image source={require("@images/logo_small.png")} style={tw`self-center mt-7 mb-7`}></Image>
 
