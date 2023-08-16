@@ -8,16 +8,18 @@ import tw from 'twrnc';
 // props: borderColor, bgColor, textColor, text, onPress / ifOpacity
 export default function ButtonForm(props) {
     if (props.ifOpacity === true) {
+        [opacityBorder, setOpacityBorder] = useState("#ABABAB");
         [opacityBg, setOpacityBg] = useState("#3A3D52");
         [textColor, setTextColor] = useState("#ABABAB");
     } else {
+        [opacityBorder, setOpacityBorder] = useState(props.borderColor);
         [opacityBg, setOpacityBg] = useState(props.bgColor);
         [textColor, setTextColor] = useState(props.textColor);
     }
 
     const buttonStyles = {
         ...tw`w-[90%] h-[46px] border-solid border-2 rounded-3xl self-center justify-center items-center`,
-        borderColor: props.borderColor,
+        borderColor: opacityBorder,
         backgroundColor: opacityBg,
     }
 
@@ -28,6 +30,7 @@ export default function ButtonForm(props) {
 
     onPressIn = () => {
         if (props.ifOpacity) {
+            setOpacityBorder("#F5F8F5");
             setOpacityBg("#F5F8F5");
             setTextColor("#191919");
         }
@@ -35,6 +38,7 @@ export default function ButtonForm(props) {
 
     onPressOut = () => {
         if (props.ifOpacity) {
+            setOpacityBorder("#ABABAB");
             setOpacityBg("#3A3D52");
             setTextColor("#ABABAB");
         }
@@ -49,14 +53,14 @@ export default function ButtonForm(props) {
 
 // props: borderColor, buttonColor, textColor, text, onPress / ifOpacity
 export function VerifyButtonForm(props) {
-    const [opacityBorder, setOpacityBorder] = useState(props.borderColor);
+    const [opacityBorder, setOpacityBorder] = useState("#ABABAB");
     const [opacityBg, setOpacityBg] = useState("#3A3D52");
     const [textColor, setTextColor] = useState("#ABABAB");
 
     const buttonStyles = {
         ...tw`w-[81px] h-[26px] rounded-3xl self-center justify-center items-center`,
         borderWidth: 1.5,
-        borderColor: props.borderColor,
+        borderColor: opacityBorder,
         backgroundColor: opacityBg,
     }
 
@@ -66,11 +70,13 @@ export function VerifyButtonForm(props) {
     }
 
     onPressIn = () => {
+        setOpacityBorder("#F5F8F5");
         setOpacityBg("#F5F8F5");
         setTextColor("#191919");
     }
 
     onPressOut = () => {
+        setOpacityBorder("#ABABAB");
         setOpacityBg("#3A3D52");
         setTextColor("#ABABAB");
     }
