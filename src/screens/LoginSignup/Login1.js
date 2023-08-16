@@ -6,6 +6,7 @@ TODO:
 
 import React from "react";
 import { View, Text, Image, Pressable, StyleSheet, Alert } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
 
 import { useNavigation } from "@react-navigation/native";
@@ -36,7 +37,7 @@ export default function Login1() {
     }
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <View style={tw`h-[60%] items-center justify-center`}>
                 <Image source={require("@images/logo.png")} />
             </View>
@@ -59,7 +60,7 @@ export default function Login1() {
                 <Pressable onPress={onPressGoogle}><Image source={require("@images/google.png")} /></Pressable>
                 <Pressable onPress={onPressApple}><Image source={require("@images/apple.png")} /></Pressable>
             </View>
-        </View>
+        </SafeAreaView>
     );
 }
 

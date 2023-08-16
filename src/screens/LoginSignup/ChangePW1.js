@@ -5,6 +5,7 @@ TODO:
 
 import React from "react";
 import { View, Text, Image, Pressable, StyleSheet, ScrollView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
 
 import { useNavigation } from "@react-navigation/native";
@@ -17,7 +18,7 @@ export default function Login1() {
     }
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <View style={tw`flex-row items-center justify-between mt-5 mb-3`}>
                 <Pressable onPress={goBack} style={tw`flex-row items-center`}>
                     <Image source={require("@images/chevron_left.png")} style={tw`mx-2`}></Image>
@@ -41,7 +42,7 @@ export default function Login1() {
                     <Text style={tw`text-[#F5F8F5] text-sm`}>본인 아이디와 함께 문의주세요.</Text>
                 </View>
             </ScrollView>
-        </View>
+        </SafeAreaView>
     );
 }
 
