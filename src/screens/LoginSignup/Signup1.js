@@ -153,7 +153,7 @@ export default function Login1() {
     }
 
     const onPressSignup = async () => {
-        if (ifCheckID && ifCheckPW) {
+        if (ifCheckID && ifCheckPW && (rectangle1 === require("@images/rectangle_checked.png")) && (rectangle2 === require("@images/rectangle_checked.png"))) {
             const hashedPW = hash(password);
             try {
                 const response = await axios.post("http://3.39.145.210/member/join", {
@@ -164,6 +164,14 @@ export default function Login1() {
             } catch (error) {
                 console.log(error.response.data.code);
             }
+        }
+        else if ((rectangle1 !== require("@images/rectangle_checked.png")) || rectangle2 !== require("@images/rectangle_checked.png"))  {
+            setModalVisible(!modalVisible);
+            setAlertImage(require("@images/x_red.png"));
+            setAlertText("약관에 동의해주세요.");
+            setTimeout(() => {
+                setModalVisible(modalVisible);
+            }, 1000);
         }
         else {
             setModalVisible(!modalVisible);
