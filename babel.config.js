@@ -12,6 +12,7 @@ module.exports = {
           "@navigation": "./src/navigation",
           "@images": "./assets/images",
           "@fonts": "./assets/fonts",
+          "@functions": "./src/functions",
         }
       }
     ]
