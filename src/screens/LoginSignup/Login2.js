@@ -2,7 +2,6 @@
 TODO:
 1. 자동로그인 기능 구현
 2. 로그인 로직 구현 --> 로그인 후 메인 페이지로 이동
-3. 로그인 버튼 클릭 시 배경 흰색으로 변화
 */
 
 import React, { useState } from "react";
@@ -70,7 +69,7 @@ export default function Login1() {
                     <Text style={tw`text-[#ABABAB] text-sm`}>자동로그인</Text>
                 </View>
 
-                <ButtonForm borderColor="#ABABAB" textColor="#ABABAB" text={"로그인"} onPress={onPressLogin}></ButtonForm>
+                <ButtonForm borderColor="#ABABAB" textColor="#ABABAB" text={"로그인"} onPress={onPressLogin} ifOpacity={true}></ButtonForm>
 
                 <View style={tw`w-[90%] flex-row justify-between self-center mt-4`}>
                     <Pressable onPress={onPressChangePW}><Text style={tw`text-[#ABABAB] text-sm`}>비밀번호 재설정</Text></Pressable>

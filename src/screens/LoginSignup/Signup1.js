@@ -1,12 +1,12 @@
 /* 
 TODO:
-1. 아이디 중복확인 로직 구현, 팝업 메시지 띄우기(AlertForm 이용)
+1. 아이디 중복확인 로직 구현
 2. 회원가입 로직 구현 --> 회원가입 후 메인 페이지로 이동
 3. 약관
 */
 
 import React, { useState } from "react";
-import { View, Text, Image, Pressable, ScrollView, StyleSheet, Alert, Modal } from "react-native";
+import { View, Text, Image, Pressable, ScrollView, StyleSheet, Alert } from "react-native";
 import tw from "twrnc";
 
 import { useNavigation } from "@react-navigation/native";
@@ -69,19 +69,24 @@ export default function Login1() {
 
     const checkDuplicate = () => {
         if (ifDuplicate || id === "") {
+            setModalVisible(!modalVisible);
             setAlertImage(require("@images/x_red.png"));
             setAlertText("사용 불가한 아이디입니다.");
-            setModalVisible(!modalVisible);
+            setTimeout(() => {
+                setModalVisible(modalVisible);
+            }, 1000);
         }
         else {
             setBorderColor("#F5F8F5");
             setButtonColor("#F5F8F5");
             setButtonTextColor("#191919");
-            // setButtonText("사용가능");
             
+            setModalVisible(!modalVisible);
             setAlertImage(require("@images/check.png"));
             setAlertText("사용 가능한 아이디입니다.");
-            setModalVisible(!modalVisible);
+            setTimeout(() => {
+                setModalVisible(modalVisible);
+            }, 1000);
 
             setIfButtonID(false);
             setIfCheckID(true);
@@ -163,7 +168,7 @@ export default function Login1() {
                     <Text style={tw`text-[#ABABAB] text-sm underline`}>개인정보 처리 방침 (필수)</Text>
                 </View>
 
-                <ButtonForm borderColor="#ABABAB" textColor="#ABABAB" text={"가입하기"} onPress={onPressSignup}></ButtonForm>
+                <ButtonForm borderColor="#ABABAB" textColor="#ABABAB" text={"가입하기"} onPress={onPressSignup} ifOpacity={true}></ButtonForm>
             </ScrollView>
         </View>
     );
