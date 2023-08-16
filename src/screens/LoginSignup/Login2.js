@@ -1,23 +1,35 @@
 /* 
 TODO:
 1. 자동로그인 기능 구현
-2. 로그인 로직 구현 --> 로그인 후 메인 페이지로 이동
+2. 로그인 후 메인 페이지로 이동 (우선 Temp로 이동하도록 설정해놓음)
+3. 쿠기 저장 기능 구현
 */
 
 import React, { useState } from "react";
-import { View, Text, Image, Pressable, ScrollView, StyleSheet, Alert } from "react-native";
+import { View, Text, Image, Pressable, ScrollView, StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
+
+import axios from "axios";
+
+import hash from "@functions/hash"
 
 import { useNavigation } from "@react-navigation/native";
 
 import InputForm from "@forms/InputForm";
 import ButtonForm from "@forms/ButtonForm";
+import AlertForm from "@forms/AlertForm";
 
 export default function Login1() {
     const nav = useNavigation();
 
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
+
+    const [modalVisible, setModalVisible] = useState(false);
+
+    const [alertImage, setAlertImage] = useState(require("@images/x_red.png"));
+    const [alertText, setAlertText] = useState("다시 시도해주세요.");
 
     const [rectangle, setRectangle] = useState(require("@images/rectangle.png"));
 
@@ -37,8 +49,53 @@ export default function Login1() {
         return;
     }
 
-    const onPressLogin = () => {
-        Alert.alert("로그인 로직 구현");
+    const onPressLogin = async () => {
+        const hashedPW = hash(password);
+        try {
+            const response = await axios.post("http://3.39.145.210/member/login", {
+                "memberId": id,
+                "memberPW": hashedPW,
+            });
+
+            if (response.data.success === true) {
+                console.log("로그인 성공");
+                console.log(response.headers["set-cookie"]);
+                nav.navigate("Temp");
+            }
+            else {
+                setModalVisible(!modalVisible);
+                setAlertImage(require("@images/x_red.png"));
+                setAlertText("다시 시도해주세요.");
+                setTimeout(() => {
+                    setModalVisible(modalVisible);
+                }, 1000);
+            }
+        } catch (error) {
+            if (error.response.data.code === "INVALID_MEMBER_ID") {
+                setModalVisible(!modalVisible);
+                setAlertImage(require("@images/x_red.png"));
+                setAlertText("아이디가 틀렸습니다.");
+                setTimeout(() => {
+                    setModalVisible(modalVisible);
+                }, 1000);
+            }
+            else if (error.response.data.code === "INVALID_PASSWORD") {
+                setModalVisible(!modalVisible);
+                setAlertImage(require("@images/x_red.png"));
+                setAlertText("비밀번호가 틀렸습니다.");
+                setTimeout(() => {
+                    setModalVisible(modalVisible);
+                }, 1000);
+            }
+            else {
+                setModalVisible(!modalVisible);
+                setAlertImage(require("@images/x_red.png"));
+                setAlertText("다시 시도해주세요.");
+                setTimeout(() => {
+                    setModalVisible(modalVisible);
+                }, 1000);
+            }
+        }
     }
 
     const onPressChangePW = () => {
@@ -50,7 +107,10 @@ export default function Login1() {
     }
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
+            <View>
+                <AlertForm modalVisible={modalVisible} setModalVisible={setModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
+            </View>
             <View style={tw`flex-row items-center justify-between mt-5 mb-3`}>
                 <Pressable onPress={goBack}><Image source={require("@images/x.png")} style={tw`ml-2`}></Image></Pressable>
                 <Text style={tw`text-[#F5F8F5] text-lg`}>로그인</Text>
@@ -76,7 +136,7 @@ export default function Login1() {
                     <Pressable onPress={onPressSignup}><Text style={tw`text-[#ABABAB] text-sm`}>회원가입</Text></Pressable>
                 </View>
             </ScrollView>
-        </View>
+        </SafeAreaView>
     );
 }
 
