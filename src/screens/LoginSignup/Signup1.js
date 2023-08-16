@@ -6,7 +6,7 @@ TODO:
 */
 
 import React, { useState } from "react";
-import { View, Text, Image, Pressable, ScrollView, StyleSheet, Alert } from "react-native";
+import { View, Text, Image, Pressable, ScrollView, StyleSheet, Alert, Modal } from "react-native";
 import tw from "twrnc";
 
 import { useNavigation } from "@react-navigation/native";
@@ -22,6 +22,8 @@ export default function Login1() {
     const [password, setPassword] = useState("");
     const [password_, setPassword_] = useState("");
 
+    const [modalVisible, setModalVisible] = useState(false);
+
     const [ifButtonID, setIfButtonID] = useState(true);
     const [ifCheckID, setIfCheckID] = useState(false);
 
@@ -29,6 +31,9 @@ export default function Login1() {
     const [buttonColor, setButtonColor] = useState("#3A3D52");
     const [buttonTextColor, setButtonTextColor] = useState("#ABABAB");
     const [buttonText, setButtonText] = useState("중복확인");
+
+    const [alertImage, setAlertImage] = useState(require("@images/x_red.png"));
+    const [alertText, setAlertText] = useState("사용 불가한 아이디입니다.");
 
     const [ifCheckPW, setIfCheckPW] = useState(false);
     const [ifXPW, setIfXPW] = useState(false);
@@ -64,15 +69,19 @@ export default function Login1() {
 
     const checkDuplicate = () => {
         if (ifDuplicate || id === "") {
-            Alert.alert("사용할 수 없는 아이디입니다.");
+            setAlertImage(require("@images/x_red.png"));
+            setAlertText("사용 불가한 아이디입니다.");
+            setModalVisible(!modalVisible);
         }
         else {
             setBorderColor("#F5F8F5");
             setButtonColor("#F5F8F5");
             setButtonTextColor("#191919");
             // setButtonText("사용가능");
-
-            Alert.alert("아이디 중복확인 로직 구현 및 alert 창 구현");
+            
+            setAlertImage(require("@images/check.png"));
+            setAlertText("사용 가능한 아이디입니다.");
+            setModalVisible(!modalVisible);
 
             setIfButtonID(false);
             setIfCheckID(true);
@@ -122,6 +131,9 @@ export default function Login1() {
 
     return (
         <View style={styles.container}>
+            <View>
+                <AlertForm modalVisible={modalVisible} setModalVisible={setModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
+            </View>
             <View style={tw`flex-row items-center justify-between mt-5 mb-3`}>
                 <Pressable onPress={goBack} style={tw`flex-row items-center`}>
                     <Image source={require("@images/chevron_left.png")} style={tw`mx-2`}></Image>
