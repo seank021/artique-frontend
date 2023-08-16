@@ -61,8 +61,8 @@ export default function Login1() {
             <Image source={require("@images/logo_small.png")} style={tw`self-center mt-7 mb-7`}></Image>
 
             <ScrollView contentContainerStyle={styles.contentContainer}>
-                <InputForm image={require("@images/id.png")} placeholder={"아이디를 입력해주세요"} setValue={setId} compareValue={nullFunc}></InputForm>
-                <InputForm image={require("@images/password.png")} placeholder={"비밀번호를 입력해주세요"} secureTextEntry={true} setValue={setPassword} compareValue={nullFunc}></InputForm>
+                <InputForm image={require("@images/id.png")} placeholder={"아이디를 입력해주세요"} setValue={setId} compareValue={nullFunc} reappearButton={nullFunc}></InputForm>
+                <InputForm image={require("@images/password.png")} placeholder={"비밀번호를 입력해주세요"} secureTextEntry={true} setValue={setPassword} compareValue={nullFunc} reappearButton={nullFunc}></InputForm>
 
                 <View style={tw`w-[90%] flex-row items-center mt-2.5 mb-4.5`}>
                     <Pressable onPress={checkRectangle}><Image source={rectangle} style={tw`mr-2`}></Image></Pressable>
