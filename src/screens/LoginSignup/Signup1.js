@@ -1,13 +1,14 @@
 /* 
 TODO:
-1. 아이디 중복확인 로직 구현
-2. 회원가입 로직 구현 --> 회원가입 후 메인 페이지로 이동
-3. 약관
+1. 회원가입 로직 구현 --> 회원가입 후 메인 페이지로 이동
+2. 약관
 */
 
 import React, { useState } from "react";
 import { View, Text, Image, Pressable, ScrollView, StyleSheet, Alert } from "react-native";
 import tw from "twrnc";
+
+import axios from "axios";
 
 import { useNavigation } from "@react-navigation/native";
 
@@ -65,10 +66,33 @@ export default function Login1() {
         return;
     }
 
-    const ifDuplicate = false; // 테스트용 변수
+    const reappearButton = () => {
+        setBorderColor("#ABABAB");
+        setIfButtonID(true);
+    }
 
-    const checkDuplicate = () => {
-        if (ifDuplicate || id === "") {
+    let ifDuplicate = false;
+
+    const checkDuplicate = async () => {
+        try {
+            const response = await axios.get(`http://3.39.145.210/member/duplicate?member-id=${id}`);
+            console.log(response.data);
+        } catch (error) {
+            console.log(error.response.data.code);
+            if (error.response.data.code === "DUPLICATE_LOGIN_ID") {
+                ifDuplicate = true;
+            }
+        }
+
+        if (id === "") {
+            setModalVisible(!modalVisible);
+            setAlertImage(require("@images/x_red.png"));
+            setAlertText("아이디를 입력해주세요.");
+            setTimeout(() => {
+                setModalVisible(modalVisible);
+            }, 1000);
+        }
+        else if (ifDuplicate) {
             setModalVisible(!modalVisible);
             setAlertImage(require("@images/x_red.png"));
             setAlertText("사용 불가한 아이디입니다.");
@@ -155,7 +179,7 @@ export default function Login1() {
             <Image source={require("@images/logo_small.png")} style={tw`self-center mt-7 mb-7`}></Image>
 
             <ScrollView contentContainerStyle={styles.contentContainer}>
-                <InputForm image={require("@images/id.png")} placeholder={"아이디를 입력해주세요"} setValue={setId} compareValue={nullFunc} ifButton={ifButtonID} borderColor={borderColor} buttonColor={buttonColor} buttonTextColor={buttonTextColor} buttonText={buttonText} onPressButton={checkDuplicate} ifCheck={ifCheckID}></InputForm>
+                <InputForm image={require("@images/id.png")} placeholder={"아이디를 입력해주세요"} setValue={setId} compareValue={nullFunc} reappearButton={reappearButton} ifButton={ifButtonID} borderColor={borderColor} buttonColor={buttonColor} buttonTextColor={buttonTextColor} buttonText={buttonText} onPressButton={checkDuplicate} ifCheck={ifCheckID}></InputForm>
                 <InputForm image={require("@images/password.png")} placeholder={"비밀번호를 입력해주세요"} secureTextEntry={true} setValue={setPassword} compareValue={comparePW}></InputForm>
                 <InputForm image={require("@images/password.png")} placeholder={"비밀번호를 다시 확인해주세요"} secureTextEntry={true} setValue={setPassword_} compareValue={comparePW_} ifCheck={ifCheckPW} ifX={ifXPW}></InputForm>
 
