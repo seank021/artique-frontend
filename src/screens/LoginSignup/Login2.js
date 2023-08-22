@@ -50,6 +50,25 @@ export default function Login1() {
     }
 
     const onPressLogin = async () => {
+        if (id === "") {
+            setModalVisible(!modalVisible);
+            setAlertImage(require("@images/x_red.png"));
+            setAlertText("아이디를 입력해주세요.");
+            setTimeout(() => {
+                setModalVisible(modalVisible);
+            }, 1000);
+            return;
+        }
+        if (password === "") {
+            setModalVisible(!modalVisible);
+            setAlertImage(require("@images/x_red.png"));
+            setAlertText("비밀번호를 입력해주세요.");
+            setTimeout(() => {
+                setModalVisible(modalVisible);
+            }, 1000);
+            return;
+        }
+        
         const hashedPW = hash(password);
         try {
             const response = await axios.post("http://3.39.145.210/member/login", {
