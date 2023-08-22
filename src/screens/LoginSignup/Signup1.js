@@ -1,7 +1,6 @@
 /* 
 TODO:
-1. 회원가입 후 메인 페이지로 이동 (우선 Temp로 이동하도록 설정해놓음)
-2. 약관
+1. 약관
 */
 
 import React, { useState } from "react";
@@ -208,7 +207,7 @@ export default function Login1() {
                     "memberId": id,
                     "memberPW": hashedPW,
                 });
-                nav.navigate("Temp");
+                nav.navigate("Login2");
             } catch (error) {
                 console.log(error.response.data.code);
             }
