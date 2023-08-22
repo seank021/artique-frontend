@@ -1,6 +1,6 @@
 /* 
 TODO:
-1. 로그인 전 둘러보기 버튼 누르면 메인 페이지로 이동
+1. 로그인 전 둘러보기 버튼 누르면 메인 페이지로 이동 (우선 "Temp"로 이동하도록 설정해놓음)
 2. 소셜로그인 구현
 */
 
@@ -17,7 +17,7 @@ export default function Login1() {
     const nav = useNavigation();
 
     onPressLookAround = () => {
-        Alert.alert("로그인 전 둘러보기: 메인 페이지로");
+        nav.navigate("Temp");
     }
 
     onPressLogin = () => {
