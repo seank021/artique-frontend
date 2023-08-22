@@ -153,6 +153,54 @@ export default function Login1() {
     }
 
     const onPressSignup = async () => {
+        if (id === "") {
+            setModalVisible(!modalVisible);
+            setAlertImage(require("@images/x_red.png"));
+            setAlertText("아이디를 입력해주세요.");
+            setTimeout(() => {
+                setModalVisible(modalVisible);
+            }, 1000);
+            return;
+        }
+        if (password === "") {
+            setModalVisible(!modalVisible);
+            setAlertImage(require("@images/x_red.png"));
+            setAlertText("비밀번호를 입력해주세요.");
+            setTimeout(() => {
+                setModalVisible(modalVisible);
+            }, 1000);
+            return;
+        }
+        if (password_ === "") {
+            setModalVisible(!modalVisible);
+            setAlertImage(require("@images/x_red.png"));
+            setAlertText("비밀번호를 확인해주세요.");
+            setTimeout(() => {
+                setModalVisible(modalVisible);
+            }, 1000);
+            return;
+        }
+
+        if (!ifCheckID) {
+            setModalVisible(!modalVisible);
+            setAlertImage(require("@images/x_red.png"));
+            setAlertText("아이디 중복확인을 해주세요.");
+            setTimeout(() => {
+                setModalVisible(modalVisible);
+            }, 1000);
+            return;
+        }
+
+        if (!ifCheckPW) {
+            setModalVisible(!modalVisible);
+            setAlertImage(require("@images/x_red.png"));
+            setAlertText("비밀번호가 일치하지 않습니다.");
+            setTimeout(() => {
+                setModalVisible(modalVisible);
+            }, 1000);
+            return;
+        }
+
         if (ifCheckID && ifCheckPW && (rectangle1 === require("@images/rectangle_checked.png")) && (rectangle2 === require("@images/rectangle_checked.png"))) {
             const hashedPW = hash(password);
             try {
