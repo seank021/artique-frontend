@@ -3,14 +3,14 @@ TODO:
 1. 소셜로그인 구현
 */
 
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, Image, Pressable, StyleSheet, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
 
 import * as KakaoLogin from "@react-native-seoul/kakao-login";
 import { GoogleSignin } from "react-native-google-signin";
-import appleAuth from '@invertase/react-native-apple-authentication';
+// import appleAuth from '@invertase/react-native-apple-authentication';
 
 import axios from "axios";
 
@@ -21,11 +21,11 @@ import ButtonForm from "@forms/ButtonForm";
 export default function Login1({setIsLoggedIn}) {
     const nav = useNavigation();
 
-    useEffect(() => {
-        return appleAuth.onCredentialRevoked(async () => {
-            console.warn('If this function executes, User Credentials have been Revoked',);
-        });
-    }, []);
+    // useEffect(() => {
+    //     return appleAuth.onCredentialRevoked(async () => {
+    //         console.warn('If this function executes, User Credentials have been Revoked',);
+    //     });
+    // }, []);
 
     onPressLookAround = () => {
         nav.navigate("Feed");
@@ -68,24 +68,25 @@ export default function Login1({setIsLoggedIn}) {
     }
 
     onPressApple = async () => {
-        try {
-            const appleAuthRequestResponse = await appleAuth.performRequest({
-                requestedOperation: appleAuth.Operation.LOGIN,
-                requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
-            });
-            console.log('appleAuthRequestResponse: ', appleAuthRequestResponse);
-            const credentialState = await appleAuth.getCredentialStateForUser(
-                appleAuthRequestResponse.user,
-            );
-            if (credentialState === appleAuth.State.AUTHORIZED) {
-                console.log('user is authenticated');
-            }
-        } catch (error) {
-            console.log('error: ', error);
-            if (error.code === appleAuth.Error.CANCELED) {
-                console.warn('User canceled Apple Sign in.');
-            }
-        }
+        Alert.alert("애플 로그인, 아래 코드는 일단 주석 처리");
+    //     try {
+    //         const appleAuthRequestResponse = await appleAuth.performRequest({
+    //             requestedOperation: appleAuth.Operation.LOGIN,
+    //             requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
+    //         });
+    //         console.log('appleAuthRequestResponse: ', appleAuthRequestResponse);
+    //         const credentialState = await appleAuth.getCredentialStateForUser(
+    //             appleAuthRequestResponse.user,
+    //         );
+    //         if (credentialState === appleAuth.State.AUTHORIZED) {
+    //             console.log('user is authenticated');
+    //         }
+    //     } catch (error) {
+    //         console.log('error: ', error);
+    //         if (error.code === appleAuth.Error.CANCELED) {
+    //             console.warn('User canceled Apple Sign in.');
+    //         }
+    //     }
     }
 
     return (
