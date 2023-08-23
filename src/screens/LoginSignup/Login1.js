@@ -1,14 +1,15 @@
 /* 
 TODO:
-1. 로그인 전 둘러보기 버튼 누르면 메인 페이지로 이동 (우선 "Feed"로 이동하도록 설정해놓음)
-2. 소셜로그인 구현
+1. 소셜로그인 구현
 */
 
 import React from "react";
 import { View, Text, Image, Pressable, StyleSheet, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import * as KakaoLogin from "@react-native-seoul/kakao-login";
 import tw from "twrnc";
+
+import * as KakaoLogin from "@react-native-seoul/kakao-login";
+import { GoogleSignin } from "react-native-google-signin";
 
 import axios from "axios";
 
@@ -43,8 +44,20 @@ export default function Login1({setIsLoggedIn}) {
         }
     }
 
-    onPressGoogle = () => {
-        Alert.alert("구글 로그인 구현");
+    onPressGoogle = async () => {
+        GoogleSignin.configure({
+            webClientId:"1001943377543-q3ed3vrdtg2hhmc8edp88c6eggh48bcs.apps.googleusercontent.com",
+            offlineAccess: true,
+        });
+
+        try {
+            await GoogleSignin.hasPlayServices();
+            const userInfo = await GoogleSignin.signIn();
+            console.log(userInfo);
+            console.log(userInfo.idToken);
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     onPressApple = () => {
