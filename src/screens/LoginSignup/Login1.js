@@ -1,31 +1,46 @@
 /* 
 TODO:
-1. 로그인 전 둘러보기 버튼 누르면 메인 페이지로 이동 (우선 "Temp"로 이동하도록 설정해놓음)
+1. 로그인 전 둘러보기 버튼 누르면 메인 페이지로 이동 (우선 "Feed"로 이동하도록 설정해놓음)
 2. 소셜로그인 구현
 */
 
 import React from "react";
 import { View, Text, Image, Pressable, StyleSheet, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import * as KakaoLogin from "@react-native-seoul/kakao-login";
 import tw from "twrnc";
+
+import axios from "axios";
 
 import { useNavigation } from "@react-navigation/native";
 
 import ButtonForm from "@forms/ButtonForm";
 
-export default function Login1() {
+export default function Login1({setIsLoggedIn}) {
     const nav = useNavigation();
 
     onPressLookAround = () => {
-        nav.navigate("Temp");
+        nav.navigate("Feed");
     }
 
     onPressLogin = () => {
         nav.navigate("Login2");
     }
 
-    onPressKakao = () => {
-        Alert.alert("카카오 로그인 구현");
+    onPressKakao = async () => {
+        try {
+            const result = await KakaoLogin.login();
+            console.log(result);
+            console.log(result.accessToken);
+            const response = await axios.post("http://3.39.145.210/member/oauth", {
+                "accessToken": result.accessToken,
+            });
+            console.log(response.data.userId);
+            console.log(response.headers["set-cookie"]);
+            setIsLoggedIn(true);
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     onPressGoogle = () => {
