@@ -1,7 +1,7 @@
 /* 
 TODO:
 1. 자동로그인 기능 구현
-2. 로그인 후 메인 페이지로 이동 (우선 Temp로 이동하도록 설정해놓음)
+2. 로그인 후 메인 페이지로 이동 (우선 Feed로 이동하도록 설정해놓음)
 3. 쿠기 저장 기능 구현
 */
 
@@ -20,7 +20,7 @@ import InputForm from "@forms/InputForm";
 import ButtonForm from "@forms/ButtonForm";
 import AlertForm from "@forms/AlertForm";
 
-export default function Login1() {
+export default function Login1({setIsLoggedIn}) {
     const nav = useNavigation();
 
     const [id, setId] = useState("");
@@ -79,7 +79,7 @@ export default function Login1() {
             if (response.data.success === true) {
                 console.log("로그인 성공");
                 console.log(response.headers["set-cookie"]);
-                nav.navigate("Temp");
+                setIsLoggedIn(true);
             }
             else {
                 setModalVisible(!modalVisible);
