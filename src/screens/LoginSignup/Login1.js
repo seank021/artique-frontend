@@ -10,6 +10,7 @@ import tw from "twrnc";
 
 import * as KakaoLogin from "@react-native-seoul/kakao-login";
 import { GoogleSignin } from "react-native-google-signin";
+import appleAuth from '@invertase/react-native-apple-authentication';
 
 import axios from "axios";
 
@@ -19,6 +20,12 @@ import ButtonForm from "@forms/ButtonForm";
 
 export default function Login1({setIsLoggedIn}) {
     const nav = useNavigation();
+
+    useEffect(() => {
+        return appleAuth.onCredentialRevoked(async () => {
+            console.warn('If this function executes, User Credentials have been Revoked',);
+        });
+    }, []);
 
     onPressLookAround = () => {
         nav.navigate("Feed");
@@ -60,8 +67,25 @@ export default function Login1({setIsLoggedIn}) {
         }
     }
 
-    onPressApple = () => {
-        Alert.alert("애플 로그인 구현");
+    onPressApple = async () => {
+        try {
+            const appleAuthRequestResponse = await appleAuth.performRequest({
+                requestedOperation: appleAuth.Operation.LOGIN,
+                requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
+            });
+            console.log('appleAuthRequestResponse: ', appleAuthRequestResponse);
+            const credentialState = await appleAuth.getCredentialStateForUser(
+                appleAuthRequestResponse.user,
+            );
+            if (credentialState === appleAuth.State.AUTHORIZED) {
+                console.log('user is authenticated');
+            }
+        } catch (error) {
+            console.log('error: ', error);
+            if (error.code === appleAuth.Error.CANCELED) {
+                console.warn('User canceled Apple Sign in.');
+            }
+        }
     }
 
     return (
