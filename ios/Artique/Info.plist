@@ -26,10 +26,11 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>org.reactjs.native.example.Artique</string>
+			<string>app.facp.Artique</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.736599222626-mmkse4v0jtp0rafgi1k05dkeul91lvbl</string>
+				<string>kakao448081fc5a75c64bc7302fcb9f240728</string>
 			</array>
 		</dict>
 	</array>
@@ -64,5 +65,14 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>KAKAO_APP_KEY</key>
+	<string>448081fc5a75c64bc7302fcb9f240728</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>kakao448081fc5a75c64bc7302fcb9f240728</string>
+		<string>kakaolink</string>
+		<string>kakaokompassauth</string>
+		<string>storykompassauth</string>
+	</array>
 </dict>
 </plist>
