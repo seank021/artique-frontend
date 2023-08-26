@@ -47,6 +47,7 @@
 		89C6BE57DB24E9ADA2F236DE /* Pods-Artique-ArtiqueTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artique-ArtiqueTests.release.xcconfig"; path = "Target Support Files/Pods-Artique-ArtiqueTests/Pods-Artique-ArtiqueTests.release.xcconfig"; sourceTree = "<group>"; };
 		AC0C6E6C2A96226700803031 /* Artique-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Artique-Bridging-Header.h"; sourceTree = "<group>"; };
 		AC0C6E6D2A96226800803031 /* SwiftBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftBridge.swift; sourceTree = "<group>"; };
+		AC7304742A999E4900184BDC /* Artique.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Artique.entitlements; path = Artique/Artique.entitlements; sourceTree = "<group>"; };
 		AC7C710E2A95DD8D009F6CAE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -91,6 +92,7 @@
 		13B07FAE1A68108700A75B9A /* Artique */ = {
 			isa = PBXGroup;
 			children = (
+				AC7304742A999E4900184BDC /* Artique.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -499,10 +501,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Artique/Artique.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = B4U7ZS7TTZ;
+				DEVELOPMENT_TEAM = 79BVW9WXU3;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Artique/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Artique;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -513,7 +518,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = app.facp.Artique;
 				PRODUCT_NAME = Artique;
 				SWIFT_OBJC_BRIDGING_HEADER = "Artique-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -528,9 +533,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Artique/Artique.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = B4U7ZS7TTZ;
+				DEVELOPMENT_TEAM = 79BVW9WXU3;
 				INFOPLIST_FILE = Artique/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Artique;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -541,7 +549,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = app.facp.Artique;
 				PRODUCT_NAME = Artique;
 				SWIFT_OBJC_BRIDGING_HEADER = "Artique-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
