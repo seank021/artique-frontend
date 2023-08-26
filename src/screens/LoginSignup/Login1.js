@@ -1,6 +1,7 @@
 /* 
 TODO:
-1. 소셜로그인 구현
+1. 쿠키 저장 기능 구현
+2. 둘러보기 시 setIsLoggedIn과 cookie 조합해서 Feed로 이동 설졍
 */
 
 import React, { useEffect } from "react";
@@ -28,7 +29,7 @@ export default function Login1({setIsLoggedIn}) {
     // }, []);
 
     onPressLookAround = () => {
-        nav.navigate("Feed");
+        nav.navigate("Feed"); // 수정 필요 : cookie / setIsLoggedIn으로 처리
     }
 
     onPressLogin = () => {
@@ -41,11 +42,12 @@ export default function Login1({setIsLoggedIn}) {
             console.log(result);
             console.log(result.accessToken);
             const response = await axios.post("http://3.39.145.210/member/oauth", {
-                "accessToken": result.accessToken,
+                "thirdPartyName": "kakao",
+                "token": result.accessToken,
             });
             console.log(response.data.userId);
             console.log(response.headers["set-cookie"]);
-            setIsLoggedIn(true);
+            setIsLoggedIn(true); // 수정 필요: cookie 관련으로 로그인 여부를 결정
         } catch (err) {
             console.log(err);
         }
@@ -62,6 +64,13 @@ export default function Login1({setIsLoggedIn}) {
             const userInfo = await GoogleSignin.signIn();
             console.log(userInfo);
             console.log(userInfo.idToken);
+            const response = await axios.post("http://3.39.145.210/member/oauth", {
+                "thirdPartyName": "google",
+                "token": userInfo.idToken,
+            });
+            console.log(response.data.userId);
+            console.log(response.headers["set-cookie"]);
+            setIsLoggedIn(true); // 수정 필요: cookie 관련으로 로그인 여부를 결정
         } catch (err) {
             console.log(err);
         }
