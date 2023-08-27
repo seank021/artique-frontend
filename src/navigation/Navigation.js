@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Image } from "react-native";
 
 import * as Cookies from "@functions/cookie";
 
@@ -96,10 +97,49 @@ const Navigation = () => {
 
     const Tabs = () => {
         return (
-            <Tab.Navigator initialRouteName="MainTab" screenOptions={{ headerShown: false }}>
-                <Tab.Screen name="SearchTab" component={SearchStack} />
-                <Tab.Screen name="MainTab" component={MainStack} />
-                <Tab.Screen name="ProfileTab" component={ProfileStack} />
+            <Tab.Navigator
+                initialRouteName="MainTab"
+                screenOptions={{
+                    headerShown: false,
+                    tabBarStyle: {
+                        width: "90%",
+                        borderRadius: 20,
+                        position: "absolute",
+                        bottom: 10,
+                        left: "5%",
+                        shadowColor: "rgba(0, 0, 0, 0.15)",
+                        backgroundColor: "#F5F8F5",
+                    },
+                    tabBarShowLabel: false,
+                }}
+            >
+                <Tab.Screen 
+                    name="SearchTab"
+                    component={SearchStack}
+                    options={{
+                        tabBarIcon: ({focused}) => (
+                            focused ? <Image source={require("@images/search.png")} /> : <Image source={require("@images/search.png")} />
+                        ),
+                    }}
+                />
+                <Tab.Screen 
+                    name="MainTab"
+                    component={MainStack}
+                    options={{
+                        tabBarIcon: ({focused}) => (
+                            focused ? <Image source={require("@images/main_focused.png")} /> : <Image source={require("@images/main.png")} />
+                        ),
+                    }}
+                />
+                <Tab.Screen 
+                    name="ProfileTab"
+                    component={ProfileStack}
+                    options={{
+                        tabBarIcon: ({focused}) => (
+                            focused ? <Image source={require("@images/profile.png")} /> : <Image source={require("@images/profile.png")} />
+                        ),
+                    }}
+                />
             </Tab.Navigator>
         )
     };
