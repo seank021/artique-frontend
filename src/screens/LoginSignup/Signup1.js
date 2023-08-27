@@ -250,7 +250,7 @@ export default function Login1() {
 
             <Image source={require("@images/logo_small.png")} style={tw`self-center mt-7 mb-7`}></Image>
 
-            <ScrollView contentContainerStyle={styles.contentContainer}>
+            <ScrollView contentContainerStyle={styles.contentContainer} keyboardDismissMode="on-drag">
                 <InputForm image={require("@images/id.png")} placeholder={"아이디를 입력해주세요"} setValue={setId} compareValue={nullFunc} reappearButton={reappearButton} ifButton={ifButtonID} borderColor={borderColor} buttonColor={buttonColor} buttonTextColor={buttonTextColor} buttonText={buttonText} onPressButton={checkDuplicate} ifCheck={ifCheckID}></InputForm>
                 <InputForm image={require("@images/password.png")} placeholder={"비밀번호를 입력해주세요"} secureTextEntry={true} setValue={setPassword} compareValue={comparePW} reappearButton={nullFunc}></InputForm>
                 <InputForm image={require("@images/password.png")} placeholder={"비밀번호를 다시 확인해주세요"} secureTextEntry={true} setValue={setPassword_} compareValue={comparePW_} reappearButton={nullFunc} ifCheck={ifCheckPW} ifX={ifXPW}></InputForm>
