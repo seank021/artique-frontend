@@ -5,8 +5,13 @@ import Login2 from "@screens/LoginSignup/Login2";
 import ChangePW1 from "@screens/LoginSignup/ChangePW1";
 import Signup1 from "@screens/LoginSignup/Signup1";
 
-import Feed from "@screens/Main/Feed";
+import Feed1 from "@screens/Main/Feed1";
+import Detail1 from "@screens/Main/Detail1";
+import AllReviews1 from "@screens/Main/AllReviews1";
+import SeeMore1 from "@screens/Main/SeeMore1";
+
 import Search from "@screens/Search/Search";
+
 import Profile from "@screens/Profile/Profile";
 
 import { NavigationContainer } from "@react-navigation/native";
@@ -34,7 +39,10 @@ const Navigation = () => {
     const MainStack = () => {
         return (
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="Feed" component={Feed} />
+                <Stack.Screen name="Feed1" component={Feed1} />
+                <Stack.Screen name="Detail1" component={Detail1} />
+                <Stack.Screen name="AllReviews1" component={AllReviews1} />
+                <Stack.Screen name="SeeMore1" component={SeeMore1} />
             </Stack.Navigator>
         )
     };

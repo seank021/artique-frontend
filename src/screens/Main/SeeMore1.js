@@ -1,9 +1,13 @@
+// 주의사항: isCookie 여부에 따라 유저 권한 다르게 주기
+
 import React, { useState, useEffect } from "react";
-import { View, Text } from "react-native";
+import { View, Text, Button } from "react-native";
 
 import * as Cookies from "@functions/cookie";
 
-export default function Feed() {
+import { useNavigation } from "@react-navigation/native";
+
+export default function SeeMore1() {
     const [isCookie, setIsCookie] = useState(true);
 
     useEffect(() => {
@@ -14,11 +18,12 @@ export default function Feed() {
         checkCookie();
     }, []);
 
+    const nav = useNavigation();
+
     return (
         <View>
-            {isCookie ? <View><Text>cookie exists</Text></View> 
-            : <View><Text>no cookie</Text></View> }
+            <Text>여기는 더보기 페이지</Text>
+            <Button onPress={() => nav.goBack()} title="뒤로 가기"></Button>
         </View>
     )
-
 }
