@@ -2,6 +2,7 @@
 
 import React from "react";
 import { View, Text, Button } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import { useNavigation } from "@react-navigation/native";
 
@@ -9,11 +10,11 @@ export default function AllReviews1({isCookie}) {
     const nav = useNavigation();
 
     return (
-        <View>
+        <SafeAreaView>
             <Text>여기는 모든 리뷰 페이지</Text>
             {isCookie ? <Text>로그인 되어 있음</Text> : <Text>로그인 안 되어 있음</Text>}
             <Button onPress={() => nav.goBack()} title="뒤로 가기"></Button>
             <Button onPress={() => nav.navigate("SeeMore1")} title="SeeMore1으로 가기"></Button>
-        </View>
+        </SafeAreaView>
     )
 }
