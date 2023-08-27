@@ -1,5 +1,10 @@
+/* 
+TODO:
+1. 애플 로그인 백 연결
+*/
+
 import React, { useEffect } from "react";
-import { View, Text, Image, Pressable, StyleSheet, Alert } from "react-native";
+import { View, Text, Image, Pressable, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
 
