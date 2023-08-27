@@ -1,9 +1,3 @@
-/* 
-TODO:
-1. 쿠키 저장 기능 구현
-2. 둘러보기 시 setIsLoggedIn과 cookie 조합해서 Feed로 이동 설졍
-*/
-
 import React, { useEffect } from "react";
 import { View, Text, Image, Pressable, StyleSheet, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -15,11 +9,13 @@ import { GoogleSignin } from "react-native-google-signin";
 
 import axios from "axios";
 
+import * as Cookies from "@functions/cookie";
+
 import { useNavigation } from "@react-navigation/native";
 
 import ButtonForm from "@forms/ButtonForm";
 
-export default function Login1({setIsLoggedIn}) {
+export default function Login1({setGoToFeed}) {
     const nav = useNavigation();
 
     // useEffect(() => {
@@ -29,7 +25,8 @@ export default function Login1({setIsLoggedIn}) {
     // }, []);
 
     onPressLookAround = () => {
-        nav.navigate("Feed"); // 수정 필요 : cookie / setIsLoggedIn으로 처리
+        Cookies.clearCookie();
+        setGoToFeed(true);
     }
 
     onPressLogin = () => {
@@ -47,7 +44,12 @@ export default function Login1({setIsLoggedIn}) {
             });
             console.log(response.data.userId);
             console.log(response.headers["set-cookie"]);
-            setIsLoggedIn(true); // 수정 필요: cookie 관련으로 로그인 여부를 결정
+            try {
+                Cookies.setCookie("kakao", response.headers["set-cookie"]);
+                setGoToFeed(true);
+            } catch (err) {
+                console.log(err);
+            }
         } catch (err) {
             console.log(err);
         }
@@ -70,7 +72,12 @@ export default function Login1({setIsLoggedIn}) {
             });
             console.log(response.data.userId);
             console.log(response.headers["set-cookie"]);
-            setIsLoggedIn(true); // 수정 필요: cookie 관련으로 로그인 여부를 결정
+            try {
+                Cookies.setCookie("google", response.headers["set-cookie"]);
+                setGoToFeed(true);
+            } catch (err) {
+                console.log(err);
+            }
         } catch (err) {
             console.log(err);
         }
@@ -83,18 +90,22 @@ export default function Login1({setIsLoggedIn}) {
         //         requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
         //     });
         //     console.log('appleAuthRequestResponse: ', appleAuthRequestResponse);
-        //     const credentialState = await appleAuth.getCredentialStateForUser(
-        //         appleAuthRequestResponse.user,
-        //     );
-        //     if (credentialState === appleAuth.State.AUTHORIZED) {
-        //         console.log('user is authenticated');
-        //             setIsLoggedIn(true); // 수정 필요: cookie 관련으로 로그인 여부를 결정
+
+        //     const response = await axios.post('http://3.39.145.210/member/oauth', {
+        //         thirdPartyName: 'apple',
+        //         token: appleAuthRequestResponse.identityToken,
+        //     });
+        //     console.log(response.data.userId);
+        //     console.log(response.headers['set-cookie']);
+            
+        //     try {
+        //         Cookies.setCookie("apple", response.headers["set-cookie"]);
+        //         setGoToFeed(true);
+        //     } catch (err) {
+        //         console.log(err);
         //     }
-        // } catch (error) {
-        //     console.log('error: ', error);
-        //     if (error.code === appleAuth.Error.CANCELED) {
-        //         console.warn('User canceled Apple Sign in.');
-        //     }
+        // } catch (err) {
+        //     console.log(err);
         // }
     }
 

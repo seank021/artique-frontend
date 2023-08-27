@@ -1,7 +1,6 @@
 /* 
 TODO:
 1. 자동로그인 기능 구현
-2. 쿠기 저장 기능 구현
 */
 
 import React, { useState } from "react";
@@ -12,6 +11,7 @@ import tw from "twrnc";
 import axios from "axios";
 
 import hash from "@functions/hash"
+import * as Cookies from "@functions/cookie"
 
 import { useNavigation } from "@react-navigation/native";
 
@@ -19,7 +19,7 @@ import InputForm from "@forms/InputForm";
 import ButtonForm from "@forms/ButtonForm";
 import AlertForm from "@forms/AlertForm";
 
-export default function Login1({setIsLoggedIn}) {
+export default function Login1({setGoToFeed, setIsCookie}) {
     const nav = useNavigation();
 
     const [id, setId] = useState("");
@@ -78,7 +78,12 @@ export default function Login1({setIsLoggedIn}) {
             if (response.data.success === true) {
                 console.log("로그인 성공");
                 console.log(response.headers["set-cookie"]);
-                setIsLoggedIn(true);
+                try {
+                    Cookies.setCookie("general", response.headers["set-cookie"]);
+                    setGoToFeed(true);
+                } catch (err) {
+                    console.log(err);
+                }
             }
             else {
                 setModalVisible(!modalVisible);

@@ -22,8 +22,8 @@ const Navigation = () => {
     const AuthStack = () => {
         return (
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="Login1" children={() => <Login1 setIsLoggedIn={setUserLoggedIn} />} />
-                <Stack.Screen name="Login2" children={() => <Login2 setIsLoggedIn={setUserLoggedIn} />} />
+                <Stack.Screen name="Login1" children={() => <Login1 setGoToFeed={setUserLoggedIn} />} />
+                <Stack.Screen name="Login2" children={() => <Login2 setGoToFeed={setUserLoggedIn} />} />
                 <Stack.Screen name="ChangePW1" component={ChangePW1} />
                 <Stack.Screen name="Signup1" component={Signup1} />
             </Stack.Navigator>
