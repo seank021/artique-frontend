@@ -77,47 +77,47 @@ export default function Login1({setIsLoggedIn}) {
     }
 
     onPressApple = async () => {
-        Alert.alert("애플 로그인, 아래 코드는 일단 주석 처리");
-    //     try {
-    //         const appleAuthRequestResponse = await appleAuth.performRequest({
-    //             requestedOperation: appleAuth.Operation.LOGIN,
-    //             requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
-    //         });
-    //         console.log('appleAuthRequestResponse: ', appleAuthRequestResponse);
-    //         const credentialState = await appleAuth.getCredentialStateForUser(
-    //             appleAuthRequestResponse.user,
-    //         );
-    //         if (credentialState === appleAuth.State.AUTHORIZED) {
-    //             console.log('user is authenticated');
-    //         }
-    //     } catch (error) {
-    //         console.log('error: ', error);
-    //         if (error.code === appleAuth.Error.CANCELED) {
-    //             console.warn('User canceled Apple Sign in.');
-    //         }
-    //     }
+        // try {
+        //     const appleAuthRequestResponse = await appleAuth.performRequest({
+        //         requestedOperation: appleAuth.Operation.LOGIN,
+        //         requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
+        //     });
+        //     console.log('appleAuthRequestResponse: ', appleAuthRequestResponse);
+        //     const credentialState = await appleAuth.getCredentialStateForUser(
+        //         appleAuthRequestResponse.user,
+        //     );
+        //     if (credentialState === appleAuth.State.AUTHORIZED) {
+        //         console.log('user is authenticated');
+        //             setIsLoggedIn(true); // 수정 필요: cookie 관련으로 로그인 여부를 결정
+        //     }
+        // } catch (error) {
+        //     console.log('error: ', error);
+        //     if (error.code === appleAuth.Error.CANCELED) {
+        //         console.warn('User canceled Apple Sign in.');
+        //     }
+        // }
     }
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={tw`h-[60%] items-center justify-center`}>
+            <View style={tw`h-[63%] items-center justify-center`}>
                 <Image source={require("@images/logo.png")} />
             </View>
 
-            <View style={tw`h-[10%]`}>
+            <View style={tw`h-[7%]`}>
                 <ButtonForm borderColor="#E94A4B" textColor="#F5F5F5" text="로그인 전 둘러보기" onPress={onPressLookAround}></ButtonForm>
             </View>
-            <View style={tw`h-[10%]`}>
+            <View style={tw`h-[7%]`}>
                 <ButtonForm borderColor="#E94A4B" bgColor="#E94A4B" textColor="#F5F5F5" text="로그인" onPress={onPressLogin}></ButtonForm>
             </View>
             
-            <View style={tw`w-[90%] h-[7%] flex-row justify-around self-center items-center`}>
+            <View style={tw`w-[90%] h-[5%] flex-row justify-around self-center items-center`}>
                 <Image source={require("@images/vector.png")} style={tw`w-[25%]`} />
                 <Text style={tw`text-[#FFFFFF] text-sm`}>SNS 계정으로 계속하기</Text>
                 <Image source={require("@images/vector.png")} style={tw`w-[25%]`} />
             </View>
 
-            <View style={tw`w-[70%] h-[13%] flex-row justify-around self-center`}>
+            <View style={tw`w-[70%] h-[10%] flex-row justify-around self-center`}>
                 <Pressable onPress={onPressKakao}><Image source={require("@images/kakaotalk.png")} /></Pressable>
                 <Pressable onPress={onPressGoogle}><Image source={require("@images/google.png")} /></Pressable>
                 <Pressable onPress={onPressApple}><Image source={require("@images/apple.png")} /></Pressable>
