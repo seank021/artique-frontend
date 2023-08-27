@@ -6,8 +6,8 @@ import ChangePW1 from "@screens/LoginSignup/ChangePW1";
 import Signup1 from "@screens/LoginSignup/Signup1";
 
 import Feed from "@screens/Main/Feed";
-import Search from "@screens/Main/Search";
-import Profile from "@screens/Main/Profile";
+import Search from "@screens/Search/Search";
+import Profile from "@screens/Profile/Profile";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -31,10 +31,10 @@ const Navigation = () => {
         
     };
 
-    const FeedStack = () => {
+    const MainStack = () => {
         return (
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="FeedStack" component={Feed} />
+                <Stack.Screen name="Feed" component={Feed} />
             </Stack.Navigator>
         )
     };
@@ -42,7 +42,7 @@ const Navigation = () => {
     const SearchStack = () => {
         return (
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="SearchStack" component={Search} />
+                <Stack.Screen name="Search" component={Search} />
             </Stack.Navigator>
         )
     };
@@ -50,17 +50,17 @@ const Navigation = () => {
     const ProfileStack = () => {
         return (
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="ProfileStack" component={Profile} />
+                <Stack.Screen name="Profile" component={Profile} />
             </Stack.Navigator>
         )
     };
 
     const Tabs = () => {
         return (
-            <Tab.Navigator initialRouteName="Feed" screenOptions={{ headerShown: false }}>
-                <Tab.Screen name="Search" component={SearchStack} />
-                <Tab.Screen name="Feed" component={FeedStack} />
-                <Tab.Screen name="Profile" component={ProfileStack} />
+            <Tab.Navigator initialRouteName="MainTab" screenOptions={{ headerShown: false }}>
+                <Tab.Screen name="SearchTab" component={SearchStack} />
+                <Tab.Screen name="MainTab" component={MainStack} />
+                <Tab.Screen name="ProfileTab" component={ProfileStack} />
             </Tab.Navigator>
         )
     };
