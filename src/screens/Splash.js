@@ -25,6 +25,7 @@ export default function Animation() {
       <AnimatedLottieView
         source={require('../../assets/animations/SplashScreen.json')}
         style={{width: '100%', height: '100%'}}
+        resizeMode={'cover'}
         progress={animationProgress}
       />
     </View>
