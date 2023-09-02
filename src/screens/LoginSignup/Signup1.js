@@ -260,8 +260,8 @@ export default function Login1() {
       <View style={tw`flex-row items-center justify-between mt-5 mb-3`}>
         <Pressable onPress={goBack} style={tw`flex-row items-center`}>
           <Image
-            source={require('@images/chevron_left.png')}
-            style={tw`mx-2`}></Image>
+            source={require('@images/chevron_left(h).png')}
+            style={tw`mx-2 w-[10px] h-[18px]`}></Image>
           <Text style={tw`text-[#F5F8F5] text-sm`}>로그인</Text>
         </Pressable>
         <Text style={tw`text-[#F5F8F5] text-lg`}>회원가입</Text>

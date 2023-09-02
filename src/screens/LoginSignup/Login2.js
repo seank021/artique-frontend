@@ -147,7 +147,9 @@ export default function Login1({setGoToFeed, setIsCookie}) {
       </View>
       <View style={tw`flex-row items-center justify-between mt-5 mb-3`}>
         <Pressable onPress={goBack}>
-          <Image source={require('@images/x.png')} style={tw`ml-2`}></Image>
+          <Image
+            source={require('@images/x(h).png')}
+            style={tw`ml-2 w-[20px] h-[20px]`}></Image>
         </Pressable>
         <Text style={tw`text-[#F5F8F5] text-lg`}>로그인</Text>
         <Image
