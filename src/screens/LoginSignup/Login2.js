@@ -148,18 +148,18 @@ export default function Login1({setGoToFeed, setIsCookie}) {
       <View style={tw`flex-row items-center justify-between mt-5 mb-3`}>
         <Pressable onPress={goBack}>
           <Image
-            source={require('@images/x(h).png')}
+            source={require('@images/x.png')}
             style={tw`ml-2 w-[20px] h-[20px]`}></Image>
         </Pressable>
         <Text style={tw`text-[#F5F8F5] text-lg`}>로그인</Text>
         <Image
           source={require('@images/x.png')}
-          style={tw`mr-2 tint-[#3A3D52]`}></Image>
+          style={tw`mr-2 w-[20px] h-[20px] tint-[#3A3D52]`}></Image>
       </View>
       <View style={tw`border-solid border-b border-[#323546]`}></View>
 
       <Image
-        source={require('@images/logo_small(h).png')}
+        source={require('@images/logo_small.png')}
         style={tw`self-center mt-7 mb-7 w-[110px] h-[38px]`}></Image>
 
       <ScrollView contentContainerStyle={styles.contentContainer}>
@@ -179,7 +179,7 @@ export default function Login1({setGoToFeed, setIsCookie}) {
 
         <View style={tw`w-[90%] flex-row items-center mt-2.5 mb-4.5`}>
           <Pressable onPress={checkRectangle}>
-            <Image source={rectangle} style={tw`mr-2`}></Image>
+            <Image source={rectangle} style={tw`mr-2 w-[16px] h-[16px]`}></Image>
           </Pressable>
           <Text style={tw`text-[#ABABAB] text-sm`}>자동로그인</Text>
         </View>

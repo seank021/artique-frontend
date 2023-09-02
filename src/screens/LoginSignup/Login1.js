@@ -113,7 +113,7 @@ export default function Login1({setGoToFeed}) {
       <View style={tw`h-[63%] items-center justify-center`}>
         <Image
           style={{width: 230, height: 88}}
-          source={require('@images/logo(h).png')}
+          source={require('@images/logo.png')}
         />
       </View>
 
@@ -135,28 +135,28 @@ export default function Login1({setGoToFeed}) {
 
       <View
         style={tw`w-[90%] h-[5%] flex-row justify-around self-center items-center`}>
-        <Image source={require('@images/vector.png')} style={tw`w-[25%]`} />
+        <Image source={require('@images/vector.png')} style={tw`w-[25%] h-[2px] tint-[#F5F8F5]`} />
         <Text style={tw`text-[#FFFFFF] text-sm`}>SNS 계정으로 계속하기</Text>
-        <Image source={require('@images/vector.png')} style={tw`w-[25%]`} />
+        <Image source={require('@images/vector.png')} style={tw`w-[25%] h-[2px] tint-[#F5F8F5]`} />
       </View>
 
       <View style={tw`w-[70%] h-[10%] flex-row justify-around self-center`}>
         <Pressable onPress={onPressKakao}>
           <Image
             style={{width: 48, height: 48}}
-            source={require('@images/kakaotalk(h).png')}
+            source={require('@images/kakaotalk.png')}
           />
         </Pressable>
         <Pressable onPress={onPressGoogle}>
           <Image
             style={{width: 48, height: 48}}
-            source={require('@images/google(h).png')}
+            source={require('@images/google.png')}
           />
         </Pressable>
         <Pressable onPress={onPressApple}>
           <Image
             style={{width: 48, height: 48}}
-            source={require('@images/apple(h).png')}
+            source={require('@images/apple.png')}
           />
         </Pressable>
       </View>

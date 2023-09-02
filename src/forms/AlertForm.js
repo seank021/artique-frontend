@@ -21,7 +21,10 @@ export default function ButtonForm(props) {
     return (
         <Modal animationIn="fadeIn" animationOut="fadeOut" transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5}>
             <View style={alertFormStyles}>
-                <Image source={props.image} style={tw`mr-4`}></Image>
+                {props.image === require("@images/check.png") ?
+                    <Image source={require("@images/check.png")} style={tw`mr-4 w-[24px] h-[17.63637px]`}></Image> 
+                    : <Image source={require("@images/x_red.png")} style={tw`mr-4 w-[19px] h-[19px]`}></Image>
+                }
                 <Text style={textStyles}>{props.text}</Text>
             </View>
         </Modal>
