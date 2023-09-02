@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Image } from "react-native";
+import { Image, Text } from "react-native";
 
 import tw from 'twrnc'
 
@@ -26,12 +26,14 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+// Feed1 부분에 setGoToFeed 넣어놓음 (로그아웃 테스트용)
+
 const Navigation = () => {
     const [goToFeed, setGoToFeed] = useState(false);
 
     const AuthStack = () => {
         return (
-            <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Navigator initialRouteName="Login1" screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="Login1" children={() => <Login1 setGoToFeed={setGoToFeed} />} />
                 <Stack.Screen name="Login2" children={() => <Login2 setGoToFeed={setGoToFeed} />} />
                 <Stack.Screen name="ChangePW1" component={ChangePW1} />
@@ -41,7 +43,7 @@ const Navigation = () => {
     };
 
     const MainStack = () => {
-        const [isCookie, setIsCookie] = useState(true);
+        const [isCookie, setIsCookie] = useState(false);
 
         useEffect(() => {
             const checkCookie = async () => {
@@ -53,7 +55,7 @@ const Navigation = () => {
 
         return (
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="Feed1" children={() => <Feed1 isCookie={isCookie}/>} />
+                <Stack.Screen name="Feed1" children={() => <Feed1 isCookie={isCookie} setGoToFeed={setGoToFeed} />} />
                 <Stack.Screen name="Detail1" children={() => <Detail1 isCookie={isCookie}/>} />
                 <Stack.Screen name="AllReviews1" children={() => <AllReviews1 isCookie={isCookie}/>} />
                 <Stack.Screen name="SeeMore1" children={() => <SeeMore1 isCookie={isCookie}/>} />
