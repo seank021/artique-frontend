@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Image } from "react-native";
 
+import tw from 'twrnc'
+
 import * as Cookies from "@functions/cookie";
 
 import Login1 from "@screens/LoginSignup/Login1";
@@ -103,7 +105,8 @@ const Navigation = () => {
                     headerShown: false,
                     tabBarStyle: {
                         width: "90%",
-                        borderRadius: 20,
+                        height: 46.01267,
+                        borderRadius: 54.5,
                         position: "absolute",
                         bottom: 10,
                         left: "5%",
@@ -118,7 +121,7 @@ const Navigation = () => {
                     component={SearchStack}
                     options={{
                         tabBarIcon: ({focused}) => (
-                            focused ? <Image source={require("@images/search.png")} /> : <Image source={require("@images/search.png")} />
+                            focused ? <Image source={require("@images/search.png")} style={tw`w-[20px] h-[20px]`} /> : <Image source={require("@images/search.png")} style={tw`w-[20px] h-[20px]`} />
                         ),
                     }}
                 />
@@ -127,7 +130,7 @@ const Navigation = () => {
                     component={MainStack}
                     options={{
                         tabBarIcon: ({focused}) => (
-                            focused ? <Image source={require("@images/main_focused.png")} /> : <Image source={require("@images/main.png")} />
+                            focused ? <Image source={require("@images/main_focused.png")} style={tw`w-[47.01324px] h-[46.01267px]`} /> : <Image source={require("@images/main.png")} style={tw`w-[18.46119px] h-[20px]`} />
                         ),
                     }}
                 />
@@ -136,7 +139,7 @@ const Navigation = () => {
                     component={ProfileStack}
                     options={{
                         tabBarIcon: ({focused}) => (
-                            focused ? <Image source={require("@images/profile.png")} /> : <Image source={require("@images/profile.png")} />
+                            focused ? <Image source={require("@images/profile.png")} style={tw`w-[20px] h-[20px]`} /> : <Image source={require("@images/profile.png")} style={tw`w-[19.26213px] h-[20px]`} />
                         ),
                     }}
                 />

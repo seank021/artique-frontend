@@ -260,7 +260,7 @@ export default function Login1() {
       <View style={tw`flex-row items-center justify-between mt-5 mb-3`}>
         <Pressable onPress={goBack} style={tw`flex-row items-center`}>
           <Image
-            source={require('@images/chevron_left(h).png')}
+            source={require('@images/chevron_left.png')}
             style={tw`mx-2 w-[10px] h-[18px]`}></Image>
           <Text style={tw`text-[#F5F8F5] text-sm`}>로그인</Text>
         </Pressable>
@@ -268,14 +268,14 @@ export default function Login1() {
         <View style={tw`flex-row`}>
           <Image
             source={require('@images/chevron_left.png')}
-            style={tw`mr-2 tint-[#3A3D52]`}></Image>
+            style={tw`mr-2 w-[10px] h-[18px] tint-[#3A3D52]`}></Image>
           <Text style={tw`text-[#3A3D52] text-sm mr-2`}>로그인</Text>
         </View>
       </View>
       <View style={tw`border-solid border-b border-[#323546]`}></View>
 
       <Image
-        source={require('@images/logo_small(h).png')}
+        source={require('@images/logo_small.png')}
         style={tw`self-center mt-7 mb-7 w-[110px] h-[38px]`}></Image>
 
       <ScrollView contentContainerStyle={styles.contentContainer}>
@@ -311,7 +311,7 @@ export default function Login1() {
 
         <View style={tw`flex-row items-center self-start ml-[5%] mt-2.5 mb-1`}>
           <Pressable onPress={checkRectangle1}>
-            <Image source={rectangle1} style={tw`mr-2`}></Image>
+            <Image source={rectangle1} style={tw`mr-2 w-[16px] h-[16px]`}></Image>
           </Pressable>
           <Text style={tw`text-[#ABABAB] text-sm underline`}>
             이용약관 (필수)
@@ -319,7 +319,7 @@ export default function Login1() {
         </View>
         <View style={tw`flex-row items-center self-start ml-[5%] mt-1 mb-4.5`}>
           <Pressable onPress={checkRectangle2}>
-            <Image source={rectangle2} style={tw`mr-2`}></Image>
+            <Image source={rectangle2} style={tw`mr-2 w-[16px] h-[16px]`}></Image>
           </Pressable>
           <Text style={tw`text-[#ABABAB] text-sm underline`}>
             개인정보 처리 방침 (필수)
