@@ -13,6 +13,7 @@ module.exports = {
           '@images': './assets/images',
           '@fonts': './assets/fonts',
           '@functions': './src/functions',
+          '@animations': './assets/animations',
         },
       },
     ],
