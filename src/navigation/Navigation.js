@@ -28,7 +28,6 @@ const Navigation = () => {
                 <Stack.Screen name="Signup1" component={Signup1} />
             </Stack.Navigator>
         )
-        
     };
 
     const FeedStack = () => {
