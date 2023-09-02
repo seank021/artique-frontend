@@ -1,13 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Image } from "react-native";
+
+import * as Cookies from "@functions/cookie";
 
 import Login1 from "@screens/LoginSignup/Login1";
 import Login2 from "@screens/LoginSignup/Login2";
 import ChangePW1 from "@screens/LoginSignup/ChangePW1";
 import Signup1 from "@screens/LoginSignup/Signup1";
 
-import Feed from "@screens/Main/Feed";
-import Search from "@screens/Main/Search";
-import Profile from "@screens/Main/Profile";
+import Feed1 from "@screens/Main/Feed1";
+import Detail1 from "@screens/Main/Detail1";
+import AllReviews1 from "@screens/Main/AllReviews1";
+import SeeMore1 from "@screens/Main/SeeMore1";
+
+import Search from "@screens/Search/Search";
+
+import Profile from "@screens/Profile/Profile";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -17,56 +25,128 @@ const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const Navigation = () => {
-    const [userLoggedIn, setUserLoggedIn] = useState(false);
+    const [goToFeed, setGoToFeed] = useState(false);
 
     const AuthStack = () => {
         return (
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="Login1" children={() => <Login1 setGoToFeed={setUserLoggedIn} />} />
-                <Stack.Screen name="Login2" children={() => <Login2 setGoToFeed={setUserLoggedIn} />} />
+                <Stack.Screen name="Login1" children={() => <Login1 setGoToFeed={setGoToFeed} />} />
+                <Stack.Screen name="Login2" children={() => <Login2 setGoToFeed={setGoToFeed} />} />
                 <Stack.Screen name="ChangePW1" component={ChangePW1} />
                 <Stack.Screen name="Signup1" component={Signup1} />
             </Stack.Navigator>
         )
     };
 
-    const FeedStack = () => {
+    const MainStack = () => {
+        const [isCookie, setIsCookie] = useState(true);
+
+        useEffect(() => {
+            const checkCookie = async () => {
+                const cookieExists = await Cookies.ifCookieExists();
+                setIsCookie(cookieExists);
+            };
+            checkCookie();
+        }, []);
+
         return (
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="FeedStack" component={Feed} />
+                <Stack.Screen name="Feed1" children={() => <Feed1 isCookie={isCookie}/>} />
+                <Stack.Screen name="Detail1" children={() => <Detail1 isCookie={isCookie}/>} />
+                <Stack.Screen name="AllReviews1" children={() => <AllReviews1 isCookie={isCookie}/>} />
+                <Stack.Screen name="SeeMore1" children={() => <SeeMore1 isCookie={isCookie}/>} />
             </Stack.Navigator>
         )
     };
 
     const SearchStack = () => {
+        const [isCookie, setIsCookie] = useState(true);
+
+        useEffect(() => {
+            const checkCookie = async () => {
+                const cookieExists = await Cookies.ifCookieExists();
+                setIsCookie(cookieExists);
+            };
+            checkCookie();
+        }, []);
+
         return (
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="SearchStack" component={Search} />
+                <Stack.Screen name="Search" children={() => <Search isCookie={isCookie}/>} />
             </Stack.Navigator>
         )
     };
 
     const ProfileStack = () => {
+        const [isCookie, setIsCookie] = useState(true);
+
+        useEffect(() => {
+            const checkCookie = async () => {
+                const cookieExists = await Cookies.ifCookieExists();
+                setIsCookie(cookieExists);
+            };
+            checkCookie();
+        }, []);
+
         return (
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="ProfileStack" component={Profile} />
+                <Stack.Screen name="Profile" children={() => <Profile isCookie={isCookie}/>} />
             </Stack.Navigator>
         )
     };
 
     const Tabs = () => {
         return (
-            <Tab.Navigator initialRouteName="Feed" screenOptions={{ headerShown: false }}>
-                <Tab.Screen name="Search" component={SearchStack} />
-                <Tab.Screen name="Feed" component={FeedStack} />
-                <Tab.Screen name="Profile" component={ProfileStack} />
+            <Tab.Navigator
+                initialRouteName="MainTab"
+                screenOptions={{
+                    headerShown: false,
+                    tabBarStyle: {
+                        width: "90%",
+                        borderRadius: 20,
+                        position: "absolute",
+                        bottom: 10,
+                        left: "5%",
+                        shadowColor: "rgba(0, 0, 0, 0.15)",
+                        backgroundColor: "#F5F8F5",
+                    },
+                    tabBarShowLabel: false,
+                }}
+            >
+                <Tab.Screen 
+                    name="SearchTab"
+                    component={SearchStack}
+                    options={{
+                        tabBarIcon: ({focused}) => (
+                            focused ? <Image source={require("@images/search.png")} /> : <Image source={require("@images/search.png")} />
+                        ),
+                    }}
+                />
+                <Tab.Screen 
+                    name="MainTab"
+                    component={MainStack}
+                    options={{
+                        tabBarIcon: ({focused}) => (
+                            focused ? <Image source={require("@images/main_focused.png")} /> : <Image source={require("@images/main.png")} />
+                        ),
+                    }}
+                />
+                <Tab.Screen 
+                    name="ProfileTab"
+                    component={ProfileStack}
+                    options={{
+                        tabBarIcon: ({focused}) => (
+                            focused ? <Image source={require("@images/profile.png")} /> : <Image source={require("@images/profile.png")} />
+                        ),
+                    }}
+                />
             </Tab.Navigator>
         )
     };
 
     return (        
         <NavigationContainer>
-            {userLoggedIn ? <Tabs /> : <AuthStack />}
+            {goToFeed ? <Tabs /> : <AuthStack />}
         </NavigationContainer>
     )
 }
