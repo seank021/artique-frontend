@@ -5,7 +5,7 @@ import tw from 'twrnc';
 // props: poster, title, score, date, place, duration, casting
 export default function MusicalInfoForm(props) {
     return (
-        <View style={tw`flex flex-row left-[5%]`}>
+        <View style={tw`flex flex-row w-[90%] self-center`}>
             <Image source={props.poster} style={tw`w-[110px] h-[158.44037px] rounded-2 mr-[11px]`}></Image>
             <View style={tw`flex-col justify-between`}>
                 <Text style={tw`text-[#000] text-lg font-semibold mb-[6px]`}>{props.title}</Text>
