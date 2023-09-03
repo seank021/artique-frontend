@@ -94,7 +94,7 @@ const Navigation = () => {
 
         return (
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="Profile" children={() => <Profile isCookie={isCookie}/>} />
+                <Stack.Screen name="Profile" children={() => <Profile isCookie={isCookie} setGoToFeed={setGoToFeed} />} />
             </Stack.Navigator>
         )
     };
