@@ -8,8 +8,8 @@ import tw from 'twrnc';
 export default function StoryForm(props) {
     return (
         <View style={tw`flex flex-col w-[90%] self-center`}>
-            <Text style={tw`text-[#191919] text-base font-medium mb-[6px]`}>줄거리</Text>
-            <ScrollView>
+            <Text style={tw`text-[#191919] text-base font-medium mb-[10px]`}>줄거리</Text>
+            <ScrollView style={tw`h-[72px]`}>
                 <Text style={tw`text-[#191919] text-sm font-medium`}>
                     {props.story}
                 </Text>
