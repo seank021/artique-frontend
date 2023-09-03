@@ -149,12 +149,12 @@ export default function Login1({setGoToFeed, setIsCookie}) {
         <Pressable onPress={goBack}>
           <Image
             source={require('@images/x.png')}
-            style={tw`ml-2 w-[20px] h-[20px]`}></Image>
+            style={tw`ml-[10px] w-[20px] h-[20px]`}></Image>
         </Pressable>
         <Text style={tw`text-[#F5F8F5] text-lg`}>로그인</Text>
         <Image
           source={require('@images/x.png')}
-          style={tw`mr-2 w-[20px] h-[20px] tint-[#3A3D52]`}></Image>
+          style={tw`mr-[10px] w-[20px] h-[20px] tint-[#3A3D52]`}></Image>
       </View>
       <View style={tw`border-solid border-b border-[#323546]`}></View>
 

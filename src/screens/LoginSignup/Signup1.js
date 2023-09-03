@@ -261,14 +261,14 @@ export default function Login1() {
         <Pressable onPress={goBack} style={tw`flex-row items-center`}>
           <Image
             source={require('@images/chevron_left.png')}
-            style={tw`mx-2 w-[10px] h-[18px]`}></Image>
+            style={tw`mx-[10px] w-[10px] h-[18px]`}></Image>
           <Text style={tw`text-[#F5F8F5] text-sm`}>로그인</Text>
         </Pressable>
         <Text style={tw`text-[#F5F8F5] text-lg`}>회원가입</Text>
         <View style={tw`flex-row`}>
           <Image
             source={require('@images/chevron_left.png')}
-            style={tw`mr-2 w-[10px] h-[18px] tint-[#3A3D52]`}></Image>
+            style={tw`mr-[10px] w-[10px] h-[18px] tint-[#3A3D52]`}></Image>
           <Text style={tw`text-[#3A3D52] text-sm mr-2`}>로그인</Text>
         </View>
       </View>
