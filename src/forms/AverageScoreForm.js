@@ -3,6 +3,8 @@ import { View, Text, Image } from "react-native";
 
 import tw from 'twrnc';
 
+import makeBarChart from "@functions/makeBarChart";
+
 // props: averageScore, scoreCount
 export default function AverageScoreForm(props) {
     return (
@@ -12,7 +14,10 @@ export default function AverageScoreForm(props) {
                 <Image source={require("@images/star.png")} style={tw`w-[16px] h-[16px] mr-[3px]`}></Image>
                 <Text style={tw`text-[#191919] text-sm font-medium`}>{props.averageScore}</Text>
             </View>
-            
+
+            <View>
+                {makeBarChart(props.scoreCount)}
+            </View>
         </View>
     );
 }

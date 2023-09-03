@@ -18,7 +18,8 @@ export default function MusicalDetail1({isCookie}) {
 
     // 테스트용 musicalInfo
     const musicalInfo = {
-        poster: require("@images/test_poster.png"),
+        id: 1,
+        poster: {uri: 'http://www.kopis.or.kr/upload/pfmPoster/PF_PF217859_230504_141255.jpg'},
         title: "뮤지컬 지킬 앤 하이드",
         averageScore: "3.0 (211)",
         date: "2018. 11. 13. ~ 2019. 05. 19.",
@@ -30,15 +31,15 @@ export default function MusicalDetail1({isCookie}) {
 
     // 테스트용 scoreCount (별점 분포)
     const scoreCount = {
-        "0.5": 1,
+        "0.5": 5,
         "1.0": 4,
-        "1.5": 12,
+        "1.5": 8,
         "2.0": 15,
         "2.5": 72,
         "3.0": 12,
         "3.5": 75,
-        "4.0": 2,
-        "4.5": 13,
+        "4.0": 4,
+        "4.5": 11,
         "5.0": 5,
     }
         
@@ -56,30 +57,33 @@ export default function MusicalDetail1({isCookie}) {
         <SafeAreaView style={styles.container}>
             <View style={tw`flex-row items-center justify-between mt-5 mb-[14px]`}>
                 <Pressable onPress={goBack}>
-                <Image
-                    source={require('@images/chevron_left.png')}
-                    style={tw`ml-[20px] w-[10px] h-[18px] tint-[#191919]`}></Image>
+                    <Image
+                        source={require('@images/chevron_left.png')}
+                        style={tw`ml-[20px] w-[10px] h-[18px] tint-[#191919]`}>
+                    </Image>
                 </Pressable>
                 <Text style={tw`text-[#191919] text-base font-semibold`}>{musicalInfo.title}</Text>
                 <Pressable onPress={onPressWrite}>
                     <Image
-                    source={require('@images/write.png')}
-                    style={tw`mr-[20px] w-[20px] h-[20px] tint-[#191919]`}>
+                        source={require('@images/write.png')}
+                        style={tw`mr-[20px] w-[20px] h-[20px] tint-[#191919]`}>
                     </Image>
                 </Pressable>
                 
             </View>
-            <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
+            <View style={tw`border-solid border-b border-[#D3D4D3] mb-[27.56px]`}></View>
         
-            <ScrollView contentContainerStyle={styles.contents}>
+            <ScrollView>
                 <MusicalInfoForm poster={musicalInfo.poster} title={musicalInfo.title} score={musicalInfo.averageScore} date={musicalInfo.date} place={musicalInfo.place} duration={musicalInfo.duration} casting={musicalInfo.casting}></MusicalInfoForm>
+                <View style={tw`mb-[27.56px]`}></View>
                 <StoryForm story={musicalInfo.story}></StoryForm>
+                <View style={tw`mb-[35px]`}></View>
                 <AverageScoreForm averageScore={musicalInfo.averageScore} scoreCount={scoreCount}></AverageScoreForm>
+                <View style={tw`mb-[35px]`}></View>
             </ScrollView>
 
 
-
-            {/* <Button onPress={() => nav.navigate("ReviewDetail1")} title="ReviewDetail1으로 가기"></Button> */}
+            <Button onPress={() => nav.navigate("ReviewDetail1")} title="ReviewDetail1으로 가기"></Button>
 
         </SafeAreaView>
     )
@@ -91,8 +95,4 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         backgroundColor: '#FAFAFA',
     },
-    contents: {
-        flex: 1,
-        justifyContent: 'space-around',
-    }
 });
