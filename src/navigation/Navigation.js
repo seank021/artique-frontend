@@ -11,8 +11,8 @@ import ChangePW1 from "@screens/LoginSignup/ChangePW1";
 import Signup1 from "@screens/LoginSignup/Signup1";
 
 import Feed1 from "@screens/Main/Feed1";
-import Detail1 from "@screens/Main/Detail1";
-import AllReviews1 from "@screens/Main/AllReviews1";
+import MusicalDetail1 from "@screens/Main/MusicalDetail1";
+import ReviewDetail1 from "@screens/Main/ReviewDetail1";
 import SeeMore1 from "@screens/Main/SeeMore1";
 
 import Search from "@screens/Search/Search";
@@ -56,8 +56,8 @@ const Navigation = () => {
         return (
             <Stack.Navigator screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="Feed1" children={() => <Feed1 isCookie={isCookie} setGoToFeed={setGoToFeed} />} />
-                <Stack.Screen name="Detail1" children={() => <Detail1 isCookie={isCookie}/>} />
-                <Stack.Screen name="AllReviews1" children={() => <AllReviews1 isCookie={isCookie}/>} />
+                <Stack.Screen name="MusicalDetail1" children={() => <MusicalDetail1 isCookie={isCookie}/>} />
+                <Stack.Screen name="ReviewDetail1" children={() => <ReviewDetail1 isCookie={isCookie}/>} />
                 <Stack.Screen name="SeeMore1" children={() => <SeeMore1 isCookie={isCookie}/>} />
             </Stack.Navigator>
         )
@@ -107,13 +107,10 @@ const Navigation = () => {
                     headerShown: false,
                     tabBarStyle: {
                         width: "90%",
-                        height: 46.01267,
-                        borderRadius: 54.5,
-                        position: "absolute",
-                        bottom: 10,
                         left: "5%",
-                        shadowColor: "rgba(0, 0, 0, 0.15)",
-                        backgroundColor: "#F5F8F5",
+                        shadowColor: "rgba(0, 0, 0, 0)",
+                        borderBlockColor: "rgba(0, 0, 0, 0)",
+                        backgroundColor: "#FAFAFA",
                     },
                     tabBarShowLabel: false,
                 }}
