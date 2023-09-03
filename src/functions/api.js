@@ -4,8 +4,8 @@
 
 // 테스트용 musicalInfo
 const musicalInfo = {
-    musicalId: 1,
-    poster: {uri: 'http://www.kopis.or.kr/upload/pfmPoster/PF_PF217859_230504_141255.jpg'},
+    musicalId: 10,
+    poster: "http://www.kopis.or.kr/upload/pfmPoster/PF_PF217859_230504_141255.jpg",
     title: "뮤지컬 지킬 앤 하이드",
     averageScore: "3.0 (211)",
     date: "2018. 11. 13. ~ 2019. 05. 19.",
@@ -34,8 +34,8 @@ const reviewInfo = {
     totalReviewCount: 83,
     reviews: [
         {
-            memberNickname: "김세안",
-            memberImageUrl: "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png",
+            memberNickname: "세안",
+            memberImageUrl: "http://www.kopis.or.kr/upload/pfmPoster/PF_PF217859_230504_141255.jpg",
             memberId: 1,
 
             viewDate: "2021. 09. 01.",
@@ -44,11 +44,11 @@ const reviewInfo = {
             shortReview: "한줄평",
             reviewId: 1,
 
-            thumbsId: 1,
+            isThumbsUp: true,
         },
         {
-            memberNickname: "김세안2",
-            memberImageUrl: "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png",
+            memberNickname: "세안2",
+            memberImageUrl: "http://www.kopis.or.kr/upload/pfmPoster/PF_PF217859_230504_141255.jpg",
             memberId: 2,
 
             viewDate: "2021. 09. 02.",
@@ -57,7 +57,7 @@ const reviewInfo = {
             shortReview: "한줄평2",
             reviewId: 2,
 
-            thumbsId: 2,
+            isThumbsUp: false,
         },
     ]
 }

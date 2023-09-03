@@ -1,10 +1,12 @@
 // 주의사항: isCookie 여부에 따라 유저 권한 다르게 주기
 
-import React from "react";
-import { View, Pressable, Text, Button, ScrollView, Image, Alert, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { View, Pressable, Text, ScrollView, Image, Alert, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import tw from "twrnc";
+
+import AlertForm from "@forms/AlertForm";
 
 import MusicalInfoForm from "@forms/MusicalInfoForm";
 import StoryForm from "@forms/StoryForm";
@@ -17,8 +19,12 @@ import { musicalInfo } from "@functions/api"
 import { scoreCount } from "@functions/api"
 import { reviewInfo } from "@functions/api"
 
-// props: musicalInfo 나중에 받아오기
 export default function MusicalDetail1({isCookie}) {
+    const [modalVisible, setModalVisible] = useState(false);
+
+    const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
+    const [alertText, setAlertText] = useState('로그인이 필요한 서비스입니다.');
+
     const nav = useNavigation();
 
     const goBack = () => {
@@ -26,11 +32,45 @@ export default function MusicalDetail1({isCookie}) {
     };
 
     const onPressWrite = () => {
+        if (!isCookie) {
+            setModalVisible(!modalVisible);
+            setAlertImage(require('@images/x_red.png'));
+            setAlertText('로그인이 필요한 서비스입니다.');
+            setTimeout(() => {
+                setModalVisible(modalVisible);
+            }, 1000);
+            return;
+        }
+        console.log(musicalInfo.musicalId);
         Alert.alert("리뷰 작성 페이지로 이동");
+    };
+
+    const goToReviewDetail1 = () => {
+        nav.navigate("ReviewDetail1");
+    };
+
+    const onPressThumbsUp = (reviewId) => {
+        console.log(reviewId);
+    };
+
+    const goToSeeMore1 = (reviewId) => {
+        console.log(reviewId);
+        nav.navigate("SeeMore1");
     };
 
     return (
         <SafeAreaView style={styles.container}>
+            <View>
+                <AlertForm
+                    modalVisible={modalVisible}
+                    setModalVisible={setModalVisible}
+                    borderColor="#F5F8F5"
+                    bgColor="#F5F8F5"
+                    image={alertImage}
+                    textColor="#191919"
+                    text={alertText}>
+                </AlertForm>
+            </View>
             <View style={tw`flex-row items-center justify-between mt-5 mb-[14px]`}>
                 <Pressable onPress={goBack}>
                     <Image
@@ -38,7 +78,7 @@ export default function MusicalDetail1({isCookie}) {
                         style={tw`ml-[20px] w-[10px] h-[18px] tint-[#191919]`}>
                     </Image>
                 </Pressable>
-                <Text style={tw`text-[#191919] text-base font-semibold`}>{musicalInfo.title}</Text>
+                <Text style={tw`text-[#191919] text-base font-medium`}>{musicalInfo.title}</Text>
                 <Pressable onPress={onPressWrite}>
                     <Image
                         source={require('@images/write.png')}
@@ -57,13 +97,13 @@ export default function MusicalDetail1({isCookie}) {
                 <View style={tw`mb-[35px]`}></View>
                 <AverageScoreForm averageScore={musicalInfo.averageScore} scoreCount={scoreCount}></AverageScoreForm>
                 <View style={tw`mb-[35px]`}></View>
-                <ShortReviewForm shortReview={reviewInfo.reviews[0].shortReview}></ShortReviewForm>
-                <ShortReviewForm shortReview={reviewInfo.reviews[1].shortReview}></ShortReviewForm>
+                <View style={tw`flex flex-row w-[90%] justify-between items-center self-center mb-[10px]`}>
+                    <Text style={tw`text-[#191919] text-base font-medium`}>리뷰 ({reviewInfo.totalReviewCount})</Text>
+                    <Pressable onPress={goToReviewDetail1}><Text style={tw`text-xs text-[#191919]`}>전체보기</Text></Pressable>
+                </View>
+                <ShortReviewForm reviewInfo={reviewInfo.reviews[0]} onPressThumbsUp={() => onPressThumbsUp(reviewInfo.reviews[0].reviewId)} onPressArrowCircledRight={() => goToSeeMore1(reviewInfo.reviews[0].reviewId)} isCookie={isCookie}></ShortReviewForm>
+                <ShortReviewForm reviewInfo={reviewInfo.reviews[1]} onPressThumbsUp={() => onPressThumbsUp(reviewInfo.reviews[1].reviewId)} onPressArrowCircledRight={() => goToSeeMore1(reviewInfo.reviews[1].reviewId)} isCookie={isCookie}></ShortReviewForm>
             </ScrollView>
-
-
-            <Button onPress={() => nav.navigate("ReviewDetail1")} title="ReviewDetail1으로 가기"></Button>
-
         </SafeAreaView>
     )
 }

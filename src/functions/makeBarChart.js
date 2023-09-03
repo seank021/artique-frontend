@@ -38,16 +38,16 @@ export default function makeBarChart (scoreCount) {
             </View>
             <View style={tw`border-solid border-b border-[#D9D9D9]`}></View>
             <View style={tw`flex flex-row justify-end`}>
-                <View style={tw`w-[21px] mx-[1px] items-center`}><Text style={tw`text-[#FAFAFA] text-xs font-medium`}>0.5</Text></View>
-                <View style={tw`w-[21px] mx-[1px] items-center`}><Text style={tw`text-[#191919] text-xs font-medium`}>1.0</Text></View>
-                <View style={tw`w-[21px] mx-[1px] items-center`}><Text style={tw`text-[#FAFAFA] text-xs font-medium`}>1.5</Text></View>
-                <View style={tw`w-[21px] mx-[1px] items-center`}><Text style={tw`text-[#191919] text-xs font-medium`}>2.0</Text></View>
-                <View style={tw`w-[21px] mx-[1px] items-center`}><Text style={tw`text-[#FAFAFA] text-xs font-medium`}>2.5</Text></View>
-                <View style={tw`w-[21px] mx-[1px] items-center`}><Text style={tw`text-[#191919] text-xs font-medium`}>3.0</Text></View>
-                <View style={tw`w-[21px] mx-[1px] items-center`}><Text style={tw`text-[#FAFAFA] text-xs font-medium`}>3.5</Text></View>
-                <View style={tw`w-[21px] mx-[1px] items-center`}><Text style={tw`text-[#191919] text-xs font-medium`}>4.0</Text></View>
-                <View style={tw`w-[21px] mx-[1px] items-center`}><Text style={tw`text-[#FAFAFA] text-xs font-medium`}>4.5</Text></View>
-                <View style={tw`w-[21px] mx-[1px] items-center`}><Text style={tw`text-[#191919] text-xs font-medium`}>5.0</Text></View>
+                <View style={tw`w-[21px] mx-[1px] items-center`}><Text style={tw`text-[#FAFAFA] text-xs`}>0.5</Text></View>
+                <View style={tw`w-[21px] mx-[1px] items-center`}><Text style={tw`text-[#191919] text-xs`}>1.0</Text></View>
+                <View style={tw`w-[21px] mx-[1px] items-center`}><Text style={tw`text-[#FAFAFA] text-xs`}>1.5</Text></View>
+                <View style={tw`w-[21px] mx-[1px] items-center`}><Text style={tw`text-[#191919] text-xs`}>2.0</Text></View>
+                <View style={tw`w-[21px] mx-[1px] items-center`}><Text style={tw`text-[#FAFAFA] text-xs`}>2.5</Text></View>
+                <View style={tw`w-[21px] mx-[1px] items-center`}><Text style={tw`text-[#191919] text-xs`}>3.0</Text></View>
+                <View style={tw`w-[21px] mx-[1px] items-center`}><Text style={tw`text-[#FAFAFA] text-xs`}>3.5</Text></View>
+                <View style={tw`w-[21px] mx-[1px] items-center`}><Text style={tw`text-[#191919] text-xs`}>4.0</Text></View>
+                <View style={tw`w-[21px] mx-[1px] items-center`}><Text style={tw`text-[#FAFAFA] text-xs`}>4.5</Text></View>
+                <View style={tw`w-[21px] mx-[1px] items-center`}><Text style={tw`text-[#191919] text-xs`}>5.0</Text></View>
             </View>
         </>
     );
