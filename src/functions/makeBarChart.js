@@ -1,3 +1,5 @@
+// TODO: Bar 작아져도 round 유지되게 수정
+
 import { View, Text } from 'react-native';
 
 import tw from 'twrnc';
@@ -36,7 +38,7 @@ export default function makeBarChart (scoreCount) {
                 <View style={barStyle45}></View>
                 <View style={barStyle50}></View>
             </View>
-            <View style={tw`border-solid border-b border-[#D9D9D9]`}></View>
+            <View style={tw`border-solid border-b-2 border-[#D9D9D9]`}></View>
             <View style={tw`flex flex-row justify-end`}>
                 <View style={tw`w-[21px] mx-[1px] items-center`}><Text style={tw`text-[#FAFAFA] text-xs`}>0.5</Text></View>
                 <View style={tw`w-[21px] mx-[1px] items-center`}><Text style={tw`text-[#191919] text-xs`}>1.0</Text></View>

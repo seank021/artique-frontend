@@ -1,3 +1,5 @@
+// 물어볼 것: 공감 n회 Text에 ${isFontMedium} 넣기?
+
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, Pressable } from 'react-native';
 
@@ -9,7 +11,7 @@ import tw from 'twrnc';
 export function ShortReviewForm(props) {
     const [isThumbsUp, setIsThumbsUp] = useState(props.reviewInfo.isThumbsUp);
     const [isFontMedium, setIsFontMedium] = useState('font-normal');
-    const [thumbsUpImg, setThumbsUpImg] = useState(require('@images/thumbs_up.png'));
+    const [thumbsUpImg, setThumbsUpImg] = useState(require('@images/like_gray_small.png'));
 
     const [modalVisible, setModalVisible] = useState(false);
 
@@ -19,10 +21,10 @@ export function ShortReviewForm(props) {
     if (props.isCookie) {
         useEffect(() => {
             if (isThumbsUp) {
-                setThumbsUpImg(require('@images/thumbs_up_red.png'));
+                setThumbsUpImg(require('@images/like_red_small.png'));
                 setIsFontMedium('font-bold');
             } else {
-                setThumbsUpImg(require('@images/thumbs_up.png'));
+                setThumbsUpImg(require('@images/like_gray_small.png'));
                 setIsFontMedium('font-normal');
             }
             }, [isThumbsUp]);
@@ -55,11 +57,11 @@ export function ShortReviewForm(props) {
                 <View style={tw`flex-row justify-between items-center mb-[15px]`}>
                     <View style={tw`flex-row justify-between items-center`}>
                         <Image source={{uri: props.reviewInfo.memberImageUrl}} style={tw`w-[24px] h-[24px] rounded-full mr-[10px]`}></Image>
-                        <Text style={tw`text-[#191919] text-[13px] mr-[15px]`}>{props.reviewInfo.memberNickname}</Text>
+                        <Text style={tw`text-[#191919] text-sm mr-[15px]`}>{props.reviewInfo.memberNickname}</Text>
                         <Text style={tw`text-[#ABABAB] text-xs`}>{props.reviewInfo.viewDate}</Text>
                     </View>
                     <View style={tw`flex-row items-center`}>
-                        <Image source={require('@images/star.png')} style={tw`w-[16px] h-[16px] mr-[3px]`}></Image>
+                        <Image source={require('@images/star_small.png')} style={tw`w-[14.95726px] h-[16px] mr-[3px]`}></Image>
                         <Text style={tw`text-[#191919] text-sm`}>{props.reviewInfo.starRating.toFixed(1)}</Text>
                     </View>
                 </View>
@@ -71,15 +73,15 @@ export function ShortReviewForm(props) {
                 <View style={tw`flex-row justify-between items-center`}>
                 <View style={tw`flex-row justify-between items-center`}>
                     <Pressable onPress={onPressThumbsUp}>
-                        <Image source={thumbsUpImg} style={tw`w-[20px] h-[20px] mr-[5px]`}></Image>
+                        <Image source={thumbsUpImg} style={tw`w-[22.86469px] h-[16.00034px] mr-[5px]`}></Image>
                     </Pressable>
-                    <Text style={tw`text-sm text-[#191919] ${isFontMedium}`}>{props.reviewInfo.thumbsCount}</Text>
+                    <Text style={tw`text-[10px] text-[#191919] ${isFontMedium}`}>공감 {props.reviewInfo.thumbsCount}회</Text>
                 </View>
-                {/* <Pressable onPress={onPressArrowCircledRight}>
+                <Pressable onPress={onPressArrowCircledRight}>
                     <Image
                     source={require('@images/arrow_circled_right.png')}
                     style={tw`w-[20px] h-[20px]`}></Image>
-                </Pressable> */}
+                </Pressable>
                 </View>
             </View>
             <View style={tw`border-4 border-[#F5F5F5]`}></View>
