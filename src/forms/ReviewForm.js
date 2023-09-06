@@ -1,4 +1,5 @@
-// 물어볼 것: 공감 n회 Text에 ${isFontMedium} 넣기?
+// 물어볼 것: 공감 n회 Text에 ${isFontMedium} 넣기?, 폰트 크기 10px로?
+// TODO: 한줄평 맨 앞 "만큼 띄어쓰기
 
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, Pressable } from 'react-native';
@@ -65,10 +66,8 @@ export function ShortReviewForm(props) {
                         <Text style={tw`text-[#191919] text-sm`}>{props.reviewInfo.starRating.toFixed(1)}</Text>
                     </View>
                 </View>
-                <View style={tw`flex-row h-[35px] rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mb-[15px] items-center`}>
-                    <Text style={tw`ml-[5px] text-[#191919] font-medium`}>"</Text>
-                    <Text style={tw`text-[#191919] font-medium`}>{props.reviewInfo.shortReview}</Text>
-                    <Text style={tw`text-[#191919] font-medium`}>"</Text>
+                <View style={tw`flex flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mb-[15px] items-center p-[5px]`}>
+                    <Text style={tw`text-[#191919] font-medium`}>"{props.reviewInfo.shortReview}"</Text>
                 </View>
                 <View style={tw`flex-row justify-between items-center`}>
                 <View style={tw`flex-row justify-between items-center`}>

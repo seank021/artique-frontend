@@ -41,7 +41,7 @@ const reviewInfo = {
             viewDate: "2021. 09. 01.",
             starRating: 3.5,
             thumbsCount: 5,
-            shortReview: "한줄평",
+            shortReview: "중구난방인 서사들 사이의 허점들을 봉합하는 입체적인 캐릭터들의 안타까운 이야기",
             reviewId: 1,
 
             isThumbsUp: true,
