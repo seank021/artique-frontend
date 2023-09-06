@@ -33,13 +33,13 @@ export default function MusicalDetail1({isCookie}) {
 
     const onPressWrite = () => {
         if (!isCookie) {
-        setModalVisible(!modalVisible);
-        setAlertImage(require('@images/x_red.png'));
-        setAlertText('로그인이 필요한 서비스입니다.');
-        setTimeout(() => {
-            setModalVisible(modalVisible);
-        }, 1000);
-        return;
+            setModalVisible(!modalVisible);
+            setAlertImage(require('@images/x_red.png'));
+            setAlertText('로그인이 필요한 서비스입니다.');
+            setTimeout(() => {
+                setModalVisible(modalVisible);
+            }, 1000);
+            return;
         }
         console.log(musicalInfo.musicalId);
         Alert.alert('리뷰 작성 페이지로 이동');
@@ -61,28 +61,15 @@ export default function MusicalDetail1({isCookie}) {
     return (
         <SafeAreaView style={styles.container}>
             <View>
-                <AlertForm
-                modalVisible={modalVisible}
-                setModalVisible={setModalVisible}
-                borderColor="#F5F8F5"
-                bgColor="#F5F8F5"
-                image={alertImage}
-                textColor="#191919"
-                text={alertText}></AlertForm>
+                <AlertForm modalVisible={modalVisible} setModalVisible={setModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
             </View>
             <View style={tw`flex-row items-center justify-between mt-5 mb-[14px]`}>
                 <Pressable onPress={goBack}>
-                <Image
-                    source={require('@images/chevron_left.png')}
-                    style={tw`ml-[20px] mr-[8px] w-[10px] h-[18px] tint-[#191919]`}></Image>
+                    <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] mr-[8px] w-[10px] h-[18px] tint-[#191919]`}></Image>
                 </Pressable>
-                <Text style={tw`text-[#191919] text-base font-medium`}>
-                {musicalInfo.title}
-                </Text>
+                <Text style={tw`text-[#191919] text-base font-medium`}>{musicalInfo.title}</Text>
                 <Pressable onPress={onPressWrite}>
-                <Image
-                    source={require('@images/write.png')}
-                    style={tw`mr-[20px] w-[18px] h-[17.121px] tint-[#191919]`}></Image>
+                    <Image source={require('@images/write.png')} style={tw`mr-[20px] w-[18px] h-[17.121px] tint-[#191919]`}></Image>
                 </Pressable>
             </View>
             <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
