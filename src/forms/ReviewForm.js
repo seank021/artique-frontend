@@ -1,6 +1,3 @@
-// 물어볼 것: 공감 n회 Text에 ${isFontMedium} 넣기?, 폰트 크기 10px로?
-// TODO: 한줄평 맨 앞 "만큼 띄어쓰기
-
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, Pressable } from 'react-native';
 
@@ -11,7 +8,7 @@ import tw from 'twrnc';
 // props: reviewInfo.reviews[i], onPressThumbsUp, onPressArrowCircledRight, isCookie
 export function ShortReviewForm(props) {
     const [isThumbsUp, setIsThumbsUp] = useState(props.reviewInfo.isThumbsUp);
-    const [isFontMedium, setIsFontMedium] = useState('font-normal');
+    const [thumbsCount, setThumbsCount] = useState(props.reviewInfo.thumbsCount);
     const [thumbsUpImg, setThumbsUpImg] = useState(require('@images/like_gray_small.png'));
 
     const [modalVisible, setModalVisible] = useState(false);
@@ -23,10 +20,8 @@ export function ShortReviewForm(props) {
         useEffect(() => {
             if (isThumbsUp) {
                 setThumbsUpImg(require('@images/like_red_small.png'));
-                setIsFontMedium('font-bold');
             } else {
                 setThumbsUpImg(require('@images/like_gray_small.png'));
-                setIsFontMedium('font-normal');
             }
             }, [isThumbsUp]);
     }
@@ -42,6 +37,11 @@ export function ShortReviewForm(props) {
             return;
         }
         setIsThumbsUp(!isThumbsUp);
+        if (isThumbsUp) {
+            setThumbsCount(thumbsCount - 1);
+        } else {
+            setThumbsCount(thumbsCount + 1);
+        }
         props.onPressThumbsUp(props.reviewInfo.reviewId);
     };
 
@@ -62,19 +62,20 @@ export function ShortReviewForm(props) {
                         <Text style={tw`text-[#ABABAB] text-xs`}>{props.reviewInfo.viewDate}</Text>
                     </View>
                     <View style={tw`flex-row items-center`}>
-                        <Image source={require('@images/star_small.png')} style={tw`w-[14.95726px] h-[16px] mr-[3px]`}></Image>
+                        <Image source={require('@images/star_small.png')} style={tw`w-[14.95726px] h-[16px] mr-[4px]`}></Image>
                         <Text style={tw`text-[#191919] text-sm`}>{props.reviewInfo.starRating.toFixed(1)}</Text>
                     </View>
                 </View>
-                <View style={tw`flex flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mb-[15px] items-center p-[5px]`}>
-                    <Text style={tw`text-[#191919] font-medium`}>"{props.reviewInfo.shortReview}"</Text>
+                <View style={tw`flex flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mb-[15px] items-center p-[7px]`}>
+                    <Text style={tw`self-start text-[#191919] font-medium leading-6`}>"</Text>
+                    <Text style={tw`text-[#191919] font-medium leading-6`}>{props.reviewInfo.shortReview}"</Text>
                 </View>
                 <View style={tw`flex-row justify-between items-center`}>
                 <View style={tw`flex-row justify-between items-center`}>
                     <Pressable onPress={onPressThumbsUp}>
                         <Image source={thumbsUpImg} style={tw`w-[22.86469px] h-[16.00034px] mr-[5px]`}></Image>
                     </Pressable>
-                    <Text style={tw`text-[10px] text-[#191919] ${isFontMedium}`}>공감 {props.reviewInfo.thumbsCount}회</Text>
+                    <Text style={tw`text-[10px] text-[#191919]`}>공감 {thumbsCount}회</Text>
                 </View>
                 <Pressable onPress={onPressArrowCircledRight}>
                     <Image
@@ -83,7 +84,6 @@ export function ShortReviewForm(props) {
                 </Pressable>
                 </View>
             </View>
-            <View style={tw`border-4 border-[#F5F5F5]`}></View>
         </>
     );
 }

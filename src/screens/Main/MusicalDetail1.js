@@ -89,7 +89,10 @@ export default function MusicalDetail1({isCookie}) {
                     </Pressable>
                 </View>
                 <ShortReviewForm reviewInfo={reviewInfo.reviews[0]} onPressThumbsUp={() => onPressThumbsUp(reviewInfo.reviews[0].reviewId) } onPressArrowCircledRight={() => goToSeeMore1(reviewInfo.reviews[0].reviewId) } isCookie={isCookie}></ShortReviewForm>
+                <View style={tw`border-4 border-[#F5F5F5]`}></View>
                 <ShortReviewForm reviewInfo={reviewInfo.reviews[1]} onPressThumbsUp={() => onPressThumbsUp(reviewInfo.reviews[1].reviewId) } onPressArrowCircledRight={() => goToSeeMore1(reviewInfo.reviews[1].reviewId) } isCookie={isCookie}></ShortReviewForm>
+                <View style={tw`border-4 border-[#F5F5F5]`}></View>
+                <ShortReviewForm reviewInfo={reviewInfo.reviews[2]} onPressThumbsUp={() => onPressThumbsUp(reviewInfo.reviews[2].reviewId) } onPressArrowCircledRight={() => goToSeeMore1(reviewInfo.reviews[2].reviewId) } isCookie={isCookie}></ShortReviewForm>
             </ScrollView>
         </SafeAreaView>
     );

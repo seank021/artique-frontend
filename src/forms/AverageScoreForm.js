@@ -11,7 +11,7 @@ export default function AverageScoreForm(props) {
         <View style={tw`flex flex-col w-[90%] self-center`}>
             <Text style={tw`text-[#191919] text-base font-medium mb-[10px]`}>평균 별점</Text>
             <View style={tw`flex-row items-center mb-[9px]`}>
-                <Image source={require("@images/star.png")} style={tw`w-[16px] h-[16px] mr-[3px]`}></Image>
+                <Image source={require("@images/star.png")} style={tw`w-[16px] h-[16px] mr-[4px]`}></Image>
                 <Text style={tw`text-[#191919] text-sm`}>{props.averageScore}</Text>
             </View>
 

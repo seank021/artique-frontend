@@ -10,7 +10,7 @@ export default function MusicalInfoForm(props) {
             <View style={tw`flex-col justify-between`}>
                 <Text style={tw`text-[#000] text-lg font-medium mb-[6px]`}>{props.title}</Text>
                 <View style={tw`flex-row items-center`}>
-                    <Image source={require("@images/star.png")} style={tw`w-[16px] h-[16px] mr-[3px]`}></Image>
+                    <Image source={require("@images/star.png")} style={tw`w-[16px] h-[16px] mr-[4px]`}></Image>
                     <Text style={tw`text-[#191919] text-sm`}>{props.score}</Text>
                 </View>
                 <Text style={tw`text-[#000] text-sm`}>{props.date}</Text>
