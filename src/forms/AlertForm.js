@@ -32,7 +32,7 @@ export default function AlertForm(props) {
     );
 }
 
-// props: modalVisible, setModalVisible, sortCriteria, setSortCriteria
+// props: sortModalVisible, setSortModalVisible, sortCriteria, setSortCriteria
 export function AlertFormForSort(props) {
     const [sortCriteria, setSortCriteria] = useState(props.sortCriteria);
 
@@ -42,7 +42,7 @@ export function AlertFormForSort(props) {
     };
 
     return (
-        <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={() => props.setModalVisible(false)}>
+        <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.sortModalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={() => props.setSortModalVisible(false)}>
             <View style={tw`flex flex-col w-[230px] h-[225px] bg-white rounded-2xl self-center`}>
                 <View style={tw`flex flex-col my-[25px] justify-between`}>
                     <Text style={tw`text-center text-base font-medium mb-[30px]`}>정렬 기준</Text>
