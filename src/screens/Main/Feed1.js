@@ -45,7 +45,6 @@ export default function Feed1({isCookie}) {
                 <View style={tw`border-4 border-[#F0F0F0]`}></View>
                 <ShortReviewFormInFeed musicalInfo={musicalInfo} reviewInfo={reviewInfo.reviews[3]} goToMusicalDetail1={() => goToMusicalDetail1(musicalInfo.musicalId)} goToReviewDetail1={() => goToReviewDetail1(reviewInfo.reviews[3].reviewId)} onPressThumbsUp={() => onPressThumbsUp(reviewInfo.reviews[3].reviewId)} isCookie={isCookie}></ShortReviewFormInFeed>
             </ScrollView>
-
         </SafeAreaView>
     )
 }
