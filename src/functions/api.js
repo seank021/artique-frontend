@@ -67,7 +67,7 @@ const reviewInfo = {
             viewDate: "2021-09-02",
             starRating: 4.0,
             thumbsCount: 7,
-            shortReview: "상세페이지에서 보이는 한줄평은 두 줄 넘어가도 그냥 다 보여도 될 것 같아요! 피드에서만 생략하고 상세페이지랑 리뷰 더보기에서는 다 보이게!!",
+            shortReview: "피드에서 보이는 한줄평은 두 줄까지만 ㅇㅋ",
             reviewId: 2,
 
             isThumbsUp: false,
