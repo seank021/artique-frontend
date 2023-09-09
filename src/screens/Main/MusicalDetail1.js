@@ -45,8 +45,8 @@ export default function MusicalDetail1({isCookie}) {
         Alert.alert('리뷰 작성 페이지로 이동');
     };
 
-    const goToReviewDetail1 = () => {
-        nav.navigate('ReviewDetail1');
+    const goToMusicalDetail3 = () => {
+        nav.navigate('MusicalDetail3');
     };
 
     const onPressThumbsUp = reviewId => {
@@ -84,7 +84,7 @@ export default function MusicalDetail1({isCookie}) {
                 <View style={tw`mb-[35px]`}></View>
                 <View style={tw`flex flex-row w-[90%] justify-between items-center self-center mb-[10px]`}>
                     <Text style={tw`text-[#191919] text-base font-medium`}>리뷰 ({reviewInfo.totalReviewCount})</Text>
-                    <Pressable onPress={goToReviewDetail1}>
+                    <Pressable onPress={goToMusicalDetail3}>
                         <Text style={tw`text-xs text-[#191919]`}>전체보기</Text>
                     </Pressable>
                 </View>

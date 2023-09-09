@@ -13,7 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import { musicalInfo, reviewInfo } from '@functions/api';
 
-export default function ReviewDetail1({isCookie}) {
+export default function MusicalDetail3({isCookie}) {
     const [modalVisible, setModalVisible] = useState(false);
     const [sortModalVisible, setSortModalVisible] = useState(false);
 
@@ -42,11 +42,7 @@ export default function ReviewDetail1({isCookie}) {
     const onPressSort = () => {
         setSortModalVisible(true);
     } 
-
-    const goToReviewDetail1 = () => {
-        nav.navigate('ReviewDetail1');
-    };
-
+    
     const onPressThumbsUp = reviewId => {
         console.log(reviewId);
     };
@@ -94,6 +90,7 @@ export default function ReviewDetail1({isCookie}) {
                         // });
                     }
                 })} */}
+
                 <ShortReviewForm reviewInfo={reviewInfo.reviews[0]} onPressThumbsUp={() => onPressThumbsUp(reviewInfo.reviews[0].reviewId) } onPressArrowCircledRight={() => goToSeeMore1(reviewInfo.reviews[0].reviewId) } isCookie={isCookie}></ShortReviewForm>
                 <View style={tw`border-4 border-[#F0F0F0]`}></View>
                 <ShortReviewForm reviewInfo={reviewInfo.reviews[1]} onPressThumbsUp={() => onPressThumbsUp(reviewInfo.reviews[1].reviewId) } onPressArrowCircledRight={() => goToSeeMore1(reviewInfo.reviews[1].reviewId) } isCookie={isCookie}></ShortReviewForm>

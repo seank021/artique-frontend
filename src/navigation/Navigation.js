@@ -12,7 +12,7 @@ import Signup1 from "@screens/LoginSignup/Signup1";
 
 import Feed1 from "@screens/Main/Feed1";
 import MusicalDetail1 from "@screens/Main/MusicalDetail1";
-import ReviewDetail1 from "@screens/Main/ReviewDetail1";
+import MusicalDetail3 from "@screens/Main/MusicalDetail3";
 import SeeMore1 from "@screens/Main/SeeMore1";
 
 import Search from "@screens/Search/Search";
@@ -57,7 +57,7 @@ const Navigation = () => {
             <Stack.Navigator screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="Feed1" children={() => <Feed1 isCookie={isCookie} setGoToFeed={setGoToFeed} />} />
                 <Stack.Screen name="MusicalDetail1" children={() => <MusicalDetail1 isCookie={isCookie}/>} />
-                <Stack.Screen name="ReviewDetail1" children={() => <ReviewDetail1 isCookie={isCookie}/>} />
+                <Stack.Screen name="MusicalDetail3" children={() => <MusicalDetail3 isCookie={isCookie}/>} />
                 <Stack.Screen name="SeeMore1" children={() => <SeeMore1 isCookie={isCookie}/>} />
             </Stack.Navigator>
         )
