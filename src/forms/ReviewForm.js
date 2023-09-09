@@ -67,13 +67,13 @@ export function ShortReviewForm(props) {
                     </View>
                 </View>
                 <View style={tw`flex flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mb-[15px] items-center p-[7px]`}>
-                    <Text style={tw`self-start text-[#191919] font-medium leading-6`}>"</Text>
-                    <Text style={tw`text-[#191919] font-medium leading-6`}>{props.reviewInfo.shortReview}"</Text>
+                    <Text style={tw`self-start text-[#191919] text-base font-medium leading-6`}>"</Text>
+                    <Text style={tw`text-[#191919] text-base font-medium leading-6`}>{props.reviewInfo.shortReview}"</Text>
                 </View>
                 <View style={tw`flex-row justify-between items-center`}>
                 <View style={tw`flex-row justify-between items-center`}>
                     <Pressable onPress={onPressThumbsUp}>
-                        <Image source={thumbsUpImg} style={tw`w-[22.86469px] h-[16.00034px] mr-[5px]`}></Image>
+                        <Image source={thumbsUpImg} style={tw`w-[22.86469px] h-[16.00034px] mr-[11.14px]`}></Image>
                     </Pressable>
                     <Text style={tw`text-[10px] text-[#191919]`}>공감 {thumbsCount}회</Text>
                 </View>
