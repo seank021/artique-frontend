@@ -71,9 +71,9 @@ export function ShortReviewForm(props) {
                         <Text style={tw`text-[#191919] text-sm`}>{props.reviewInfo.starRating.toFixed(1)}</Text>
                     </View>
                 </View>
-                <View style={tw`flex flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mb-[15px] items-center p-[7px] rounded-2`}>
-                    <Text style={tw`self-start text-[#191919] text-base font-medium leading-6`}>"</Text>
-                    <Text style={tw`text-[#191919] text-base font-medium leading-6`}>{props.reviewInfo.shortReview}"</Text>
+                <View style={tw`flex flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mb-[15px] items-center p-[6px] rounded-2`}>
+                    <Text style={tw`self-start text-[#191919] text-base font-medium leading-[22px]`}>"</Text>
+                    <Text style={tw`text-[#191919] text-base font-medium leading-[22px]`}>{props.reviewInfo.shortReview}"</Text>
                 </View>
                 <View style={tw`flex-row justify-between items-center`}>
                     <View style={tw`flex-row justify-between items-center`}>
@@ -94,6 +94,7 @@ export function ShortReviewForm(props) {
 }
 
 // TODO: length 정하기 (현재 25자 넘어가면 ...으로 표시)
+// TODO: poster width 고정?
 // props: musicalInfo, reviewInfo.reviews[i], onPressThumbsUp, isCookie, goToMusicalDetail1, goToReviewDetail1
 export function ShortReviewFormInFeed(props) {
     const [isCookie, setIsCookie] = useState(props.isCookie);
@@ -151,17 +152,28 @@ export function ShortReviewFormInFeed(props) {
                     </View>
                 </View>
 
-                <View style={tw`flex flex-row mb-[12px] bg-[#FFFFFF] h-[162px] rounded-4`}>
-                        <Image source={{uri: props.musicalInfo.poster}} style={tw`w-[122px] rounded-4 mr-[10px]`} onTouchEnd={props.goToMusicalDetail1} />
-                        <View style={[tw`flex-col justify-between`, { flex: 1 }]} onTouchEnd={props.goToReviewDetail1}>
-                            <Text style={tw`text-[#191919] text-base font-medium mt-[14px] mb-[4px]`}>{props.musicalInfo.title}</Text>
-                            <Text style={tw`text-[#191919] text-xs mb-[14px]`}>{props.musicalInfo.casting}</Text>
-                            {makeStars(props.musicalInfo.averageScore)}
-                            <View style={tw`flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mt-[5px] mb-[14px] p-[7px] rounded-2 w-[95%]`}>
-                                <Text style={tw`text-[#191919] text-sm font-medium leading-6`}>"</Text>
-                                <Text style={tw`text-[#191919] text-sm font-medium leading-6`}>{props.reviewInfo.shortReview.length < 25 ? props.reviewInfo.shortReview : props.reviewInfo.shortReview.slice(0, 25) + '···'}"</Text>
-                            </View>
+                <View style={tw`flex flex-row mb-[12px] bg-[#FFFFFF] h-[162px] rounded-4 shadow-sm`}>
+                    <Image source={{uri: props.musicalInfo.poster}} style={tw`w-[122px] rounded-l-4 mr-[10px]`} onTouchEnd={props.goToMusicalDetail1} />
+                    <View style={tw`flex-col absolute left-[113px] top-[-9px]`}>
+                        <View style={tw`w-[18px] h-[18px] rounded-full bg-[#F8F8F8] mb-[10px]`}></View>
+                        <View style={tw`w-[10px] h-[10px] rounded-full bg-[#F8F8F8] ml-[4px]`}></View>
+                        <View style={tw`w-[10px] h-[10px] rounded-full bg-[#F8F8F8] ml-[4px] mt-[9px]`}></View>
+                        <View style={tw`w-[10px] h-[10px] rounded-full bg-[#F8F8F8] ml-[4px] mt-[9px]`}></View>
+                        <View style={tw`w-[10px] h-[10px] rounded-full bg-[#F8F8F8] ml-[4px] mt-[9px]`}></View>
+                        <View style={tw`w-[10px] h-[10px] rounded-full bg-[#F8F8F8] ml-[4px] mt-[9px]`}></View>
+                        <View style={tw`w-[10px] h-[10px] rounded-full bg-[#F8F8F8] ml-[4px] mt-[9px]`}></View>
+                        <View style={tw`w-[10px] h-[10px] rounded-full bg-[#F8F8F8] ml-[4px] mt-[9px]`}></View>
+                        <View style={tw`w-[18px] h-[18px] rounded-full bg-[#F8F8F8] mt-[10px]`}></View>
+                    </View>
+                    <View style={[tw`flex-col justify-between ml-[10px]`, { flex: 1 }]} onTouchEnd={props.goToReviewDetail1}>
+                        <Text style={tw`text-[#191919] text-base font-medium mt-[14px] mb-[4px]`}>{props.musicalInfo.title}</Text>
+                        <Text style={tw`text-[#191919] text-xs mb-[14px]`}>{props.musicalInfo.casting}</Text>
+                        {makeStars(props.musicalInfo.averageScore)}
+                        <View style={tw`flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mt-[5px] mb-[14px] p-[6px] rounded-2 w-[95%]`}>
+                            <Text style={tw`text-[#191919] text-sm font-medium leading-[22px]`}>"</Text>
+                            <Text style={tw`text-[#191919] text-sm font-medium leading-[22px]`}>{props.reviewInfo.shortReview.length < 25 ? props.reviewInfo.shortReview : props.reviewInfo.shortReview.slice(0, 25) + '···'}"</Text>
                         </View>
+                    </View>
                 </View>
 
                 <View style={tw`flex-row items-center`}>
