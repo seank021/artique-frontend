@@ -1,7 +1,7 @@
 // 주의사항: isCookie 여부에 따라 유저 권한 다르게 주기
 
 import React from "react";
-import { View, Text, Button, Image, Pressable, StyleSheet } from "react-native";
+import { View, Text, Image, Pressable, ScrollView, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import tw from "twrnc";
@@ -24,9 +24,12 @@ export default function ReviewDetail1({isCookie}) {
                 </Pressable>
                 <Text style={tw`text-[#191919] text-base font-medium`}>리뷰</Text>
                 <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] mr-[8px] w-[10px] h-[18px] tint-[#FAFAFA]`}></Image>
-
             </View>
             <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
+
+            <ScrollView>
+                
+            </ScrollView>
         </SafeAreaView>
     )
 }
