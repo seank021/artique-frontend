@@ -53,9 +53,9 @@ export default function MusicalDetail1({isCookie}) {
         console.log(reviewId);
     };
 
-    const goToSeeMore1 = reviewId => {
+    const goToReviewDetail1 = reviewId => {
         console.log(reviewId);
-        nav.navigate('SeeMore1');
+        nav.navigate('ReviewDetail1');
     };
 
     return (
@@ -88,11 +88,11 @@ export default function MusicalDetail1({isCookie}) {
                         <Text style={tw`text-xs text-[#191919]`}>전체보기</Text>
                     </Pressable>
                 </View>
-                <ShortReviewForm reviewInfo={reviewInfo.reviews[0]} onPressThumbsUp={() => onPressThumbsUp(reviewInfo.reviews[0].reviewId) } onPressArrowCircledRight={() => goToSeeMore1(reviewInfo.reviews[0].reviewId) } isCookie={isCookie}></ShortReviewForm>
+                <ShortReviewForm reviewInfo={reviewInfo.reviews[0]} onPressThumbsUp={() => onPressThumbsUp(reviewInfo.reviews[0].reviewId) } onPressArrowCircledRight={() => goToReviewDetail1(reviewInfo.reviews[0].reviewId) } isCookie={isCookie}></ShortReviewForm>
                 <View style={tw`border-4 border-[#F5F5F5]`}></View>
-                <ShortReviewForm reviewInfo={reviewInfo.reviews[1]} onPressThumbsUp={() => onPressThumbsUp(reviewInfo.reviews[1].reviewId) } onPressArrowCircledRight={() => goToSeeMore1(reviewInfo.reviews[1].reviewId) } isCookie={isCookie}></ShortReviewForm>
+                <ShortReviewForm reviewInfo={reviewInfo.reviews[1]} onPressThumbsUp={() => onPressThumbsUp(reviewInfo.reviews[1].reviewId) } onPressArrowCircledRight={() => goToReviewDetail1(reviewInfo.reviews[1].reviewId) } isCookie={isCookie}></ShortReviewForm>
                 <View style={tw`border-4 border-[#F5F5F5]`}></View>
-                <ShortReviewForm reviewInfo={reviewInfo.reviews[2]} onPressThumbsUp={() => onPressThumbsUp(reviewInfo.reviews[2].reviewId) } onPressArrowCircledRight={() => goToSeeMore1(reviewInfo.reviews[2].reviewId) } isCookie={isCookie}></ShortReviewForm>
+                <ShortReviewForm reviewInfo={reviewInfo.reviews[2]} onPressThumbsUp={() => onPressThumbsUp(reviewInfo.reviews[2].reviewId) } onPressArrowCircledRight={() => goToReviewDetail1(reviewInfo.reviews[2].reviewId) } isCookie={isCookie}></ShortReviewForm>
             </ScrollView>
         </SafeAreaView>
     );

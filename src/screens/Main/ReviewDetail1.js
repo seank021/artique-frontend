@@ -6,12 +6,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { useNavigation } from "@react-navigation/native";
 
-export default function SeeMore1({isCookie}) {
+export default function ReviewDetail1({isCookie}) {
     const nav = useNavigation();
 
     return (
         <SafeAreaView>
-            <Text>여기는 더보기 페이지</Text>
+            <Text>여기는 리뷰상세1 페이지</Text>
             {isCookie ? <Text>로그인 되어 있음</Text> : <Text>로그인 안 되어 있음</Text>}
             <Button onPress={() => nav.goBack()} title="뒤로 가기"></Button>
         </SafeAreaView>
