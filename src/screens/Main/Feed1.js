@@ -31,7 +31,7 @@ export default function Feed1({isCookie}) {
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={tw`ml-[5%] my-3`}>
+            <View style={tw`ml-[5%] my-2.5`}>
                 <Image source={require("@images/logo_small_black.png")} style={tw`w-[110px] h-[37.64781px]`}></Image>
             </View>
             <View style={tw`border-[0.5px] border-[#D3D4D3]`}></View>
