@@ -15,7 +15,8 @@ import { useNavigation } from "@react-navigation/native";
 
 import { musicalInfo, reviewInfo } from '@functions/api';
 
-export default function MusicalDetail3({isCookie}) {
+// TODO: 백 연결 시 props로 musicalId 추가
+export default function MusicalDetail2({isCookie}) {
     const [modalVisible, setModalVisible] = useState(false);
     const [sortModalVisible, setSortModalVisible] = useState(false);
 

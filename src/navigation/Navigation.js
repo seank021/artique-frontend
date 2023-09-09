@@ -12,7 +12,7 @@ import Signup1 from "@screens/LoginSignup/Signup1";
 
 import Feed1 from "@screens/Main/Feed1";
 import MusicalDetail1 from "@screens/Main/MusicalDetail1";
-import MusicalDetail3 from "@screens/Main/MusicalDetail3";
+import MusicalDetail2 from "@screens/Main/MusicalDetail2";
 import ReviewDetail1 from "@screens/Main/ReviewDetail1";
 
 import Search from "@screens/Search/Search";
@@ -26,7 +26,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-// Feed1 부분에 setGoToFeed 넣어놓음 (로그아웃 테스트용)
+// Profile 부분에 setGoToFeed 넣어놓음 (로그아웃 테스트용)
 
 const Navigation = () => {
     const [goToFeed, setGoToFeed] = useState(false);
@@ -57,7 +57,7 @@ const Navigation = () => {
             <Stack.Navigator initialRouteName="Feed1" screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="Feed1" children={() => <Feed1 isCookie={isCookie}/>} />
                 <Stack.Screen name="MusicalDetail1" children={() => <MusicalDetail1 isCookie={isCookie}/>} />
-                <Stack.Screen name="MusicalDetail3" children={() => <MusicalDetail3 isCookie={isCookie}/>} />
+                <Stack.Screen name="MusicalDetail2" children={() => <MusicalDetail2 isCookie={isCookie}/>} />
                 <Stack.Screen name="ReviewDetail1" children={() => <ReviewDetail1 isCookie={isCookie}/>} />
             </Stack.Navigator>
         )

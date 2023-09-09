@@ -1,7 +1,7 @@
 // 주의사항: isCookie 여부에 따라 유저 권한 다르게 주기
 
 import React from "react";
-import { Text, Button, View, Image, StyleSheet, ScrollView } from "react-native";
+import { View, Image, StyleSheet, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { ShortReviewFormInFeed } from "@forms/ReviewForm";

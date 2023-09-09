@@ -19,6 +19,7 @@ import { musicalInfo } from '@functions/api';
 import { scoreCount } from '@functions/api';
 import { reviewInfo } from '@functions/api';
 
+// TODO: 백 연결 시 props로 musicalId 추가
 export default function MusicalDetail1({isCookie}) {
     const [modalVisible, setModalVisible] = useState(false);
 
@@ -45,8 +46,8 @@ export default function MusicalDetail1({isCookie}) {
         Alert.alert('리뷰 작성 페이지로 이동');
     };
 
-    const goToMusicalDetail3 = () => {
-        nav.navigate('MusicalDetail3');
+    const goToMusicalDetail2 = () => {
+        nav.navigate('MusicalDetail2');
     };
 
     const onPressThumbsUp = reviewId => {
@@ -84,7 +85,7 @@ export default function MusicalDetail1({isCookie}) {
                 <View style={tw`mb-[35px]`}></View>
                 <View style={tw`flex flex-row w-[90%] justify-between items-center self-center mb-[10px]`}>
                     <Text style={tw`text-[#191919] text-base font-medium`}>리뷰 ({reviewInfo.totalReviewCount})</Text>
-                    <Pressable onPress={goToMusicalDetail3}>
+                    <Pressable onPress={goToMusicalDetail2}>
                         <Text style={tw`text-xs text-[#191919]`}>전체보기</Text>
                     </Pressable>
                 </View>
