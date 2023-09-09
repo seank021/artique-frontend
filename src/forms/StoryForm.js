@@ -1,19 +1,20 @@
-import React from 'react';
-import { View, ScrollView, Text } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
 
-// TODO: chevron_down 누르면 줄거리 전체 보이게 하기
-
 // props: story
-export default function MusicalInfoForm(props) {
+export default function StoryForm(props) {
+    const [isExpanded, setIsExpanded] = useState(false);
+
     return (
-        <View style={tw`flex flex-col left-[5%]`}>
-            <Text style={tw`text-[#191919] text-base font-medium mb-[6px]`}>줄거리</Text>
-            <ScrollView style={tw`w-[90%] h-[72px]`}>
-                <Text style={tw`text-[#191919] text-sm font-medium`}>
-                    {props.story}
-                </Text>
-            </ScrollView>
+        <View style={tw`flex flex-col w-[90%] self-center`}>
+            <Text style={tw`text-[#191919] text-base font-medium mb-[10px]`}>줄거리</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'baseline', }}>
+                <Text style={tw`text-[#191919] text-sm text-justify leading-6`}>{isExpanded ? props.story : props.story.slice(0, 100) + '···'}</Text>
+                <TouchableOpacity onPress={() => { setIsExpanded(!isExpanded); }} style={tw`ml-[-20px]`}>
+                    <Image source={ isExpanded ? require('@images/chevron_up.png') : require('@images/chevron_down.png') } style={tw`w-[14.4px] h-[8px]`} />
+                </TouchableOpacity>
+            </View>
         </View>
-    )
+    );
 }
