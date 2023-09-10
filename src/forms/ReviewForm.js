@@ -72,8 +72,8 @@ export function ShortReviewForm(props) {
                     </View>
                 </View>
                 <View style={tw`flex flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mb-[15px] items-center p-[6px] rounded-2`}>
-                    <Text style={tw`self-start text-[#191919] text-base font-medium leading-[22px]`}>"</Text>
-                    <Text style={tw`text-[#191919] text-base font-medium leading-[22px]`}>{props.reviewInfo.shortReview}"</Text>
+                    <Text style={tw`self-start text-[#191919] text-sm font-medium leading-[22px]`}>"</Text>
+                    <Text style={tw`text-[#191919] text-sm font-medium leading-[22px]`}>{props.reviewInfo.shortReview}"</Text>
                 </View>
                 <View style={tw`flex-row justify-between items-center`}>
                     <View style={tw`flex-row justify-between items-center`}>
