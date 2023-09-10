@@ -1,10 +1,7 @@
-import React, {useState, useEffect} from 'react';
-import { View, Text, Image, Pressable } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Image, Pressable, ScrollView } from 'react-native';
 import Modal from 'react-native-modal';
-import { FadeIn } from 'react-native-reanimated';
 import tw from 'twrnc';
-
-// App.js에서 props 변경해서 쓰기
 
 // props: modalVisible, setModalVisible / borderColor, bgColor, image, textColor, text
 export default function AlertForm(props) {
@@ -61,6 +58,20 @@ export function AlertFormForSort(props) {
                         </Pressable>
                     </View>
                 </View>
+            </View>
+        </Modal>
+    )
+}
+
+// props: longReviewModalVisible, setLongReviewModalVisible, longReview
+export function LongReviewModal(props) {
+    return (
+        <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.longReviewModalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={() => props.setLongReviewModalVisible(false)}>
+            <View style={tw`flex flex-col w-[90%] h-[600px] bg-white rounded-[15px] self-center items-center justify-between`}>
+                <Text style={tw`text-base font-medium mt-[24px]`}>긴줄평</Text>
+                <ScrollView style={tw`w-[80%] mb-[57px]`} showsVerticalScrollIndicator={false}>
+                    <Text style={tw`text-sm text-justify font-normal mt-[31px] text-[#191919]`}>{props.longReview}</Text>
+                </ScrollView>
             </View>
         </Modal>
     )
