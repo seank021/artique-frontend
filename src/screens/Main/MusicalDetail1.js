@@ -1,6 +1,4 @@
-// 주의사항: isCookie 여부에 따라 유저 권한 다르게 주기
-
-import React, { useState } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { View, Pressable, Text, ScrollView, Image, Alert, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -15,18 +13,45 @@ import { ShortReviewForm } from '@forms/ReviewForm';
 
 import { useNavigation } from '@react-navigation/native';
 
-import { musicalInfo } from '@functions/api';
-import { scoreCount } from '@functions/api';
-import { reviewInfo } from '@functions/api';
+import { musicalDetails, musicalReviews, musicalRateStatistics } from '@functions/api';
 
-// TODO: 백 연결 시 props로 musicalId 추가
-export default function MusicalDetail1({isCookie}) {
+export default function MusicalDetail1({isCookie, musicalId}) {
     const [modalVisible, setModalVisible] = useState(false);
 
     const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
     const [alertText, setAlertText] = useState('로그인이 필요한 서비스입니다.');
+    
+    const [musicalInfo, setMusicalInfo] = useState({});
+    const [musicalRates, setMusicalRates] = useState({});
+    const [totalReviewCount, setTotalReviewCount] = useState(0);
+    const [reviews, setReviews] = useState([]);
 
     const nav = useNavigation();
+
+    useEffect(() => {
+        musicalDetails(musicalId).then((newMusicalInfo) => {
+            setMusicalInfo(() => newMusicalInfo);
+        }).catch((err) => {
+            console.log(err);
+        });
+    }, []);
+
+    useEffect(() => {
+        musicalRateStatistics(musicalId).then((newMusicalRates) => {
+            setMusicalRates(() => newMusicalRates.statistic);
+        }).catch((err) => {
+            console.log(err);
+        });
+    }, []);
+    
+    useEffect(() => {
+        musicalReviews(musicalId).then((newReviews) => {
+            setTotalReviewCount(() => newReviews.totalReviewCount);
+            setReviews(() => [...newReviews.reviews]);
+        }).catch((err) => {
+            console.log(err);
+        });
+    }, []);
 
     const goBack = () => {
         nav.goBack();
@@ -46,7 +71,7 @@ export default function MusicalDetail1({isCookie}) {
         Alert.alert('리뷰 작성 페이지로 이동');
     };
 
-    const goToMusicalDetail2 = () => {
+    const goToMusicalDetail2 = (musicalId) => {
         nav.navigate('MusicalDetail2');
     };
 
@@ -77,23 +102,36 @@ export default function MusicalDetail1({isCookie}) {
 
             <ScrollView>
                 <View style={tw`mt-[27.56px]`}></View>
-                <MusicalInfoForm poster={musicalInfo.poster} title={musicalInfo.title} score={musicalInfo.averageScore} date={musicalInfo.date} place={musicalInfo.place} duration={musicalInfo.duration} casting={musicalInfo.casting}></MusicalInfoForm>
+                {musicalInfo.posterUrl && (
+                    <MusicalInfoForm poster={musicalInfo.posterUrl} title={musicalInfo.title} score={musicalInfo.averageScore} date={musicalInfo.date} place={musicalInfo.place} duration={musicalInfo.duration} casting={musicalInfo.casting}></MusicalInfoForm>
+                )}                
                 <View style={tw`mb-[27.56px]`}></View>
                 <StoryForm story={musicalInfo.story}></StoryForm>
                 <View style={tw`mb-[35px]`}></View>
-                <AverageScoreForm averageScore={musicalInfo.averageScore} scoreCount={scoreCount}></AverageScoreForm>
+                {Object.keys(musicalRates).length === 10 && (
+                    <AverageScoreForm averageScore={musicalInfo.averageScore} scoreCount={musicalRates}></AverageScoreForm>
+                )}
                 <View style={tw`mb-[35px]`}></View>
                 <View style={tw`flex flex-row w-[90%] justify-between items-center self-center mb-[10px]`}>
-                    <Text style={tw`text-[#191919] text-base font-medium`}>리뷰 ({reviewInfo.totalReviewCount})</Text>
-                    <Pressable onPress={goToMusicalDetail2}>
+                    <Text style={tw`text-[#191919] text-base font-medium`}>리뷰 ({totalReviewCount})</Text>
+                    <Pressable onPress={() => goToMusicalDetail2(musicalId)}>
                         <Text style={tw`text-xs text-[#191919]`}>전체보기</Text>
                     </Pressable>
                 </View>
-                <ShortReviewForm reviewInfo={reviewInfo.reviews[0]} onPressThumbsUp={() => onPressThumbsUp(reviewInfo.reviews[0].reviewId) } onPressArrowCircledRight={() => goToReviewDetail1(reviewInfo.reviews[0].reviewId) } isCookie={isCookie}></ShortReviewForm>
-                <View style={tw`border-4 border-[#F5F5F5]`}></View>
-                <ShortReviewForm reviewInfo={reviewInfo.reviews[1]} onPressThumbsUp={() => onPressThumbsUp(reviewInfo.reviews[1].reviewId) } onPressArrowCircledRight={() => goToReviewDetail1(reviewInfo.reviews[1].reviewId) } isCookie={isCookie}></ShortReviewForm>
-                <View style={tw`border-4 border-[#F5F5F5]`}></View>
-                <ShortReviewForm reviewInfo={reviewInfo.reviews[2]} onPressThumbsUp={() => onPressThumbsUp(reviewInfo.reviews[2].reviewId) } onPressArrowCircledRight={() => goToReviewDetail1(reviewInfo.reviews[2].reviewId) } isCookie={isCookie}></ShortReviewForm>
+
+                {reviews.map((review, index) => (
+                    <Fragment key={index}>
+                        <ShortReviewForm
+                            reviewInfo={review}
+                            onPressThumbsUp={() => onPressThumbsUp(review.reviewId)}
+                            onPressArrowCircledRight={() => goToReviewDetail1(review.reviewId)}
+                            isCookie={isCookie}
+                        />
+                        {index < reviews.length - 1 && (
+                            <View style={tw`border-4 border-[#F5F5F5]`}></View>
+                        )}
+                    </Fragment>
+                ))}
             </ScrollView>
         </SafeAreaView>
     );

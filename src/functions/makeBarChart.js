@@ -5,24 +5,31 @@ import { View, Text } from 'react-native';
 import tw from 'twrnc';
 
 export default function makeBarChart (scoreCount) {
-    let count = 0;
-    
-    for (let key in scoreCount) {
-        count += scoreCount[key];
-    }
+    const maxCount = Math.max(
+        scoreCount["0.5"],
+        scoreCount["1.0"],
+        scoreCount["1.5"],
+        scoreCount["2.0"],
+        scoreCount["2.5"],
+        scoreCount["3.0"],
+        scoreCount["3.5"],
+        scoreCount["4.0"],
+        scoreCount["4.5"],
+        scoreCount["5.0"]
+    );
 
-    const height = (3 / count) * 100;
+    const heightRatio = 100 / maxCount;
 
-    const barStyle05 = {...tw`w-[21px] rounded-t-xl mx-[1px] bg-[#E9494A]`, height: height * scoreCount["0.5"],};
-    const barStyle10 = {...tw`w-[21px] rounded-t-xl mx-[1px] bg-[#E9494A]`, height: height * scoreCount["1.0"],};
-    const barStyle15 = {...tw`w-[21px] rounded-t-xl mx-[1px] bg-[#E9494A]`, height: height * scoreCount["1.5"],};
-    const barStyle20 = {...tw`w-[21px] rounded-t-xl mx-[1px] bg-[#E9494A]`, height: height * scoreCount["2.0"],};
-    const barStyle25 = {...tw`w-[21px] rounded-t-xl mx-[1px] bg-[#E9494A]`, height: height * scoreCount["2.5"],};
-    const barStyle30 = {...tw`w-[21px] rounded-t-xl mx-[1px] bg-[#E9494A]`, height: height * scoreCount["3.0"],};
-    const barStyle35 = {...tw`w-[21px] rounded-t-xl mx-[1px] bg-[#E9494A]`, height: height * scoreCount["3.5"],};
-    const barStyle40 = {...tw`w-[21px] rounded-t-xl mx-[1px] bg-[#E9494A]`, height: height * scoreCount["4.0"],};
-    const barStyle45 = {...tw`w-[21px] rounded-t-xl mx-[1px] bg-[#E9494A]`, height: height * scoreCount["4.5"],};
-    const barStyle50 = {...tw`w-[21px] rounded-t-xl mx-[1px] bg-[#E9494A]`, height: height * scoreCount["5.0"],};
+    const barStyle05 = {...tw`w-[21px] rounded-t-xl mx-[1px] bg-[#E9494A]`, height: heightRatio * scoreCount["0.5"],};
+    const barStyle10 = {...tw`w-[21px] rounded-t-xl mx-[1px] bg-[#E9494A]`, height: heightRatio * scoreCount["1.0"],};
+    const barStyle15 = {...tw`w-[21px] rounded-t-xl mx-[1px] bg-[#E9494A]`, height: heightRatio * scoreCount["1.5"],};
+    const barStyle20 = {...tw`w-[21px] rounded-t-xl mx-[1px] bg-[#E9494A]`, height: heightRatio * scoreCount["2.0"],};
+    const barStyle25 = {...tw`w-[21px] rounded-t-xl mx-[1px] bg-[#E9494A]`, height: heightRatio * scoreCount["2.5"],};
+    const barStyle30 = {...tw`w-[21px] rounded-t-xl mx-[1px] bg-[#E9494A]`, height: heightRatio * scoreCount["3.0"],};
+    const barStyle35 = {...tw`w-[21px] rounded-t-xl mx-[1px] bg-[#E9494A]`, height: heightRatio * scoreCount["3.5"],};
+    const barStyle40 = {...tw`w-[21px] rounded-t-xl mx-[1px] bg-[#E9494A]`, height: heightRatio * scoreCount["4.0"],};
+    const barStyle45 = {...tw`w-[21px] rounded-t-xl mx-[1px] bg-[#E9494A]`, height: heightRatio * scoreCount["4.5"],};
+    const barStyle50 = {...tw`w-[21px] rounded-t-xl mx-[1px] bg-[#E9494A]`, height: heightRatio * scoreCount["5.0"],};
 
     return (
         <>

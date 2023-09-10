@@ -14,9 +14,17 @@ export default function MusicalInfoForm(props) {
                     <Text style={tw`text-[#191919] text-sm`}>{props.score}</Text>
                 </View>
                 <Text style={tw`text-[#000] text-sm`}>{props.date}</Text>
-                <Text style={tw`text-[#191919] text-sm`}>{props.place}</Text>
+                <Text style={tw`text-[#191919] text-sm`}>
+                    {props.place && props.place.length > 20 ? `${props.place.slice(0, 20)} ...` : props.place}
+                </Text>
                 <Text style={tw`text-[#191919] text-sm`}>{props.duration}</Text>
-                <Text style={tw`text-[#191919] text-sm`}>{props.casting}</Text>
+                {props.casting ? (
+                    <Text style={tw`text-[#191919] text-sm`}>
+                        {props.casting.length > 20 ? `${props.casting.slice(0, 20)} ...` : props.casting}
+                    </Text>
+                ) : (
+                    <Text style={tw`text-[#191919] text-sm`}>캐스팅 정보 없음</Text>
+                )}
             </View>
         </View>
     )

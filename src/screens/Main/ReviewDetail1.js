@@ -1,12 +1,15 @@
 // 주의사항: isCookie 여부에 따라 유저 권한 다르게 주기
 
 import React from "react";
-import { View, Text, Image, Pressable, ScrollView, StyleSheet } from "react-native";
+import { View, Text, Image, Pressable, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
 import tw from "twrnc";
 
 import { useNavigation } from "@react-navigation/native";
+
+import { MusicalInfoFormInReviewDetail } from "@forms/ReviewForm";
+
+import { reviewDetailDto } from "@functions/api";
 
 // TODO: 백 연결 시 props로 reviewId 추가
 export default function ReviewDetail1({isCookie}) {
@@ -22,14 +25,14 @@ export default function ReviewDetail1({isCookie}) {
                 <Pressable onPress={goBack}>
                     <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] mr-[8px] w-[10px] h-[18px] tint-[#191919]`}></Image>
                 </Pressable>
-                <Text style={tw`text-[#191919] text-base font-medium`}>리뷰</Text>
+                <Text style={tw`text-[#191919] text-base font-medium`}>{reviewDetailDto.memeberNickname} 님의 리뷰</Text>
                 <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] mr-[8px] w-[10px] h-[18px] tint-[#FAFAFA]`}></Image>
             </View>
-            <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
+            <View style={tw`border-solid border-b border-[#D3D4D3] z-20`}></View>
 
-            <ScrollView>
-                
-            </ScrollView>
+            <View>
+                <MusicalInfoFormInReviewDetail reviewDetailDto={reviewDetailDto}></MusicalInfoFormInReviewDetail>
+            </View>
         </SafeAreaView>
     )
 }
