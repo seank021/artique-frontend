@@ -1,7 +1,4 @@
-/* 
-TODO:
-1. 약관
-*/
+// TODO: 약관
 
 import React, {useState} from 'react';
 import {

@@ -108,6 +108,7 @@ const Navigation = () => {
                     headerShown: false,
                     tabBarStyle: {
                         width: "90%",
+                        height: "10%",
                         left: "5%",
                         shadowColor: "rgba(0, 0, 0, 0)",
                         borderBlockColor: "rgba(0, 0, 0, 0)",
@@ -121,7 +122,7 @@ const Navigation = () => {
                     component={SearchStack}
                     options={{
                         tabBarIcon: ({focused}) => (
-                            focused ? <Image source={require("@images/search.png")} style={tw`w-[20px] h-[20px]`} /> : <Image source={require("@images/search.png")} style={tw`w-[20px] h-[20px]`} />
+                            focused ? <Image source={require("@images/search_focused.png")} style={tw`w-[58px] h-[69px]`} /> : <Image source={require("@images/search.png")} style={tw`w-[24px] h-[24px]`} />
                         ),
                     }}
                 />
@@ -130,7 +131,7 @@ const Navigation = () => {
                     component={MainStack}
                     options={{
                         tabBarIcon: ({focused}) => (
-                            focused ? <Image source={require("@images/main_focused.png")} style={tw`w-[47.01324px] h-[46.01267px]`} /> : <Image source={require("@images/main.png")} style={tw`w-[18.46119px] h-[20px]`} />
+                            focused ? <Image source={require("@images/main_focused.png")} style={tw`w-[58px] h-[70px]`} /> : <Image source={require("@images/main.png")} style={tw`w-[22.15px] h-[24px]`} />
                         ),
                     }}
                 />
@@ -139,7 +140,7 @@ const Navigation = () => {
                     component={ProfileStack}
                     options={{
                         tabBarIcon: ({focused}) => (
-                            focused ? <Image source={require("@images/profile.png")} style={tw`w-[20px] h-[20px]`} /> : <Image source={require("@images/profile.png")} style={tw`w-[19.26213px] h-[20px]`} />
+                            focused ? <Image source={require("@images/profile_focused.png")} style={tw`w-[58px] h-[70px]`} /> : <Image source={require("@images/profile.png")} style={tw`w-[23.11px] h-[24px]`} />
                         ),
                     }}
                 />

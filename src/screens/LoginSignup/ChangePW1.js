@@ -1,7 +1,4 @@
-/* 
-TODO:
-1. 이후 비밀번호 재설정 안내 이메일 변경
-*/
+// TODO: 이후 비밀번호 재설정 안내 이메일 변경
 
 import React from 'react';
 import {

@@ -67,10 +67,10 @@ export function AlertFormForSort(props) {
 export function LongReviewModal(props) {
     return (
         <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.longReviewModalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={() => props.setLongReviewModalVisible(false)}>
-            <View style={tw`flex flex-col w-[90%] h-[600px] bg-white rounded-[15px] self-center items-center justify-between`}>
+            <View style={tw`flex flex-col h-[600px] bg-white rounded-[15px] self-center items-center justify-between`}>
                 <Text style={tw`text-base text-[#191919] font-medium mt-[24px]`}>긴줄평</Text>
-                <ScrollView style={tw`w-[80%] mb-[57px]`} showsVerticalScrollIndicator={false}>
-                    <Text style={tw`text-sm text-justify font-normal mt-[31px] text-[#191919]`}>{props.longReview}</Text>
+                <ScrollView style={tw`mx-[10%] mb-[57px]`} showsVerticalScrollIndicator={false}>
+                    <Text style={tw`text-sm font-normal text-justify mt-[31px] text-[#191919] leading-[23px]`}>{props.longReview}</Text>
                 </ScrollView>
             </View>
         </Modal>

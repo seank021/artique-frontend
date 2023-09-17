@@ -1,5 +1,7 @@
 // 주의사항: isCookie 여부에 따라 유저 권한 다르게 주기
 
+// TODO: 백 연결 시 props로 reviewId 추가
+
 import React from "react";
 import { View, Text, Image, Pressable, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -11,7 +13,6 @@ import { MusicalInfoFormInReviewDetail } from "@forms/ReviewForm";
 
 import { reviewDetailDto } from "@functions/api";
 
-// TODO: 백 연결 시 props로 reviewId 추가
 export default function ReviewDetail1({isCookie}) {
     const nav = useNavigation();
 

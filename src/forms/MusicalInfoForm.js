@@ -23,7 +23,7 @@ export default function MusicalInfoForm(props) {
                         {props.casting.length > 20 ? `${props.casting.slice(0, 20)} ...` : props.casting}
                     </Text>
                 ) : (
-                    <Text style={tw`text-[#191919] text-sm`}>캐스팅 정보 없음</Text>
+                    <Text style={tw`text-[#B6B6B6] text-sm`}>캐스팅 정보 없음</Text>
                 )}
             </View>
         </View>

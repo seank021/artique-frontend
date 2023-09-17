@@ -1,7 +1,4 @@
-/* 
-TODO:
-1. 자동로그인 기능 구현
-*/
+// TODO: 자동로그인 기능 구현
 
 import React, {useState} from 'react';
 import {
