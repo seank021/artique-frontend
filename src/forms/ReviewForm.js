@@ -73,7 +73,7 @@ export function ShortReviewForm(props) {
                 </View>
                 <View style={tw`flex flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mb-[15px] items-center p-[6px] rounded-2`}>
                     <Text style={tw`self-start text-[#191919] text-sm font-medium leading-[24px]`}>"</Text>
-                    <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>{props.reviewInfo.shortReview}"+ 김태형 안은선 전어진 오혜령 김세안 설원상 아티크 으아하ㅏ하하하ㅏ하ㅏㅏㅏㅏㅏ</Text>
+                    <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>{props.reviewInfo.shortReview}"</Text>
                 </View>
                 <View style={tw`flex-row justify-between items-center`}>
                     <View style={tw`flex-row justify-between items-center`}>
