@@ -23,11 +23,15 @@ export default function ReviewDetail1({isCookie}) {
     return (
         <SafeAreaView style={styles.container}>
             <View style={tw`flex-row items-center justify-between mt-5 mb-[14px]`}>
-                <Pressable onPress={goBack}>
+                <Pressable onPress={goBack} style={tw`flex-row`}>
                     <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] mr-[8px] w-[10px] h-[18px] tint-[#191919]`}></Image>
+                    <View style={tw`px-[20px]`}></View>
                 </Pressable>
                 <Text style={tw`text-[#191919] text-base font-medium`}>{reviewDetailDto.memeberNickname} 님의 리뷰</Text>
-                <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] mr-[8px] w-[10px] h-[18px] tint-[#FAFAFA]`}></Image>
+                <View style={tw`flex-row`}>
+                    <View style={tw`px-[20px]`}></View>
+                    <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] mr-[8px] w-[10px] h-[18px] tint-[#FAFAFA]`}></Image>
+                </View>
             </View>
             <View style={tw`border-solid border-b border-[#D3D4D3] z-20`}></View>
 

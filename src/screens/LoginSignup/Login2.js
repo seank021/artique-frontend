@@ -143,15 +143,15 @@ export default function Login1({setGoToFeed, setIsCookie}) {
           text={alertText}></AlertForm>
       </View>
       <View style={tw`flex-row items-center justify-between mt-5 mb-3`}>
-        <Pressable onPress={goBack}>
-          <Image
-            source={require('@images/x.png')}
-            style={tw`ml-[10px] w-[20px] h-[20px]`}></Image>
+        <Pressable onPress={goBack} style={tw`flex-row`}>
+          <Image source={require('@images/x.png')} style={tw`ml-[10px] w-[20px] h-[20px]`}></Image>
+          <View style={tw`px-[20px]`}></View>
         </Pressable>
         <Text style={tw`text-[#F5F8F5] text-lg`}>로그인</Text>
-        <Image
-          source={require('@images/x.png')}
-          style={tw`mr-[10px] w-[20px] h-[20px] tint-[#3A3D52]`}></Image>
+        <View style={tw`flex-row`}>
+          <Image source={require('@images/x.png')} style={tw`mr-[10px] w-[20px] h-[20px] tint-[#3A3D52]`}></Image>
+          <View style={tw`px-[20px]`}></View>
+        </View>
       </View>
       <View style={tw`border-solid border-b border-[#323546]`}></View>
 

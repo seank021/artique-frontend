@@ -194,6 +194,7 @@ export function MusicalInfoFormInReviewDetail(props) {
     return (
         <View style={tw`flex-col self-center w-[90%] h-[93%] rounded-[24px] bg-[#FFFFFF] my-[13px]`}>
             <View style={tw`w-[60px] h-[60px] rounded-full bg-[#FAFAFA] self-center absolute top-[-30px] overflow-hidden`}></View>
+            
             <View style={tw`border-solid border border-[#191919] self-center w-[83%] mt-[57px]`}></View>
             <View style={tw`flex-col items-start mt-[23px] ml-[10%] mr-[5%]`}>
                 <Text style={tw`text-[22px] text-[#191919] font-medium mb-[22px]`}>{props.reviewDetailDto.musicalTitle}</Text>
@@ -213,6 +214,7 @@ export function MusicalInfoFormInReviewDetail(props) {
                     <Text style={tw`w-[65%] text-[#191919] text-sm text-center font-medium leading-[26px]`}>"{props.reviewDetailDto.shortReview}"</Text>
                 </View>
             </View>
+
             <View style={tw`flex flex-row items-center absolute left-[-10px] right-[-10px] top-[450px] justify-between`}>
                 <View style={tw`w-[20px] h-[20px] rounded-full bg-[#FAFAFA]`}></View>
                 {Array(15).fill().map((_, index) => (
@@ -220,6 +222,7 @@ export function MusicalInfoFormInReviewDetail(props) {
                     ))}
                 <View style={tw`w-[20px] h-[20px] rounded-full bg-[#FAFAFA]`}></View>
             </View>
+
             <View style={tw`flex flex-row items-start mt-[23px] ml-[10%]`}>
                 <View style={tw`flex-row items-start w-[90%] justify-between`}>
                     <Text style={tw`text-[#191919] text-sm mr-[57px] leading-[23px]`}>긴줄평</Text>
@@ -229,6 +232,7 @@ export function MusicalInfoFormInReviewDetail(props) {
                     <LongReviewModal longReviewModalVisible={longReviewModalVisible} setLongReviewModalVisible={setLongReviewModalVisible} longReview={props.reviewDetailDto.longReview}></LongReviewModal>
                 </View>
             </View>
+
             <View style={tw`w-[60px] h-[60px] rounded-full bg-[#FAFAFA] self-center absolute bottom-[-30px] overflow-hidden`}></View>
         </View>
     )
