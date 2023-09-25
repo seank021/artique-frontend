@@ -97,6 +97,7 @@ const thumbsUp = async (reviewId, isThumbsUp) => {
 
 const reviewDetail = async (reviewId) => {
     try {
+        console.log(`http://3.39.145.210/review?review-id=${reviewId}`);
         const response = await axios.get(`http://3.39.145.210/review?review-id=${reviewId}`);
         console.log(response.data);
         return response.data;

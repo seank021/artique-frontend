@@ -15,7 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { musicalDetails, musicalReviews, musicalRateStatistics, thumbsUp } from '@functions/api';
 
-export default function MusicalDetail1({isCookie, musicalId}) {
+export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setReviewId}) {
     const [modalVisible, setModalVisible] = useState(false);
 
     const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
@@ -72,6 +72,7 @@ export default function MusicalDetail1({isCookie, musicalId}) {
     };
 
     const goToMusicalDetail2 = (musicalId) => {
+        setMusicalId(musicalId);
         nav.navigate('MusicalDetail2');
     };
 
@@ -96,6 +97,7 @@ export default function MusicalDetail1({isCookie, musicalId}) {
 
     const goToReviewDetail1 = reviewId => {
         console.log(reviewId);
+        setReviewId(reviewId);
         nav.navigate('ReviewDetail1');
     };
 

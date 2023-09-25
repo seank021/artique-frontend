@@ -12,7 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import { musicalDetails, musicalReviews, musicalReviewsAll, thumbsUp } from "@functions/api";
 
-export default function MusicalDetail2({isCookie, musicalId}) {
+export default function MusicalDetail2({isCookie, musicalId, setReviewId}) {
     const [modalVisible, setModalVisible] = useState(false);
     const [sortModalVisible, setSortModalVisible] = useState(false);
 
@@ -96,6 +96,7 @@ export default function MusicalDetail2({isCookie, musicalId}) {
 
     const goToReviewDetail1 = reviewId => {
         console.log(reviewId);
+        setReviewId(reviewId);
         nav.navigate('ReviewDetail1');
     };
 
