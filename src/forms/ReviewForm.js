@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, Pressable, ScrollView } from 'react-native';
+import { View, Text, Image, Pressable, ScrollView, Platform, StyleSheet } from 'react-native';
 import tw from 'twrnc';
 
 import AlertForm, { LongReviewModal } from '@forms/AlertForm';
@@ -237,3 +237,20 @@ export function MusicalInfoFormInReviewDetail(props) {
         </View>
     )
 }
+
+// const styles = StyleSheet.create({
+//     ratingContainer: {
+//         flex: 1,
+//         flexDirection: 'column',
+//         alignItems: 'flex-start',
+//         marginTop: 23,
+//         marginLeft: '10%',
+//         ...Platform.select({
+//             ios: {
+//                 marginRight: '5%',
+//             },
+//             android: {
+//             },
+//         }),
+//     },
+// });
