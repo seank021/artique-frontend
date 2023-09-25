@@ -45,6 +45,7 @@ const Navigation = () => {
     const MainStack = () => {
         const [isCookie, setIsCookie] = useState(false);
         const [musicalId, setMusicalId] = useState(0);
+        const [reviewId, setReviewId] = useState(0);
 
         useEffect(() => {
             const checkCookie = async () => {
@@ -56,10 +57,10 @@ const Navigation = () => {
 
         return (
             <Stack.Navigator initialRouteName="Feed1" screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="Feed1" children={() => <Feed1 isCookie={isCookie} setMusicalId={setMusicalId} />} />
+                <Stack.Screen name="Feed1" children={() => <Feed1 isCookie={isCookie} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
                 <Stack.Screen name="MusicalDetail1" children={() => <MusicalDetail1 isCookie={isCookie} musicalId={musicalId} />} />
                 <Stack.Screen name="MusicalDetail2" children={() => <MusicalDetail2 isCookie={isCookie} musicalId={musicalId}/>} />
-                <Stack.Screen name="ReviewDetail1" children={() => <ReviewDetail1 isCookie={isCookie}/>} />
+                <Stack.Screen name="ReviewDetail1" children={() => <ReviewDetail1 isCookie={isCookie} reviewId={reviewId}/>} />
             </Stack.Navigator>
         )
     };

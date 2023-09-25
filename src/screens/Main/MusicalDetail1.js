@@ -13,7 +13,7 @@ import { ShortReviewForm } from '@forms/ReviewForm';
 
 import { useNavigation } from '@react-navigation/native';
 
-import { musicalDetails, musicalReviews, musicalRateStatistics } from '@functions/api';
+import { musicalDetails, musicalReviews, musicalRateStatistics, thumbsUp } from '@functions/api';
 
 export default function MusicalDetail1({isCookie, musicalId}) {
     const [modalVisible, setModalVisible] = useState(false);
@@ -75,8 +75,23 @@ export default function MusicalDetail1({isCookie, musicalId}) {
         nav.navigate('MusicalDetail2');
     };
 
-    const onPressThumbsUp = reviewId => {
+    const onPressThumbsUp = (reviewId, isThumbsUp) => {
         console.log(reviewId);
+        console.log(isThumbsUp);
+
+        // isThumbsUp이 true: 이미 공감되어 있음 -> 공감 버튼 누른다는 것: 공감 취소
+        // isThumbsUp이 false: 공감 안 되어 있음 -> 공감 버튼 누른다는 것: 공감
+        thumbsUp(reviewId, !isThumbsUp).then((res) => {
+            console.log(res);
+            setReviews((prevReviews) => {
+                const newReviews = [...prevReviews];
+                const reviewIndex = newReviews.findIndex((review) => review.reviewId === reviewId);
+                newReviews[reviewIndex].isThumbsUp = !isThumbsUp; // 프론트상에서만 바꿈 (구현 위함, 서버에서는 안 바뀜)
+                return newReviews;
+            });
+        }).catch((err) => {
+            console.log(err);
+        });
     };
 
     const goToReviewDetail1 = reviewId => {
@@ -125,7 +140,7 @@ export default function MusicalDetail1({isCookie, musicalId}) {
                     <Fragment key={index}>
                         <ShortReviewForm
                             reviewInfo={review}
-                            onPressThumbsUp={() => onPressThumbsUp(review.reviewId)}
+                            onPressThumbsUp={() => onPressThumbsUp(review.reviewId, review.isThumbsUp)}
                             onPressArrowCircledRight={() => goToReviewDetail1(review.reviewId)}
                             isCookie={isCookie}
                         />
