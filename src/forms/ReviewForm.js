@@ -92,7 +92,6 @@ export function ShortReviewForm(props) {
     );
 }
 
-// TODO: 가로 스크롤 시 신고 추가
 // props:  reviewInfo, goToMusicalDetail1, goToReviewDetail1, onPressThumbsUp, isCookie
 export function ShortReviewFormInFeed(props) {
     const [isCookie, setIsCookie] = useState(props.isCookie);
