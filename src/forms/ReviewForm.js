@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Image, Pressable, ScrollView, Platform, StyleSheet } from 'react-native';
 import tw from 'twrnc';
 
-import AlertForm, { LongReviewModal } from '@forms/AlertForm';
+import AlertForm, { LongReviewForm } from '@forms/AlertForm';
 
 import { makeStars, makeStarsForEachReview } from '@functions/makeStars';
 
@@ -193,7 +193,7 @@ export function MusicalInfoFormInReviewDetail(props) {
 
     return (
         <View style={tw`flex-col self-center w-[90%] h-[93%] rounded-[24px] bg-[#FFFFFF] my-[13px]`}>
-            <View style={tw`w-[60px] h-[60px] rounded-full bg-[#FAFAFA] self-center absolute top-[-30px] overflow-hidden`}></View>
+            <View style={tw`w-[60px] h-[60px] rounded-full bg-[#F5F5F5] self-center absolute top-[-30px] overflow-hidden`}></View>
             
             <View style={tw`border-solid border border-[#191919] self-center w-[83%] mt-[57px]`}></View>
             <View style={tw`flex-col items-start mt-[23px] ml-[10%] mr-[5%]`}>
@@ -216,11 +216,11 @@ export function MusicalInfoFormInReviewDetail(props) {
             </View>
 
             <View style={tw`flex flex-row items-center absolute left-[-10px] right-[-10px] top-[450px] justify-between`}>
-                <View style={tw`w-[20px] h-[20px] rounded-full bg-[#FAFAFA]`}></View>
+                <View style={tw`w-[20px] h-[20px] rounded-full bg-[#F5F5F5]`}></View>
                 {Array(15).fill().map((_, index) => (
-                    <View key={index} style={tw`w-[12px] h-[12px] rounded-full bg-[#FAFAFA]`} />
+                    <View key={index} style={tw`w-[12px] h-[12px] rounded-full bg-[#F5F5F5]`} />
                     ))}
-                <View style={tw`w-[20px] h-[20px] rounded-full bg-[#FAFAFA]`}></View>
+                <View style={tw`w-[20px] h-[20px] rounded-full bg-[#F5F5F5s]`}></View>
             </View>
 
             <View style={tw`flex flex-row items-start mt-[23px] ml-[10%]`}>
@@ -229,11 +229,11 @@ export function MusicalInfoFormInReviewDetail(props) {
                     <ScrollView style={tw`w-[65%] h-[105px]`} showsVerticalScrollIndicator={false} onTouchEnd={() => setLongReviewModalVisible(true)} onMomentumScrollBegin={() => setLongReviewModalVisible(true)}>
                         <Text style={tw`text-[#191919] text-sm text-justify font-normal leading-[23px]`}>{props.reviewDetailDto.longReview}</Text>
                     </ScrollView>
-                    <LongReviewModal longReviewModalVisible={longReviewModalVisible} setLongReviewModalVisible={setLongReviewModalVisible} longReview={props.reviewDetailDto.longReview}></LongReviewModal>
+                    <LongReviewForm modalVisible={longReviewModalVisible} setModalVisible={setLongReviewModalVisible} longReview={props.reviewDetailDto.longReview}></LongReviewForm>
                 </View>
             </View>
 
-            <View style={tw`w-[60px] h-[60px] rounded-full bg-[#FAFAFA] self-center absolute bottom-[-30px] overflow-hidden`}></View>
+            <View style={tw`w-[60px] h-[60px] rounded-full bg-[#F5F5F5] self-center absolute bottom-[-30px] overflow-hidden`}></View>
         </View>
     )
 }
