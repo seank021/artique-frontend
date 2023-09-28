@@ -146,7 +146,10 @@ export default function Profile() {
             setIfCheckNickname(true);
             setIfButtonID(false);
 
-            setIfWriting(false);
+            setIfWriting(prevIfWriting => ({
+                ...prevIfWriting,
+                nickname: true,
+            }));
 
             setBorderColor('#B6B6B6');
             setButtonColor('#FFF');
