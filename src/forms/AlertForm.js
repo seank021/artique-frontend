@@ -3,6 +3,8 @@ import { View, Text, Image, Pressable, ScrollView } from 'react-native';
 import Modal from 'react-native-modal';
 import tw from 'twrnc';
 
+import { launchImageLibrary } from 'react-native-image-picker';
+
 // props: modalVisible, setModalVisible / borderColor, bgColor, image, textColor, text
 export default function AlertForm(props) {
     const alertFormStyles = {
@@ -78,16 +80,26 @@ export function LongReviewForm(props) {
 }
 
 export function ProfileChangeForm(props) {
-    const [image, setImage] = useState('@images/newprofile.png');
+    const [image, setImage] = useState(props.image);
 
-    const onPressSelect = () => {
-        // setImage('@images/newprofile.png');
-        props.setModalVisible(!props.modalVisible);
-    }
+    const onPressSelect = async() => {
+        const response = await launchImageLibrary({
+            mediaType: 'photo',
+            includeBase64: true,
+        });
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.errorCode) {
+                console.log('ImagePicker Error: ', response.errorMessage);
+            } else {
+                let imageUri = response.uri || response.assets[0]?.uri;
+                console.log(imageUri);
+                props.setImage(imageUri);
+            }
+        };
 
     const onPressDelete = () => {
-        setImage('@images/newprofile.png');
-        props.setModalVisible(!props.modalVisible);
+        props.setImage(null);
     }
 
     return(

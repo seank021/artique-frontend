@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, Button, Image, ScrollView, Pressable, StyleSheet } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
@@ -11,6 +11,7 @@ import AlertForm, { ProfileChangeForm } from '@forms/AlertForm';
 export default function Profile() {
     const nav = useNavigation();
 
+    const [profileImage, setProfileImage] = useState(''); // 추후에 백엔드랑 연결하면 백엔드에서 받아오는 이미지로 바꿔야 함.
     const [nickname, setNickname] = useState('');
     const [introduce, setIntroduce] = useState('');
 
@@ -104,8 +105,8 @@ export default function Profile() {
         }
     };
 
-    const profileChange = () => {
-        // 백과 연결하는 부분 추후 추가 필요
+    const onPressProfileChange = () => {
+        // 백으로 전달해야 됨
         setProfileChangeModalVisible(!ProfileChangeModalVisible);
     }
 
@@ -153,6 +154,10 @@ export default function Profile() {
         }
     };
 
+    useEffect(() => {
+        setProfileChangeModalVisible(false);
+    }, [profileImage]);
+
     return (
         <SafeAreaView style={styles.container}>
             <AlertForm
@@ -167,7 +172,9 @@ export default function Profile() {
 
             <ProfileChangeForm
                 modalVisible={ProfileChangeModalVisible}
-                setModalVisible={setProfileChangeModalVisible}>
+                setModalVisible={setProfileChangeModalVisible}
+                image={profileImage}
+                setImage={setProfileImage}>
             </ProfileChangeForm>
 
             <View style={tw`flex-row items-center justify-between mt-5 mb-[14px]`}>
@@ -183,11 +190,9 @@ export default function Profile() {
             </View>
             <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
 
-            <Pressable onPress={profileChange}>
-                <Image style={tw`w-[100px] h-[100px] mx-auto mt-[20px] mb-[64px]`} source={require('@images/newprofile.png')}></Image>
+            <Pressable onPress={onPressProfileChange}>
+                <Image style={tw`w-[100px] h-[100px] rounded-full mx-auto mt-[20px] mb-[64px]`} source={profileImage ? { uri: profileImage } : require('@images/newprofile.png')}></Image>
             </Pressable>
-            
-            {/* 후에 백이랑 연결해서 사용자들의 프로필 사진을 불러오는 기능 추가해야 함. */}
 
             <ScrollView contentContainerStyle={styles.contentContainer}>
                 <NicknameInputForm
