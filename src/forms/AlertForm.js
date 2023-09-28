@@ -6,13 +6,13 @@ import tw from 'twrnc';
 // props: modalVisible, setModalVisible / borderColor, bgColor, image, textColor, text
 export default function AlertForm(props) {
     const alertFormStyles = {
-        ...tw`flex flex-row w-[90%] h-[54px] border-solid border-2 rounded-3xl self-center justify-center items-center`,
+        ...tw`flex flex-col w-[65%] h-[110px] border-solid border-2 rounded-[15px] self-center justify-center items-center`,
         borderColor: props.borderColor,
         backgroundColor: props.bgColor,
     }
 
     const textStyles = {
-        ...tw`font-semibold text-lg`,
+        ...tw`text-sm font-medium mt-[20px]`,
         color: props.textColor,
     }
 
@@ -20,8 +20,8 @@ export default function AlertForm(props) {
         <Modal animationIn="fadeIn" animationOut="fadeOut" transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5}>
             <View style={alertFormStyles}>
                 {props.image === require("@images/check.png") ?
-                    <Image source={require("@images/check.png")} style={tw`mr-4 w-[24px] h-[17.63637px]`}></Image> 
-                    : <Image source={require("@images/x_red.png")} style={tw`mr-4 w-[19px] h-[19px]`}></Image>
+                    <Image source={require("@images/check.png")} style={tw`w-[24px] h-[17.63637px] self-center`}></Image> 
+                    : <Image source={require("@images/x_red.png")} style={tw`w-[19px] h-[19px] self-center`}></Image>
                 }
                 <Text style={textStyles}>{props.text}</Text>
             </View>
@@ -64,14 +64,42 @@ export function AlertFormForSort(props) {
 }
 
 // props: longReviewModalVisible, setLongReviewModalVisible, longReview
-export function LongReviewModal(props) {
+export function LongReviewForm(props) {
     return (
-        <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.longReviewModalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={() => props.setLongReviewModalVisible(false)}>
+        <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={() => props.setModalVisible(false)}>
             <View style={tw`flex flex-col h-[600px] bg-white rounded-[15px] self-center items-center justify-between`}>
                 <Text style={tw`text-base text-[#191919] font-medium mt-[24px]`}>긴줄평</Text>
                 <ScrollView style={tw`mx-[10%] mb-[57px]`} showsVerticalScrollIndicator={false}>
                     <Text style={tw`text-sm font-normal text-justify mt-[31px] text-[#191919] leading-[23px]`}>{props.longReview}</Text>
                 </ScrollView>
+            </View>
+        </Modal>
+    )
+}
+
+export function ProfileChangeForm(props) {
+    const [image, setImage] = useState('@images/newprofile.png');
+
+    const onPressSelect = () => {
+        // setImage('@images/newprofile.png');
+        props.setModalVisible(!props.modalVisible);
+    }
+
+    const onPressDelete = () => {
+        setImage('@images/newprofile.png');
+        props.setModalVisible(!props.modalVisible);
+    }
+
+    return(
+        <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={() => props.setModalVisible(false)}>
+            <View style={tw`flex flex-col w-[65%] h-[110px] bg-white rounded-[15px] self-center items-center justify-evenly`}>
+                <Pressable onPress={onPressSelect}>
+                    <Text style={tw`text-sm text-[#191919] font-normal`}>라이브러리에서 선택</Text>
+                </Pressable>
+                <View style={tw`border-solid border-b border-[#D3D4D3] w-[100%]`}></View>
+                <Pressable onPress={onPressDelete}>
+                    <Text style={tw`text-sm text-[#191919] font-normal`}>현재 사진 삭제</Text>
+                </Pressable>
             </View>
         </Modal>
     )
