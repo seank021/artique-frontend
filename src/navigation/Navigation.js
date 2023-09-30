@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Image, Text } from "react-native";
+import { Image } from "react-native";
 
 import tw from 'twrnc'
 
@@ -12,8 +12,8 @@ import Signup1 from "@screens/LoginSignup/Signup1";
 
 import Feed1 from "@screens/Main/Feed1";
 import MusicalDetail1 from "@screens/Main/MusicalDetail1";
+import MusicalDetail2 from "@screens/Main/MusicalDetail2";
 import ReviewDetail1 from "@screens/Main/ReviewDetail1";
-import SeeMore1 from "@screens/Main/SeeMore1";
 
 import Search from "@screens/Search/Search";
 
@@ -26,7 +26,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-// Feed1 부분에 setGoToFeed 넣어놓음 (로그아웃 테스트용)
+// Profile 부분에 setGoToFeed 넣어놓음 (로그아웃 테스트용)
 
 const Navigation = () => {
     const [goToFeed, setGoToFeed] = useState(false);
@@ -44,6 +44,8 @@ const Navigation = () => {
 
     const MainStack = () => {
         const [isCookie, setIsCookie] = useState(false);
+        const [musicalId, setMusicalId] = useState(0);
+        const [reviewId, setReviewId] = useState(0);
 
         useEffect(() => {
             const checkCookie = async () => {
@@ -54,11 +56,11 @@ const Navigation = () => {
         }, []);
 
         return (
-            <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="Feed1" children={() => <Feed1 isCookie={isCookie} setGoToFeed={setGoToFeed} />} />
-                <Stack.Screen name="MusicalDetail1" children={() => <MusicalDetail1 isCookie={isCookie}/>} />
-                <Stack.Screen name="ReviewDetail1" children={() => <ReviewDetail1 isCookie={isCookie}/>} />
-                <Stack.Screen name="SeeMore1" children={() => <SeeMore1 isCookie={isCookie}/>} />
+            <Stack.Navigator initialRouteName="Feed1" screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="Feed1" children={() => <Feed1 isCookie={isCookie} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
+                <Stack.Screen name="MusicalDetail1" children={() => <MusicalDetail1 isCookie={isCookie} musicalId={musicalId} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
+                <Stack.Screen name="MusicalDetail2" children={() => <MusicalDetail2 isCookie={isCookie} musicalId={musicalId} setReviewId={setReviewId}/>} />
+                <Stack.Screen name="ReviewDetail1" children={() => <ReviewDetail1 isCookie={isCookie} reviewId={reviewId}/>} />
             </Stack.Navigator>
         )
     };
@@ -107,6 +109,7 @@ const Navigation = () => {
                     headerShown: false,
                     tabBarStyle: {
                         width: "90%",
+                        height: "10%",
                         left: "5%",
                         shadowColor: "rgba(0, 0, 0, 0)",
                         borderBlockColor: "rgba(0, 0, 0, 0)",
@@ -120,7 +123,7 @@ const Navigation = () => {
                     component={SearchStack}
                     options={{
                         tabBarIcon: ({focused}) => (
-                            focused ? <Image source={require("@images/search.png")} style={tw`w-[20px] h-[20px]`} /> : <Image source={require("@images/search.png")} style={tw`w-[20px] h-[20px]`} />
+                            focused ? <Image source={require("@images/search_focused.png")} style={tw`w-[58px] h-[69px]`} /> : <Image source={require("@images/search.png")} style={tw`w-[24px] h-[24px]`} />
                         ),
                     }}
                 />
@@ -129,7 +132,7 @@ const Navigation = () => {
                     component={MainStack}
                     options={{
                         tabBarIcon: ({focused}) => (
-                            focused ? <Image source={require("@images/main_focused.png")} style={tw`w-[47.01324px] h-[46.01267px]`} /> : <Image source={require("@images/main.png")} style={tw`w-[18.46119px] h-[20px]`} />
+                            focused ? <Image source={require("@images/main_focused.png")} style={tw`w-[58px] h-[70px]`} /> : <Image source={require("@images/main.png")} style={tw`w-[22.15px] h-[24px]`} />
                         ),
                     }}
                 />
@@ -138,7 +141,7 @@ const Navigation = () => {
                     component={ProfileStack}
                     options={{
                         tabBarIcon: ({focused}) => (
-                            focused ? <Image source={require("@images/profile.png")} style={tw`w-[20px] h-[20px]`} /> : <Image source={require("@images/profile.png")} style={tw`w-[19.26213px] h-[20px]`} />
+                            focused ? <Image source={require("@images/profile_focused.png")} style={tw`w-[58px] h-[70px]`} /> : <Image source={require("@images/profile.png")} style={tw`w-[23.11px] h-[24px]`} />
                         ),
                     }}
                 />

@@ -1,10 +1,7 @@
-import React, {useState, useEffect} from 'react';
-import { View, Text, Image, Pressable } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Image, Pressable, ScrollView } from 'react-native';
 import Modal from 'react-native-modal';
-import { FadeIn } from 'react-native-reanimated';
 import tw from 'twrnc';
-
-// App.js에서 props 변경해서 쓰기
 
 // props: modalVisible, setModalVisible / borderColor, bgColor, image, textColor, text
 export default function AlertForm(props) {
@@ -32,6 +29,7 @@ export default function AlertForm(props) {
     );
 }
 
+// TODO: 정렬 기준 선택하면 자동으로 창 off 되게 하기
 // props: sortModalVisible, setSortModalVisible, sortCriteria, setSortCriteria
 export function AlertFormForSort(props) {
     const [sortCriteria, setSortCriteria] = useState(props.sortCriteria);
@@ -45,22 +43,36 @@ export function AlertFormForSort(props) {
         <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.sortModalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={() => props.setSortModalVisible(false)}>
             <View style={tw`flex flex-col w-[230px] h-[225px] bg-white rounded-2xl self-center`}>
                 <View style={tw`flex flex-col my-[25px] justify-between`}>
-                    <Text style={tw`text-center text-base font-medium mb-[30px]`}>정렬 기준</Text>
+                    <Text style={tw`text-center text-base font-medium mb-[30px] text-[#191919]`}>정렬 기준</Text>
                     <View style={tw`flex flex-col w-[80%] h-[110px] self-center justify-between`}>
                         <Pressable onPress={() => onPressSort('공감순')} style={tw`flex flex-row justify-between items-center`}>
-                            <Text style={tw`text-sm text-left`}>공감순</Text>
+                            <Text style={tw`text-sm text-left text-[#191919]`}>공감순</Text>
                             {sortCriteria === '공감순' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px]`}></Image>)}
                         </Pressable>
                         <Pressable onPress={() => onPressSort('작성일순')} style={tw`flex flex-row justify-between items-center`}>
-                            <Text style={tw`text-sm text-left`}>작성일순</Text>
+                            <Text style={tw`text-sm text-left text-[#191919]`}>작성일순</Text>
                             {sortCriteria === '작성일순' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px]`}></Image>)}
                         </Pressable>
                         <Pressable onPress={() => onPressSort('관람일순')} style={tw`flex flex-row justify-between items-center`}>
-                            <Text style={tw`text-sm text-left`}>관람일순</Text>
+                            <Text style={tw`text-sm text-left text-[#191919]`}>관람일순</Text>
                             {sortCriteria === '관람일순' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px]`}></Image>)}
                         </Pressable>
                     </View>
                 </View>
+            </View>
+        </Modal>
+    )
+}
+
+// props: longReviewModalVisible, setLongReviewModalVisible, longReview
+export function LongReviewModal(props) {
+    return (
+        <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.longReviewModalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={() => props.setLongReviewModalVisible(false)}>
+            <View style={tw`flex flex-col h-[600px] bg-white rounded-[15px] self-center items-center justify-between`}>
+                <Text style={tw`text-base text-[#191919] font-medium mt-[24px]`}>긴줄평</Text>
+                <ScrollView style={tw`mx-[10%] mb-[57px]`} showsVerticalScrollIndicator={false}>
+                    <Text style={tw`text-sm font-normal text-justify mt-[31px] text-[#191919] leading-[23px]`}>{props.longReview}</Text>
+                </ScrollView>
             </View>
         </Modal>
     )

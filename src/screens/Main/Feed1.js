@@ -1,24 +1,123 @@
-// 주의사항: isCookie 여부에 따라 유저 권한 다르게 주기
-
-import React from "react";
-import { Text, Button, View } from "react-native";
+import React, { useState, useEffect, Fragment } from "react";
+import { View, Image, StyleSheet, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
 import tw from "twrnc";
+
+import { ShortReviewFormInFeed } from "@forms/ReviewForm";
 
 import { useNavigation } from "@react-navigation/native";
 
-export default function Feed1({isCookie}) {
+import { feedReviews, thumbsUp } from "@functions/api";
+
+export default function Feed1 ({ isCookie, setMusicalId, setReviewId }) {
     const nav = useNavigation();
 
-    return (
-        <SafeAreaView style={tw`bg-[#FAFAFA]`}>
-            <View>
-                <Text>여기는 피드 페이지</Text>
-                {isCookie ? <Text>로그인 되어 있음</Text> : <Text>로그인 안 되어 있음</Text>}
-                <Button onPress={() => nav.navigate("MusicalDetail1")} title="MusicalDetail1으로 가기"></Button>
-                <Button onPress={() => nav.navigate("SeeMore1")} title="SeeMore1으로 가기"></Button>
+    const [page, setPage] = useState(0);
+    const [updatePage, setUpdatePage] = useState(true);
+    const [feeds, setFeeds] = useState([]);
+
+    useEffect(() => {
+        if (updatePage && page === 0) {
+            feedReviews(page).then((newFeeds) => {
+                setFeeds((prevFeeds) => [...prevFeeds, ...newFeeds.feeds]);
+            }).catch((err) => {
+                console.log(err);
+            });
+        }
+    }, [page, updatePage]);
+
+    const goToMusicalDetail1 = musicalId => {
+        console.log(musicalId);
+        setMusicalId(musicalId);
+        nav.navigate('MusicalDetail1');
+    };
+
+    const goToReviewDetail1 = reviewId => {
+        console.log(reviewId);
+        setReviewId(reviewId);
+        nav.navigate('ReviewDetail1');
+    };
+
+    const onPressThumbsUp = (reviewId, isThumbsUp) => {
+        console.log(reviewId);
+        console.log(isThumbsUp);
+        // isThumbsUp이 true: 이미 공감되어 있음 -> 공감 버튼 누른다는 것: 공감 취소
+        // isThumbsUp이 false: 공감 안 되어 있음 -> 공감 버튼 누른다는 것: 공감
+        thumbsUp(reviewId, !isThumbsUp).then((res) => {
+            console.log(res);
+            setFeeds((prevFeeds) => {
+                const newFeeds = [...prevFeeds];
+                const feedIndex = newFeeds.findIndex((feed) => feed.reviewId === reviewId);
+                newFeeds[feedIndex].isThumbsUp = !isThumbsUp; // 프론트상에서만 바꿈 (구현 위함, 서버에서는 안 바뀜)
+                return newFeeds;
+            });
+        }).catch((err) => {
+            console.log(err);
+        });
+    };
+
+    const detectScroll = async (e) => {
+        if (!updatePage) {
+            return;
+        }
+
+        let updateScroll = e.nativeEvent.contentOffset.y;
+        if (updateScroll === 0) {
+            return;
+        }
+
+        let screenHeight = e.nativeEvent.layoutMeasurement.height;
+        let documentHeight = e.nativeEvent.contentSize.height;
+        let endPoint = 100;
+
+        if (updateScroll + screenHeight >= documentHeight - endPoint) {
+            if(!updatePage){
+                return;
+            };
+            setUpdatePage(false);
+            const nextPage = page + 1;
+            setPage(nextPage);
+            
+            feedReviews(nextPage).then((newFeeds) => {
+                setFeeds((prevFeeds) => [...prevFeeds, ...newFeeds.feeds]);
+                setUpdatePage(true);
+            }).catch((err) => {
+                console.log(err);
+            });
+        }
+    };
+
+    return (        
+        <SafeAreaView style={styles.container}>
+            <View style={tw`ml-[5%] mt-[18px] mb-[12px] flex-col`}>
+                <Image source={require("@images/logo_small_black.png")} style={tw`w-[110px] h-[37.64781px]`}></Image>
             </View>
+            <View style={tw`border-[0.25px] border-[#D3D4D3]`}></View>
+
+            <ScrollView onScroll={detectScroll}>
+                {feeds.map((feed, index) => (
+                    <Fragment key={index}>
+                            <ShortReviewFormInFeed
+                                reviewInfo={feed}
+                                goToMusicalDetail1={() => goToMusicalDetail1(feed.musicalId)}
+                                goToReviewDetail1={() => goToReviewDetail1(feed.reviewId)}
+                                onPressThumbsUp={() => onPressThumbsUp(feed.reviewId, feed.isThumbsUp)}
+                                isCookie={isCookie}
+                            />
+                            {index < feeds.length - 1 && (
+                                <View style={tw`border-4 border-[#F0F0F0]`}></View>
+                            )}
+                    </Fragment>
+                ))}
+            </ScrollView>
         </SafeAreaView>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        flexDirection: 'column',
+        backgroundColor: '#FAFAFA',
+    },
+});

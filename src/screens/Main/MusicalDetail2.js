@@ -1,32 +1,31 @@
-import React, { useState, useEffect, Fragment } from 'react';
-import { View, Pressable, Text, ScrollView, Image, Alert, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+// order-by 넣기
 
-import tw from 'twrnc';
+import React, { useState, useEffect, Fragment } from "react";
+import { View, Pressable, Text, ScrollView, Image, Alert, StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import tw from "twrnc";
 
-import AlertForm from '@forms/AlertForm';
-
-import MusicalInfoForm from '@forms/MusicalInfoForm';
-import StoryForm from '@forms/StoryForm';
-import AverageScoreForm from '@forms/AverageScoreForm';
+import { AlertFormForSort } from "@forms/AlertForm";
 import { ShortReviewForm } from '@forms/ReviewForm';
 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 
-import { musicalDetails, musicalReviews, musicalRateStatistics, thumbsUp } from '@functions/api';
+import { musicalDetails, musicalReviews, musicalReviewsAll, thumbsUp } from "@functions/api";
 
-export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setReviewId}) {
+export default function MusicalDetail2({isCookie, musicalId, setReviewId}) {
     const [modalVisible, setModalVisible] = useState(false);
+    const [sortModalVisible, setSortModalVisible] = useState(false);
 
-    const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
-    const [alertText, setAlertText] = useState('로그인이 필요한 서비스입니다.');
+    const [sortCriteria, setSortCriteria] = useState("공감순");
     
-    const [musicalInfo, setMusicalInfo] = useState({});
-    const [musicalRates, setMusicalRates] = useState({});
-    const [totalReviewCount, setTotalReviewCount] = useState(0);
-    const [reviews, setReviews] = useState([]);
-
     const nav = useNavigation();
+
+    const [musicalInfo, setMusicalInfo] = useState({});
+    const [totalReviewCount, setTotalReviewCount] = useState(0);
+
+    const [page, setPage] = useState(0);
+    const [updatePage, setUpdatePage] = useState(true);
+    const [reviews, setReviews] = useState([]);
 
     useEffect(() => {
         musicalDetails(musicalId).then((newMusicalInfo) => {
@@ -37,25 +36,26 @@ export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setRe
     }, []);
 
     useEffect(() => {
-        musicalRateStatistics(musicalId).then((newMusicalRates) => {
-            setMusicalRates(() => newMusicalRates.statistic);
-        }).catch((err) => {
-            console.log(err);
-        });
-    }, []);
-    
-    useEffect(() => {
         musicalReviews(musicalId).then((newReviews) => {
             setTotalReviewCount(() => newReviews.totalReviewCount);
-            setReviews(() => [...newReviews.reviews]);
         }).catch((err) => {
             console.log(err);
         });
     }, []);
 
+    useEffect(() => {
+        if (updatePage && page === 0) {
+            musicalReviewsAll(musicalId, page).then((newReviews) => {
+                setReviews(newReviews);
+            }).catch((err) => {
+                console.log(err);
+            });
+        }
+    }, [page, updatePage]);
+
     const goBack = () => {
         nav.goBack();
-    };
+    }
 
     const onPressWrite = () => {
         if (!isCookie) {
@@ -71,11 +71,10 @@ export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setRe
         Alert.alert('리뷰 작성 페이지로 이동');
     };
 
-    const goToMusicalDetail2 = (musicalId) => {
-        setMusicalId(musicalId);
-        nav.navigate('MusicalDetail2');
-    };
-
+    const onPressSort = () => {
+        setSortModalVisible(true);
+    } 
+    
     const onPressThumbsUp = (reviewId, isThumbsUp) => {
         console.log(reviewId);
         console.log(isThumbsUp);
@@ -101,11 +100,39 @@ export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setRe
         nav.navigate('ReviewDetail1');
     };
 
+    const detectScroll = async (e) => {
+        if (!updatePage) {
+            return;
+        }
+
+        let updateScroll = e.nativeEvent.contentOffset.y;
+        if (updateScroll === 0) {
+            return;
+        }
+
+        let screenHeight = e.nativeEvent.layoutMeasurement.height;
+        let documentHeight = e.nativeEvent.contentSize.height;
+        let endPoint = 100;
+
+        if (updateScroll + screenHeight >= documentHeight - endPoint) {
+            if(!updatePage){
+                return;
+            };
+            setUpdatePage(false);
+            const nextPage = page + 1;
+            setPage(nextPage);
+            
+            musicalReviewsAll(musicalId, nextPage).then((newReviews) => {
+                setReviews((prevReviews) => [...prevReviews, ...newReviews]);
+                setUpdatePage(true);
+            }).catch((err) => {
+                console.log(err);
+            });
+        }
+    };
+
     return (
         <SafeAreaView style={styles.container}>
-            <View>
-                <AlertForm modalVisible={modalVisible} setModalVisible={setModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
-            </View>
             <View style={tw`flex-row items-center justify-between mt-5 mb-[14px]`}>
                 <Pressable onPress={goBack} style={tw`flex-row`}>
                     <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] mr-[8px] w-[10px] h-[18px] tint-[#191919]`}></Image>
@@ -119,23 +146,14 @@ export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setRe
             </View>
             <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
 
-            <ScrollView>
-                <View style={tw`mt-[27.56px]`}></View>
-                {musicalInfo.posterUrl && (
-                    <MusicalInfoForm poster={musicalInfo.posterUrl} title={musicalInfo.title} score={musicalInfo.averageScore} date={musicalInfo.date} place={musicalInfo.place} duration={musicalInfo.duration} casting={musicalInfo.casting}></MusicalInfoForm>
-                )}                
-                <View style={tw`mb-[27.56px]`}></View>
-                <StoryForm story={musicalInfo.story}></StoryForm>
-                <View style={tw`mb-[35px]`}></View>
-                {Object.keys(musicalRates).length === 10 && (
-                    <AverageScoreForm averageScore={musicalInfo.averageScore} scoreCount={musicalRates}></AverageScoreForm>
-                )}
-                <View style={tw`mb-[35px]`}></View>
-                <View style={tw`flex flex-row w-[90%] justify-between items-center self-center mb-[10px]`}>
-                    <Text style={tw`text-[#191919] text-base font-medium`}>리뷰 ({totalReviewCount})</Text>
-                    <Pressable onPress={() => goToMusicalDetail2(musicalId)}>
-                        <Text style={tw`text-xs text-[#191919]`}>전체보기</Text>
+            <ScrollView onScroll={detectScroll}>
+                <View style={tw`flex flex-row w-[90%] justify-between items-center self-center mt-[15px]`}>
+                    <Text style={tw`text-[#191919] text-base font-medium mb-[6px]`}>모든 리뷰 ({totalReviewCount})</Text>
+                    <Pressable style={tw`flex flex-row items-center`} onPress={onPressSort}>
+                        <Text style={tw`text-[#191919] text-xs font-medium mr-[7px]`}>{sortCriteria}</Text>
+                        <Image source={require('@images/chevron_down.png')} style={tw`w-[14.4px] h-[8px]`}></Image>
                     </Pressable>
+                    <AlertFormForSort sortModalVisible={sortModalVisible} setSortModalVisible={setSortModalVisible} sortCriteria={sortCriteria} setSortCriteria={setSortCriteria}></AlertFormForSort>
                 </View>
 
                 {reviews.map((review, index) => (
@@ -147,13 +165,13 @@ export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setRe
                             isCookie={isCookie}
                         />
                         {index < reviews.length - 1 && (
-                            <View style={tw`border-4 border-[#F5F5F5]`}></View>
+                            <View style={tw`border-4 border-[#F0F0F0]`}></View>
                         )}
                     </Fragment>
                 ))}
             </ScrollView>
         </SafeAreaView>
-    );
+    )
 }
 
 const styles = StyleSheet.create({
