@@ -29,7 +29,6 @@ export default function AlertForm(props) {
     );
 }
 
-// TODO: 정렬 기준 선택하면 자동으로 창 off 되게 하기
 // props: sortModalVisible, setSortModalVisible, sortCriteria, setSortCriteria
 export function AlertFormForSort(props) {
     const [sortCriteria, setSortCriteria] = useState(props.sortCriteria);
@@ -37,6 +36,7 @@ export function AlertFormForSort(props) {
     const onPressSort = (criteria) => {
         setSortCriteria(criteria);
         props.setSortCriteria(criteria);
+        props.setSortModalVisible(false);
     };
 
     return (
