@@ -1,5 +1,5 @@
-import React from "react";
-import { View, TextInput, Image } from "react-native";
+import React, { useState } from "react";
+import { View, TextInput, Text, Image } from "react-native";
 import tw from "twrnc";
 
 import { VerifyButtonForm } from "./ButtonForm";
@@ -11,6 +11,7 @@ export default function InputForm(props) {
             <View style={tw`flex-row items-center`}>
                 <Image source={props.image} style={tw`tint-[#F5F8F5] ml-10px mr-20px w-[20px] h-[20px]`}></Image>
                 <TextInput placeholder={props.placeholder} onChangeText={(text) => { props.setValue(text); props.compareValue(text); props.reappearButton(text); }} placeholderTextColor={"#ABABAB"} secureTextEntry={props.secureTextEntry} color={"#ABABAB"} style={tw`h-40px`}></TextInput>
+
             </View>
             <>
                 {props.ifButton ?
@@ -23,4 +24,68 @@ export default function InputForm(props) {
             </>
         </View>
     );
+}
+
+// props: image, placeholder, setValue, reappearButton, inputCount, inputSize / ifWriting / ifButton, borderColor, buttonColor, buttonTextColor, buttonText, onPressButton / ifCheck / inputSizeColor
+export function NicknameInputForm(props) {
+    return (
+        <View style={tw`flex flex-row justify-between items-center border-solid border-b border-[#CCCCCC] w-[90%]`}>
+            <View style={tw`flex flex-row items-center ml-[5%]`}>
+                <Image source={props.image} style={tw`tint-[#B6B6B6] mr-[30px] w-[13.3px] h-[15px]`}></Image>
+                <TextInput 
+                    maxLength={10} 
+                    placeholder={props.placeholder} 
+                    onChangeText={(text) => { props.setValue(text); props.reappearButton(text); props.inputCount(text, 'nickname');}}
+                    placeholderTextColor={"#B6B6B6"} 
+                    color={"#191919"} 
+                    style={tw`mb-[7px] h-[30px] text-[#191919] text-sm font-normal`}>
+                </TextInput>
+            </View>
+            <View style={tw`flex flex-row items-center`}>
+                {props.ifWriting ?
+                    <Text style={[
+                        tw`text-[#B6B6B6] text-[10px] font-normal mr-[9px]`,
+                        { color: props.inputSizeColor }]}>{ props.inputSize }/10
+                    </Text>
+                    : null}
+                <View>
+                    {props.ifButton ?
+                        <VerifyButtonForm borderColor={props.borderColor} buttonColor={props.buttonColor} textColor={props.buttonTextColor} text={props.buttonText} onPress={props.onPressButton}></VerifyButtonForm>
+                        : props.ifCheck ?
+                            <Image source={require("@images/check.png")} style={tw`w-[16px] h-[11.75758px]`}></Image>
+                            : null}
+                </View>
+            </View>
+        </View>
+    )
+}
+
+// props: image, placeholder, setValue, inputCount, inputSize / ifWriting / inputSizeColor
+export function IntroduceInputForm(props) {
+    return (
+        <View style={tw`flex flex-row justify-between items-end border-solid border-b border-[#CCCCCC] w-[90%]`}>
+            <View style={tw`flex flex-row shrink items-start ml-[5%] mb-[10px]`}>
+                <Image source={props.image} style={tw`tint-[#B6B6B6] mt-[10px] mr-[30px] w-[13.3px] h-[15px]`}></Image>
+                <TextInput
+                    maxLength={50}
+                    placeholder={props.placeholder}
+                    onChangeText={(text) => { props.setValue(text); props.inputCount(text, 'introduce'); }}
+                    placeholderTextColor={"#B6B6B6"}
+                    color={"#191919"}
+                    style={tw`shrink mr-[10%] min-h-[30px] leading-[22px] text-[#191919] text-sm font-normal`}
+                    multiline={true}
+                    textAlignVertical="top">
+                </TextInput>
+            </View>
+            <View style={tw`items-start mb-[10px]`}>
+                {props.ifWriting ?
+                    <Text style={[
+                        tw`text-[#B6B6B6] text-[10px] leading-[22px] font-normal`,
+                        { color: props.inputSizeColor }]}>
+                        {props.inputSize}/50
+                    </Text>
+                    : null}
+            </View>
+        </View>
+    )
 }
