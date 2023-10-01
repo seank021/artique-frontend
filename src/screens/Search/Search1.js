@@ -1,6 +1,7 @@
 // TODO: order-by 넣기
 // TODO: 포스터 선택 시 해당 id의 MusicalDetail1로 이동
-// TODO: 검색 버튼?
+// TODO: 검색 버튼, 포스터 간격 논의
+// TODO: 포스터 마지막에 3개보다 적을 때, 간격 해결
 
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Image, TextInput, ScrollView, Text, Pressable, Button, FlatList } from "react-native";
