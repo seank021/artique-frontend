@@ -31,7 +31,6 @@ export default function AlertForm(props) {
     );
 }
 
-// TODO: 정렬 기준 선택하면 자동으로 창 off 되게 하기
 // props: sortModalVisible, setSortModalVisible, sortCriteria, setSortCriteria
 export function AlertFormForSort(props) {
     const [sortCriteria, setSortCriteria] = useState(props.sortCriteria);
@@ -39,6 +38,8 @@ export function AlertFormForSort(props) {
     const onPressSort = (criteria) => {
         setSortCriteria(criteria);
         props.setSortCriteria(criteria);
+
+        props.setSortModalVisible(false);
     };
 
     return (
@@ -58,6 +59,38 @@ export function AlertFormForSort(props) {
                         <Pressable onPress={() => onPressSort('관람일순')} style={tw`flex flex-row justify-between items-center`}>
                             <Text style={tw`text-sm text-left text-[#191919]`}>관람일순</Text>
                             {sortCriteria === '관람일순' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px]`}></Image>)}
+                        </Pressable>
+                    </View>
+                </View>
+            </View>
+        </Modal>
+    )
+}
+
+// props: sortModalVisible, setSortModalVisible, sortCriteria, setSortCriteria
+export function AlertFormForSort2(props) {
+    const [sortCriteria, setSortCriteria] = useState(props.sortCriteria);
+
+    const onPressSort = (criteria) => {
+        setSortCriteria(criteria);
+        props.setSortCriteria(criteria);
+
+        props.setSortModalVisible(false);
+    };
+
+    return (
+        <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.sortModalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={() => props.setSortModalVisible(false)}>
+            <View style={tw`flex flex-col w-[230px] h-[179px] bg-white rounded-2xl self-center`}>
+                <View style={tw`flex flex-col my-[25px] justify-between`}>
+                    <Text style={tw`text-center text-base font-medium mb-[30px] text-[#191919]`}>정렬 기준</Text>
+                    <View style={tw`flex flex-col w-[80%] h-[70px] self-center justify-between`}>
+                        <Pressable onPress={() => onPressSort('최신순')} style={tw`flex flex-row justify-between items-center`}>
+                            <Text style={tw`text-sm text-left text-[#191919]`}>최신순</Text>
+                            {sortCriteria === '최신순' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px]`}></Image>)}
+                        </Pressable>
+                        <Pressable onPress={() => onPressSort('공감순')} style={tw`flex flex-row justify-between items-center`}>
+                            <Text style={tw`text-sm text-left text-[#191919]`}>공감순</Text>
+                            {sortCriteria === '공감순' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px]`}></Image>)}
                         </Pressable>
                     </View>
                 </View>
