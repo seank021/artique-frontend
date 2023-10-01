@@ -1,4 +1,4 @@
-// order-by 넣기
+// TODO: order-by 넣기
 
 import React, { useState, useEffect, Fragment } from "react";
 import { View, Pressable, Text, ScrollView, Image, Alert, StyleSheet } from "react-native";
@@ -70,10 +70,6 @@ export default function MusicalDetail2({isCookie, musicalId, setReviewId}) {
         console.log(musicalInfo.musicalId);
         Alert.alert('리뷰 작성 페이지로 이동');
     };
-
-    const onPressSort = () => {
-        setSortModalVisible(true);
-    } 
     
     const onPressThumbsUp = (reviewId, isThumbsUp) => {
         console.log(reviewId);
@@ -149,7 +145,7 @@ export default function MusicalDetail2({isCookie, musicalId, setReviewId}) {
             <ScrollView onScroll={detectScroll}>
                 <View style={tw`flex flex-row w-[90%] justify-between items-center self-center mt-[15px]`}>
                     <Text style={tw`text-[#191919] text-base font-medium mb-[6px]`}>모든 리뷰 ({totalReviewCount})</Text>
-                    <Pressable style={tw`flex flex-row items-center`} onPress={onPressSort}>
+                    <Pressable style={tw`flex flex-row items-center`} onPress={() => setSortModalVisible(true)}>
                         <Text style={tw`text-[#191919] text-xs font-medium mr-[7px]`}>{sortCriteria}</Text>
                         <Image source={require('@images/chevron_down.png')} style={tw`w-[14.4px] h-[8px]`}></Image>
                     </Pressable>
