@@ -26,8 +26,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-// Profile 부분에 setGoToFeed 넣어놓음 (로그아웃 테스트용)
-
 const Navigation = () => {
     const [goToFeed, setGoToFeed] = useState(false);
 
