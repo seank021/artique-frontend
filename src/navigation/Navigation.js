@@ -17,7 +17,7 @@ import ReviewDetail1 from "@screens/Main/ReviewDetail1";
 
 import Search from "@screens/Search/Search";
 
-import Profile from "@screens/Profile/Profile";
+import Profile from "@screens/Profile/Mypage";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
