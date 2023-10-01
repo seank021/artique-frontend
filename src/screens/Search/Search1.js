@@ -6,16 +6,16 @@ import { View, StyleSheet, Image, TextInput, ScrollView, Text, Pressable, Button
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from 'twrnc'
 
-import * as SearchFunctions from "@functions/search";
+import * as Keywords from "@functions/keywords";
 
-export default function Search() {
+export default function Search1({isCookie}) {    
     const [value, setValue] = useState('');
     const [ifX, setIfX] = useState(false);
     
     const [searchHistory, setSearchHistory] = useState([]);
     useEffect(() => {
         const getSearchHistory = async () => {
-            const searchHistory = await SearchFunctions.getAllSearchKeywords();
+            const searchHistory = await Keywords.getAllSearchKeywords();
             setSearchHistory(searchHistory);
         }
         getSearchHistory();
@@ -40,7 +40,7 @@ export default function Search() {
         if (value === '') {
             return;
         }
-        SearchFunctions.storeSearchKeyword(value);
+        Keywords.storeSearchKeyword(value);
         if (searchHistory.includes(value)) {
             return;
         }
@@ -48,7 +48,7 @@ export default function Search() {
     }
 
     const deleteKeyword = (keyword) => {
-        SearchFunctions.removeParticularKeyword(keyword);
+        Keywords.removeParticularKeyword(keyword);
         if (searchHistory.includes(keyword)) {
             setSearchHistory(searchHistory.filter((item) => item !== keyword));
         } else {
@@ -57,7 +57,7 @@ export default function Search() {
     }
 
     const deleteAllKeywords = () => {
-        SearchFunctions.removeAllKeywords();
+        Keywords.removeAllKeywords();
         setSearchHistory([]);
     }
 

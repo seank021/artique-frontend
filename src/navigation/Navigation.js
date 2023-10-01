@@ -15,7 +15,7 @@ import MusicalDetail1 from "@screens/Main/MusicalDetail1";
 import MusicalDetail2 from "@screens/Main/MusicalDetail2";
 import ReviewDetail1 from "@screens/Main/ReviewDetail1";
 
-import Search from "@screens/Search/Search";
+import Search1 from "@screens/Search/Search1";
 
 import Profile from "@screens/Profile/Profile";
 
@@ -78,7 +78,7 @@ const Navigation = () => {
 
         return (
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="Search" children={() => <Search isCookie={isCookie}/>} />
+                <Stack.Screen name="Search1" children={() => <Search1 isCookie={isCookie}/>} />
             </Stack.Navigator>
         )
     };
