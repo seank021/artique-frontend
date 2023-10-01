@@ -1,20 +1,30 @@
-// TODO: 백 연결
-// TODO: 나머지 스크린 구현
+// TODO: order-by 넣기
+// TODO: 포스터 선택 시 해당 id의 MusicalDetail1로 이동
+// TODO: 검색 버튼?
 
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Image, TextInput, ScrollView, Text, Pressable, Button } from "react-native";
+import { View, StyleSheet, Image, TextInput, ScrollView, Text, Pressable, Button, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from 'twrnc'
 
+import { AlertFormForSort2 } from "@forms/AlertForm";
+
 import * as Keywords from "@functions/keywords";
 
-export default function Search1({isCookie}) {
+import { searchMusicals } from "@functions/api";
+
+import { useNavigation } from "@react-navigation/native";
+
+export default function Search1({ isCookie }) {
+    const nav = useNavigation();
+
     const [isBeforeSearch, setIsBeforeSearch] = useState(true); // 검색 전, 후 구분
 
     const [value, setValue] = useState('');
     const [placeholderValue, setPlaceholderValue] = useState('');
     const [ifX, setIfX] = useState(false);
     
+    // 검색 기록을 위한 변수
     const [searchHistory, setSearchHistory] = useState([]);
     useEffect(() => {
         const getSearchHistory = async () => {
@@ -23,6 +33,27 @@ export default function Search1({isCookie}) {
         }
         getSearchHistory();
     }, []);
+
+    // 검색을 위한 변수
+    const [searchedMusicals, setSearchedMusicals] = useState([]);
+    const [shouldSearch, setShouldSearch] = useState(false);
+    const [searchValue, setSearchValue] = useState('');
+    useEffect(() => {
+        if (shouldSearch && searchValue !== '') {
+            searchMusicals(searchValue)
+                .then((res) => {
+                    setSearchedMusicals(res.musicals);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+        setShouldSearch(false);
+    }, [value, shouldSearch]);
+
+    // 정렬을 위한 변수
+    const [sortModalVisible, setSortModalVisible] = useState(false);
+    const [sortCriteria, setSortCriteria] = useState("최신순");
 
     const onChangeText = (text) => {
         setValue(text);
@@ -51,10 +82,14 @@ export default function Search1({isCookie}) {
         setIsBeforeSearch(false);
         setPlaceholderValue(keyword);
         setValue('');
-        if (searchHistory.includes(keyword)) {
-            return;
+        if (!searchHistory.includes(keyword)) {
+            setSearchHistory([keyword, ...searchHistory]);
+        } else {
+            setSearchHistory([keyword, ...searchHistory.filter((item) => item !== keyword)]);
         }
-        setSearchHistory([keyword, ...searchHistory]);
+
+        setSearchValue(keyword);
+        setShouldSearch(true);
     }
 
     const deleteKeyword = (keyword) => {
@@ -70,6 +105,27 @@ export default function Search1({isCookie}) {
         Keywords.removeAllKeywords();
         setSearchHistory([]);
     }
+
+    const MusicalsList = ({ data }) => {
+        return (
+            <FlatList
+                data={data}
+                numColumns={3}
+                renderItem={({ item }) => (
+                    <View style={{ flex: 1, margin: 5 }}>
+                        <Pressable style={{ flex: 1 }} onPress={() => console.log(item.musicalId + "의 MusicalDetail1으로 이동")}>
+                            <Image source={{ uri: item.posterUrl }} style={{ width: 110, height: 157.90323, borderRadius: 10, marginBottom: 10.1 }} />
+                            <Text style={{ width: 110, color: '#191919', fontSize: 12, marginBottom: 30 }}>
+                                {item.title.length > 20 ? `${item.title.slice(0, 20)} ...` : item.title}
+                            </Text>
+                        </Pressable>
+                    </View>
+                )}
+                keyExtractor={(item) => item.musicalId}
+                contentContainerStyle={{ justifyContent: 'flex-start' }}
+            />
+        );
+    };
 
     return (
         <SafeAreaView style={styles.container}>
@@ -121,10 +177,19 @@ export default function Search1({isCookie}) {
                             <Pressable onPress={()=>setIsBeforeSearch(true)}><Image source={require('@images/x.png')} style={tw`mr-[18px] w-[18px] h-[18px] tint-[#ABABAB]`} /></Pressable>
                         </View>
                     </View>
-                    <View style={tw`border-[0.5px] border-[#D3D4D3]`}></View>
+                    <View style={tw`border-[0.5px] border-[#D3D4D3] mb-[5px]`}></View>
 
-                    <Text>POSTERS</Text>
+                    <Pressable style={tw`flex flex-row items-center justify-end mr-[5%] my-[10px]`} onPress={() => setSortModalVisible(true)}>
+                        <Text style={tw`text-[#191919] text-xs font-medium mr-[7px]`}>{sortCriteria}</Text>
+                        <Image source={require('@images/chevron_down.png')} style={tw`w-[14.4px] h-[8px]`}></Image>
+                    </Pressable>
+                    <AlertFormForSort2 sortModalVisible={sortModalVisible} setSortModalVisible={setSortModalVisible} sortCriteria={sortCriteria} setSortCriteria={setSortCriteria}></AlertFormForSort2>
                     
+                    {searchedMusicals.length !== 0 ?
+                        <View style={{ flex: 1 }}>
+                            <MusicalsList data={searchedMusicals} />
+                        </View>
+                    : null}
                 </>
             }
 

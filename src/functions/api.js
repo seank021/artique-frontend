@@ -105,4 +105,15 @@ const reviewDetail = async (reviewId) => {
     }
 }
 
-export { feedReviews, musicalReviews, musicalDetails, musicalRateStatistics, musicalReviewsAll, thumbsUp, reviewDetail };
+// TODO: order-by 넣기
+const searchMusicals = async (keyword) => {
+    try {
+        const response = await axios.get(`http://3.39.145.210/search?key-word=${keyword}&order-by=DATE`);
+        // console.log(response.data);
+        return response.data;
+    } catch (err) {
+        console.log(err.response.data);
+    }
+}
+
+export { feedReviews, musicalReviews, musicalDetails, musicalRateStatistics, musicalReviewsAll, thumbsUp, reviewDetail, searchMusicals };
