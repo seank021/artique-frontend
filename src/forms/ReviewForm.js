@@ -267,7 +267,7 @@ export function ShortReviewFormInMypage(props) {
                     <View style={tw`flex-row justify-between mx-1.5 my-1.5`}>
                         <Text style={tw`text-xs text-[#191919] font-medium`}>"</Text>
                         <Text numberOfLines={2} ellipsizeMode='tail' style={tw`text-xs text-[#191919] font-medium shrink mr-1.5`}>
-                            {"여기에 들어가는 한줄평 글자수가 피드에서랑 달라도 되나요? 여기서는 더 보여도 될 것 같아요 우히히히히힣".replace(/^(.{40}[^\s]*).*/, "$1...\"")}
+                            {"여기에 들어가는 한줄평 글자수가 피드에서랑 달라도 되나요? 여기서는 더 보여도 될 것 같아요 우히히히히힣".replace(/^(.{30}[^\s]*).*/, "$1...\"")}
                         </Text>
                     </View>
                 </View>
