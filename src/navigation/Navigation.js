@@ -19,6 +19,7 @@ import Search from "@screens/Search/Search";
 
 import Profile from "@screens/Profile/Mypage";
 import ChangeProfile from "@screens/Profile/ChangeProfile";
+import MyReviews from "@screens/Profile/MyReviews";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -98,6 +99,7 @@ const Navigation = () => {
             <Stack.Navigator screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="Profile" children={() => <Profile isCookie={isCookie} setGoToFeed={setGoToFeed} />} />
                 <Stack.Screen name="ChangeProfile" children={() => <ChangeProfile isCookie={isCookie}/>} />
+                <Stack.Screen name="MyReviews" children={() => <MyReviews isCookie={isCookie}/>} />
             </Stack.Navigator>
         )
     };

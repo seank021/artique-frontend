@@ -13,6 +13,10 @@ export default function Mypage ({ isCookie }) {
     nav.navigate('ChangeProfile');
   }
 
+  const goToMyReviews = () => {
+    nav.navigate('MyReviews');
+  }
+  
   return (
     <SafeAreaView style={styles.container}>
       {/* 상단 바 */}
@@ -35,7 +39,7 @@ export default function Mypage ({ isCookie }) {
           <Text style={tw`text-xs text-[#191919] font-normal w-57.5 leading-5`}>나에 대한 소개를 작성할 수 있는 칸입니다. 글자수 제한은 두 줄에 들어가는 50자로 할까요?</Text>
         </View>
       </View>
-      <Pressable onPress={console.log('review moabogi~')} style={tw`self-center w-9/10 h-[33px] mt-[25px] rounded-3xl bg-[#FFF] shadow`}>
+      <Pressable onPress={goToMyReviews} style={tw`self-center w-9/10 h-[33px] mt-[25px] rounded-3xl bg-[#FFF] shadow`}>
         <Text style={tw`text-xs text-[#191919] font-normal text-center leading-[33px]`}>작성한 리뷰 모아보기</Text>
       </Pressable>
         
