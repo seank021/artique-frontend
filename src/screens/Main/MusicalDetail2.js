@@ -1,5 +1,3 @@
-// order-by 넣기
-
 import React, { useState, useEffect, Fragment } from "react";
 import { View, Pressable, Text, ScrollView, Image, Alert, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -15,8 +13,8 @@ import { musicalDetails, musicalReviews, musicalReviewsAll, thumbsUp } from "@fu
 export default function MusicalDetail2({isCookie, musicalId, setReviewId}) {
     const [modalVisible, setModalVisible] = useState(false);
     const [sortModalVisible, setSortModalVisible] = useState(false);
-
     const [sortCriteria, setSortCriteria] = useState("공감순");
+    const orderBy = sortCriteria === "공감순" ? "THUMBS" : sortCriteria === "관람일순" ? "VIEW" : "CREATE";
     
     const nav = useNavigation();
 
@@ -44,14 +42,15 @@ export default function MusicalDetail2({isCookie, musicalId, setReviewId}) {
     }, []);
 
     useEffect(() => {
+        console.log(orderBy)
         if (updatePage && page === 0) {
-            musicalReviewsAll(musicalId, page).then((newReviews) => {
+            musicalReviewsAll(musicalId, page, orderBy).then((newReviews) => {
                 setReviews(newReviews);
             }).catch((err) => {
                 console.log(err);
             });
         }
-    }, [page, updatePage]);
+    }, [page, updatePage, orderBy]);
 
     const goBack = () => {
         nav.goBack();
@@ -122,7 +121,7 @@ export default function MusicalDetail2({isCookie, musicalId, setReviewId}) {
             const nextPage = page + 1;
             setPage(nextPage);
             
-            musicalReviewsAll(musicalId, nextPage).then((newReviews) => {
+            musicalReviewsAll(musicalId, nextPage, orderBy).then((newReviews) => {
                 setReviews((prevReviews) => [...prevReviews, ...newReviews]);
                 setUpdatePage(true);
             }).catch((err) => {

@@ -31,11 +31,10 @@ const feedReviews = async (page) => {
     }
 };
 
-// TODO: order-by 넣기
-const musicalReviewsAll = async (musicalId, page) => {
+const musicalReviewsAll = async (musicalId, page, orderBy) => {
     try {
         console.log(myHeaders);
-        const response = await axios.get(`http://3.39.145.210/musical/reviews/all?musical-id=${musicalId}&page=${page}&size=10&order-by=thumbs`, {
+        const response = await axios.get(`http://3.39.145.210/musical/reviews/all?musical-id=${musicalId}&page=${page}&size=10&order-by=${orderBy}`, {
             headers: myHeaders.map,
         });
         // console.log(response.data);
