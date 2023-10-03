@@ -40,11 +40,10 @@ export default function Search1({ isCookie }) {
 
     // 검색을 위한 변수
     const [searchedMusicals, setSearchedMusicals] = useState([]);
-    const [shouldSearch, setShouldSearch] = useState(false);
     const [searchValue, setSearchValue] = useState('');
 
     useEffect(() => {
-        if (shouldSearch && searchValue !== '') {
+        if (searchValue !== '') {
             searchMusicals(searchValue, orderBy)
                 .then((res) => {
                     setSearchedMusicals(res.musicals);
@@ -53,8 +52,7 @@ export default function Search1({ isCookie }) {
                     console.log(err);
                 });
         }
-        setShouldSearch(false);
-    }, [value, shouldSearch, orderBy]);
+    }, [value, orderBy]);
 
     const onChangeText = (text) => {
         setValue(text);
@@ -90,7 +88,6 @@ export default function Search1({ isCookie }) {
         }
 
         setSearchValue(keyword);
-        setShouldSearch(true);
     }
 
     const deleteKeyword = (keyword) => {
