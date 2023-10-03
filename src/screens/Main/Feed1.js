@@ -92,7 +92,7 @@ export default function Feed1 ({ isCookie, setMusicalId, setReviewId }) {
             <View style={tw`ml-[5%] mt-[18px] mb-[12px] flex-col`}>
                 <Image source={require("@images/logo_small_black.png")} style={tw`w-[110px] h-[37.64781px]`}></Image>
             </View>
-            <View style={tw`border-[0.25px] border-[#D3D4D3]`}></View>
+            <View style={tw`border-[0.5px] border-[#D3D4D3]`}></View>
 
             <ScrollView onScroll={detectScroll}>
                 {feeds.map((feed, index) => (

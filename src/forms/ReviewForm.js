@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Image, Pressable, ScrollView, Platform, StyleSheet, Dimensions} from 'react-native';
 import tw from 'twrnc';
 
-import AlertForm, { LongReviewModal } from '@forms/AlertForm';
+import AlertForm, { LongReviewForm } from '@forms/AlertForm';
 
 import { makeStars, makeStarsForEachReview } from '@functions/makeStars';
 
@@ -278,7 +278,7 @@ export function MusicalInfoFormInReviewDetail(props) {
                     <ScrollView style={tw`w-3/5 h-24`} showsVerticalScrollIndicator={false} onTouchEnd={() => setLongReviewModalVisible(true)} onMomentumScrollBegin={() => setLongReviewModalVisible(true)}>
                         <Text style={tw`text-gray-900 text-sm text-justify font-normal leading-6`}>{props.reviewInfo.longReview}</Text>
                     </ScrollView>
-                    <LongReviewModal longReviewModalVisible={longReviewModalVisible} setLongReviewModalVisible={setLongReviewModalVisible} longReview={props.reviewInfo.longReview}></LongReviewModal>
+                    <LongReviewForm modalVisible={longReviewModalVisible} setModalVisible={setLongReviewModalVisible} longReview={props.reviewInfo.longReview}></LongReviewForm>
                 </View>
             </View>
 
