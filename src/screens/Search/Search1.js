@@ -36,7 +36,7 @@ export default function Search1({ isCookie }) {
     // 정렬을 위한 변수
     const [sortModalVisible, setSortModalVisible] = useState(false);
     const [sortCriteria, setSortCriteria] = useState("최신순");
-    const orderBy = sortCriteria === '최신순' ? 'DATE' : 'RATE'; // 기본 값: DATE
+    const orderBy = sortCriteria === '최신순' ? 'DATE' : 'REVIEW'; // 기본 값: DATE
 
     // 검색을 위한 변수
     const [searchedMusicals, setSearchedMusicals] = useState([]);
