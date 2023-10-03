@@ -1,4 +1,3 @@
-// TODO: order-by 넣기
 // TODO: 포스터 선택 시 해당 id의 MusicalDetail1로 이동
 // TODO: 포스터 간격 논의
 
@@ -34,13 +33,19 @@ export default function Search1({ isCookie }) {
         getSearchHistory();
     }, []);
 
+    // 정렬을 위한 변수
+    const [sortModalVisible, setSortModalVisible] = useState(false);
+    const [sortCriteria, setSortCriteria] = useState("최신순");
+    const orderBy = sortCriteria === '최신순' ? 'DATE' : 'RATE'; // 기본 값: DATE
+
     // 검색을 위한 변수
     const [searchedMusicals, setSearchedMusicals] = useState([]);
     const [shouldSearch, setShouldSearch] = useState(false);
     const [searchValue, setSearchValue] = useState('');
+
     useEffect(() => {
         if (shouldSearch && searchValue !== '') {
-            searchMusicals(searchValue)
+            searchMusicals(searchValue, orderBy)
                 .then((res) => {
                     setSearchedMusicals(res.musicals);
                 })
@@ -49,11 +54,7 @@ export default function Search1({ isCookie }) {
                 });
         }
         setShouldSearch(false);
-    }, [value, shouldSearch]);
-
-    // 정렬을 위한 변수
-    const [sortModalVisible, setSortModalVisible] = useState(false);
-    const [sortCriteria, setSortCriteria] = useState("최신순");
+    }, [value, shouldSearch, orderBy]);
 
     const onChangeText = (text) => {
         setValue(text);
