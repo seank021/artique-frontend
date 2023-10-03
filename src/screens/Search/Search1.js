@@ -52,7 +52,7 @@ export default function Search1({ isCookie }) {
                     console.log(err);
                 });
         }
-    }, [value, orderBy]);
+    }, [searchValue, orderBy]);
 
     const onChangeText = (text) => {
         setValue(text);
@@ -67,6 +67,7 @@ export default function Search1({ isCookie }) {
         setValue('');
         this.textInput.clear();
         setIfX(false);
+        setSortCriteria('최신순');
         setIsBeforeSearch(true);
     }
 
@@ -166,10 +167,10 @@ export default function Search1({ isCookie }) {
             :
                 <>
                     <View style={tw`flex-row items-center mx-[5%] mt-[17px] mb-[11px]`}>
-                        <Pressable onPress={()=>setIsBeforeSearch(true)}><Image source={require('@images/chevron_left.png')} style={tw`w-[10px] h-[18px] mr-[23px] tint-[#191919]`} /></Pressable>
+                        <Pressable onPress={()=> {setIsBeforeSearch(true); setSortCriteria('최신순');}}><Image source={require('@images/chevron_left.png')} style={tw`w-[10px] h-[18px] mr-[23px] tint-[#191919]`} /></Pressable>
                         <View style={tw`flex-row w-[90%] justify-between items-center bg-[#E6E6E6] rounded-[19.5px]`}>
                             <TextInput style={tw`ml-[14px] font-medium`} placeholder={placeholderValue} placeholderTextColor={"#191919"} editable={false} />
-                            <Pressable onPress={()=>setIsBeforeSearch(true)}><Image source={require('@images/x.png')} style={tw`mr-[18px] w-[18px] h-[18px] tint-[#ABABAB]`} /></Pressable>
+                            <Pressable onPress={()=> {setIsBeforeSearch(true); setSortCriteria('최신순');}}><Image source={require('@images/x.png')} style={tw`mr-[18px] w-[18px] h-[18px] tint-[#ABABAB]`} /></Pressable>
                         </View>
                     </View>
                     <View style={tw`border-[0.5px] border-[#D3D4D3]`}></View>
