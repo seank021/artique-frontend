@@ -177,7 +177,7 @@ export default function Search1({ isCookie }) {
                     </View>
                     <View style={tw`border-[0.5px] border-[#D3D4D3]`}></View>
 
-                    <Pressable style={tw`flex flex-row items-center justify-end mr-[5%] my-[10px]`} onPress={() => setSortModalVisible(true)}>
+                    <Pressable style={tw`flex flex-row items-center justify-end mr-[5%] my-[15px]`} onPress={() => setSortModalVisible(true)}>
                         <Text style={tw`text-[#191919] text-xs font-medium mr-[7px]`}>{sortCriteria}</Text>
                         <Image source={require('@images/chevron_down.png')} style={tw`w-[14.4px] h-[8px]`}></Image>
                     </Pressable>
