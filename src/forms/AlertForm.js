@@ -88,9 +88,9 @@ export function AlertFormForSort2(props) {
                             <Text style={tw`text-sm text-left text-[#191919]`}>최신순</Text>
                             {sortCriteria === '최신순' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px]`}></Image>)}
                         </Pressable>
-                        <Pressable onPress={() => onPressSort('공감순')} style={tw`flex flex-row justify-between items-center`}>
-                            <Text style={tw`text-sm text-left text-[#191919]`}>공감순</Text>
-                            {sortCriteria === '공감순' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px]`}></Image>)}
+                        <Pressable onPress={() => onPressSort('리뷰 많은 순')} style={tw`flex flex-row justify-between items-center`}>
+                            <Text style={tw`text-sm text-left text-[#191919]`}>리뷰 많은 순</Text>
+                            {sortCriteria === '리뷰 많은 순' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px]`}></Image>)}
                         </Pressable>
                     </View>
                 </View>

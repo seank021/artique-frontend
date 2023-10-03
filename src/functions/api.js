@@ -105,10 +105,9 @@ const reviewDetail = async (reviewId) => {
     }
 }
 
-// TODO: order-by 넣기
-const searchMusicals = async (keyword) => {
+const searchMusicals = async (keyword, orderBy) => {
     try {
-        const response = await axios.get(`http://3.39.145.210/search?key-word=${keyword}&order-by=DATE`);
+        const response = await axios.get(`http://3.39.145.210/search?key-word=${keyword}&order-by=${orderBy}`);
         // console.log(response.data);
         return response.data;
     } catch (err) {

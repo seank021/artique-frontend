@@ -1,10 +1,8 @@
-// TODO: order-by 넣기
 // TODO: 포스터 선택 시 해당 id의 MusicalDetail1로 이동
-// TODO: 검색 버튼, 포스터 간격 논의
-// TODO: 포스터 마지막에 3개보다 적을 때, 간격 해결
+// TODO: 포스터 간격 논의
 
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Image, TextInput, ScrollView, Text, Pressable, Button, FlatList } from "react-native";
+import { View, StyleSheet, Image, TextInput, ScrollView, Text, Pressable, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from 'twrnc'
 
@@ -35,13 +33,19 @@ export default function Search1({ isCookie }) {
         getSearchHistory();
     }, []);
 
+    // 정렬을 위한 변수
+    const [sortModalVisible, setSortModalVisible] = useState(false);
+    const [sortCriteria, setSortCriteria] = useState("최신순");
+    const orderBy = sortCriteria === '최신순' ? 'DATE' : 'REVIEW'; // 기본 값: DATE
+
     // 검색을 위한 변수
     const [searchedMusicals, setSearchedMusicals] = useState([]);
     const [shouldSearch, setShouldSearch] = useState(false);
     const [searchValue, setSearchValue] = useState('');
+
     useEffect(() => {
         if (shouldSearch && searchValue !== '') {
-            searchMusicals(searchValue)
+            searchMusicals(searchValue, orderBy)
                 .then((res) => {
                     setSearchedMusicals(res.musicals);
                 })
@@ -50,11 +54,7 @@ export default function Search1({ isCookie }) {
                 });
         }
         setShouldSearch(false);
-    }, [value, shouldSearch]);
-
-    // 정렬을 위한 변수
-    const [sortModalVisible, setSortModalVisible] = useState(false);
-    const [sortCriteria, setSortCriteria] = useState("최신순");
+    }, [value, shouldSearch, orderBy]);
 
     const onChangeText = (text) => {
         setValue(text);
@@ -113,11 +113,11 @@ export default function Search1({ isCookie }) {
                 data={data}
                 numColumns={3}
                 renderItem={({ item }) => (
-                    <View style={{ flex: 1, margin: 5 }}>
-                        <Pressable style={{ flex: 1 }} onPress={() => console.log(item.musicalId + "의 MusicalDetail1으로 이동")}>
+                    <View style={{ marginHorizontal: 5, justifyContent: "flex-start"}}>
+                        <Pressable onPress={() => console.log(item.musicalId + "의 MusicalDetail1으로 이동")}>
                             <Image source={{ uri: item.posterUrl }} style={{ width: 110, height: 157.90323, borderRadius: 10, marginBottom: 10.1 }} />
-                            <Text style={{ width: 110, color: '#191919', fontSize: 12, marginBottom: 30 }}>
-                                {item.title.length > 20 ? `${item.title.slice(0, 20)} ...` : item.title}
+                            <Text numberOfLines={2} ellipsizeMode="tail" style={{ width: 110, color: '#191919', fontSize: 12, marginBottom: 30 }}>
+                                {item.title}
                             </Text>
                         </Pressable>
                     </View>
@@ -136,7 +136,7 @@ export default function Search1({ isCookie }) {
                         <View style={tw`flex-row justify-between bg-[#E6E6E6] rounded-[19.5px]`}>
                             <View style={tw`flex-row w-[90%] items-center`}>
                                 <Image source={require('@images/search.png')} style={tw`ml-[18px] w-[18px] h-[18px] tint-[#ABABAB]`} />
-                                <TextInput ref={(text) => this.textInput = text} onChangeText={onChangeText} style={tw`ml-[14px]`} placeholder='작품명이나 배우를 검색해보세요' />
+                                <TextInput ref={(text) => this.textInput = text} onChangeText={(text) => onChangeText(text)} onSubmitEditing={() => onPressSearch(value)} returnKeyType="done" placeholder='작품명이나 배우를 검색해보세요' style={tw`ml-[14px]`}  />
                             </View>
                             <View style={tw`self-center`}>
                                 {ifX ? <Pressable onPress={deleteTextInput}><Image source={require('@images/x.png')} style={tw`mr-[18px] w-[18px] h-[18px] tint-[#ABABAB]`} /></Pressable> : null}
@@ -165,9 +165,6 @@ export default function Search1({ isCookie }) {
                             : <Text style={tw`text-[#ABABAB] text-sm`}>최근 검색어가 없습니다.</Text>
                         }
                     </View>
-
-                    <View style={tw`mt-[100px]`}></View>
-                    <Button onPress={() => onPressSearch(value)} title="임의로 만든 검색 버튼" />
                 </>
             :
                 <>
@@ -178,7 +175,7 @@ export default function Search1({ isCookie }) {
                             <Pressable onPress={()=>setIsBeforeSearch(true)}><Image source={require('@images/x.png')} style={tw`mr-[18px] w-[18px] h-[18px] tint-[#ABABAB]`} /></Pressable>
                         </View>
                     </View>
-                    <View style={tw`border-[0.5px] border-[#D3D4D3] mb-[5px]`}></View>
+                    <View style={tw`border-[0.5px] border-[#D3D4D3]`}></View>
 
                     <Pressable style={tw`flex flex-row items-center justify-end mr-[5%] my-[10px]`} onPress={() => setSortModalVisible(true)}>
                         <Text style={tw`text-[#191919] text-xs font-medium mr-[7px]`}>{sortCriteria}</Text>
@@ -193,8 +190,6 @@ export default function Search1({ isCookie }) {
                     : null}
                 </>
             }
-
-
         </SafeAreaView>
     );
 }
