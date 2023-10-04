@@ -15,7 +15,7 @@ import MusicalDetail1 from "@screens/Main/MusicalDetail1";
 import MusicalDetail2 from "@screens/Main/MusicalDetail2";
 import ReviewDetail1 from "@screens/Main/ReviewDetail1";
 
-import Search from "@screens/Search/Search";
+import Search1 from "@screens/Search/Search1";
 
 import Profile from "@screens/Profile/Mypage";
 import ChangeProfile from "@screens/Profile/ChangeProfile";
@@ -27,8 +27,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
-
-// Profile 부분에 setGoToFeed 넣어놓음 (로그아웃 테스트용)
 
 const Navigation = () => {
     const [goToFeed, setGoToFeed] = useState(false);
@@ -47,6 +45,7 @@ const Navigation = () => {
     const MainStack = () => {
         const [isCookie, setIsCookie] = useState(false);
         const [musicalId, setMusicalId] = useState(0);
+        const [reviewId, setReviewId] = useState(0);
 
         useEffect(() => {
             const checkCookie = async () => {
@@ -58,10 +57,10 @@ const Navigation = () => {
 
         return (
             <Stack.Navigator initialRouteName="Feed1" screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="Feed1" children={() => <Feed1 isCookie={isCookie} setMusicalId={setMusicalId} />} />
-                <Stack.Screen name="MusicalDetail1" children={() => <MusicalDetail1 isCookie={isCookie} musicalId={musicalId} />} />
-                <Stack.Screen name="MusicalDetail2" children={() => <MusicalDetail2 isCookie={isCookie} musicalId={musicalId}/>} />
-                <Stack.Screen name="ReviewDetail1" children={() => <ReviewDetail1 isCookie={isCookie}/>} />
+                <Stack.Screen name="Feed1" children={() => <Feed1 isCookie={isCookie} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
+                <Stack.Screen name="MusicalDetail1" children={() => <MusicalDetail1 isCookie={isCookie} musicalId={musicalId} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
+                <Stack.Screen name="MusicalDetail2" children={() => <MusicalDetail2 isCookie={isCookie} musicalId={musicalId} setReviewId={setReviewId}/>} />
+                <Stack.Screen name="ReviewDetail1" children={() => <ReviewDetail1 isCookie={isCookie} reviewId={reviewId}/>} />
             </Stack.Navigator>
         )
     };
@@ -79,7 +78,7 @@ const Navigation = () => {
 
         return (
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="Search" children={() => <Search isCookie={isCookie}/>} />
+                <Stack.Screen name="Search1" children={() => <Search1 isCookie={isCookie}/>} />
             </Stack.Navigator>
         )
     };

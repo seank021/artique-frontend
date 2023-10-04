@@ -7,9 +7,9 @@ import { ShortReviewFormInFeed } from "@forms/ReviewForm";
 
 import { useNavigation } from "@react-navigation/native";
 
-import { feedReviews } from "@functions/api";
+import { feedReviews, thumbsUp } from "@functions/api";
 
-export default function Feed1 ({ isCookie, setMusicalId }) {
+export default function Feed1 ({ isCookie, setMusicalId, setReviewId }) {
     const nav = useNavigation();
 
     const [page, setPage] = useState(0);
@@ -32,13 +32,28 @@ export default function Feed1 ({ isCookie, setMusicalId }) {
         nav.navigate('MusicalDetail1');
     };
 
-    const onPressThumbsUp = reviewId => {
-        console.log(reviewId);
-    };
-
     const goToReviewDetail1 = reviewId => {
         console.log(reviewId);
+        setReviewId(reviewId);
         nav.navigate('ReviewDetail1');
+    };
+
+    const onPressThumbsUp = (reviewId, isThumbsUp) => {
+        console.log(reviewId);
+        console.log(isThumbsUp);
+        // isThumbsUp이 true: 이미 공감되어 있음 -> 공감 버튼 누른다는 것: 공감 취소
+        // isThumbsUp이 false: 공감 안 되어 있음 -> 공감 버튼 누른다는 것: 공감
+        thumbsUp(reviewId, !isThumbsUp).then((res) => {
+            console.log(res);
+            setFeeds((prevFeeds) => {
+                const newFeeds = [...prevFeeds];
+                const feedIndex = newFeeds.findIndex((feed) => feed.reviewId === reviewId);
+                newFeeds[feedIndex].isThumbsUp = !isThumbsUp; // 프론트상에서만 바꿈 (구현 위함, 서버에서는 안 바뀜)
+                return newFeeds;
+            });
+        }).catch((err) => {
+            console.log(err);
+        });
     };
 
     const detectScroll = async (e) => {
@@ -74,7 +89,7 @@ export default function Feed1 ({ isCookie, setMusicalId }) {
 
     return (        
         <SafeAreaView style={styles.container}>
-            <View style={tw`ml-[5%] my-2.5`}>
+            <View style={tw`ml-[5%] mt-[18px] mb-[12px] flex-col`}>
                 <Image source={require("@images/logo_small_black.png")} style={tw`w-[110px] h-[37.64781px]`}></Image>
             </View>
             <View style={tw`border-[0.5px] border-[#D3D4D3]`}></View>
@@ -82,16 +97,16 @@ export default function Feed1 ({ isCookie, setMusicalId }) {
             <ScrollView onScroll={detectScroll}>
                 {feeds.map((feed, index) => (
                     <Fragment key={index}>
-                        <ShortReviewFormInFeed
-                            reviewInfo={feed}
-                            goToMusicalDetail1={() => goToMusicalDetail1(feed.musicalId)}
-                            goToReviewDetail1={() => goToReviewDetail1(feed.reviewId)}
-                            onPressThumbsUp={() => onPressThumbsUp(feed.reviewId)}
-                            isCookie={isCookie}
-                        />
-                        {index < feeds.length - 1 && (
-                            <View style={tw`border-4 border-[#F0F0F0]`}></View>
-                        )}
+                            <ShortReviewFormInFeed
+                                reviewInfo={feed}
+                                goToMusicalDetail1={() => goToMusicalDetail1(feed.musicalId)}
+                                goToReviewDetail1={() => goToReviewDetail1(feed.reviewId)}
+                                onPressThumbsUp={() => onPressThumbsUp(feed.reviewId, feed.isThumbsUp)}
+                                isCookie={isCookie}
+                            />
+                            {index < feeds.length - 1 && (
+                                <View style={tw`border-4 border-[#F0F0F0]`}></View>
+                            )}
                     </Fragment>
                 ))}
             </ScrollView>

@@ -1,4 +1,5 @@
 // TODO: 약관
+// TODO: 중복확인 버튼 스타일 변화 onFocus에 적용 (InputForm, ButtonForm 수정)
 
 import React, {useState} from 'react';
 import {
