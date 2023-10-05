@@ -24,6 +24,7 @@ import MyReviews from "@screens/Profile/MyReviews";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import MyReviewSearch from "@screens/Profile/MyReviewSearch";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -99,6 +100,7 @@ const Navigation = () => {
                 <Stack.Screen name="Profile" children={() => <Profile isCookie={isCookie} setGoToFeed={setGoToFeed} />} />
                 <Stack.Screen name="ChangeProfile" children={() => <ChangeProfile isCookie={isCookie}/>} />
                 <Stack.Screen name="MyReviews" children={() => <MyReviews isCookie={isCookie}/>} />
+                <Stack.Screen name="MyReviewSearch" children={() => <MyReviewSearch isCookie={isCookie}/>} />
             </Stack.Navigator>
         )
     };

@@ -24,6 +24,10 @@ export default function MyReviews({isCookie}) {
     nav.goBack();
   };
 
+  const goToMyReviewSearch = () => {
+    nav.navigate('MyReviewSearch');
+  }
+
   const onPressSort = () => {
     setSortModalVisible(true);
 } 
@@ -37,7 +41,7 @@ export default function MyReviews({isCookie}) {
                     <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] w-[10px] h-[18px] mr-[7.5px] tint-[#191919]`}></Image>
                 </Pressable>
                 <Text style={tw`text-[#191919] text-base font-medium`}>작성한 리뷰 모아보기</Text>
-                <Pressable onPress={() => console.log('검색 기능')} style={tw`flex-row`}>
+                <Pressable onPress={goToMyReviewSearch} style={tw`flex-row`}>
                     <Image source={require('@images/search.png')} style={tw`mr-[20px] w-[17.5px] h-[17.5px] tint-[#191919]`}></Image>
                 </Pressable>
             </View>
