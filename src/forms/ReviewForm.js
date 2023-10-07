@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, Pressable, ScrollView, Platform, StyleSheet, Dimensions} from 'react-native';
+import { View, Text, Image, Pressable, ScrollView, Platform, StyleSheet, Dimensions, PixelRatio} from 'react-native';
 import tw from 'twrnc';
 
 import AlertForm, { LongReviewForm } from '@forms/AlertForm';
 
 import { makeStars, makeStarsForEachReview } from '@functions/makeStars';
+
+const fontScale = PixelRatio.getFontScale();
+const getFontSize = size => size / fontScale;
 
 // props: reviewInfo, onPressThumbsUp, onPressArrowCircledRight, isCookie
 export function ShortReviewForm(props) {
@@ -170,7 +173,8 @@ export function ShortReviewFormInFeed(props) {
                         {makeStars(props.reviewInfo.starRating)}
                         <View style={tw`flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mt-[5px] mb-[14px] p-[6px] rounded-2 w-[95%]`}>
                             <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>"</Text>
-                            <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>{props.reviewInfo.shortReview.length < 25 ? props.reviewInfo.shortReview : props.reviewInfo.shortReview.slice(0, 25) + '···'}"</Text>
+                            <Text style={[tw`text-[#191919] font-medium leading-[24px]`, {fontSize: getFontSize(14)}]}>{props.reviewInfo.shortReview.length < 25 ? props.reviewInfo.shortReview : props.reviewInfo.shortReview.slice(0, 25) + '···'}"</Text>
+                            {/* <Text style={[tw`text-[#191919] font-medium leading-[24px]`, {fontSize: getFontSize(14)}]}>{props.reviewInfo.shortReview.length < 25 ? props.reviewInfo.shortReview : props.reviewInfo.shortReview.slice(0, 25) + '···'}"</Text> */}
                         </View>
                     </View>
                 </View>
