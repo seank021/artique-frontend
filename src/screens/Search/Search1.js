@@ -40,11 +40,10 @@ export default function Search1({ isCookie }) {
 
     // 검색을 위한 변수
     const [searchedMusicals, setSearchedMusicals] = useState([]);
-    const [shouldSearch, setShouldSearch] = useState(false);
     const [searchValue, setSearchValue] = useState('');
 
     useEffect(() => {
-        if (shouldSearch && searchValue !== '') {
+        if (searchValue !== '') {
             searchMusicals(searchValue, orderBy)
                 .then((res) => {
                     setSearchedMusicals(res.musicals);
@@ -53,8 +52,7 @@ export default function Search1({ isCookie }) {
                     console.log(err);
                 });
         }
-        setShouldSearch(false);
-    }, [value, shouldSearch, orderBy]);
+    }, [searchValue, orderBy]);
 
     const onChangeText = (text) => {
         setValue(text);
@@ -69,6 +67,7 @@ export default function Search1({ isCookie }) {
         setValue('');
         this.textInput.clear();
         setIfX(false);
+        setSortCriteria('최신순');
         setIsBeforeSearch(true);
     }
 
@@ -90,7 +89,6 @@ export default function Search1({ isCookie }) {
         }
 
         setSearchValue(keyword);
-        setShouldSearch(true);
     }
 
     const deleteKeyword = (keyword) => {
@@ -112,8 +110,10 @@ export default function Search1({ isCookie }) {
             <FlatList
                 data={data}
                 numColumns={3}
+                columnWrapperStyle={{ justifyContent: 'space-between', marginLeft: 5, marginRight: 5}}
+                showsVerticalScrollIndicator={false}
                 renderItem={({ item }) => (
-                    <View style={{ marginHorizontal: 5, justifyContent: "flex-start"}}>
+                    <View>
                         <Pressable onPress={() => console.log(item.musicalId + "의 MusicalDetail1으로 이동")}>
                             <Image source={{ uri: item.posterUrl }} style={{ width: 110, height: 157.90323, borderRadius: 10, marginBottom: 10.1 }} />
                             <Text numberOfLines={2} ellipsizeMode="tail" style={{ width: 110, color: '#191919', fontSize: 12, marginBottom: 30 }}>
@@ -123,7 +123,6 @@ export default function Search1({ isCookie }) {
                     </View>
                 )}
                 keyExtractor={(item) => item.musicalId}
-                contentContainerStyle={{ justifyContent: 'flex-start' }}
             />
         );
     };
@@ -134,7 +133,7 @@ export default function Search1({ isCookie }) {
                 <>
                     <View style={tw`mx-[5%] mt-[17px] mb-[11px]`}>
                         <View style={tw`flex-row justify-between bg-[#E6E6E6] rounded-[19.5px]`}>
-                            <View style={tw`flex-row w-[90%] items-center`}>
+                            <View style={tw`flex-row w-[90%] h-[100%] items-center`}>
                                 <Image source={require('@images/search.png')} style={tw`ml-[18px] w-[18px] h-[18px] tint-[#ABABAB]`} />
                                 <TextInput ref={(text) => this.textInput = text} onChangeText={(text) => onChangeText(text)} onSubmitEditing={() => onPressSearch(value)} returnKeyType="done" placeholder='작품명이나 배우를 검색해보세요' style={tw`ml-[14px]`}  />
                             </View>
@@ -169,25 +168,25 @@ export default function Search1({ isCookie }) {
             :
                 <>
                     <View style={tw`flex-row items-center mx-[5%] mt-[17px] mb-[11px]`}>
-                        <Pressable onPress={()=>setIsBeforeSearch(true)}><Image source={require('@images/chevron_left.png')} style={tw`w-[10px] h-[18px] mr-[23px] tint-[#191919]`} /></Pressable>
-                        <View style={tw`flex-row w-[90%] justify-between items-center bg-[#E6E6E6] rounded-[19.5px]`}>
+                        <Pressable onPress={()=> {setIsBeforeSearch(true); setSortCriteria('최신순');}}><Image source={require('@images/chevron_left.png')} style={tw`w-[10px] h-[18px] mr-[23px] tint-[#191919]`} /></Pressable>
+                        <View style={tw`flex-row w-[90%] h-[100%] justify-between items-center bg-[#E6E6E6] rounded-[19.5px]`}>
                             <TextInput style={tw`ml-[14px] font-medium`} placeholder={placeholderValue} placeholderTextColor={"#191919"} editable={false} />
-                            <Pressable onPress={()=>setIsBeforeSearch(true)}><Image source={require('@images/x.png')} style={tw`mr-[18px] w-[18px] h-[18px] tint-[#ABABAB]`} /></Pressable>
+                            <Pressable onPress={()=> {setIsBeforeSearch(true); setSortCriteria('최신순');}}><Image source={require('@images/x.png')} style={tw`mr-[18px] w-[18px] h-[18px] tint-[#ABABAB]`} /></Pressable>
                         </View>
                     </View>
                     <View style={tw`border-[0.5px] border-[#D3D4D3]`}></View>
 
-                    <Pressable style={tw`flex flex-row items-center justify-end mr-[5%] my-[10px]`} onPress={() => setSortModalVisible(true)}>
+                    <Pressable style={tw`flex flex-row items-center justify-end mr-[5%] my-[15px]`} onPress={() => setSortModalVisible(true)}>
                         <Text style={tw`text-[#191919] text-xs font-medium mr-[7px]`}>{sortCriteria}</Text>
                         <Image source={require('@images/chevron_down.png')} style={tw`w-[14.4px] h-[8px]`}></Image>
                     </Pressable>
                     <AlertFormForSort2 sortModalVisible={sortModalVisible} setSortModalVisible={setSortModalVisible} sortCriteria={sortCriteria} setSortCriteria={setSortCriteria}></AlertFormForSort2>
                     
                     {searchedMusicals.length !== 0 ?
-                        <View style={{ flex: 1 }}>
+                        <View style={{flex : 1}}>
                             <MusicalsList data={searchedMusicals} />
                         </View>
-                    : null}
+                    : <Text style={tw`text-[#ABABAB] text-sm mx-[5%]`}>검색 결과가 없습니다.</Text>}
                 </>
             }
         </SafeAreaView>
