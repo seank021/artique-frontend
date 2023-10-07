@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { View, StyleSheet, Image, TextInput, ScrollView, Text, Pressable, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from 'twrnc'
@@ -13,6 +13,19 @@ import { useNavigation } from "@react-navigation/native";
 
 export default function MyReviewSearch({ isCookie }) {
     const nav = useNavigation();
+
+    const [page, setPage] = useState(0);
+    const [updatePage, setUpdatePage] = useState(true);
+
+    useEffect(() => {
+        if (updatePage && page === 0) {
+            feedReviews(page).then((newFeeds) => {
+                setFeeds((prevFeeds) => [...prevFeeds, ...newFeeds.feeds]);
+            }).catch((err) => {
+                console.log(err);
+            });
+        }
+    }, [page, updatePage]);
 
     const [showSearchResult, setShowSearchResult] = useState(true);
 
@@ -121,6 +134,37 @@ export default function MyReviewSearch({ isCookie }) {
         );
     };
 
+    const detectScroll = async (e) => {
+      if (!updatePage) {
+          return;
+      }
+
+      let updateScroll = e.nativeEvent.contentOffset.y;
+      if (updateScroll === 0) {
+          return;
+      }
+
+      let screenHeight = e.nativeEvent.layoutMeasurement.height;
+      let documentHeight = e.nativeEvent.contentSize.height;
+      let endPoint = 100;
+
+      if (updateScroll + screenHeight >= documentHeight - endPoint) {
+          if(!updatePage){
+              return;
+          };
+          setUpdatePage(false);
+          const nextPage = page + 1;
+          setPage(nextPage);
+          
+          feedReviews(nextPage).then((newFeeds) => {
+              setFeeds((prevFeeds) => [...prevFeeds, ...newFeeds.feeds]);
+              setUpdatePage(true);
+          }).catch((err) => {
+              console.log(err);
+          });
+      }
+  };
+
     return (
         <SafeAreaView style={styles.container}>
             {showSearchResult ?
@@ -192,9 +236,9 @@ export default function MyReviewSearch({ isCookie }) {
                     <AlertFormForSort2 sortModalVisible={sortModalVisible} setSortModalVisible={setSortModalVisible} sortCriteria={sortCriteria} setSortCriteria={setSortCriteria}></AlertFormForSort2>
 
                     {searchedMusicals.length !== 0 ?
-                        <View style={tw`items-center`}>
+                        <ScrollView style={tw`items-center`}>
                             <MusicalsList data={searchedMusicals} />
-                        </View>
+                        </ScrollView>
                     : null}
               </>
             }
