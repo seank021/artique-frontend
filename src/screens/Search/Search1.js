@@ -1,5 +1,4 @@
 // TODO: 포스터 선택 시 해당 id의 MusicalDetail1로 이동
-// TODO: 포스터 간격 논의
 
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Image, TextInput, ScrollView, Text, Pressable, FlatList } from "react-native";
