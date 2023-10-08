@@ -41,7 +41,7 @@ export default function Login1() {
   const [buttonText, setButtonText] = useState('중복확인');
 
   const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
-  const [alertText, setAlertText] = useState('사용 불가한 아이디입니다.');
+  const [alertText, setAlertText] = useState('사용 불가한 아이디입니다');
 
   const [ifCheckPW, setIfCheckPW] = useState(false);
   const [ifXPW, setIfXPW] = useState(false);
@@ -100,14 +100,14 @@ export default function Login1() {
     if (id === '') {
       setModalVisible(!modalVisible);
       setAlertImage(require('@images/x_red.png'));
-      setAlertText('아이디를 입력해주세요.');
+      setAlertText('아이디를 입력해주세요');
       setTimeout(() => {
         setModalVisible(modalVisible);
       }, 1000);
     } else if (ifDuplicate) {
       setModalVisible(!modalVisible);
       setAlertImage(require('@images/x_red.png'));
-      setAlertText('사용 불가한 아이디입니다.');
+      setAlertText('사용 불가한 아이디입니다');
       setTimeout(() => {
         setModalVisible(modalVisible);
       }, 1000);
@@ -118,7 +118,7 @@ export default function Login1() {
 
       setModalVisible(!modalVisible);
       setAlertImage(require('@images/check.png'));
-      setAlertText('사용 가능한 아이디입니다.');
+      setAlertText('사용 가능한 아이디입니다');
       setTimeout(() => {
         setModalVisible(modalVisible);
       }, 1000);
@@ -162,7 +162,16 @@ export default function Login1() {
     if (id === '') {
       setModalVisible(!modalVisible);
       setAlertImage(require('@images/x_red.png'));
-      setAlertText('아이디를 입력해주세요.');
+      setAlertText('아이디를 입력해주세요');
+      setTimeout(() => {
+        setModalVisible(modalVisible);
+      }, 1000);
+      return;
+    }
+    if (password.length < 7) {
+      setModalVisible(!modalVisible);
+      setAlertImage(require('@images/x_red.png'));
+      setAlertText('비밀번호 조건을 확인해주세요');
       setTimeout(() => {
         setModalVisible(modalVisible);
       }, 1000);
@@ -171,7 +180,7 @@ export default function Login1() {
     if (password === '') {
       setModalVisible(!modalVisible);
       setAlertImage(require('@images/x_red.png'));
-      setAlertText('비밀번호를 입력해주세요.');
+      setAlertText('비밀번호를 입력해주세요');
       setTimeout(() => {
         setModalVisible(modalVisible);
       }, 1000);
@@ -180,7 +189,7 @@ export default function Login1() {
     if (password_ === '') {
       setModalVisible(!modalVisible);
       setAlertImage(require('@images/x_red.png'));
-      setAlertText('비밀번호를 확인해주세요.');
+      setAlertText('비밀번호를 확인해주세요');
       setTimeout(() => {
         setModalVisible(modalVisible);
       }, 1000);
@@ -190,7 +199,7 @@ export default function Login1() {
     if (!ifCheckID) {
       setModalVisible(!modalVisible);
       setAlertImage(require('@images/x_red.png'));
-      setAlertText('아이디 중복확인을 해주세요.');
+      setAlertText('아이디 중복확인을 해주세요');
       setTimeout(() => {
         setModalVisible(modalVisible);
       }, 1000);
@@ -200,7 +209,7 @@ export default function Login1() {
     if (!ifCheckPW) {
       setModalVisible(!modalVisible);
       setAlertImage(require('@images/x_red.png'));
-      setAlertText('비밀번호가 일치하지 않습니다.');
+      setAlertText('비밀번호가 일치하지 않습니다');
       setTimeout(() => {
         setModalVisible(modalVisible);
       }, 1000);
@@ -229,14 +238,14 @@ export default function Login1() {
     ) {
       setModalVisible(!modalVisible);
       setAlertImage(require('@images/x_red.png'));
-      setAlertText('약관에 동의해주세요.');
+      setAlertText('약관에 동의해주세요');
       setTimeout(() => {
         setModalVisible(modalVisible);
       }, 1000);
     } else {
       setModalVisible(!modalVisible);
       setAlertImage(require('@images/x_red.png'));
-      setAlertText('다시 시도해주세요.');
+      setAlertText('다시 시도해주세요');
       setTimeout(() => {
         setModalVisible(modalVisible);
       }, 1000);
@@ -289,14 +298,16 @@ export default function Login1() {
           buttonTextColor={buttonTextColor}
           buttonText={buttonText}
           onPressButton={checkDuplicate}
-          ifCheck={ifCheckID}></InputForm>
+          ifCheck={ifCheckID}
+          style={tw`mb-2.5`}></InputForm>
         <InputForm
           image={require('@images/password.png')}
-          placeholder={'비밀번호를 입력해주세요'}
+          placeholder={'비밀번호를 설정해주세요 (7자 이상)'}
           secureTextEntry={true}
           setValue={setPassword}
           compareValue={comparePW}
-          reappearButton={nullFunc}></InputForm>
+          reappearButton={nullFunc}
+          style={tw`mb-2.5`}></InputForm>
         <InputForm
           image={require('@images/password.png')}
           placeholder={'비밀번호를 다시 확인해주세요'}
@@ -305,7 +316,8 @@ export default function Login1() {
           compareValue={comparePW_}
           reappearButton={nullFunc}
           ifCheck={ifCheckPW}
-          ifX={ifXPW}></InputForm>
+          ifX={ifXPW}
+          style={tw`mb-2.5`}></InputForm>
 
         <View style={tw`flex-row items-center self-start ml-[5%] mt-2.5 mb-1`}>
           <Pressable onPress={checkRectangle1}>
@@ -343,9 +355,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#3A3D52',
   },
   contentContainer: {
-    flexGrow: 1,
-    justifyContent: 'space-around',
+    flex: 1,
     alignItems: 'center',
-    paddingBottom: '90%',
   },
 });
