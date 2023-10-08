@@ -6,6 +6,9 @@ import AlertForm, { LongReviewForm } from '@forms/AlertForm';
 
 import { makeStars, makeStarsForEachReview } from '@functions/makeStars';
 
+{/*기본 화면 설정*/}
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 const fontScale = PixelRatio.getFontScale();
 const getFontSize = size => size / fontScale;
 
@@ -246,7 +249,7 @@ export function MusicalInfoFormInReviewDetail(props) {
     const [longReviewModalVisible, setLongReviewModalVisible] = useState(false);
 
     return (
-        <View style={tw`flex-col self-center w-9/10 h-[95%] rounded-3xl bg-white my-3`}>
+        <View style={[tw`flex-col self-center rounded-3xl bg-white my-3`, {width: windowWidth*0.9, height: windowHeight*0.75}]}>
             <View style={tw`w-15 h-15 rounded-full bg-[#F5F5F5] self-center absolute top--7.5`}></View>
             
             {/*뮤지컬 정보*/}
