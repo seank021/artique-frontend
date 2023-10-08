@@ -1,5 +1,3 @@
-// TODO: 포스터 선택 시 해당 id의 MusicalDetail1로 이동
-
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Image, TextInput, ScrollView, Text, Pressable, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -13,7 +11,7 @@ import { searchMusicals } from "@functions/api";
 
 import { useNavigation } from "@react-navigation/native";
 
-export default function Search1({ isCookie }) {
+export default function Search1({ isCookie, setMusicalId }) {
     const nav = useNavigation();
 
     const [isBeforeSearch, setIsBeforeSearch] = useState(true); // 검색 전, 후 구분
@@ -104,6 +102,11 @@ export default function Search1({ isCookie }) {
         setSearchHistory([]);
     }
 
+    const onPressMusical = (musicalId) => {
+        setMusicalId(musicalId);
+        nav.navigate('MusicalDetail1');
+    }
+
     const MusicalsList = ({ data }) => {
         return (
             <FlatList
@@ -113,7 +116,7 @@ export default function Search1({ isCookie }) {
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item }) => (
                     <View>
-                        <Pressable onPress={() => console.log(item.musicalId + "의 MusicalDetail1으로 이동")}>
+                        <Pressable onPress={() => onPressMusical(item.musicalId)}>
                             <Image source={{ uri: item.posterUrl }} style={{ width: 110, height: 157.90323, borderRadius: 10, marginBottom: 10.1 }} />
                             <Text numberOfLines={2} ellipsizeMode="tail" style={{ width: 110, color: '#191919', fontSize: 12, marginBottom: 30 }}>
                                 {item.title}
