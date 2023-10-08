@@ -8,20 +8,30 @@ export default function MusicalInfoForm(props) {
         <View style={tw`flex flex-row w-[90%] self-center`}>
             <Image source={{uri: props.poster}} style={tw`w-[110px] h-[158.44037px] rounded-2 mr-[11px]`}></Image>
             <View style={tw`flex-col justify-between`}>
-                <Text style={tw`text-[#000] text-lg font-medium mb-[6px]`}>{props.title}</Text>
+                <Text style={tw`text-[#000] text-lg font-medium mb-[6px] mr-[35%]`}>{props.title}</Text>
                 <View style={tw`flex-row items-center`}>
                     <Image source={require("@images/star.png")} style={tw`w-[16px] h-[16px] mr-[4px]`}></Image>
                     <Text style={tw`text-[#191919] text-sm`}>{props.score}</Text>
                 </View>
-                <Text style={tw`text-[#000] text-sm`}>{props.date}</Text>
-                <Text style={tw`text-[#191919] text-sm`}>
-                    {props.place && props.place.length > 20 ? `${props.place.slice(0, 20)} ...` : props.place}
-                </Text>
-                <Text style={tw`text-[#191919] text-sm`}>{props.duration}</Text>
-                {props.casting ? (
-                    <Text style={tw`text-[#191919] text-sm`}>
-                        {props.casting.length > 20 ? `${props.casting.slice(0, 20)} ...` : props.casting}
+                {props.date ? (
+                    <Text numberOfLines={1} style={tw`text-[#000] text-sm mr-[35%]`}>{props.date}</Text>
+                ) : (
+                    <Text style={tw`text-[#B6B6B6] text-sm`}>날짜 정보 없음</Text>
+                )}
+                {props.place ? (
+                    <Text numberOfLines={1} style={tw`text-[#191919] text-sm mr-[35%]`}>
+                        {props.place}
                     </Text>
+                ) : (
+                    <Text style={tw`text-[#B6B6B6] text-sm`}>장소 정보 없음</Text>
+                )}
+                {props.duration ? (
+                    <Text numberOfLines={1} style={tw`text-[#191919] text-sm mr-[35%]`}>{props.duration}</Text>
+                ) : (
+                    <Text style={tw`text-[#B6B6B6] text-sm`}>시간 정보 없음</Text>
+                )}
+                {props.casting ? (
+                    <Text numberOfLines={1} style={tw`text-[#191919] text-sm mr-[35%]`}>{props.casting}</Text>
                 ) : (
                     <Text style={tw`text-[#B6B6B6] text-sm`}>캐스팅 정보 없음</Text>
                 )}
