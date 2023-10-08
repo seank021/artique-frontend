@@ -89,7 +89,7 @@ export default function Login1() {
       const response = await axios.get(
         `http://3.39.145.210/member/duplicate?member-id=${id}`,
       );
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       console.log(error.response.data.code);
       if (error.response.data.code === 'DUPLICATE_LOGIN_ID') {

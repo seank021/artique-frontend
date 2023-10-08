@@ -27,20 +27,18 @@ export default function Feed1 ({ isCookie, setMusicalId, setReviewId }) {
     }, [page, updatePage]);
 
     const goToMusicalDetail1 = musicalId => {
-        console.log(musicalId);
+        // console.log(musicalId);
         setMusicalId(musicalId);
         nav.navigate('MusicalDetail1');
     };
 
     const goToReviewDetail1 = reviewId => {
-        console.log(reviewId);
+        // console.log(reviewId);
         setReviewId(reviewId);
         nav.navigate('ReviewDetail1');
     };
 
     const onPressThumbsUp = (reviewId, isThumbsUp) => {
-        console.log(reviewId);
-        console.log(isThumbsUp);
         // isThumbsUp이 true: 이미 공감되어 있음 -> 공감 버튼 누른다는 것: 공감 취소
         // isThumbsUp이 false: 공감 안 되어 있음 -> 공감 버튼 누른다는 것: 공감
         thumbsUp(reviewId, !isThumbsUp).then((res) => {

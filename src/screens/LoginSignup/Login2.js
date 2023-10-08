@@ -80,7 +80,7 @@ export default function Login1({setGoToFeed, setIsCookie}) {
       });
 
       if (response.data.success === true) {
-        console.log('로그인 성공');
+        // console.log('로그인 성공');
         console.log(response.headers['set-cookie']);
         try {
           Cookies.setCookie('general', response.headers['set-cookie']);

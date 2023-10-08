@@ -73,7 +73,7 @@ export default function Search1({ isCookie, setMusicalId }) {
             return;
         }
 
-        console.log(keyword);
+        // console.log(keyword);
 
         Keywords.storeSearchKeyword(keyword);
         setIsBeforeSearch(false);
