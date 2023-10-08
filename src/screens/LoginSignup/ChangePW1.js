@@ -1,3 +1,5 @@
+// TODO: 요청하기 버튼 로직 구현
+
 import React from 'react';
 import {
   View,
@@ -6,11 +8,14 @@ import {
   Pressable,
   StyleSheet,
   ScrollView,
+  Alert,
+  TextInput,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import {useNavigation} from '@react-navigation/native';
+import ButtonForm from '@forms/ButtonForm';
 
 export default function Login1() {
   const nav = useNavigation();
@@ -32,7 +37,8 @@ export default function Login1() {
         <View style={tw`flex-row`}>
           <Image
             source={require('@images/chevron_left.png')}
-            style={tw`mr-[10px] w-[10px] h-[18px] tint-[#3A3D52]`}></Image>
+            style={tw`mr-[10px] w-[10px] h-[18px] tint-[#3A3D52]`}>
+          </Image>
           <Text style={tw`text-[#3A3D52] text-sm mr-2`}>로그인</Text>
         </View>
       </View>
@@ -40,19 +46,28 @@ export default function Login1() {
 
       <Image
         source={require('@images/logo_small.png')}
-        style={tw`self-center mt-7 mb-7 w-[110px] h-[38px]`}></Image>
+        style={tw`self-center mt-7 mb-7 w-[110px] h-[38px]`}>
+      </Image>
 
       <ScrollView contentContainerStyle={styles.contentContainer}>
-        <View style={tw`self-center items-center`}>
-          <Text style={tw`text-[#F5F8F5] text-sm`}>
-            비밀번호를 잊어버리셨나요?
-          </Text>
-          <Text></Text>
-          <Text style={tw`text-[#F5F8F5] text-sm`}>aiden99@naver.com 으로</Text>
-          <Text style={tw`text-[#F5F8F5] text-sm`}>
-            본인 아이디와 함께 문의주세요.
-          </Text>
+        <Text style={tw`text-[#F5F8F5] text-sm self-center mb-7`}>아이디와 새 비밀번호를 받을 메일 주소를 입력해주세요</Text>
+
+        <View style={tw`flex-row items-center w-[90%] justify-start mb-4.5`}>
+          <Text style={tw`text-[#F5F8F5] text-sm w-[15%]`}>아이디 : </Text>
+          <TextInput placeholder='아이디를 입력해주세요' placeholderTextColor="#ABABAB" inputMode='text' color="#F5F8F5" style={tw`border-b-[1px] border-[#ABABAB] w-[85%]`}></TextInput>
         </View>
+
+        <View style={tw`flex-row items-center w-[90%] justify-start mb-10`}>
+          <Text style={tw`text-[#F5F8F5] text-sm w-[15%]`}>메일 : </Text>
+          <TextInput placeholder='새 비밀번호를 받을 메일을 입력해주세요' placeholderTextColor="#ABABAB" inputMode='email' color="#F5F8F5" style={tw`border-b-[1px] border-[#ABABAB] w-[85%]`}></TextInput>
+        </View>
+
+        <ButtonForm
+          borderColor="#ABABAB"
+          textColor="#ABABAB"
+          text={'요청하기'}
+          onPress={()=>Alert.alert("요청 로직 구현")}
+          ifOpacity={true}></ButtonForm>
       </ScrollView>
     </SafeAreaView>
   );
@@ -66,9 +81,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#3A3D52',
   },
   contentContainer: {
-    flexGrow: 1,
-    justifyContent: 'space-around',
+    flex: 1,
     alignItems: 'center',
-    paddingBottom: '70%',
   },
 });
