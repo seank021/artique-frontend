@@ -28,7 +28,7 @@ export default function ReviewDetail1({isCookie, reviewId}) {
         });
     }, []);
 
-    console.log(reviewInfo);
+    // console.log(reviewInfo);
 
     return (
         <SafeAreaView style={styles.container}>

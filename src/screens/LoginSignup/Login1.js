@@ -36,8 +36,8 @@ export default function Login1({setGoToFeed}) {
   onPressKakao = async () => {
     try {
       const result = await KakaoLogin.login();
-      console.log(result);
-      console.log(result.accessToken);
+      // console.log(result);
+      // console.log(result.accessToken);
       const response = await axios.post('http://3.39.145.210/member/oauth', {
         thirdPartyName: 'kakao',
         token: result.accessToken,
@@ -65,8 +65,8 @@ export default function Login1({setGoToFeed}) {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      console.log(userInfo);
-      console.log(userInfo.idToken);
+      // console.log(userInfo);
+      // console.log(userInfo.idToken);
       const response = await axios.post('http://3.39.145.210/member/oauth', {
         thirdPartyName: 'google',
         token: userInfo.idToken,
