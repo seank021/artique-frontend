@@ -33,31 +33,65 @@ export default function makeBarChart (scoreCount) {
 
     return (
         <>
-            <View style={tw`flex flex-row justify-center items-end`}>
-                <View style={barStyle05}></View>
-                <View style={barStyle10}></View>
-                <View style={barStyle15}></View>
-                <View style={barStyle20}></View>
-                <View style={barStyle25}></View>
-                <View style={barStyle30}></View>
-                <View style={barStyle35}></View>
-                <View style={barStyle40}></View>
-                <View style={barStyle45}></View>
-                <View style={barStyle50}></View>
-            </View>
-            <View style={tw`border-solid border-b-2 border-[#D9D9D9]`}></View>
-            <View style={tw`flex flex-row justify-center`}>
-                <View style={tw`w-[23px] mx-[3px] items-center`}><Text style={tw`text-[#FAFAFA] text-xs`}>0.5</Text></View>
-                <View style={tw`w-[23px] mx-[3px] items-center`}><Text style={tw`text-[#191919] text-xs`}>1.0</Text></View>
-                <View style={tw`w-[23px] mx-[3px] items-center`}><Text style={tw`text-[#FAFAFA] text-xs`}>1.5</Text></View>
-                <View style={tw`w-[23px] mx-[3px] items-center`}><Text style={tw`text-[#191919] text-xs`}>2.0</Text></View>
-                <View style={tw`w-[23px] mx-[3px] items-center`}><Text style={tw`text-[#FAFAFA] text-xs`}>2.5</Text></View>
-                <View style={tw`w-[23px] mx-[3px] items-center`}><Text style={tw`text-[#191919] text-xs`}>3.0</Text></View>
-                <View style={tw`w-[23px] mx-[3px] items-center`}><Text style={tw`text-[#FAFAFA] text-xs`}>3.5</Text></View>
-                <View style={tw`w-[23px] mx-[3px] items-center`}><Text style={tw`text-[#191919] text-xs`}>4.0</Text></View>
-                <View style={tw`w-[23px] mx-[3px] items-center`}><Text style={tw`text-[#FAFAFA] text-xs`}>4.5</Text></View>
-                <View style={tw`w-[23px] mx-[3px] items-center`}><Text style={tw`text-[#191919] text-xs`}>5.0</Text></View>
-            </View>
+            {maxCount > 0 ?
+            <>
+                <View style={tw`h-[105px]`}>
+                    <View style={tw`flex flex-row justify-center items-end`}>
+                        <View style={barStyle05}></View>
+                        <View style={barStyle10}></View>
+                        <View style={barStyle15}></View>
+                        <View style={barStyle20}></View>
+                        <View style={barStyle25}></View>
+                        <View style={barStyle30}></View>
+                        <View style={barStyle35}></View>
+                        <View style={barStyle40}></View>
+                        <View style={barStyle45}></View>
+                        <View style={barStyle50}></View>
+                    </View>
+                    <View style={tw`border-solid border-b-2 border-[#D9D9D9]`}></View>
+                    <View style={tw`flex flex-row justify-center`}>
+                        <View style={tw`w-[23px] mx-[3px] items-center`}><Text style={tw`text-[#FAFAFA] text-xs`}>0.5</Text></View>
+                        <View style={tw`w-[23px] mx-[3px] items-center`}><Text style={tw`text-[#191919] text-xs`}>1.0</Text></View>
+                        <View style={tw`w-[23px] mx-[3px] items-center`}><Text style={tw`text-[#FAFAFA] text-xs`}>1.5</Text></View>
+                        <View style={tw`w-[23px] mx-[3px] items-center`}><Text style={tw`text-[#191919] text-xs`}>2.0</Text></View>
+                        <View style={tw`w-[23px] mx-[3px] items-center`}><Text style={tw`text-[#FAFAFA] text-xs`}>2.5</Text></View>
+                        <View style={tw`w-[23px] mx-[3px] items-center`}><Text style={tw`text-[#191919] text-xs`}>3.0</Text></View>
+                        <View style={tw`w-[23px] mx-[3px] items-center`}><Text style={tw`text-[#FAFAFA] text-xs`}>3.5</Text></View>
+                        <View style={tw`w-[23px] mx-[3px] items-center`}><Text style={tw`text-[#191919] text-xs`}>4.0</Text></View>
+                        <View style={tw`w-[23px] mx-[3px] items-center`}><Text style={tw`text-[#FAFAFA] text-xs`}>4.5</Text></View>
+                        <View style={tw`w-[23px] mx-[3px] items-center`}><Text style={tw`text-[#191919] text-xs`}>5.0</Text></View>
+                    </View>
+                </View>
+            </>
+            : 
+            <>
+                <View style={tw`mt-[105px]`}></View>
+                <View style={tw`flex flex-row justify-center items-end`}>
+                    <View style={barStyle05}></View>
+                    <View style={barStyle10}></View>
+                    <View style={barStyle15}></View>
+                    <View style={barStyle20}></View>
+                    <View style={barStyle25}></View>
+                    <View style={barStyle30}></View>
+                    <View style={barStyle35}></View>
+                    <View style={barStyle40}></View>
+                    <View style={barStyle45}></View>
+                    <View style={barStyle50}></View>
+                </View>
+                <View style={tw`border-solid border-b-2 border-[#D9D9D9]`}></View>
+                <View style={tw`flex flex-row justify-center`}>
+                    <View style={tw`w-[23px] mx-[3px] items-center`}><Text style={tw`text-[#FAFAFA] text-xs`}>0.5</Text></View>
+                    <View style={tw`w-[23px] mx-[3px] items-center`}><Text style={tw`text-[#191919] text-xs`}>1.0</Text></View>
+                    <View style={tw`w-[23px] mx-[3px] items-center`}><Text style={tw`text-[#FAFAFA] text-xs`}>1.5</Text></View>
+                    <View style={tw`w-[23px] mx-[3px] items-center`}><Text style={tw`text-[#191919] text-xs`}>2.0</Text></View>
+                    <View style={tw`w-[23px] mx-[3px] items-center`}><Text style={tw`text-[#FAFAFA] text-xs`}>2.5</Text></View>
+                    <View style={tw`w-[23px] mx-[3px] items-center`}><Text style={tw`text-[#191919] text-xs`}>3.0</Text></View>
+                    <View style={tw`w-[23px] mx-[3px] items-center`}><Text style={tw`text-[#FAFAFA] text-xs`}>3.5</Text></View>
+                    <View style={tw`w-[23px] mx-[3px] items-center`}><Text style={tw`text-[#191919] text-xs`}>4.0</Text></View>
+                    <View style={tw`w-[23px] mx-[3px] items-center`}><Text style={tw`text-[#FAFAFA] text-xs`}>4.5</Text></View>
+                    <View style={tw`w-[23px] mx-[3px] items-center`}><Text style={tw`text-[#191919] text-xs`}>5.0</Text></View>
+                </View>
+            </>}
         </>
     );
 }
