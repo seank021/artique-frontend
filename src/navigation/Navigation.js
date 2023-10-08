@@ -14,6 +14,7 @@ import Feed1 from "@screens/Main/Feed1";
 import MusicalDetail1 from "@screens/Main/MusicalDetail1";
 import MusicalDetail2 from "@screens/Main/MusicalDetail2";
 import ReviewDetail1 from "@screens/Main/ReviewDetail1";
+import ReviewWrite1 from "@screens/Main/ReviewWrite1";
 
 import Search1 from "@screens/Search/Search1";
 
@@ -59,6 +60,7 @@ const Navigation = () => {
                 <Stack.Screen name="MusicalDetail1" children={() => <MusicalDetail1 isCookie={isCookie} musicalId={musicalId} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
                 <Stack.Screen name="MusicalDetail2" children={() => <MusicalDetail2 isCookie={isCookie} musicalId={musicalId} setReviewId={setReviewId}/>} />
                 <Stack.Screen name="ReviewDetail1" children={() => <ReviewDetail1 isCookie={isCookie} reviewId={reviewId}/>} />
+                <Stack.Screen name="ReviewWrite1" children={() => <ReviewWrite1 isCookie={isCookie} musicalId={musicalId} setReviewId={setReviewId}/>} />
             </Stack.Navigator>
         )
     };
@@ -82,6 +84,7 @@ const Navigation = () => {
                 <Stack.Screen name="MusicalDetail1" children={() => <MusicalDetail1 isCookie={isCookie} musicalId={musicalId} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
                 <Stack.Screen name="MusicalDetail2" children={() => <MusicalDetail2 isCookie={isCookie} musicalId={musicalId} setReviewId={setReviewId}/>} />
                 <Stack.Screen name="ReviewDetail1" children={() => <ReviewDetail1 isCookie={isCookie} reviewId={reviewId}/>} />
+                <Stack.Screen name="ReviewWrite1" children={() => <ReviewWrite1 isCookie={isCookie} musicalId={musicalId} setReviewId={setReviewId}/>} />
             </Stack.Navigator>
         )
     };

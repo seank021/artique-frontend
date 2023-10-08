@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, Pressable, ScrollView, Platform, StyleSheet, Dimensions} from 'react-native';
+import { View, Text, Image, Pressable, ScrollView, Platform, StyleSheet, Dimensions, PixelRatio} from 'react-native';
 import tw from 'twrnc';
 
 import AlertForm, { LongReviewForm } from '@forms/AlertForm';
 
 import { makeStars, makeStarsForEachReview } from '@functions/makeStars';
+
+{/*기본 화면 설정*/}
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+const fontScale = PixelRatio.getFontScale();
+const getFontSize = size => size / fontScale;
 
 // props: reviewInfo, onPressThumbsUp, onPressArrowCircledRight, isCookie
 export function ShortReviewForm(props) {
@@ -140,6 +146,7 @@ export function ShortReviewFormInFeed(props) {
             <View>
                 <AlertForm modalVisible={modalVisible} setModalVisible={setModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
             </View>
+            
             <View style={tw`flex flex-col w-[90%] self-center my-[20px]`}>
                 <View style={tw`flex-row justify-between items-center mb-[10px] z-20`}>
                     <View style={tw`flex-row justify-between items-center`}>
@@ -170,7 +177,8 @@ export function ShortReviewFormInFeed(props) {
                         {makeStars(props.reviewInfo.starRating)}
                         <View style={tw`flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mt-[5px] mb-[14px] p-[6px] rounded-2 w-[95%]`}>
                             <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>"</Text>
-                            <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>{props.reviewInfo.shortReview.length < 25 ? props.reviewInfo.shortReview : props.reviewInfo.shortReview.slice(0, 25) + '···'}"</Text>
+                            <Text style={[tw`text-[#191919] font-medium leading-[24px]`, {fontSize: getFontSize(14)}]}>{props.reviewInfo.shortReview.length < 25 ? props.reviewInfo.shortReview : props.reviewInfo.shortReview.slice(0, 25) + '···'}"</Text>
+                            {/* <Text style={[tw`text-[#191919] font-medium leading-[24px]`, {fontSize: getFontSize(14)}]}>{props.reviewInfo.shortReview.length < 25 ? props.reviewInfo.shortReview : props.reviewInfo.shortReview.slice(0, 25) + '···'}"</Text> */}
                         </View>
                     </View>
                 </View>
@@ -241,29 +249,32 @@ export function MusicalInfoFormInReviewDetail(props) {
     const [longReviewModalVisible, setLongReviewModalVisible] = useState(false);
 
     return (
-        <View style={tw`flex-col self-center w-9/10 h-95/100 rounded-3xl bg-white my-3`}>
+        <View style={[tw`flex-col self-center rounded-3xl bg-white my-3`, {width: windowWidth*0.9, height: windowHeight*0.75}]}>
             <View style={tw`w-15 h-15 rounded-full bg-[#F5F5F5] self-center absolute top--7.5`}></View>
             
-            <View style={tw`border border-gray-900 self-center w-5/6 mt-15`}></View>
-            <View style={tw`flex-col items-start mt-6 ml-8.5`}>
+            {/*뮤지컬 정보*/}
+            <View style={tw`border border-gray-900 self-center w-[85%] mt-14.25`}></View>
+            <View style={tw`flex-col items-start mt-6 ml-[10%] z-20`}>
                 <Text style={tw`text-1.375rem text-gray-900 font-medium mb-5.5`}>{props.reviewInfo.musicalTitle}</Text>
                 <Text style={tw`text-sm text-gray-900 mb-1.5`}>{props.reviewInfo.casting}</Text>
                 <Text style={tw`text-sm text-gray-900 mb-1.5`}>{props.reviewInfo.seat}</Text>
                 <Text style={tw`text-sm text-gray-900`}>{props.reviewInfo.viewDate}</Text>
             </View>
-            <View style={tw`border border-gray-900 self-center w-5/6 mt-4.5`}></View>
+            <View style={tw`border border-gray-900 self-center w-[85%] mt-4.5`}></View>
             
-            <View style={tw`flex flex-col items-start mt-6 ml-8.5`}>
-                <View style={tw`flex-row w-6/7 justify-between`}>
+            {/*평점, 한줄평*/}
+            <View style={tw`flex flex-col items-start mt-6 ml-[10%]`}>
+                <View style={tw`flex flex-row w-[87%] justify-between`}>
                     <Text style={tw`text-gray-900 text-sm self-start`}>평점</Text>
                     {makeStarsForEachReview(props.reviewInfo.rating)}
                 </View>
-                <View style={tw`flex flex-row items-start w-6/7 min-h-1/7 justify-between mt-8 mb-11`}>
+                <View style={tw`flex flex-row items-start w-[87%] min-h-1/7 justify-between mt-8`}>
                     <Text style={tw`text-gray-900 text-sm leading-6`}>한줄평</Text>
-                    <Text style={tw`w-3/5 text-gray-900 text-sm text-center font-medium leading-6`}>"{props.reviewInfo.shortReview}"</Text>
+                    <Text style={tw`w-3/5 h-25 text-gray-900 text-sm text-center font-medium leading-6`}>"{props.reviewInfo.shortReview}"</Text>
                 </View>
             </View>
 
+            {/*구분선*/}
             <View style={tw`flex flex-row items-center absolute left--2.5 right--2.5 top-112.5 justify-between`}>
                 <View style={tw`w-5 h-5 rounded-full bg-[#F5F5F5]`}></View>
                 {Array(15).fill().map((_, index) => (
@@ -271,14 +282,15 @@ export function MusicalInfoFormInReviewDetail(props) {
                 ))}
                 <View style={tw`w-5 h-5 rounded-full bg-[#F5F5F5]`}></View>
             </View>
-
-            <View style={tw`flex flex-row items-start mt-5 ml-8.5`}>
-                <View style={tw`flex-row items-start w-6/7 justify-between`}>
-                    <Text style={tw`text-gray-900 text-sm mr-20 leading-6`}>긴줄평</Text>
-                    <ScrollView style={tw`w-3/5 h-24`} showsVerticalScrollIndicator={false} onTouchEnd={() => setLongReviewModalVisible(true)} onMomentumScrollBegin={() => setLongReviewModalVisible(true)}>
+            
+            {/*긴줄평*/}
+            <View style={tw`flex flex-row items-start absolute left-8.5 top-123.25`}>
+                <View style={tw`flex-row items-start w-[90%] justify-between z-20`}>
+                    <Text style={tw`text-gray-900 text-sm mr-19 leading-6`}>긴줄평</Text>
+                    <ScrollView style={tw`w-3/5 h-27`} showsVerticalScrollIndicator={false} onTouchEnd={() => setLongReviewModalVisible(true)} onMomentumScrollBegin={() => setLongReviewModalVisible(true)}>
                         <Text style={tw`text-gray-900 text-sm text-justify font-normal leading-6`}>{props.reviewInfo.longReview}</Text>
                     </ScrollView>
-                    <LongReviewForm modalVisible={longReviewModalVisible} setModalVisible={setLongReviewModalVisible} longReview={props.reviewInfo.longReview}></LongReviewForm>
+                    <LongReviewForm longReviewModalVisible={longReviewModalVisible} setLongReviewModalVisible={setLongReviewModalVisible} longReview={props.reviewInfo.longReview}></LongReviewForm>
                 </View>
             </View>
 

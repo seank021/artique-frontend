@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { View, Pressable, Text, ScrollView, Image, Alert, StyleSheet } from "react-native";
+import { View, Pressable, Text, ScrollView, Image, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
 
@@ -67,7 +67,7 @@ export default function MusicalDetail2({isCookie, musicalId, setReviewId}) {
             return;
         }
         console.log(musicalInfo.musicalId);
-        Alert.alert('리뷰 작성 페이지로 이동');
+        nav.navigate('ReviewWrite1', {musicalId: musicalInfo.musicalId});
     };
     
     const onPressThumbsUp = (reviewId, isThumbsUp) => {
