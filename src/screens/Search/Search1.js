@@ -1,5 +1,3 @@
-// TODO: 포스터 선택 시 해당 id의 MusicalDetail1로 이동
-
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Image, TextInput, ScrollView, Text, Pressable, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -13,7 +11,7 @@ import { searchMusicals } from "@functions/api";
 
 import { useNavigation } from "@react-navigation/native";
 
-export default function Search1({ isCookie }) {
+export default function Search1({ isCookie, setMusicalId }) {
     const nav = useNavigation();
 
     const [isBeforeSearch, setIsBeforeSearch] = useState(true); // 검색 전, 후 구분
@@ -104,16 +102,21 @@ export default function Search1({ isCookie }) {
         setSearchHistory([]);
     }
 
+    const onPressMusical = (musicalId) => {
+        setMusicalId(musicalId);
+        nav.navigate('MusicalDetail1');
+    }
+
     const MusicalsList = ({ data }) => {
         return (
             <FlatList
                 data={data}
                 numColumns={3}
-                columnWrapperStyle={{ justifyContent: 'space-between', marginLeft: 5, marginRight: 5}}
+                columnWrapperStyle={{ justifyContent: 'space-between'}}
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item }) => (
                     <View>
-                        <Pressable onPress={() => console.log(item.musicalId + "의 MusicalDetail1으로 이동")}>
+                        <Pressable onPress={() => onPressMusical(item.musicalId)}>
                             <Image source={{ uri: item.posterUrl }} style={{ width: 110, height: 157.90323, borderRadius: 10, marginBottom: 10.1 }} />
                             <Text numberOfLines={2} ellipsizeMode="tail" style={{ width: 110, color: '#191919', fontSize: 12, marginBottom: 30 }}>
                                 {item.title}
@@ -131,7 +134,7 @@ export default function Search1({ isCookie }) {
             {isBeforeSearch ?
                 <>
                     <View style={tw`mx-[5%] mt-[17px] mb-[11px]`}>
-                        <View style={tw`flex-row justify-between bg-[#E6E6E6] rounded-[19.5px]`}>
+                        <View style={tw`flex-row justify-between bg-[#E6E6E6] min-h-[34px] rounded-[19.5px]`}>
                             <View style={tw`flex-row w-[90%] h-[100%] items-center`}>
                                 <Image source={require('@images/search.png')} style={tw`ml-[18px] w-[18px] h-[18px] tint-[#ABABAB]`} />
                                 <TextInput ref={(text) => this.textInput = text} onChangeText={(text) => onChangeText(text)} onSubmitEditing={() => onPressSearch(value)} returnKeyType="done" placeholder='작품명이나 배우를 검색해보세요' style={tw`ml-[14px]`}  />
@@ -168,7 +171,7 @@ export default function Search1({ isCookie }) {
                 <>
                     <View style={tw`flex-row items-center mx-[5%] mt-[17px] mb-[11px]`}>
                         <Pressable onPress={()=> {setIsBeforeSearch(true); setSortCriteria('최신순');}}><Image source={require('@images/chevron_left.png')} style={tw`w-[10px] h-[18px] mr-[23px] tint-[#191919]`} /></Pressable>
-                        <View style={tw`flex-row w-[90%] h-[100%] justify-between items-center bg-[#E6E6E6] rounded-[19.5px]`}>
+                        <View style={tw`flex-row w-[90%] h-[100%] justify-between items-center bg-[#E6E6E6] min-h-[34px] rounded-[19.5px]`}>
                             <TextInput style={tw`ml-[14px] font-medium`} placeholder={placeholderValue} placeholderTextColor={"#191919"} editable={false} />
                             <Pressable onPress={()=> {setIsBeforeSearch(true); setSortCriteria('최신순');}}><Image source={require('@images/x.png')} style={tw`mr-[18px] w-[18px] h-[18px] tint-[#ABABAB]`} /></Pressable>
                         </View>
@@ -182,7 +185,7 @@ export default function Search1({ isCookie }) {
                     <AlertFormForSort2 sortModalVisible={sortModalVisible} setSortModalVisible={setSortModalVisible} sortCriteria={sortCriteria} setSortCriteria={setSortCriteria}></AlertFormForSort2>
                     
                     {searchedMusicals.length !== 0 ?
-                        <View style={{flex : 1}}>
+                        <View style={{flex : 1, marginHorizontal : "2%"}}>
                             <MusicalsList data={searchedMusicals} />
                         </View>
                     : <Text style={tw`text-[#ABABAB] text-sm mx-[5%]`}>검색 결과가 없습니다.</Text>}
