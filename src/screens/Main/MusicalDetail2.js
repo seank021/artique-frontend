@@ -133,7 +133,7 @@ export default function MusicalDetail2({isCookie, musicalId, setReviewId}) {
                     <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] mr-[8px] w-[10px] h-[18px] tint-[#191919]`}></Image>
                     <View style={tw`px-[20px]`}></View>
                 </Pressable>
-                <Text style={tw`text-[#191919] text-base font-medium`}>{musicalInfo.title}</Text>
+                <Text numberOfLines={1} style={tw`text-[#191919] text-base font-medium w-[50%]`}>{musicalInfo.title}</Text>
                 <Pressable onPress={onPressWrite} style={tw`flex-row`}>
                     <View style={tw`px-[20px]`}></View>
                     <Image source={require('@images/write.png')} style={tw`mr-[20px] w-[18px] h-[17.121px] tint-[#191919]`}></Image>
