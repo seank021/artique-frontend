@@ -114,19 +114,21 @@ export default function Search1({ isCookie, setMusicalId }) {
     }
 
     const MusicalsList = ({ data }) => {
+        {data.length % 3 === 1 ? data.push({musicalId: 0, posterUrl: '', title: ''}, {musicalId: 0, posterUrl: '', title: ''}) : data.length % 3 === 2 ? data.push({musicalId: 0, posterUrl: '', title: ''}) : null}
         return (
             <FlatList
                 data={data}
                 numColumns={3}
-                columnWrapperStyle={{ justifyContent: 'space-between'}}
+                columnWrapperStyle={{ justifyContent: 'space-between' }}
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item }) => (
+                    item.musicalId === 0 ?
+                        <View style={{ width: 110, height: 157.90323 }}></View>
+                    :
                     <View>
                         <Pressable onPress={() => onPressMusical(item.musicalId)}>
                             <Image source={{ uri: item.posterUrl }} style={{ width: 110, height: 157.90323, borderRadius: 10, marginBottom: 10.1 }} />
-                            <Text numberOfLines={2} ellipsizeMode="tail" style={{ width: 110, color: '#191919', fontSize: 12, marginBottom: 30 }}>
-                                {item.title}
-                            </Text>
+                            <Text numberOfLines={2} ellipsizeMode="tail" style={{ width: 110, color: '#191919', fontSize: 12, marginBottom: 30 }}>{item.title}</Text>
                         </Pressable>
                     </View>
                 )}
