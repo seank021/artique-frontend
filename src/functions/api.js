@@ -114,4 +114,40 @@ const searchMusicals = async (keyword, orderBy) => {
     }
 }
 
-export { feedReviews, musicalReviews, musicalDetails, musicalRateStatistics, musicalReviewsAll, thumbsUp, reviewDetail, searchMusicals };
+// const memberSummary = async () => {
+//     try {
+//         const memberId = await getMemberId();
+//         myHeaders.append("Cookie", memberId);
+//         myHeaders.append("Content-Type", "application/json");
+//         console.log(myHeaders);
+
+//         const response = await axios.get(`http://3.39.145.210/member/summary`, {
+//             headers: myHeaders.map,
+//         });
+//         console.log(response.data);
+//         return response.data;
+//     }
+//     catch (err) {
+//         console.log(err.response.data);
+//     }
+// }
+
+// const memberStatistics = async () => {
+//     try {
+//         const memberId = await getMemberId();
+//         myHeaders.append("Cookie", memberId);
+//         myHeaders.append("Content-Type", "application/json");
+//         console.log(myHeaders);
+
+//         const response = await axios.get(`http://3.39.145.210/member/summary/statistics`, {
+//             headers: myHeaders.map,
+//         });
+//         console.log(response.data);
+//         return response.data;
+//     }
+//     catch (err) {
+//         console.log(err.response.data);
+//     }
+// }
+
+export { feedReviews, musicalReviews, musicalDetails, musicalRateStatistics, musicalReviewsAll, thumbsUp, reviewDetail, searchMusicals, memberSummary, memberStatistics };

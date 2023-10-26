@@ -17,7 +17,7 @@ import ReviewDetail1 from "@screens/Main/ReviewDetail1";
 
 import Search1 from "@screens/Search/Search1";
 
-import Profile from "@screens/Profile/Mypage";
+import Mypage from "@screens/Profile/Mypage";
 import ChangeProfile from "@screens/Profile/ChangeProfile";
 import MyReviews from "@screens/Profile/MyReviews";
 
@@ -86,6 +86,8 @@ const Navigation = () => {
 
     const ProfileStack = () => {
         const [isCookie, setIsCookie] = useState(true);
+        const [memberId, setMemberId] = useState(0);
+        const [reviewId, setReviewId] = useState(0);
 
         useEffect(() => {
             const checkCookie = async () => {

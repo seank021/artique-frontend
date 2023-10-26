@@ -5,6 +5,9 @@ import tw from "twrnc";
 
 import { useNavigation } from "@react-navigation/native";
 import { ShortReviewFormInMypage } from "@forms/ReviewForm";
+import AverageScoreForm from "@forms/AverageScoreForm";
+
+import { memberSummary, memberStatistics } from "@functions/api";
 
 export default function Mypage ({ isCookie }) {
   const nav = useNavigation();
@@ -16,7 +19,33 @@ export default function Mypage ({ isCookie }) {
   const goToMyReviews = () => {
     nav.navigate('MyReviews');
   }
+
+  const [memberInfo, setMemberInfo] = useState({});
+  const [memberRates, setMemberRates] = useState({});
+  const [averageRate, setAverageRate] = useState(0);
+  const [reviewCount, setReviewCount] = useState(0);
+  const [maxRate, setMaxRate] = useState(0);
+
+  useEffect(() => {
+    memberSummary().then((newMemberInfo) => {
+      setMemberInfo(() => newMemberInfo);
+      console.log(newMemberInfo)
+    }).catch((err) => {
+      console.log(err);
+    });
+  }, []);
   
+  useEffect(() => {
+    memberStatistics().then((newMemberRates) => {
+      setMemberRates(() => newMemberRates.statistic);
+      setAverageRate(() => newMemberRates.averageRate);
+      setReviewCount(() => newMemberRates.totalReviewCount);
+      setMaxRate(() => newMemberRates.maxStarRate);
+    }).catch((err) => {
+      console.log(err);
+    });
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       {/* 상단 바 */}
@@ -35,7 +64,7 @@ export default function Mypage ({ isCookie }) {
       <View style={tw`flex-row items-center w-9/10 mt-5 mx-5`}>
         <Image source={require('@images/newprofile.png')} style={tw`w-[100px] h-[100px] mr-5`}></Image>
         <View style={tw`flex-col justify-between`}>
-          <Text style={tw`text-base text-[#191919] font-medium mb-5`}>지친 오혜령</Text>
+          <Text style={tw`text-base text-[#191919] font-medium mb-5`}>{memberInfo.nickname}</Text>
           <Text style={tw`text-xs text-[#191919] font-normal w-57.5 leading-5`}>나에 대한 소개를 작성할 수 있는 칸입니다. 글자수 제한은 두 줄에 들어가는 50자로 할까요?</Text>
         </View>
       </View>
