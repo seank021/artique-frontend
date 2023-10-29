@@ -7,9 +7,9 @@ import { useNavigation } from "@react-navigation/native";
 import { ShortReviewFormInMypage } from "@forms/ReviewForm";
 import AverageScoreForm from "@forms/AverageScoreForm";
 
-import { memberSummary, memberStatistics } from "@functions/api";
+import { memberSummary, memberStatistics, memberShortThumbReviews } from "@functions/api";
 
-export default function Mypage ({ isCookie }) {
+export default function Mypage ({ isCookie, memberId }) {
   const nav = useNavigation();
 
   const goToChangeProfile = () => {
@@ -21,10 +21,12 @@ export default function Mypage ({ isCookie }) {
   }
 
   const [memberInfo, setMemberInfo] = useState({});
-  const [memberRates, setMemberRates] = useState({});
+  const [memberStat, setMemberStat] = useState({});
   const [averageRate, setAverageRate] = useState(0);
-  const [reviewCount, setReviewCount] = useState(0);
-  const [maxRate, setMaxRate] = useState(0);
+  const [totalReviewCount, setTotalReviewCount] = useState(0);
+  const [maxStarRate, setMaxStarRate] = useState(0);
+
+  const [shortReviewInfo, setShortReviewInfo] = useState([{}]);
 
   useEffect(() => {
     memberSummary().then((newMemberInfo) => {
@@ -35,16 +37,32 @@ export default function Mypage ({ isCookie }) {
     });
   }, []);
   
+  // useEffect(() => {
+  //   memberStatistics(memberId).then((newMemberStat) => {
+  //     setMemberStat(() => newMemberStat);
+  //     console.log(newMemberStat)
+  //   }).catch((err) => {
+  //     console.log(err);
+  //   });
+  // }
+  // , []);
+
+  // useEffect(() => {
+  //   setAverageRate(memberStat.averageRate);
+  //   setTotalReviewCount(memberStat.totalReviewCount);
+  //   setMaxStarRate(memberStat.maxStarRate);
+  // }
+  // , [memberStat]);
+
   useEffect(() => {
-    memberStatistics().then((newMemberRates) => {
-      setMemberRates(() => newMemberRates.statistic);
-      setAverageRate(() => newMemberRates.averageRate);
-      setReviewCount(() => newMemberRates.totalReviewCount);
-      setMaxRate(() => newMemberRates.maxStarRate);
+    memberShortThumbReviews(memberId).then((newShortThumbReviews) => {
+      setShortReviewInfo(() => newShortThumbReviews);
+      console.log(newShortThumbReviews)
     }).catch((err) => {
       console.log(err);
     });
-  }, []);
+  }
+  , []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -62,10 +80,10 @@ export default function Mypage ({ isCookie }) {
 
       {/* 프로필 */}
       <View style={tw`flex-row items-center w-9/10 mt-5 mx-5`}>
-        <Image source={require('@images/newprofile.png')} style={tw`w-[100px] h-[100px] mr-5`}></Image>
+        <Image source={memberInfo.imageUrl ? { uri: memberInfo.imageUrl } : require('@images/newprofile.png')} style={tw`w-[100px] h-[100px] mr-5`}></Image>
         <View style={tw`flex-col justify-between`}>
           <Text style={tw`text-base text-[#191919] font-medium mb-5`}>{memberInfo.nickname}</Text>
-          <Text style={tw`text-xs text-[#191919] font-normal w-57.5 leading-5`}>나에 대한 소개를 작성할 수 있는 칸입니다. 글자수 제한은 두 줄에 들어가는 50자로 할까요?</Text>
+          <Text style={tw`text-xs text-[#191919] font-normal w-57.5 leading-5`}>{memberInfo.introduce}</Text>
         </View>
       </View>
       <Pressable onPress={goToMyReviews} style={tw`self-center w-9/10 h-[33px] mt-[25px] rounded-3xl bg-[#FFF] shadow`}>
@@ -89,7 +107,7 @@ export default function Mypage ({ isCookie }) {
       <View style={tw`flex-row justify-between mt-3 mx-5`}>
         <View style={tw`flex-col items-center`}>
           <Text style={tw`text-xs text-[#191919] font-normal`}>별점 평균</Text>
-          <Text style={tw`text-xs text-[#191919] font-normal`}>2.0</Text>
+          <Text style={tw`text-xs text-[#191919] font-normal`}>3.5</Text>
         </View>
         <View style={tw`flex-col items-center`}>
           <Text style={tw`text-xs text-[#191919] font-normal`}>작성한 리뷰 수</Text>
@@ -97,7 +115,7 @@ export default function Mypage ({ isCookie }) {
         </View>
         <View style={tw`flex-col items-center`}>
           <Text style={tw`text-xs text-[#191919] font-normal`}>많이 준 별점</Text>
-          <Text style={tw`text-xs text-[#191919] font-normal`}>2.0</Text>
+          <Text style={tw`text-xs text-[#191919] font-normal`}>4</Text>
         </View>
       </View>
 
@@ -109,9 +127,7 @@ export default function Mypage ({ isCookie }) {
         </Pressable>
       </View>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={tw`mt-3 ml-5`}>
-        <ShortReviewFormInMypage />
-        <ShortReviewFormInMypage />
-        <ShortReviewFormInMypage />
+        <ShortReviewFormInMypage/>
       </ScrollView>
 
     </SafeAreaView>

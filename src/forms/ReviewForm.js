@@ -374,7 +374,7 @@ export function MusicalInfoFormInReviewDetail(props) {
         </View>
     )
 }
-
+{/* props: reviewId, musicalName, starRating, shortReview*/}
 export function ShortReviewFormInMypage(props) {
     return (
         <View style={tw`w-[250px] h-[120px] bg-[#FFF] rounded-[10px] shadow mr-2`}>
