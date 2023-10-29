@@ -9,7 +9,7 @@ import AverageScoreForm from "@forms/AverageScoreForm";
 
 import { memberSummary, memberStatistics, memberShortThumbReviews } from "@functions/api";
 
-export default function Mypage ({ isCookie, memberId }) {
+export default function Mypage ({ isCookie }) {
   const nav = useNavigation();
 
   const goToChangeProfile = () => {
@@ -37,32 +37,31 @@ export default function Mypage ({ isCookie, memberId }) {
     });
   }, []);
   
-  // useEffect(() => {
-  //   memberStatistics(memberId).then((newMemberStat) => {
-  //     setMemberStat(() => newMemberStat);
-  //     console.log(newMemberStat)
-  //   }).catch((err) => {
-  //     console.log(err);
-  //   });
-  // }
-  // , []);
-
-  // useEffect(() => {
-  //   setAverageRate(memberStat.averageRate);
-  //   setTotalReviewCount(memberStat.totalReviewCount);
-  //   setMaxStarRate(memberStat.maxStarRate);
-  // }
-  // , [memberStat]);
-
   useEffect(() => {
-    memberShortThumbReviews(memberId).then((newShortThumbReviews) => {
-      setShortReviewInfo(() => newShortThumbReviews);
-      console.log(newShortThumbReviews)
+    memberStatistics().then((newMemberStat) => {
+      setMemberStat(() => newMemberStat);
+      console.log(newMemberStat)
     }).catch((err) => {
       console.log(err);
     });
   }
   , []);
+
+  useEffect(() => {
+    setAverageRate(memberStat.averageRate);
+    setTotalReviewCount(memberStat.totalReviewCount);
+    setMaxStarRate(memberStat.maxStarRate);
+  }
+  , [memberStat]);
+
+  useEffect(() => {
+    memberShortThumbReviews().then((newShortThumbReviews) => {
+      setShortReviewInfo(() => newShortThumbReviews);
+      console.log(newShortThumbReviews)
+    }).catch((err) => {
+      console.log(err);
+    });
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -93,7 +92,7 @@ export default function Mypage ({ isCookie, memberId }) {
       {/* 평점 */}
       <View style={tw`mt-7.5 ml-5`}>
         <Text style={tw`mb-2`}>
-          <Text style={tw`text-sm text-[#191919] font-medium`}>지친 오혜령</Text>
+          <Text style={tw`text-sm text-[#191919] font-medium`}>{memberInfo.nickname}</Text>
           <Text style={tw`text-sm text-[#191919] font-normal`}> 님은</Text>
         </Text>
         <Text style={tw`items-center`}>
@@ -107,15 +106,15 @@ export default function Mypage ({ isCookie, memberId }) {
       <View style={tw`flex-row justify-between mt-3 mx-5`}>
         <View style={tw`flex-col items-center`}>
           <Text style={tw`text-xs text-[#191919] font-normal`}>별점 평균</Text>
-          <Text style={tw`text-xs text-[#191919] font-normal`}>3.5</Text>
+          <Text style={tw`text-xs text-[#191919] font-normal`}>{averageRate}</Text>
         </View>
         <View style={tw`flex-col items-center`}>
           <Text style={tw`text-xs text-[#191919] font-normal`}>작성한 리뷰 수</Text>
-          <Text style={tw`text-xs text-[#191919] font-normal`}>51</Text>
+          <Text style={tw`text-xs text-[#191919] font-normal`}>{totalReviewCount}</Text>
         </View>
         <View style={tw`flex-col items-center`}>
           <Text style={tw`text-xs text-[#191919] font-normal`}>많이 준 별점</Text>
-          <Text style={tw`text-xs text-[#191919] font-normal`}>4</Text>
+          <Text style={tw`text-xs text-[#191919] font-normal`}>{maxStarRate}</Text>
         </View>
       </View>
 
@@ -127,9 +126,13 @@ export default function Mypage ({ isCookie, memberId }) {
         </Pressable>
       </View>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={tw`mt-3 ml-5`}>
-        <ShortReviewFormInMypage/>
+        <ShortReviewFormInMypage 
+            reviewId={shortReviewInfo.reviewId} 
+            musicalName={shortReviewInfo.musicalName} 
+            starRating={shortReviewInfo.starRating} 
+            shortReview={shortReviewInfo.shortReview}
+        />
       </ScrollView>
-
     </SafeAreaView>
   )
 }

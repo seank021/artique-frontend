@@ -4,6 +4,7 @@ import * as Cookies from "@functions/cookie"
 async function getMemberId() {
     try {
         const cookies = await Cookies.getAllCookieStrings();
+        console.log("!!!!!!!!!!!!!!!!", cookies);
         return cookies;
     } catch (err) {
         console.log(err);
@@ -114,42 +115,44 @@ const searchMusicals = async (keyword, orderBy) => {
     }
 }
 
+const memberIdInMypage = async () => {
+    try {
+        const response = await axios.get(`http://3.39.145.210/member/id`);
+        return response.data;
+    } catch (err) {
+        console.log(err.response.data);
+    }
+}
+
 const memberSummary = async () => {
-    try {
-        const memberId = await getMemberId();
-        myHeaders.append("Cookie", memberId);
-        myHeaders.append("Content-Type", "application/json");
-        console.log(myHeaders);
-        
-        const response = await axios.get(`http://3.39.145.210/member/summary`, {
-            headers: myHeaders.map,
-        });
-        // console.log(response.data);
+    try {   
+        const memberId = await memberIdInMypage();  
+        const response = await axios.get(`http://3.39.145.210/member/summary?member-id=${memberId}`);
         return response.data;
-    }
-    catch (err) {
+    } catch (err) {
         console.log(err.response.data);
     }
 }
 
-const memberStatistics = async (memberId) => {
+const memberStatistics = async () => {
     try {
+        const memberId = await memberIdInMypage();
         const response = await axios.get(`http://3.39.145.210/member/summary/statistics?member-id=${memberId}`);
-        // console.log(response.data);
         return response.data;
     } catch (err) {
         console.log(err.response.data);
     }
 }
 
-const memberShortThumbReviews = async (memberId) => {
+const memberShortThumbReviews = async () => {
     try {
+        const memberId = await memberIdInMypage();
         const response = await axios.get(`http://3.39.145.210/member/review/thumbs/short?member-id=${memberId}`);
-        // console.log(response.data);
+        console.log(response.data);
         return response.data;
     } catch (err) {
         console.log(err.response.data);
     }
 }
 
-export { feedReviews, musicalReviews, musicalDetails, musicalRateStatistics, musicalReviewsAll, thumbsUp, reviewDetail, searchMusicals, memberSummary, memberStatistics, memberShortThumbReviews };
+export { feedReviews, musicalReviews, musicalDetails, musicalRateStatistics, musicalReviewsAll, thumbsUp, reviewDetail, searchMusicals, memberSummary, memberStatistics, memberShortThumbReviews, memberIdInMypage };
