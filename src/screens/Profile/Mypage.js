@@ -5,7 +5,7 @@ import tw from "twrnc";
 
 import { useNavigation } from "@react-navigation/native";
 import { ShortReviewFormInMypage } from "@forms/ReviewForm";
-import AverageScoreForm from "@forms/AverageScoreForm";
+import makeBarChart from "@functions/makeBarChart";
 
 import { memberSummary, memberStatistics, memberShortThumbReviews } from "@functions/api";
 
@@ -31,7 +31,6 @@ export default function Mypage ({ isCookie }) {
   useEffect(() => {
     memberSummary().then((newMemberInfo) => {
       setMemberInfo(() => newMemberInfo);
-      console.log(newMemberInfo)
     }).catch((err) => {
       console.log(err);
     });
@@ -40,7 +39,7 @@ export default function Mypage ({ isCookie }) {
   useEffect(() => {
     memberStatistics().then((newMemberStat) => {
       setMemberStat(() => newMemberStat);
-      console.log(newMemberStat)
+      console.log("NEWMEMBERSTAT:", newMemberStat)
     }).catch((err) => {
       console.log(err);
     });
@@ -58,6 +57,7 @@ export default function Mypage ({ isCookie }) {
     memberShortThumbReviews().then((newShortThumbReviews) => {
       setShortReviewInfo(() => newShortThumbReviews);
       console.log(newShortThumbReviews)
+      console.log("THIS IS SHORTREVIEWINOF", shortReviewInfo)
     }).catch((err) => {
       console.log(err);
     });
@@ -100,9 +100,9 @@ export default function Mypage ({ isCookie }) {
           <Text style={tw`text-sm text-[#191919] font-medium`}> '짠돌이 파'</Text>
         </Text>
       </View>
-      {/* <View>
-        {makeBarChart()}
-      </View> */}
+      <View style={tw`w-9/10 self-center`}>
+        {makeBarChart(memberStat.statistic)}
+      </View>
       <View style={tw`flex-row justify-between mt-3 mx-5`}>
         <View style={tw`flex-col items-center`}>
           <Text style={tw`text-xs text-[#191919] font-normal`}>별점 평균</Text>
@@ -126,12 +126,16 @@ export default function Mypage ({ isCookie }) {
         </Pressable>
       </View>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={tw`mt-3 ml-5`}>
-        <ShortReviewFormInMypage 
-            reviewId={shortReviewInfo.reviewId} 
-            musicalName={shortReviewInfo.musicalName} 
-            starRating={shortReviewInfo.starRating} 
-            shortReview={shortReviewInfo.shortReview}
-        />
+        {shortReviewInfo.reviews.map((review, index) => {
+          if (index < 3) {
+            return (
+              <ShortReviewFormInMypage 
+                muscialName={review.musicalName} 
+                starRating={review.starRating} 
+                shortReview={review.shortReview} />
+            )}
+          }
+        )}
       </ScrollView>
     </SafeAreaView>
   )
