@@ -26,7 +26,7 @@ export default function Mypage ({ isCookie }) {
   const [totalReviewCount, setTotalReviewCount] = useState(0);
   const [maxStarRate, setMaxStarRate] = useState(0);
 
-  const [shortReviewInfo, setShortReviewInfo] = useState([{}]);
+  const [shortReviewInfo, setShortReviewInfo] = useState([]);
 
   useEffect(() => {
     memberSummary().then((newMemberInfo) => {
@@ -39,7 +39,6 @@ export default function Mypage ({ isCookie }) {
   useEffect(() => {
     memberStatistics().then((newMemberStat) => {
       setMemberStat(() => newMemberStat);
-      console.log("NEWMEMBERSTAT:", newMemberStat)
     }).catch((err) => {
       console.log(err);
     });
@@ -56,8 +55,6 @@ export default function Mypage ({ isCookie }) {
   useEffect(() => {
     memberShortThumbReviews().then((newShortThumbReviews) => {
       setShortReviewInfo(() => newShortThumbReviews);
-      console.log(newShortThumbReviews)
-      console.log("THIS IS SHORTREVIEWINOF", shortReviewInfo)
     }).catch((err) => {
       console.log(err);
     });
@@ -101,7 +98,7 @@ export default function Mypage ({ isCookie }) {
         </Text>
       </View>
       <View style={tw`w-9/10 self-center`}>
-        {makeBarChart(memberStat.statistic)}
+        {/* {makeBarChart(memberStat.statistic)} */}
       </View>
       <View style={tw`flex-row justify-between mt-3 mx-5`}>
         <View style={tw`flex-col items-center`}>
@@ -126,7 +123,7 @@ export default function Mypage ({ isCookie }) {
         </Pressable>
       </View>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={tw`mt-3 ml-5`}>
-        {shortReviewInfo.reviews.map((review, index) => {
+        {/* {shortReviewInfo.reviews.map((review, index) => {
           if (index < 3) {
             return (
               <ShortReviewFormInMypage 
@@ -135,7 +132,7 @@ export default function Mypage ({ isCookie }) {
                 shortReview={review.shortReview} />
             )}
           }
-        )}
+        )} */}
       </ScrollView>
     </SafeAreaView>
   )

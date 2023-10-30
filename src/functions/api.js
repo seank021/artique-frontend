@@ -155,4 +155,15 @@ const memberShortThumbReviews = async () => {
     }
 }
 
-export { feedReviews, musicalReviews, musicalDetails, musicalRateStatistics, musicalReviewsAll, thumbsUp, reviewDetail, searchMusicals, memberSummary, memberStatistics, memberShortThumbReviews, memberIdInMypage };
+const myReviewsAll = async (page, orderBy) => {
+    try {
+        const memberId = await memberIdInMypage();
+        const response = await axios.get(`http://3.39.145.210/member/review/create/all?member-id=${memberId}&page=${page}&size=10&order-by=${orderBy}`);
+        console.log("MYREVIEWS", response.data);
+        return response.data;
+    } catch (err) {
+        console.log(err.response.data);
+    }
+}
+
+export { feedReviews, musicalReviews, musicalDetails, musicalRateStatistics, musicalReviewsAll, thumbsUp, reviewDetail, searchMusicals, memberSummary, memberStatistics, memberShortThumbReviews, memberIdInMypage, myReviewsAll};

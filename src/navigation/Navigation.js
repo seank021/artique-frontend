@@ -20,11 +20,11 @@ import Search1 from "@screens/Search/Search1";
 import Mypage from "@screens/Profile/Mypage";
 import ChangeProfile from "@screens/Profile/ChangeProfile";
 import MyReviews from "@screens/Profile/MyReviews";
+import MyReviewSearch from "@screens/Profile/MyReviewSearch";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import MyReviewSearch from "@screens/Profile/MyReviewSearch";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -87,6 +87,7 @@ const Navigation = () => {
     const ProfileStack = () => {
         const [isCookie, setIsCookie] = useState(true);
         const [memberId, setMemberId] = useState(0);
+        const [musicalId, setMusicalId] = useState(0);
         const [reviewId, setReviewId] = useState(0);
 
         useEffect(() => {
@@ -100,8 +101,8 @@ const Navigation = () => {
         return (
             <Stack.Navigator screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="Mypage" children={() => <Mypage isCookie={isCookie}/>} />
-                <Stack.Screen name="ChangeProfile" children={() => <ChangeProfile isCookie={isCookie} memberId={memberId}/>} />
-                <Stack.Screen name="MyReviews" children={() => <MyReviews isCookie={isCookie} memberId={memberId}/>} />
+                <Stack.Screen name="ChangeProfile" children={() => <ChangeProfile isCookie={isCookie} />} />
+                <Stack.Screen name="MyReviews" children={() => <MyReviews isCookie={isCookie} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
                 <Stack.Screen name="MyReviewSearch" children={() => <MyReviewSearch isCookie={isCookie} memberId={memberId}/>} />
             </Stack.Navigator>
         )
