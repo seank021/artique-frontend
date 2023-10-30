@@ -185,7 +185,7 @@ export function ShortReviewFormInFeed(props) {
         </>
     );
 }
-
+// props: reviewInfo, onPressThumbsUp, isCookie, goToReviewDetail1, goToMusicalDetail1
 export function ShortReviewFormInMyReviews(props) {
     const [isCookie, setIsCookie] = useState(props.isCookie);
     const [isThumbsUp, setIsThumbsUp] = useState(props.reviewInfo.isThumbsUp);
@@ -236,10 +236,11 @@ export function ShortReviewFormInMyReviews(props) {
             <View style={tw`flex flex-col w-[90%] self-center my-[20px]`}>
                 <View style={tw`flex-row justify-between items-center mb-[10px] z-20`}>
                     <Text style={tw`text-[#ABABAB] text-xs`}>{props.reviewInfo.viewDate}</Text>
+                    <Image source={require('@images/threedots.png')} style={tw`w-[16px] h-[3.5px] mr-[4px]`}></Image>
                 </View>
 
                 <View style={tw`flex flex-row mb-[12px] bg-[#FFFFFF] h-[162px] rounded-4 shadow-sm`}>
-                    <Image source={{uri: props.reviewInfo.posterUrl}} style={tw`w-[122px] rounded-l-4 mr-[10px]`} onTouchEnd={props.goToMusicalDetail1} />
+                    <Image source={{uri: props.reviewInfo.posterUrl}} style={tw`w-[122px] rounded-l-4 mr-[20px]`} onTouchEnd={props.goToMusicalDetail1} />
                     <View style={tw`flex-col absolute left-[113px] top-[-9px]`}>
                         <View style={tw`w-[18px] h-[18px] rounded-full bg-[#F8F8F8] mb-[10px]`}></View>
                         <View style={tw`w-[10px] h-[10px] rounded-full bg-[#F8F8F8] ml-[4px]`}></View>
