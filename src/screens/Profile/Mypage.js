@@ -20,6 +20,10 @@ export default function Mypage ({ isCookie }) {
     nav.navigate('MyReviews');
   }
 
+  const goToMyThumbs = () => {
+    nav.navigate('MyThumbs');
+  }
+
   const [memberInfo, setMemberInfo] = useState({});
   const [memberStat, setMemberStat] = useState({});
   const [averageRate, setAverageRate] = useState(0);
@@ -118,7 +122,7 @@ export default function Mypage ({ isCookie }) {
       {/* 공감한 한줄평 */}
       <View style={tw`flex-row justify-between mt-11.5 mx-5`}>
         <Text style={tw`text-sm text-[#191919] font-medium`}>공감한 한줄평</Text>
-        <Pressable onPress={console.log('내가 공감한 review 전체보기')} style={tw`w-[50px] h-[21px]`}>
+        <Pressable onPress={goToMyThumbs} style={tw`w-[50px] h-[21px]`}>
           <Text style={tw`text-xs text-[#191919] font-normal`}>전체보기</Text>
         </Pressable>
       </View>

@@ -21,6 +21,8 @@ import Mypage from "@screens/Profile/Mypage";
 import ChangeProfile from "@screens/Profile/ChangeProfile";
 import MyReviews from "@screens/Profile/MyReviews";
 import MyReviewSearch from "@screens/Profile/MyReviewSearch";
+import MyThumbs from "@screens/Profile/MyThumbs";
+import MyThumbsSearch from "@screens/Profile/MyThumbsSearch";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -104,6 +106,8 @@ const Navigation = () => {
                 <Stack.Screen name="ChangeProfile" children={() => <ChangeProfile isCookie={isCookie} />} />
                 <Stack.Screen name="MyReviews" children={() => <MyReviews isCookie={isCookie} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
                 <Stack.Screen name="MyReviewSearch" children={() => <MyReviewSearch isCookie={isCookie} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
+                <Stack.Screen name="MyThumbs" children={() => <MyThumbs isCookie={isCookie} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
+                <Stack.Screen name="MyThumbsSearch" children={() => <MyThumbsSearch isCookie={isCookie} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
             </Stack.Navigator>
         )
     };
