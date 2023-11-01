@@ -103,7 +103,7 @@ const Navigation = () => {
                 <Stack.Screen name="Mypage" children={() => <Mypage isCookie={isCookie}/>} />
                 <Stack.Screen name="ChangeProfile" children={() => <ChangeProfile isCookie={isCookie} />} />
                 <Stack.Screen name="MyReviews" children={() => <MyReviews isCookie={isCookie} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
-                <Stack.Screen name="MyReviewSearch" children={() => <MyReviewSearch isCookie={isCookie} memberId={memberId}/>} />
+                <Stack.Screen name="MyReviewSearch" children={() => <MyReviewSearch isCookie={isCookie} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
             </Stack.Navigator>
         )
     };

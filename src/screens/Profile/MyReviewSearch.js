@@ -7,12 +7,12 @@ import { AlertFormForSort2 } from "@forms/AlertForm";
 
 import * as Keywords from "@functions/keywords";
 
-import { shortReviews, searchCreatedMusicals, thumbsUp } from "@functions/api";
+import { searchCreatedReviews, thumbsUp } from "@functions/api";
 
 import { useNavigation } from "@react-navigation/native";
 import { ShortReviewFormInMyReviews } from "@forms/ReviewForm";
 
-export default function MyReviewSearch({ isCookie, memberId, setMusicalId, setReviewId}) {
+export default function MyReviewSearch({ isCookie, setMusicalId, setReviewId}) {
     {/*페이지 이동*/}
     const nav = useNavigation();
 
@@ -29,11 +29,11 @@ export default function MyReviewSearch({ isCookie, memberId, setMusicalId, setRe
     {/*공감*/}
     const onPressThumbsUp = (reviewId, isThumbsUp) => {
         thumbsUp(reviewId, !isThumbsUp).then((res) => {
-            setSearchedMusicals((prevMusicals) => {
-                const newMusicals = [...prevMusicals];
-                const musicalIndex = newMusicals.findIndex((musical) => musical.reviewId === reviewId);
-                newMusicals[musicalIndex].isThumbsUp = !isThumbsUp;
-                return newMusicals;
+            setSearchedReviews((prevReviews) => {
+                const newReviews = [...prevReviews];
+                const reviewIndex = newReviews.findIndex((review) => review.reviewId === reviewId);
+                newReviews[reviewIndex].isThumbsUp = !isThumbsUp;
+                return newReviews;
             });
         }).catch((err) => {
             console.log(err);
@@ -46,9 +46,10 @@ export default function MyReviewSearch({ isCookie, memberId, setMusicalId, setRe
     
     useEffect(() => {
         if (updatePage && page === 0) {
-            searchCreatedMusicals(memberId, page, searchValue, orderBy).then((res) => {
-                setSearchedMusicals((prevMusicals) => [...prevMusicals, ...res.musicals]);
-            }).catch((err) => {
+            searchCreatedReviews(page, searchValue, orderBy).then((newReviews) => {
+                setSearchedReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
+            }
+            ).catch((err) => {
                 console.log(err);
             });
         }
@@ -75,9 +76,9 @@ export default function MyReviewSearch({ isCookie, memberId, setMusicalId, setRe
             setUpdatePage(false);
             setPage(page + 1);
 
-            searchCreatedMusicals(memberId, page, searchValue, orderBy)
-                .then((res) => {
-                    setSearchedMusicals((prevMusicals) => [...prevMusicals, ...res.musicals]);
+            searchCreatedReviews(page, searchValue, orderBy)
+                .then((newReviews) => {
+                    setSearchedReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
                     setUpdatePage(true);
                 })
                 .catch((err) => {
@@ -106,14 +107,14 @@ export default function MyReviewSearch({ isCookie, memberId, setMusicalId, setRe
     const [sortCriteria, setSortCriteria] = useState("최신순");
     const orderBy = sortCriteria === '최신순' ? 'DATE' : 'REVIEW';
 
-    const [searchedMusicals, setSearchedMusicals] = useState([]);
+    const [searchedReviews, setSearchedReviews] = useState([]);
     const [searchValue, setSearchValue] = useState('');
     
     useEffect(() => {
         if (searchValue !== '') {
-            searchCreatedMusicals(memberId, page, searchValue, orderBy)
+            searchCreatedReviews(page, searchValue, orderBy)
                 .then((res) => {
-                    setSearchedMusicals(res.musicals);
+                    setSearchedReviews(res.reviews);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -168,7 +169,7 @@ export default function MyReviewSearch({ isCookie, memberId, setMusicalId, setRe
 
     return (
         <SafeAreaView style={styles.container}>
-            {showSearchResult ?
+            {!showSearchResult ?
             <>
                 {/* 검색 전 상단바 */}
                 <View style={tw`mx-[5%] mt-[23px] mb-[11px]`}>
@@ -227,32 +228,33 @@ export default function MyReviewSearch({ isCookie, memberId, setMusicalId, setRe
                 <View style={tw`border-[0.5px] border-[#D3D4D3]`}></View>
 
                 {/* 검색 결과 */}
+                <AlertFormForSort2 sortModalVisible={sortModalVisible} setSortModalVisible={setSortModalVisible} sortCriteria={sortCriteria} setSortCriteria={setSortCriteria}></AlertFormForSort2>
+
                 <View style={tw`flex-row justify-between items-center mx-[5%] mt-4 mb-3.5`}>
-                    <Text style={tw`text-sm text-[#191919] font-medium`}>검색 결과 (2)</Text>
+                    <Text style={tw`text-sm text-[#191919] font-medium`}>검색 결과 ({searchedReviews.length})</Text>
                     <Pressable style={tw`flex flex-row items-center justify-end`} onPress={() => setSortModalVisible(true)}>
                         <Text style={tw`text-[#191919] text-xs font-medium mr-[7px]`}>{sortCriteria}</Text>
                         <Image source={require('@images/chevron_down.png')} style={tw`w-[14.4px] h-[8px]`}></Image>
                     </Pressable>
                 </View>
-                    <AlertFormForSort2 sortModalVisible={sortModalVisible} setSortModalVisible={setSortModalVisible} sortCriteria={sortCriteria} setSortCriteria={setSortCriteria}></AlertFormForSort2>
-
-                    {searchedMusicals.length !== 0 ?
-                        <ScrollView onScroll={detectScroll} style={tw`items-center`}>
-                            {searchedMusicals.map((musical, index) => {
-                                <Fragment key={index}>
-                                    <ShortReviewFormInMyReviews
-                                        reviewInfo={musical}
-                                        goToMusicalDetail1={() => goToMusicalDetail1(musical.musicalId)}
-                                        goToReviewDetail1={() => goToReviewDetail1(musical.reviewId)}
-                                        onPressThumbsUp={() => onPressThumbsUp(musical.reviewId, musical.isThumbsUp)}
-                                        isCookie={isCookie}
-                                    />
-                                    {index < searchedMusicals.length - 1 && (
-                                        <View style={tw`border-4 border-[#F0F0F0]`}></View>
-                                    )}
-                                </Fragment>
-                            }
-                            )}
+                    {searchedReviews.length !== 0 ?
+                        <ScrollView onScroll={detectScroll}>
+                            {searchedReviews.map((review, index) => {
+                                return (
+                                    <Fragment key={index}>
+                                        <ShortReviewFormInMyReviews
+                                            reviewInfo={review}
+                                            goToMusicalDetail1gb={() => goToMusicalDetail1(review.musicalId)}
+                                            goToReviewDetail1={() => goToReviewDetail1(review.reviewId)}
+                                            onPressThumbsUp={() => onPressThumbsUp(review.reviewId, review.isThumbsUp)}
+                                            isCookie={isCookie}
+                                        />
+                                        {index < searchedReviews.length - 1 && (
+                                            <View style={tw`border-4 border-[#F0F0F0]`}></View>
+                                        )}
+                                    </Fragment>
+                                );
+                            })}
                         </ScrollView>
                     : null}
             </>
