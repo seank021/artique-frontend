@@ -24,6 +24,10 @@ import MyReviewSearch from "@screens/Profile/MyReviewSearch";
 import MyThumbs from "@screens/Profile/MyThumbs";
 import MyThumbsSearch from "@screens/Profile/MyThumbsSearch";
 
+import MainSetting from "@screens/Setting/MainSetting";
+import MyAccount from "@screens/Setting/MyAccount";
+import PWChange from "@screens/Setting/PWChange";
+
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -108,6 +112,10 @@ const Navigation = () => {
                 <Stack.Screen name="MyReviewSearch" children={() => <MyReviewSearch isCookie={isCookie} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
                 <Stack.Screen name="MyThumbs" children={() => <MyThumbs isCookie={isCookie} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
                 <Stack.Screen name="MyThumbsSearch" children={() => <MyThumbsSearch isCookie={isCookie} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
+
+                <Stack.Screen name="MainSetting" children={() => <MainSetting setIsCookie={setIsCookie}/>} />
+                <Stack.Screen name="MyAccount" children={() => <MyAccount isCookie={isCookie}/>} />
+                <Stack.Screen name="PWChange" children={() => <PWChange isCookie={isCookie}/>} />
             </Stack.Navigator>
         )
     };

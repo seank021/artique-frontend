@@ -19,7 +19,7 @@ export default function AlertForm(props) {
     }
 
     return (
-        <Modal animationIn="fadeIn" animationOut="fadeOut" transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5}>
+        <Modal animationIn="fadeIn" animationOut="fadeOut" transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={() => props.setModalVisible(false)}>
             <View style={alertFormStyles}>
                 {props.image === require("@images/check.png") ?
                     <Image source={require("@images/check.png")} style={tw`w-[24px] h-[17.63637px] self-center`}></Image> 
@@ -144,8 +144,6 @@ export function LongReviewForm(props) {
 }
 
 export function ProfileChangeForm(props) {
-    const [image, setImage] = useState(props.image);
-
     const onPressSelect = async() => {
         const response = await launchImageLibrary({
             mediaType: 'photo',
@@ -157,7 +155,6 @@ export function ProfileChangeForm(props) {
                 console.log('ImagePicker Error: ', response.errorMessage);
             } else {
                 let imageUri = response.uri || response.assets[0]?.uri;
-                console.log(imageUri);
                 props.setImage(imageUri);
             }
         };
@@ -175,6 +172,21 @@ export function ProfileChangeForm(props) {
                 <View style={tw`border-solid border-b border-[#D3D4D3] w-[100%]`}></View>
                 <Pressable onPress={onPressDelete}>
                     <Text style={tw`text-sm text-[#191919] font-normal`}>현재 사진 삭제</Text>
+                </Pressable>
+            </View>
+        </Modal>
+    )
+}
+
+// props: modalVisible, setModalVisible, onPress, question, text
+export const AlertFormForConfirm = (props) => {
+    return (
+        <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={() => props.setModalVisible(false)}>
+            <View style={tw`flex flex-col w-[230px] h-[136px] bg-white rounded-[15px] justify-around self-center`}>
+                <Text style={tw`text-center text-base font-normal mt-[40px] mb-[27px] text-[#191919]`}>{props.question}</Text>
+                <View style={tw`border-b border-solid border-[#D3D4D3]`}></View>
+                <Pressable onPress={props.onPress} style={tw`self-center my-[15px]`}>
+                    <Text style={tw`text-sm text-center font-medium text-[#E94A4B]`}>{props.text}</Text>
                 </Pressable>
             </View>
         </Modal>

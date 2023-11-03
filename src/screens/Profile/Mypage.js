@@ -24,6 +24,10 @@ export default function Mypage ({ isCookie }) {
     nav.navigate('MyThumbs');
   }
 
+  const goToMainSetting = () => {
+    nav.navigate('MainSetting');
+  }
+
   const [memberInfo, setMemberInfo] = useState({});
   const [memberStat, setMemberStat] = useState({});
   const [averageRate, setAverageRate] = useState(0);
@@ -73,7 +77,9 @@ export default function Mypage ({ isCookie }) {
           <Pressable onPress={goToChangeProfile}>
             <Image source={require('@images/profilechange.png')} style={tw`w-[18px] h-[18px] mr-4.5`}></Image>
           </Pressable>
-          <Image source={require('@images/settings.png')} style={tw`w-[18px] h-[18px]`}></Image>
+          <Pressable onPress={goToMainSetting}>
+            <Image source={require('@images/settings.png')} style={tw`w-[18px] h-[18px]`}></Image>
+          </Pressable>
         </View>
       </View>
       <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
