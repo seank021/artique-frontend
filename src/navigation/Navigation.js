@@ -29,6 +29,8 @@ import MainSetting from "@screens/Setting/MainSetting";
 import MyAccount from "@screens/Setting/MyAccount";
 import PWChange from "@screens/Setting/PWChange";
 import PWReset from "@screens/Setting/PWReset";
+import Annoucement from "@screens/Setting/Announcement"
+import AnnounceDetail from "@screens/Setting/AnnounceDetail";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -130,6 +132,8 @@ const Navigation = () => {
                 <Stack.Screen name="MyAccount" children={() => <MyAccount isCookie={isCookie}/>} />
                 <Stack.Screen name="PWChange" children={() => <PWChange isCookie={isCookie}/>} />
                 <Stack.Screen name="PWReset" children={() => <PWReset isCookie={isCookie}/>} />
+                <Stack.Screen name="Announcement" children={() => <Annoucement isCookie={isCookie} />} />
+                <Stack.Screen name="AnnounceDetail" children={() => <AnnounceDetail isCookie={isCookie} />} />
             </Stack.Navigator>
         )
     };
