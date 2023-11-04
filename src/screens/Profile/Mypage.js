@@ -7,9 +7,9 @@ import { useNavigation } from "@react-navigation/native";
 import { ShortReviewFormInMypage } from "@forms/ReviewForm";
 import makeBarChart from "@functions/makeBarChart";
 
-import { memberSummary, otherSummary, memberStatistics, otherStatistics, memberShortThumbReviews, otherSearchThumbReviews } from "@functions/api";
+import { memberSummary, memberStatistics, memberShortThumbReviews } from "@functions/api";
 
-export default function Mypage ({ isCookie, memberId }) {
+export default function Mypage ({ isCookie }) {
   const nav = useNavigation();
 
   const goToChangeProfile = () => {
@@ -36,60 +36,37 @@ export default function Mypage ({ isCookie, memberId }) {
 
   const [shortReviewInfo, setShortReviewInfo] = useState([]);
 
-  const loadMebmerInfo = async () => {
-    try {
-      if (memberId) {
-        const newMemberInfo = await otherSummary(memberId);
-        setMemberInfo(newMemberInfo);
-        console.log('OTHER LOAD SUCCESS', memberInfo.memberId)
-      } else {
-        const newMemberInfo = await memberSummary();
-        setMemberInfo(newMemberInfo);
-        console.log('MEMBER LOAD SUCCESS', memberInfo.memberId)
-      }
-    } catch (err) {
+  useEffect(() => {
+    memberSummary().then((newMemberInfo) => {
+      setMemberInfo(() => newMemberInfo);
+    }).catch((err) => {
       console.log(err);
-    }
-  }
-
-  const loadMemberStat = async () => {
-    try {
-      if (memberId) {
-        const newMemberStat = await otherStatistics(memberId);
-        setMemberStat(() => newMemberStat);
-        console.log('OTHER STATISTICS LOAD SUCCESS')
-      } else {
-        const newMemberStat = await memberStatistics();
-        setMemberStat(() => newMemberStat);
-        setAverageRate(newMemberStat.averageRate);
-        setTotalReviewCount(newMemberStat.totalReviewCount);
-        setMaxStarRate(newMemberStat.maxStarRate);
-        console.log('MEMBER STATISTICS LOAD SUCCESS')
-      }
-    } catch (err) {
+    });
+  }, []);
+  
+  useEffect(() => {
+    memberStatistics().then((newMemberStat) => {
+      setMemberStat(() => newMemberStat);
+    }).catch((err) => {
       console.log(err);
-    }
+    });
   }
-
-  const loadShortReviewInfo = async () => {
-    try {
-      if (memberId) {
-        const newShortThumbReviews = await otherSearchThumbReviews(memberId);
-        setShortReviewInfo(() => newShortThumbReviews);
-      } else {
-        const newShortThumbReviews = await memberShortThumbReviews();
-        setShortReviewInfo(() => newShortThumbReviews);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  }
+  , []);
 
   useEffect(() => {
-    loadMebmerInfo();
-    loadMemberStat();
-    loadShortReviewInfo();
-  }, [memberId]);
+    setAverageRate(memberStat.averageRate);
+    setTotalReviewCount(memberStat.totalReviewCount);
+    setMaxStarRate(memberStat.maxStarRate);
+  }
+  , [memberStat]);
+
+  useEffect(() => {
+    memberShortThumbReviews().then((newShortThumbReviews) => {
+      setShortReviewInfo(() => newShortThumbReviews);
+    }).catch((err) => {
+      console.log(err);
+    });
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -97,15 +74,11 @@ export default function Mypage ({ isCookie, memberId }) {
       <View style={tw`flex-row justify-between items-center mx-5 my-5`}>
         <Text style={tw`text-lg text-[#191919] font-medium`}>마이페이지</Text>
         <View style={tw`flex-row`}>
-          {memberId === memberInfo.id ? (
-            <Pressable onPress={goToChangeProfile}>
-              <Image source={require('@images/profilechange.png')} style={tw`w-[18px] h-[18px] mr-4.5`} />
-            </Pressable>
-          ) : (
-            <View />
-          )}
+          <Pressable onPress={goToChangeProfile}>
+            <Image source={require('@images/profilechange.png')} style={tw`w-[18px] h-[18px] mr-4.5`}></Image>
+          </Pressable>
           <Pressable onPress={goToMainSetting}>
-            <Image source={require('@images/settings.png')} style={tw`w-[18px] h-[18px]`} />
+            <Image source={require('@images/settings.png')} style={tw`w-[18px] h-[18px]`}></Image>
           </Pressable>
         </View>
       </View>
@@ -113,7 +86,7 @@ export default function Mypage ({ isCookie, memberId }) {
 
       {/* 프로필 */}
       <View style={tw`flex-row items-center w-9/10 mt-5 mx-5`}>
-        <Image source={memberInfo.imageUrl ? { uri: memberInfo.imageUrl } : require('@images/newprofile.png')} style={tw`w-[100px] h-[100px] rounded-full mr-5`}></Image>
+        <Image source={memberInfo.imageUrl ? { uri: memberInfo.imageUrl } : require('@images/newprofile.png')} style={tw`w-[100px] h-[100px] mr-5`}></Image>
         <View style={tw`flex-col justify-between`}>
           <Text style={tw`text-base text-[#191919] font-medium mb-5`}>{memberInfo.nickname}</Text>
           <Text style={tw`text-xs text-[#191919] font-normal w-57.5 leading-5`}>{memberInfo.introduce}</Text>
@@ -125,6 +98,7 @@ export default function Mypage ({ isCookie, memberId }) {
         
       {/* 평점 */}
       <View style={tw`mt-7.5 ml-5`}>
+      <View style={tw`mt-7.5 ml-5`}>
         <Text style={tw`mb-2`}>
           <Text style={tw`text-sm text-[#191919] font-medium`}>{memberInfo.nickname}</Text>
           <Text style={tw`text-sm text-[#191919] font-normal`}> 님은</Text>
@@ -135,7 +109,9 @@ export default function Mypage ({ isCookie, memberId }) {
         </Text>
       </View>
       <View style={tw`w-9/10 self-center`}>
-        {/* {makeBarChart(memberStat.statistic)} */}
+      <View style={tw`w-9/10 self-center`}>
+        {memberStat.statistic && makeBarChart(memberStat.statistic)}
+      </View>
       </View>
       <View style={tw`flex-row justify-between mt-3 mx-5`}>
         <View style={tw`flex-col items-center`}>
@@ -151,6 +127,7 @@ export default function Mypage ({ isCookie, memberId }) {
           <Text style={tw`text-xs text-[#191919] font-normal`}>{maxStarRate}</Text>
         </View>
       </View>
+      </View>
 
       {/* 공감한 한줄평 */}
       <View style={tw`flex-row justify-between mt-11.5 mx-5`}>
@@ -160,7 +137,7 @@ export default function Mypage ({ isCookie, memberId }) {
         </Pressable>
       </View>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={tw`mt-3 ml-5`}>
-        {/* {shortReviewInfo.reviews.map((review, index) => {
+        {shortReviewInfo.reviews && shortReviewInfo.reviews.map((review, index) => {
           if (index < 3) {
             return (
               <ShortReviewFormInMypage 
@@ -169,7 +146,7 @@ export default function Mypage ({ isCookie, memberId }) {
                 shortReview={review.shortReview} />
             )}
           }
-        )} */}
+        )}
       </ScrollView>
     </SafeAreaView>
   )

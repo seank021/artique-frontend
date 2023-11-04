@@ -1,5 +1,3 @@
-//ToDo: 로그아웃 기능 구현, 공지사항, 고객센터, Artique 정보 페이지 연결
-
 import React, { useState, useEffect } from "react";
 import { View, Text, Image, StyleSheet, ScrollView, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";

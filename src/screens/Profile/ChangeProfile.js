@@ -10,7 +10,7 @@ import { profileUpload, memberSummary, updateMember, duplicateNickname } from "@
 import { NicknameInputForm, IntroduceInputForm } from '@forms/InputForm';
 import AlertForm, { ProfileChangeForm } from '@forms/AlertForm';
 
-export default function Profile() {
+export default function ChangeProfile({isCookie}) {
     {/*뒤로가기*/}
     const nav = useNavigation();
 
@@ -34,14 +34,13 @@ export default function Profile() {
     }, []);
 
     useEffect(() => {
-        setProfileChangeModalVisible(false);
+        setImageChangeModalVisible(false);
     }, [profileImage]);
-
+    
     const onPressProfileChange = () => {
         profileUpload(profileImage).then((newProfileImage) => {
             setProfileImage(() => newProfileImage);
-            setProfileChangeModalVisible(!ProfileChangeModalVisible);
-            console.log('IMAGE UPLOAD SUCCESS', profileImage);
+            setImageChangeModalVisible(!imageChangeModalVisible);
         }).catch((err) => {
             console.log(err);
         });
@@ -76,7 +75,7 @@ export default function Profile() {
 
     {/*input창 속성들 관리*/}
     const [modalVisible, setModalVisible] = useState(false);
-    const [ProfileChangeModalVisible, setProfileChangeModalVisible] = useState(false);
+    const [imageChangeModalVisible, setImageChangeModalVisible] = useState(false);
 
     const [borderColor, setBorderColor] = useState('#B6B6B6');
     const [buttonColor, setButtonColor] = useState('#FFF');
@@ -194,8 +193,8 @@ export default function Profile() {
             </AlertForm>
 
             <ProfileChangeForm
-                modalVisible={ProfileChangeModalVisible}
-                setModalVisible={setProfileChangeModalVisible}
+                modalVisible={imageChangeModalVisible}
+                setModalVisible={setImageChangeModalVisible}
                 setImage={setProfileImage}>
             </ProfileChangeForm>
 

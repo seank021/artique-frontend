@@ -61,10 +61,10 @@ export function ShortReviewForm(props) {
         props.onPressThumbsUp(props.reviewInfo.reviewId);
     };
 
-    // const onPressProfile = () => {
-    //     console.log("이게 누구야?", props.reviewInfo.memberId)
-    //     nav.navigate('Mypage', { memberId: props.reviewInfo.memberId });
-    // }
+    const onPressProfile = () => {
+        console.log("내가 누르고 있는 프로필의 아이디", props.reviewInfo.memberId)
+        // nav.navigate('Mypage', {params: { memberId: props.reviewInfo.memberId }});
+    }
 
     const onPressArrowCircledRight = () => {
         props.onPressArrowCircledRight(props.reviewInfo.reviewId);
@@ -78,12 +78,12 @@ export function ShortReviewForm(props) {
             <View style={tw`flex flex-col w-[90%] self-center my-[20px]`}>
                 <View style={tw`flex-row justify-between items-center mb-[15px]`}>
                     <View style={tw`flex-row justify-between items-center`}>
-                        {/* <Pressable onPress={onPressProfile}> */}
+                        <Pressable onPress={onPressProfile}>
                             <Image source={{uri: props.reviewInfo.memberImageUrl}} style={tw`w-[24px] h-[24px] rounded-full mr-[10px]`}></Image>
-                        {/* </Pressable> */}
-                        {/* <Pressable onPress={onPressProfile}> */}
+                        </Pressable>
+                        <Pressable onPress={onPressProfile}>
                             <Text style={tw`text-[#191919] text-sm mr-[15px]`}>{props.reviewInfo.memberNickname}</Text>
-                        {/* </Pressable> */}
+                        </Pressable>
                         <Text style={tw`text-[#ABABAB] text-xs`}>{props.reviewInfo.viewDate}</Text>
                     </View>
                     <View style={tw`flex-row items-center`}>
@@ -177,8 +177,7 @@ export function ShortReviewFormInFeed(props) {
     }
 
     const onPressProfile = () => {
-        console.log("이게 누구야?", props.reviewInfo.memberId)
-        nav.navigate('Mypage', { memberId: props.reviewInfo.memberId });
+        nav.navigate('Mypage', {params: { memberId: props.reviewInfo.memberId }});
     }
 
     return (

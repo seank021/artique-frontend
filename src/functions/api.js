@@ -275,7 +275,7 @@ const otherReviewsAll = async (memberId, page, orderBy) => {
     const response = await axios.get(
       `http://3.39.145.210/member/review/create/all?member-id=${memberId}&page=${page}&size=10&order-by=${orderBy}`,
     );
-    console.log('MYREVIEWS', response.data);
+    console.log('OTHER REVIEWS', response.data);
     return response.data;
   } catch (err) {
     console.log(err.response.data);
@@ -347,6 +347,7 @@ const otherSearchThumbReviews = async (memberId, page, keyword) => {
 
 const profileUpload = async base64 => {
   try {
+    // console.log("base64", base64);
     const myHeaders = await getHeaders();
     const memberId = await memberIdInMypage();
     const response = await axios.post(
@@ -361,7 +362,7 @@ const profileUpload = async base64 => {
     );
     return response.data;
   } catch (err) {
-    console.log(err.response.data);
+    console.log("에러 여기야 여기", err.response.data);
   }
 };
 
