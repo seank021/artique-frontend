@@ -16,6 +16,7 @@ import tw from 'twrnc';
 import axios from 'axios';
 
 import hash from '@functions/hash';
+import * as Cookies from '@functions/cookie';
 
 import {useNavigation} from '@react-navigation/native';
 
@@ -223,6 +224,7 @@ export default function Login1() {
       rectangle2 === require('@images/rectangle_checked.png')
     ) {
       const hashedPW = hash(password);
+      Cookies.clearCookie();
       try {
         const response = await axios.post('http://3.39.145.210/member/join', {
           memberId: id,

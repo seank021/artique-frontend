@@ -34,6 +34,7 @@ export default function Login1({setGoToFeed}) {
   };
 
   onPressKakao = async () => {
+    Cookies.removeCookie('currentLogin');
     try {
       const result = await KakaoLogin.login();
       // console.log(result);
@@ -46,6 +47,7 @@ export default function Login1({setGoToFeed}) {
       console.log(response.headers['set-cookie']);
       try {
         Cookies.setCookie('kakao', response.headers['set-cookie']);
+        Cookies.setCookie('currentLogin', 'kakao');
         setGoToFeed(true);
       } catch (err) {
         console.log(err);
@@ -56,6 +58,7 @@ export default function Login1({setGoToFeed}) {
   };
 
   onPressGoogle = async () => {
+    Cookies.removeCookie('currentLogin');
     GoogleSignin.configure({
       webClientId:
         '1001943377543-q3ed3vrdtg2hhmc8edp88c6eggh48bcs.apps.googleusercontent.com',
@@ -75,6 +78,7 @@ export default function Login1({setGoToFeed}) {
       console.log(response.headers['set-cookie']);
       try {
         Cookies.setCookie('google', response.headers['set-cookie']);
+        Cookies.setCookie('currentLogin', 'google');
         setGoToFeed(true);
       } catch (err) {
         console.log(err);
@@ -85,6 +89,7 @@ export default function Login1({setGoToFeed}) {
   };
 
   onPressApple = async () => {
+    // Cookies.removeCookie('currentLogin');
     // try {
     //     const appleAuthRequestResponse = await appleAuth.performRequest({
     //         requestedOperation: appleAuth.Operation.LOGIN,
@@ -99,6 +104,7 @@ export default function Login1({setGoToFeed}) {
     //     console.log(response.headers['set-cookie']);
     //     try {
     //         Cookies.setCookie("apple", response.headers["set-cookie"]);
+    //         Cookies.setCookie("currentLogin", "apple");
     //         setGoToFeed(true);
     //     } catch (err) {
     //         console.log(err);
