@@ -26,6 +26,26 @@ export default function InputForm(props) {
     );
 }
 
+export function InputFormInPWChange(props) {
+    return (
+        <View style={tw`flex flex-row justify-between items-center border-solid border-b border-[#ABABAB] w-[90%] mb-2`}>
+            <View style={tw`flex-row items-center`}>
+                <Image source={props.image} style={tw`tint-[#ABABAB] ml-10px mr-[36px] w-[15px] h-[16px]`}></Image>
+                <TextInput placeholder={props.placeholder} onChangeText={(text) => { props.setValue(text); props.compareValue(text); }} placeholderTextColor={"#B6B6B6"} secureTextEntry={props.secureTextEntry} color={"#B6B6B6"} style={tw`h-40px`}></TextInput>
+            </View>
+            <>
+                {props.ifButton ?
+                    <VerifyButtonForm borderColor={props.borderColor} buttonColor={props.buttonColor} textColor={props.buttonTextColor} text={props.buttonText} onPress={props.onPressButton}></VerifyButtonForm>
+                    : props.ifCheck ?
+                        <Image source={require("@images/check.png")} style={tw`w-[16px] h-[11.75758px]`}></Image>
+                        : props.ifX ?
+                            <Image source={require("@images/x_red.png")} style={tw`w-[14px] h-[14px]`}></Image>
+                            : null}
+            </>
+        </View>
+    );
+}
+
 // props: image, placeholder, setValue, reappearButton, inputCount, inputSize / ifWriting / ifButton, borderColor, buttonColor, buttonTextColor, buttonText, onPressButton / ifCheck / inputSizeColor
 export function NicknameInputForm(props) {
     return (

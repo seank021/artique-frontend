@@ -193,7 +193,96 @@ export function ShortReviewFormInFeed(props) {
         </>
     );
 }
+// props: reviewInfo, onPressThumbsUp, isCookie, goToReviewDetail1, goToMusicalDetail1
+export function ShortReviewFormInMyReviews(props) {
+    const [isCookie, setIsCookie] = useState(props.isCookie);
+    const [isThumbsUp, setIsThumbsUp] = useState(props.reviewInfo.isThumbsUp);
+    const [thumbsCount, setThumbsCount] = useState(props.reviewInfo.thumbsCount);
+    const [thumbsUpImg, setThumbsUpImg] = useState(require('@images/like_gray_small.png'));
 
+    const [modalVisible, setModalVisible] = useState(false);
+
+    const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
+    const [alertText, setAlertText] = useState('로그인이 필요한 서비스입니다.');
+
+    useEffect(() => {
+        setIsCookie(props.isCookie);
+    }, [props.isCookie]);
+
+    useEffect(() => {
+        if (isThumbsUp && isCookie) {
+            setThumbsUpImg(require('@images/like_red_small.png'));
+        } else {
+            setThumbsUpImg(require('@images/like_gray_small.png'));
+        }
+    }, [isThumbsUp, isCookie]);
+
+    const onPressThumbsUp = () => {
+        if (!props.isCookie) {
+            setModalVisible(!modalVisible);
+            setAlertImage(require('@images/x_red.png'));
+            setAlertText('로그인이 필요한 서비스입니다.');
+            setTimeout(() => {
+                setModalVisible(modalVisible);
+            }, 1000);
+            return;
+        }
+        setIsThumbsUp(!isThumbsUp);
+        if (isThumbsUp) {
+            setThumbsCount(thumbsCount - 1);
+        } else {
+            setThumbsCount(thumbsCount + 1);
+        }
+        props.onPressThumbsUp(props.reviewInfo.reviewId);
+    };
+
+    return (
+        <>
+            <View>
+                <AlertForm modalVisible={modalVisible} setModalVisible={setModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
+            </View>
+            <View style={tw`flex flex-col w-[90%] self-center my-[20px]`}>
+                <View style={tw`flex-row justify-between items-center mb-[10px] z-20`}>
+                    <Text style={tw`text-[#ABABAB] text-xs`}>{props.reviewInfo.viewDate}</Text>
+                    <Image source={require('@images/threedots.png')} style={tw`w-[16px] h-[3.5px] mr-[4px]`}></Image>
+                </View>
+
+                <View style={tw`flex flex-row mb-[12px] bg-[#FFFFFF] h-[162px] rounded-4 shadow-sm`}>
+                    <Image source={{uri: props.reviewInfo.posterUrl}} style={tw`w-[122px] rounded-l-4 mr-[20px]`} onTouchEnd={props.goToMusicalDetail1} />
+                    <View style={tw`flex-col absolute left-[113px] top-[-9px]`}>
+                        <View style={tw`w-[18px] h-[18px] rounded-full bg-[#F8F8F8] mb-[10px]`}></View>
+                        <View style={tw`w-[10px] h-[10px] rounded-full bg-[#F8F8F8] ml-[4px]`}></View>
+                        <View style={tw`w-[10px] h-[10px] rounded-full bg-[#F8F8F8] ml-[4px] mt-[9px]`}></View>
+                        <View style={tw`w-[10px] h-[10px] rounded-full bg-[#F8F8F8] ml-[4px] mt-[9px]`}></View>
+                        <View style={tw`w-[10px] h-[10px] rounded-full bg-[#F8F8F8] ml-[4px] mt-[9px]`}></View>
+                        <View style={tw`w-[10px] h-[10px] rounded-full bg-[#F8F8F8] ml-[4px] mt-[9px]`}></View>
+                        <View style={tw`w-[10px] h-[10px] rounded-full bg-[#F8F8F8] ml-[4px] mt-[9px]`}></View>
+                        <View style={tw`w-[10px] h-[10px] rounded-full bg-[#F8F8F8] ml-[4px] mt-[9px]`}></View>
+                        <View style={tw`w-[18px] h-[18px] rounded-full bg-[#F8F8F8] mt-[10px]`}></View>
+                    </View>
+                    <View style={[tw`flex-col justify-between ml-[10px]`, { flex: 1 }]} onTouchEnd={props.goToReviewDetail1}>
+                        <Text style={tw`text-[#191919] text-base font-medium mt-[14px] mb-[4px]`}>{props.reviewInfo.musicalName}</Text>
+                        <Text style={tw`text-[#191919] text-xs mb-[14px]`}>
+                            {props.reviewInfo.casting.length > 20 ? `${props.reviewInfo.casting.slice(0, 20)} ...` : props.reviewInfo.casting}
+                        </Text>
+                        {makeStars(props.reviewInfo.starRating)}
+                        <View style={tw`flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mt-[5px] mb-[14px] p-[6px] rounded-2 w-[95%]`}>
+                            <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>"</Text>
+                            <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>{props.reviewInfo.shortReview.length < 25 ? props.reviewInfo.shortReview : props.reviewInfo.shortReview.slice(0, 25) + '···'}"</Text>
+                        </View>
+                    </View>
+                </View>
+
+                <View style={tw`flex-row items-center z-20`}>
+                    <Pressable onPress={onPressThumbsUp}>
+                        <Image source={thumbsUpImg} style={tw`w-[25.72288px] h-[18px] mr-[10.28px]`}></Image>
+                    </Pressable>
+                    <Text style={tw`text-[10px] text-[#191919]`}>공감 {thumbsCount}회</Text>
+                </View>
+            </View>
+        </>
+    );
+}
 // props: reviewInfo
 // export function MusicalInfoFormInReviewDetail(props) {
 //     const [longReviewModalVisible, setLongReviewModalVisible] = useState(false);
@@ -295,6 +384,27 @@ export function MusicalInfoFormInReviewDetail(props) {
             </View>
 
             <View style={tw`w-15 h-15 rounded-full bg-[#F5F5F5] self-center absolute bottom--7.5`}></View>
+        </View>
+    )
+}
+{/* props: reviewId, musicalName, starRating, shortReview*/}
+export function ShortReviewFormInMypage(props) {
+    return (
+        <View style={tw`w-[250px] h-[120px] bg-[#FFF] rounded-[10px] shadow mr-2`}>
+            <View style={tw`w-full flex-col items-start mx-3 my-3`}>
+                <Text style={tw`text-sm text-[#191919] font-medium mb-2`}>{props.musicalName}</Text>
+                <View> 
+                    {makeStars(props.starRating)}
+                </View>
+                <View style={tw`flex-row items-center bg-[#F5F5F5] rounded-[5px] w-[90%] h-[52px] mt-1.25`}>
+                    <View style={tw`flex-row justify-between mx-1.5 my-1.5`}>
+                        <Text style={tw`text-xs text-[#191919] font-medium`}>"</Text>
+                        <Text numberOfLines={2} ellipsizeMode='tail' style={tw`text-xs text-[#191919] font-medium shrink mr-1.5`}>
+                            {`${props.shortReview}`.replace(/^(.{30}[^\s]*).*/, "$1...\"")}
+                        </Text>
+                    </View>
+                </View>
+            </View>
         </View>
     )
 }
