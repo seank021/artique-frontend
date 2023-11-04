@@ -27,6 +27,7 @@ import MyThumbsSearch from "@screens/Profile/MyThumbsSearch";
 import MainSetting from "@screens/Setting/MainSetting";
 import MyAccount from "@screens/Setting/MyAccount";
 import PWChange from "@screens/Setting/PWChange";
+import PWReset from "@screens/Setting/PWReset";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -116,6 +117,7 @@ const Navigation = () => {
                 <Stack.Screen name="MainSetting" children={() => <MainSetting setIsCookie={setIsCookie}/>} />
                 <Stack.Screen name="MyAccount" children={() => <MyAccount isCookie={isCookie}/>} />
                 <Stack.Screen name="PWChange" children={() => <PWChange isCookie={isCookie}/>} />
+                <Stack.Screen name="PWReset" children={() => <PWReset isCookie={isCookie}/>} />
             </Stack.Navigator>
         )
     };

@@ -1,20 +1,79 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Button, Image, ScrollView, Pressable, StyleSheet } from "react-native";
+import { View, Text, Image, ScrollView, Pressable, StyleSheet } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import { useNavigation } from '@react-navigation/native';
 
+import { profileUpload, memberSummary, updateMember, duplicateNickname } from "@functions/api";
+
 import { NicknameInputForm, IntroduceInputForm } from '@forms/InputForm';
 import AlertForm, { ProfileChangeForm } from '@forms/AlertForm';
 
 export default function Profile() {
+    {/*뒤로가기*/}
     const nav = useNavigation();
 
-    const [profileImage, setProfileImage] = useState(''); // 추후에 백엔드랑 연결하면 백엔드에서 받아오는 이미지로 바꿔야 함.
+    const goBack = () => {
+        nav.goBack();
+    };
+
+    {/*profile 불러오기 및 수정*/}
+    const [profileImage, setProfileImage] = useState('');
     const [nickname, setNickname] = useState('');
     const [introduce, setIntroduce] = useState('');
 
+    useEffect (() => {
+        memberSummary().then((newMemberInfo) => {
+            setProfileImage(() => newMemberInfo.imageUrl);
+            setNickname(() => newMemberInfo.nickname);
+            setIntroduce(() => newMemberInfo.introduce);
+        }).catch((err) => {
+            console.log(err);
+        });
+    }, []);
+
+    useEffect(() => {
+        setProfileChangeModalVisible(false);
+    }, [profileImage]);
+
+    const onPressProfileChange = () => {
+        profileUpload(profileImage).then((newProfileImage) => {
+            setProfileImage(() => newProfileImage);
+            setProfileChangeModalVisible(!ProfileChangeModalVisible);
+            console.log('IMAGE UPLOAD SUCCESS', profileImage);
+        }).catch((err) => {
+            console.log(err);
+        });
+    }
+
+    const onPressSave = async () => {
+        if (!ifCheckNickname) {
+            setModalVisible(!modalVisible);
+            setAlertImage(require('@images/x_red.png'));
+            setAlertText('닉네임 중복 확인을 해주세요.');
+            setTimeout(() => {
+                setModalVisible(modalVisible);
+            }, 1000);
+        return;
+        } else {
+            updateMember(nickname, profileImage, introduce).then((req) => {
+                if (req.success) {
+                    console.log('success');
+                    setModalVisible(!modalVisible);
+                    setAlertImage(require('@images/check.png'));
+                    setAlertText('저장되었습니다');
+                    setTimeout(() => {
+                        setModalVisible(modalVisible);
+                    }, 1000);
+                }
+            }).catch((err) => {
+                console.log(err);
+            });
+        }
+    };
+
+    {/*input창 속성들 관리*/}
     const [modalVisible, setModalVisible] = useState(false);
     const [ProfileChangeModalVisible, setProfileChangeModalVisible] = useState(false);
 
@@ -56,8 +115,6 @@ export default function Profile() {
         }));
 
         if (text.length > 0) {
-            console.log("텍스트 길이", text.length);
-            console.log("텍스트 최대 길이", maxLength[field]);
             setIfWriting(prevIfWriting => ({
             ...prevIfWriting,
             [field]: true,
@@ -81,54 +138,20 @@ export default function Profile() {
         }
     }
 
-    const goBack = () => {
-        nav.goBack();
-    };
-
-    const onPressSave = async () => {
-        if (!ifCheckNickname) {
-            setModalVisible(!modalVisible);
-            setAlertImage(require('@images/x_red.png'));
-            setAlertText('닉네임 중복 확인을 해주세요.');
-            setTimeout(() => {
-                setModalVisible(modalVisible);
-            }, 1000);
-        return;
-        } else {
-            // 백과 연결하는 부분 추후 추가 필요
-            setModalVisible(!modalVisible);
-            setAlertImage(require('@images/check.png'));
-            setAlertText('저장되었습니다');
-            setTimeout(() => {
-                setModalVisible(modalVisible);
-            }, 1000);
-        }
-    };
-
-    const onPressProfileChange = () => {
-        // 백으로 전달해야 됨
-        setProfileChangeModalVisible(!ProfileChangeModalVisible);
-    }
-
     const reappearButton = () => {
         setBorderColor('#ABABAB');
         setIfButtonID(true);
     };
 
-    // 나중에 서버 연결하면 닉네임 중복 확인하는 함수로 바꿔야 함.
+    {/*닉네임 중복 확인*/}
     let ifDuplicate = false;
     const checkDuplicate = async () => {
-        // try {
-        //     const response = await axios.get(
-        //     `http://3.39.145.210/member/duplicate?member-id=${id}`,
-        //     );
-        //     console.log(response.data);
-        // } catch (error) {
-        //     console.log(error.response.data.code);
-        //     if (error.response.data.code === 'DUPLICATE_LOGIN_ID') {
-        //     ifDuplicate = true;
-        //     }
-        // }
+        duplicateNickname(nickname).then((res) => {
+            ifDuplicate = res.unique;
+        }).catch((err) => {
+            console.log(err);
+        });
+
         if (ifDuplicate) {
             setModalVisible(!modalVisible);
             setAlertImage(require('@images/x_red.png'));
@@ -157,10 +180,6 @@ export default function Profile() {
         }
     };
 
-    useEffect(() => {
-        setProfileChangeModalVisible(false);
-    }, [profileImage]);
-
     return (
         <SafeAreaView style={styles.container}>
             <AlertForm
@@ -176,7 +195,7 @@ export default function Profile() {
             <ProfileChangeForm
                 modalVisible={ProfileChangeModalVisible}
                 setModalVisible={setProfileChangeModalVisible}
-                image={profileImage}
+                // image={profileImage}
                 setImage={setProfileImage}>
             </ProfileChangeForm>
 
@@ -200,7 +219,7 @@ export default function Profile() {
             <ScrollView contentContainerStyle={styles.contentContainer}>
                 <NicknameInputForm
                     image={require('@images/nickname.png')}
-                    placeholder={'닉네임을 설정해주세요'}
+                    placeholder={nickname ? nickname : '닉네임을 설정해주세요'}
                     setValue={setNickname}
                     reappearButton={reappearButton}
                     inputCount={inputCount}
@@ -218,7 +237,7 @@ export default function Profile() {
                 <View style={tw`h-[20px]`}></View>
                 <IntroduceInputForm
                     image={require('@images/write_gray.png')}
-                    placeholder={'소개글을 입력해주세요'}
+                    placeholder={introduce ? introduce : '소개글을 입력해주세요'}
                     setValue={setIntroduce}
                     inputSize={inputSize.introduce}
                     inputSizeColor={inputSizeColor.introduce}

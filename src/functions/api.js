@@ -4,7 +4,6 @@ import * as Cookies from "@functions/cookie"
 async function getMemberId() {
     try {
         const cookies = await Cookies.getAllCookieStrings();
-        console.log("!!!!!!!!!!!!!!!!", cookies);
         return cookies;
     } catch (err) {
         console.log(err);
@@ -196,4 +195,46 @@ const searchThumbReviews = async (page, keyword) => {
     }
 }
 
-export { feedReviews, musicalReviews, musicalDetails, musicalRateStatistics, musicalReviewsAll, thumbsUp, reviewDetail, searchMusicals, memberSummary, memberStatistics, memberShortThumbReviews, memberIdInMypage, myReviewsAll, searchCreatedReviews, myThumbsAll, searchThumbReviews};
+const profileUpload = async (imageUrl) => {
+    try {
+        const memberId = await memberIdInMypage();
+        const response = await axios.post(`http://3.39.145.210/image`, {
+            "memberId": memberId,
+            "file": imageUrl,
+        }, {
+            headers: myHeaders.map,
+        });
+        return response.data;
+    } catch (err) {
+        console.log(err.response.data);
+    }
+}
+
+const updateMember = async (nickname, imageUrl, introduce) => {
+    try {
+        const memberId = await memberIdInMypage();
+        const response = await axios.post(`http://3.39.145.210/update/member`, {
+            "memberId": memberId,
+            "nickname": nickname,
+            "profileUrl": imageUrl,
+            "introduce": introduce,
+            // "password": ""
+        }, {
+            headers: myHeaders.map,
+        });
+        return response.data;
+    } catch (err) {
+        console.log(err.response.data);
+    }
+}
+
+const duplicateNickname = async (nickname) => {
+    try {
+        const response = await axios.get(`http://3.39.145.210/member/nickname/duplicate?nickname=${nickname}`);
+        return response.data;
+    } catch (err) {
+        console.log(err.response.data);
+    }
+}
+
+export { feedReviews, musicalReviews, musicalDetails, musicalRateStatistics, musicalReviewsAll, thumbsUp, reviewDetail, searchMusicals, memberSummary, memberStatistics, memberShortThumbReviews, memberIdInMypage, myReviewsAll, searchCreatedReviews, myThumbsAll, searchThumbReviews, profileUpload, updateMember, duplicateNickname};

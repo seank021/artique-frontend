@@ -23,6 +23,7 @@ export default function MainSetting ({setIsCookie}) {
 
   const onPressLogout = () => {
     setLogoutModalVisible(!logoutModalVisible);
+    setIsCookie(false);
   }
 
   return (

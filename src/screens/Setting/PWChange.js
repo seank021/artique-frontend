@@ -14,10 +14,13 @@ export default function PWChange ({ isCookie }) {
     nav.goBack();
   }
 
+  const goToPWReset = () => {
+    nav.navigate('PWReset');
+  }
+
   const [modalVisible, setModalVisible] = useState(false);
   const [alertImage, setAlertImage] = useState(require('@images/check.png'));
   const [alertText, setAlertText] = useState('비밀번호가 변경되었습니다.');
-  const [borderColor, setBorderColor] = useState('#D3D4D3');
 
   const onPressSave = () => {
     if (password === '') {
@@ -181,6 +184,11 @@ export default function PWChange ({ isCookie }) {
           ifX={XNewPW}
         ></InputFormInPWChange>
       </View>
+
+      {/* 비밀번호 까먹었을 떄 */}
+      <Pressable onPress={goToPWReset} style={tw`self-center items-center mt-[57px]`}>
+        <Text style={tw`text-[#B6B6B6] text-[10px] underline font-normal`}>비밀번호를 잊으셨나요?</Text>
+      </Pressable>
     </SafeAreaView>
   )
 }
