@@ -73,6 +73,7 @@ export default function Login1({setGoToFeed, setIsCookie}) {
     }
 
     const hashedPW = hash(password);
+    Cookies.removeCookie('currentLogin');
     try {
       const response = await axios.post('http://3.39.145.210/member/login', {
         memberId: id,
@@ -84,6 +85,7 @@ export default function Login1({setGoToFeed, setIsCookie}) {
         console.log(response.headers['set-cookie']);
         try {
           Cookies.setCookie('general', response.headers['set-cookie']);
+          Cookies.setCookie('currentLogin', 'general');
           setGoToFeed(true);
         } catch (err) {
           console.log(err);
