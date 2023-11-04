@@ -73,6 +73,7 @@ export default function Login1({setGoToFeed, setIsCookie}) {
     }
 
     const hashedPW = hash(password);
+    Cookies.removeCookie('currentLogin');
     try {
       const response = await axios.post('http://3.39.145.210/member/login', {
         memberId: id,
@@ -80,10 +81,11 @@ export default function Login1({setGoToFeed, setIsCookie}) {
       });
 
       if (response.data.success === true) {
-        console.log('로그인 성공');
+        // console.log('로그인 성공');
         console.log(response.headers['set-cookie']);
         try {
           Cookies.setCookie('general', response.headers['set-cookie']);
+          Cookies.setCookie('currentLogin', 'general');
           setGoToFeed(true);
         } catch (err) {
           console.log(err);
@@ -165,14 +167,16 @@ export default function Login1({setGoToFeed, setIsCookie}) {
           placeholder={'아이디를 입력해주세요'}
           setValue={setId}
           compareValue={nullFunc}
-          reappearButton={nullFunc}></InputForm>
+          reappearButton={nullFunc}
+          style={tw`mb-2.5`}></InputForm>
         <InputForm
           image={require('@images/password.png')}
           placeholder={'비밀번호를 입력해주세요'}
           secureTextEntry={true}
           setValue={setPassword}
           compareValue={nullFunc}
-          reappearButton={nullFunc}></InputForm>
+          reappearButton={nullFunc}
+          style={tw`mb-2.5`}></InputForm>
 
         <View style={tw`w-[90%] flex-row items-center mt-2.5 mb-4.5`}>
           <Pressable onPress={checkRectangle}>
@@ -209,9 +213,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#3A3D52',
   },
   contentContainer: {
-    flexGrow: 1,
-    justifyContent: 'space-around',
+    flex: 1,
     alignItems: 'center',
-    paddingBottom: '90%',
   },
 });

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { View, Pressable, Text, ScrollView, Image, Alert, StyleSheet } from 'react-native';
+import { View, Pressable, Text, ScrollView, Image, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import tw from 'twrnc';
@@ -15,7 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { musicalDetails, musicalReviews, musicalRateStatistics, thumbsUp } from '@functions/api';
 
-export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setReviewId}) {
+export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setMusicalPoster, setMusicalTitle, setReviewId}) {
     const [modalVisible, setModalVisible] = useState(false);
 
     const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
@@ -67,8 +67,10 @@ export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setRe
             }, 1000);
             return;
         }
-        console.log(musicalInfo.musicalId);
-        Alert.alert('리뷰 작성 페이지로 이동');
+        setMusicalId(musicalInfo.musicalId);
+        setMusicalPoster(musicalInfo.posterUrl);
+        setMusicalTitle(musicalInfo.title);
+        nav.navigate('ReviewWrite1', {musicalId: musicalInfo.musicalId, musicalPoster: musicalInfo.posterUrl, musicalTitle: musicalInfo.title});
     };
 
     const goToMusicalDetail2 = (musicalId) => {
@@ -77,9 +79,6 @@ export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setRe
     };
 
     const onPressThumbsUp = (reviewId, isThumbsUp) => {
-        console.log(reviewId);
-        console.log(isThumbsUp);
-
         // isThumbsUp이 true: 이미 공감되어 있음 -> 공감 버튼 누른다는 것: 공감 취소
         // isThumbsUp이 false: 공감 안 되어 있음 -> 공감 버튼 누른다는 것: 공감
         thumbsUp(reviewId, !isThumbsUp).then((res) => {
@@ -96,7 +95,7 @@ export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setRe
     };
 
     const goToReviewDetail1 = reviewId => {
-        console.log(reviewId);
+        // console.log(reviewId);
         setReviewId(reviewId);
         nav.navigate('ReviewDetail1');
     };
@@ -111,7 +110,9 @@ export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setRe
                     <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] mr-[8px] w-[10px] h-[18px] tint-[#191919]`}></Image>
                     <View style={tw`px-[20px]`}></View>
                 </Pressable>
-                <Text style={tw`text-[#191919] text-base font-medium`}>{musicalInfo.title}</Text>
+                <Text style={tw`text-[#191919] text-base font-medium`}>
+                    {musicalInfo.title ? musicalInfo.title.length > 15 ? musicalInfo.title.slice(0, 15) + '...' : musicalInfo.title : ''}
+                </Text>
                 <Pressable onPress={onPressWrite} style={tw`flex-row`}>
                     <View style={tw`px-[20px]`}></View>
                     <Image source={require('@images/write.png')} style={tw`mr-[20px] w-[18px] h-[17.121px] tint-[#191919]`}></Image>

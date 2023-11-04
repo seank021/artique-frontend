@@ -14,6 +14,7 @@ import Feed1 from "@screens/Main/Feed1";
 import MusicalDetail1 from "@screens/Main/MusicalDetail1";
 import MusicalDetail2 from "@screens/Main/MusicalDetail2";
 import ReviewDetail1 from "@screens/Main/ReviewDetail1";
+import ReviewWrite1 from "@screens/Main/ReviewWrite1";
 
 import Search1 from "@screens/Search/Search1";
 
@@ -54,10 +55,12 @@ const Navigation = () => {
         const [isCookie, setIsCookie] = useState(false);
         const [musicalId, setMusicalId] = useState(0);
         const [reviewId, setReviewId] = useState(0);
+        const [musicalPoster, setMusicalPoster] = useState("");
+        const [musicalTitle, setMusicalTitle] = useState("");
 
         useEffect(() => {
             const checkCookie = async () => {
-                const cookieExists = await Cookies.ifCookieExists();
+                const cookieExists = await Cookies.ifLoginCookieExists();
                 setIsCookie(cookieExists);
             };
             checkCookie();
@@ -66,19 +69,24 @@ const Navigation = () => {
         return (
             <Stack.Navigator initialRouteName="Feed1" screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="Feed1" children={() => <Feed1 isCookie={isCookie} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
-                <Stack.Screen name="MusicalDetail1" children={() => <MusicalDetail1 isCookie={isCookie} musicalId={musicalId} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
-                <Stack.Screen name="MusicalDetail2" children={() => <MusicalDetail2 isCookie={isCookie} musicalId={musicalId} setReviewId={setReviewId}/>} />
+                <Stack.Screen name="MusicalDetail1" children={() => <MusicalDetail1 isCookie={isCookie} musicalId={musicalId} setMusicalId={setMusicalId} setMusicalPoster={setMusicalPoster} setMusicalTitle={setMusicalTitle} setReviewId={setReviewId}/>} />
+                <Stack.Screen name="MusicalDetail2" children={() => <MusicalDetail2 isCookie={isCookie} musicalId={musicalId} setMusicalId={setMusicalId} setMusicalPoster={setMusicalPoster} setMusicalTitle={setMusicalTitle} setReviewId={setReviewId}/>} />
                 <Stack.Screen name="ReviewDetail1" children={() => <ReviewDetail1 isCookie={isCookie} reviewId={reviewId}/>} />
+                <Stack.Screen name="ReviewWrite1" children={() => <ReviewWrite1 isCookie={isCookie} musicalId={musicalId} musicalPoster={musicalPoster} musicalTitle={musicalTitle}/>} />
             </Stack.Navigator>
         )
     };
 
     const SearchStack = () => {
         const [isCookie, setIsCookie] = useState(true);
+        const [musicalId, setMusicalId] = useState(0);
+        const [reviewId, setReviewId] = useState(0);
+        const [musicalPoster, setMusicalPoster] = useState("");
+        const [musicalTitle, setMusicalTitle] = useState("");
 
         useEffect(() => {
             const checkCookie = async () => {
-                const cookieExists = await Cookies.ifCookieExists();
+                const cookieExists = await Cookies.ifLoginCookieExists();
                 setIsCookie(cookieExists);
             };
             checkCookie();
@@ -86,7 +94,11 @@ const Navigation = () => {
 
         return (
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="Search1" children={() => <Search1 isCookie={isCookie}/>} />
+                <Stack.Screen name="Search1" children={() => <Search1 isCookie={isCookie} setMusicalId={setMusicalId}/>} />
+                <Stack.Screen name="MusicalDetail1" children={() => <MusicalDetail1 isCookie={isCookie} musicalId={musicalId} setMusicalId={setMusicalId} setMusicalPoster={setMusicalPoster} setMusicalTitle={setMusicalTitle} setReviewId={setReviewId}/>} />
+                <Stack.Screen name="MusicalDetail2" children={() => <MusicalDetail2 isCookie={isCookie} musicalId={musicalId} setMusicalId={setMusicalId} setMusicalPoster={setMusicalPoster} setMusicalTitle={setMusicalTitle} setReviewId={setReviewId}/>} />
+                <Stack.Screen name="ReviewDetail1" children={() => <ReviewDetail1 isCookie={isCookie} reviewId={reviewId}/>} />
+                <Stack.Screen name="ReviewWrite1" children={() => <ReviewWrite1 isCookie={isCookie} musicalId={musicalId} musicalPoster={musicalPoster} musicalTitle={musicalTitle}/>} />
             </Stack.Navigator>
         )
     };
@@ -99,7 +111,7 @@ const Navigation = () => {
 
         useEffect(() => {
             const checkCookie = async () => {
-                const cookieExists = await Cookies.ifCookieExists();
+                const cookieExists = await Cookies.ifLoginCookieExists();
                 setIsCookie(cookieExists);
             };
             checkCookie();
