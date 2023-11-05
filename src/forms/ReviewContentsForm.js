@@ -134,7 +134,7 @@ export const LongReviewForm = (props) => {
     };
 
     return (
-        <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={() => props.setModalVisible(false)}>
+        <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={goBack}>
             <SafeAreaView style={styles.container}>
                 <View style={tw`flex-row items-center justify-between mt-5 mb-[14px]`}>
                     <Pressable onPress={goBack} style={tw`flex-row`}>
