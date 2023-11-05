@@ -128,6 +128,27 @@ const reviewWrite = async (starRating, shortReview, longReview, casting, viewDat
     }
 };
 
+const reviewUpdate = async (reviewId, starRating, shortReview, longReview, casting, viewDate, seat) => {
+    try {
+        const myHeaders = await getHeaders();
+        // console.log(myHeaders.map);
+        const response = await axios.post(`http://3.39.145.210/update/review`, {
+            reviewId: reviewId,
+            starRating: starRating,
+            shortReview: shortReview,
+            longReview: longReview,
+            casting: casting,
+            viewDate: viewDate,
+            seat: seat,
+        }, {
+            headers: myHeaders.map,
+        });
+        console.log(response.data);
+    } catch (err) {
+        console.log(err.response.data);
+    }
+};
+
 const reviewDetail = async (reviewId) => {
     try {
         const response = await axios.get(`http://3.39.145.210/review?review-id=${reviewId}`);
@@ -275,4 +296,4 @@ const duplicateNickname = async (nickname) => {
     }
 }
 
-export { feedReviews, musicalReviews, musicalDetails, musicalRateStatistics, musicalReviewsAll, thumbsUp, reviewWrite, reviewDetail, searchMusicals, memberSummary, memberStatistics, memberShortThumbReviews, memberIdInMypage, myReviewsAll, searchCreatedReviews, myThumbsAll, searchThumbReviews, profileUpload, updateMember, duplicateNickname};
+export { feedReviews, musicalReviews, musicalDetails, musicalRateStatistics, musicalReviewsAll, thumbsUp, reviewWrite, reviewUpdate, reviewDetail, searchMusicals, memberSummary, memberStatistics, memberShortThumbReviews, memberIdInMypage, myReviewsAll, searchCreatedReviews, myThumbsAll, searchThumbReviews, profileUpload, updateMember, duplicateNickname};

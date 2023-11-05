@@ -10,8 +10,9 @@ import { ChooseYearForm, ChooseMonthForm, ChooseDayForm } from '@forms/ChoosingD
 import MakeStarReviewForm from '@forms/MakeStarReviewForm';
 import AlertForm from '@forms/AlertForm';
 
-import { reviewDetail } from '@functions/api';
 import { CastingForm, SeatForm, ShortReviewForm, LongReviewForm } from '@forms/ReviewContentsForm';
+
+import { reviewUpdate } from '@functions/api';
 
 export default function ReviewUpdate1({ isCookie, reviewInfo, reviewInfo2 }) {
     const nav = useNavigation();
@@ -113,17 +114,37 @@ export default function ReviewUpdate1({ isCookie, reviewInfo, reviewInfo2 }) {
             return;
         }
 
-        console.log(`${casting} 캐스팅, ${seat} 좌석, ${year}년 ${month}월 ${day}일 관람, ${star}점, ${isShortReviewSpoiler ? '스포' : '비스포'}일러, ${shortReview}, ${isLongReviewSpoiler ? '스포' : '비스포'}일러, ${longReview}`);
+        // console.log(`${casting} 캐스팅, ${seat} 좌석, ${year}년 ${month}월 ${day}일 관람, ${star}점, ${isShortReviewSpoiler ? '스포' : '비스포'}일러, ${shortReview}, ${isLongReviewSpoiler ? '스포' : '비스포'}일러, ${longReview}`);
         
         // year, month, day로 날짜 형식 맞추기 (YYYYMMDD)
         const yearString = year.toString();
         const monthString = month.toString();
         const dayString = day.toString();
+
         const finalYear = yearString.padStart(4, '0');
         const finalMonth = monthString.padStart(2, '0');
         const finalDay = dayString.padStart(2, '0');
 
-        // 리뷰 업데이트 하기
+        try {
+            reviewUpdate(reviewInfo2.id, star, shortReview, longReview, casting, `${finalYear}-${finalMonth}-${finalDay}`, seat);
+            
+            setModalVisible(!modalVisible);
+            setAlertImage(require('@images/check.png'));
+            setAlertText('리뷰가 수정되었습니다');
+            setTimeout(() => {
+                setModalVisible(modalVisible);
+                nav.navigate('Feed1');
+            }, 1000);
+
+        } catch (err) {
+            setModalVisible(!modalVisible);
+            setAlertImage(require('@images/x_red.png'));
+            setAlertText('리뷰 수정에 실패하였습니다');
+            setTimeout(() => {
+                setModalVisible(modalVisible);
+                nav.navigate('Feed1');
+            }, 1000);
+        }
     };
 
     return (
