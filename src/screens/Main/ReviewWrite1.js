@@ -1,7 +1,7 @@
 // 리뷰 작성용 페이지 (수정용 페이지는 따로 만들 예정, 구조는 동일하지만 초기 상태에 정보 채워져 있음)
 
 import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, Pressable, ScrollView } from 'react-native';
+import { View, Text, Image, StyleSheet, Pressable, ScrollView, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import tw from 'twrnc';
@@ -13,6 +13,8 @@ import MakeStarReviewForm from '@forms/MakeStarReviewForm';
 import AlertForm from '@forms/AlertForm';
 
 import { CastingForm, SeatForm, ShortReviewForm, LongReviewForm } from '@forms/ReviewContentsForm';
+
+import { reviewWrite } from '@functions/api';
 
 export default function ReviewWrite1({isCookie, musicalId, musicalPoster, musicalTitle}) {
     const nav = useNavigation();
@@ -107,9 +109,9 @@ export default function ReviewWrite1({isCookie, musicalId, musicalPoster, musica
         }
 
         console.log(`${finalCastings} 캐스팅, ${finalSeat} 좌석, ${year}년 ${month}월 ${day}일 관람, ${star}점, ${isShortReviewSpoiler ? '스포' : '비스포'}일러, ${shortReview}, ${isLongReviewSpoiler ? '스포' : '비스포'}일러, ${longReview}`);
-        // 백 연결 구현
-        // AlertForm "저장되었습니다" 띄우기
-        // 그 다음 어디로 가지?
+        reviewWrite(star, shortReview, longReview, finalCastings, `${year}-${month}-${day}`, finalSeat, musicalId);
+        Alert.alert("저장되었습니다")
+        nav.navigate('MusicalDetail1')
     };
 
     return (
