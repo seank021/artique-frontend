@@ -128,7 +128,6 @@ const reviewWrite = async (starRating, shortReview, longReview, casting, viewDat
     }
 };
 
-
 const reviewDetail = async (reviewId) => {
     try {
         const response = await axios.get(`http://3.39.145.210/review?review-id=${reviewId}`);
