@@ -260,8 +260,6 @@ const profileUpload = async (imageUrl) => {
         const response = await axios.post(`http://3.39.145.210/image`, {
             "memberId": memberId,
             "file": imageUrl,
-        }, {
-            headers: myHeaders.map,
         });
         return response.data;
     } catch (err) {
