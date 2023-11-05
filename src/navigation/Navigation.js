@@ -28,11 +28,17 @@ import MyThumbs from "@screens/Profile/MyThumbs";
 import MyThumbsSearch from "@screens/Profile/MyThumbsSearch";
 
 import MainSetting from "@screens/Setting/MainSetting";
-import MyAccount from "@screens/Setting/MyAccount";
-import PWChange from "@screens/Setting/PWChange";
-import PWReset from "@screens/Setting/PWReset";
-import Annoucement from "@screens/Setting/Announcement"
-import AnnounceDetail from "@screens/Setting/AnnounceDetail";
+import MyAccount from "@screens/Setting/MyAccount/MyAccount";
+import PWChange from "@screens/Setting/MyAccount/PWChange";
+import PWReset from "@screens/Setting/MyAccount/PWReset";
+import Annoucement from "@screens/Setting/Announcement/Announcement"
+import AnnounceDetail from "@screens/Setting/Announcement/AnnounceDetail";
+import CSCenter from "@screens/Setting/CSCenter/CSCenter";
+import OneOnOneInquiry from "@screens/Setting/CSCenter/OneOnOneInquiry";
+import FAQ from "@screens/Setting/CSCenter/FAQ";
+import FAQDetail from "@screens/Setting/CSCenter/FAQDetail";
+import DBRequest from "@screens/Setting/CSCenter/DBRequest";
+import ArtiqueInfo from "@screens/Setting/ArtiqueInfo/ArtiqueInfo";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -148,6 +154,12 @@ const Navigation = () => {
                 <Stack.Screen name="PWReset" children={() => <PWReset isCookie={isCookie}/>} />
                 <Stack.Screen name="Announcement" children={() => <Annoucement isCookie={isCookie} />} />
                 <Stack.Screen name="AnnounceDetail" children={() => <AnnounceDetail isCookie={isCookie} />} />
+                <Stack.Screen name="CSCenter" children={() => <CSCenter isCookie={isCookie} />} />
+                <Stack.Screen name="OneOnOneInquiry" children={() => <OneOnOneInquiry isCookie={isCookie} />} />
+                <Stack.Screen name="FAQ" children={() => <FAQ isCookie={isCookie} />} />
+                <Stack.Screen name="FAQDetail" children={() => <FAQDetail isCookie={isCookie} />} />
+                <Stack.Screen name="DBRequest" children={() => <DBRequest isCookie={isCookie} />} />
+                <Stack.Screen name="ArtiqueInfo" children={() => <ArtiqueInfo isCookie={isCookie} />} />
             </Stack.Navigator>
         )
     };
