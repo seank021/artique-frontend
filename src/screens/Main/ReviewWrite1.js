@@ -133,7 +133,7 @@ export default function ReviewWrite1({isCookie, musicalId, musicalPoster, musica
 
             <View style={tw`flex-row items-center my-[15px]`}>
                 <Image source={{uri: musicalPoster}} style={tw`w-[50px] h-[72.018px] mx-[5%] mr-[10px] rounded-2`}></Image>
-                <Text style={tw`text-[#000] text-base font-medium leading-[25px]`}>{musicalTitle}</Text>
+                <Text style={tw`text-[#000] text-base font-medium leading-[25px] w-[75%]`} numberOfLines={2}>{musicalTitle}</Text>
             </View>
 
             <View style={tw`border-4 border-[#F0F0F0] mb-[15px]`}></View>
