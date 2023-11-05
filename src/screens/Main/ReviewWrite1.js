@@ -108,8 +108,8 @@ export default function ReviewWrite1({isCookie, musicalId, musicalPoster, musica
             return;
         }
 
-        console.log(`${finalCastings} 캐스팅, ${finalSeat} 좌석, ${year}년 ${month}월 ${day}일 관람, ${star}점, ${isShortReviewSpoiler ? '스포' : '비스포'}일러, ${shortReview}, ${isLongReviewSpoiler ? '스포' : '비스포'}일러, ${longReview}`);
-        console.log(finalCastings);
+        // console.log(`${finalCastings} 캐스팅, ${finalSeat} 좌석, ${year}년 ${month}월 ${day}일 관람, ${star}점, ${isShortReviewSpoiler ? '스포' : '비스포'}일러, ${shortReview}, ${isLongReviewSpoiler ? '스포' : '비스포'}일러, ${longReview}`);
+        // console.log(finalCastings);
         
         // year, month, day로 날짜 형식 맞추기 (YYYYMMDD)
         const yearString = year.toString();
@@ -119,9 +119,27 @@ export default function ReviewWrite1({isCookie, musicalId, musicalPoster, musica
         const finalMonth = monthString.padStart(2, '0');
         const finalDay = dayString.padStart(2, '0');
 
-        reviewWrite(star, shortReview, longReview, finalCastings, `${finalYear}-${finalMonth}-${finalDay}`, finalSeat, musicalId);
-        Alert.alert("저장되었습니다")
-        nav.navigate('MusicalDetail1')
+        try {
+            reviewWrite(star, shortReview, longReview, finalCastings, `${finalYear}-${finalMonth}-${finalDay}`, finalSeat, musicalId);
+
+            setModalVisible(!modalVisible);
+            setAlertImage(require('@images/check.png'));
+            setAlertText('저장되었습니다');
+            setTimeout(() => {
+                setModalVisible(modalVisible);
+                nav.navigate('MusicalDetail1')
+            }, 1000);
+
+        } catch (err) {
+            setModalVisible(!modalVisible);
+            setAlertImage(require('@images/x_red.png'));
+            setAlertText('저장에 실패하였습니다');
+            setTimeout(() => {
+                setModalVisible(modalVisible);
+                nav.navigate('MusicalDetail1')
+            }, 1000);
+        }
+        
     };
 
     return (
