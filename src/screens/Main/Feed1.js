@@ -9,7 +9,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import { feedReviews, thumbsUp } from "@functions/api";
 
-export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId }) {
+export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, setReviewInfo, setReviewInfo2 }) {
     const nav = useNavigation();
 
     const [page, setPage] = useState(0);
@@ -95,20 +95,19 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId }
             <ScrollView onScroll={detectScroll}>
                 {feeds.map((feed, index) => (
                     <Fragment key={index}>
-                            <ShortReviewFormInFeed
-                                reviewInfo={feed}
-                                goToMusicalDetail1={() => goToMusicalDetail1(feed.musicalId)}
-                                goToReviewDetail1={() => goToReviewDetail1(feed.reviewId)}
-                                onPressThumbsUp={() => onPressThumbsUp(feed.reviewId, feed.isThumbsUp)}
-                                isCookie={isCookie}
-                                isMine={feed.memberId === memberId}
-                                musicalId={feed.musicalId}
-                                musicalPoster={feed.posterUrl}
-                                musicalTitle={feed.musicalName}
-                            />
-                            {index < feeds.length - 1 && (
-                                <View style={tw`border-4 border-[#F0F0F0]`}></View>
-                            )}
+                        <ShortReviewFormInFeed
+                            reviewInfo={feed}
+                            goToMusicalDetail1={() => goToMusicalDetail1(feed.musicalId)}
+                            goToReviewDetail1={() => goToReviewDetail1(feed.reviewId)}
+                            onPressThumbsUp={() => onPressThumbsUp(feed.reviewId, feed.isThumbsUp)}
+                            isCookie={isCookie}
+                            isMine={feed.memberId === memberId}
+                            setReviewInfo={setReviewInfo}
+                            setReviewInfo2={setReviewInfo2}
+                        />
+                        {index < feeds.length - 1 && (
+                            <View style={tw`border-4 border-[#F0F0F0]`}></View>
+                        )}
                     </Fragment>
                 ))}
             </ScrollView>

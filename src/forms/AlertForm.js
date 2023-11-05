@@ -6,6 +6,8 @@ import tw from 'twrnc';
 
 import { useNavigation } from '@react-navigation/native';
 
+import { reviewDetail } from '@functions/api';
+
 import { launchImageLibrary } from 'react-native-image-picker';
 
 // props: modalVisible, setModalVisible / borderColor, bgColor, image, textColor, text
@@ -196,7 +198,7 @@ export const AlertFormForConfirm = (props) => {
     )
 }
 
-// props: modalVisible, setModalVisible, musicalId, posterUrl, title
+// props: modalVisible, setModalVisible, reviewInfo, setReviewInfo, setReviewInfo2
 export const AlertFormForModifyAndDelete = (props) => {
     const nav = useNavigation();
 
@@ -214,10 +216,12 @@ export const AlertFormForModifyAndDelete = (props) => {
         setIsStep2ForDelete(false);
     }
 
-    const onPressModify = () => {
+    const onPressModify = async () => {
         props.setModalVisible(false);
-        console.log(props.musicalId, props.musicalPoster, props.musicalTitle);
-        nav.navigate('ReviewWrite1', {musicalId: props.musicalId, musicalPoster: props.musicalPoster, musicalTitle: props.musicalTitle});
+        props.setReviewInfo(props.reviewInfo);
+        const reviewInfo2 = await reviewDetail(props.reviewInfo.reviewId);
+        props.setReviewInfo2(reviewInfo2);
+        nav.navigate('ReviewUpdate1', {reviewInfo: props.reviewInfo, reviewInfo2: reviewInfo2});
     }
 
     const onPressDelete = () => {

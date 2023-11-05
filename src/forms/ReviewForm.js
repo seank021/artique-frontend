@@ -100,7 +100,7 @@ export function ShortReviewForm(props) {
     );
 }
 
-// props:  reviewInfo, goToMusicalDetail1, goToReviewDetail1, onPressThumbsUp, isCookie / isMine, musicalId, musicalPoster, musicalTitle
+// props:  reviewInfo, goToMusicalDetail1, goToReviewDetail1, onPressThumbsUp, isCookie / isMine, reviewInfo, setReviewInfo, setReviewInfo2
 export function ShortReviewFormInFeed(props) {
     const [isCookie, setIsCookie] = useState(props.isCookie);
     const [isThumbsUp, setIsThumbsUp] = useState(props.reviewInfo.isThumbsUp);
@@ -147,7 +147,7 @@ export function ShortReviewFormInFeed(props) {
     };
 
     const onPressMore = () => {
-        console.log(props.isMine)
+        // console.log(props.isMine)
         if (props.isMine) setModifynDeleteModalVisible(!modifynDeleteModalVisible);
         else setReportModalVisible(!reportModalVisible);
     }
@@ -168,7 +168,7 @@ export function ShortReviewFormInFeed(props) {
                     <Pressable onPress={onPressMore}><Image style={tw`w-[30px] h-[30px]`} source={require("@images/dots_more.png")}></Image></Pressable>
                 </View>
                 {props.isMine ?
-                    <AlertFormForModifyAndDelete modalVisible={modifynDeleteModalVisible} setModalVisible={setModifynDeleteModalVisible} musicalId={props.musicalId} musicalPoster={props.musicalPoster} musicalTitle={props.musicalTitle}></AlertFormForModifyAndDelete>
+                    <AlertFormForModifyAndDelete modalVisible={modifynDeleteModalVisible} setModalVisible={setModifynDeleteModalVisible} reviewInfo={props.reviewInfo} setReviewInfo={props.setReviewInfo} setReviewInfo2={props.setReviewInfo2}></AlertFormForModifyAndDelete>
                     : <AlertFormForReport modalVisible={reportModalVisible} setModalVisible={setReportModalVisible}></AlertFormForReport>
                 }
 

@@ -71,7 +71,7 @@ export const SeatForm = (props) => {
         <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={() => props.setModalVisible(false)}>
             <View style={tw`flex flex-col justify-around items-center self-center w-[230px] bg-[#FAFAFA] rounded-[15px] mb-[150px]`}>
                 <Text style={tw`text-[#191919] text-base font-medium mt-[24px] mb-[12px]`}>좌석 입력하기</Text>
-                <TextInput style={tw`text-sm mb-[15px]`} defaultValue={seat} placeholder="좌석 위치를 입력해주세요" placeholderTextColor="#B6B6B6" onChangeText={(text) => setSeat(text)}></TextInput>
+                <TextInput style={tw`text-sm mb-[15px]`} value={seat} defaultValue={seat} placeholder="좌석 위치를 입력해주세요" placeholderTextColor="#B6B6B6" onChangeText={(text) => setSeat(text)}></TextInput>
                 <View style={tw`w-[100%] border-[0.5px] border-[#D3D4D3]`}></View>
                 <Pressable onPress={onPressSave}><Text style={tw`text-[#191919] text-sm my-[15px]`}>저장</Text></Pressable>
             </View>
@@ -83,7 +83,7 @@ export const SeatForm = (props) => {
 // props: modalVisible, setModalVisible, shortReview, setFinalShortReview
 export const ShortReviewForm = (props) => {
     const [shortReview, setShortReview] = useState(props.shortReview) // 한줄평
-    const [charCount, setCharCount] = useState(0); // 문자 수
+    const [charCount, setCharCount] = useState(props.shortReview.length); // 문자 수
 
     const onShortReviewChange = (text) => {
         if (text.length <= 50) { // 최대 50자 제한
@@ -117,7 +117,7 @@ export const LongReviewForm = (props) => {
     const [isLongReviewSpoiler, setIsLongReviewSpoiler] = useState(props.isLongReviewSpoiler);
     const [longReviewCheckRectangle, setLongReviewCheckRectangle] = useState(require('@images/rectangle.png'));
 
-    const [charCount, setCharCount] = useState(0); // 문자 수
+    const [charCount, setCharCount] = useState(props.longReview.length); // 문자 수
     const [longReview, setLongReview] = useState(props.longReview); // 긴줄평
 
     const goBack = () => {

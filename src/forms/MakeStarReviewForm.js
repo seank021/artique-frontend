@@ -3,8 +3,11 @@ import { View, Image, Pressable } from 'react-native';
 
 import tw from 'twrnc';
 
-export default function MakeStarReviewForm({ setStar }) {
-    const [starCount, setStarCount] = useState(0);
+export default function MakeStarReviewForm({ setStar, star_ }) {
+    if (star_ === undefined) {
+        star_ = 0;
+    }
+    const [starCount, setStarCount] = useState(star_);
     
     const handlePress = (index) => {
         if (index <= Math.floor(starCount)) {
