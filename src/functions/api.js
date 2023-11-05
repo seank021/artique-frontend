@@ -15,8 +15,9 @@ const getHeaders = async () => {
     try {
         const myHeaders = new Headers();
         const memberId = await getMemberId();
-        myHeaders.append("Cookie", memberId);
+        myHeaders.append("Authorization", memberId);
         myHeaders.append("Content-Type", "application/json");
+        // console.log(myHeaders.map)
         return myHeaders;
     } catch (err) {
         console.log(err);
@@ -92,9 +93,10 @@ const thumbsUp = async (reviewId, isThumbsUp) => {
     try {
         const myHeaders = await getHeaders();
         // console.log(myHeaders.map);
+        // console.log(reviewId);
         const response = await axios.post(`http://3.39.145.210/thumbs`, {
             reviewId: reviewId,
-            isThumbsUp: isThumbsUp,
+            thumbsUp: isThumbsUp,
         }, {
             headers: myHeaders.map,
         });
@@ -120,6 +122,7 @@ const reviewWrite = async (starRating, shortReview, longReview, casting, viewDat
         }, {
             headers: myHeaders.map,
         });
+        console.log(response.data);
     } catch (err) {
         console.log(err.response.data);
     }
@@ -148,7 +151,11 @@ const searchMusicals = async (keyword, orderBy) => {
 
 const memberIdInMypage = async () => {
     try {
-        const response = await axios.get(`http://3.39.145.210/member/id`);
+        const myHeaders = await getHeaders();
+        const response = await axios.get(`http://3.39.145.210/member/id` , {
+            headers: myHeaders.map,
+        });
+        console.log(response.data)
         return response.data;
     } catch (err) {
         console.log(err.response.data);

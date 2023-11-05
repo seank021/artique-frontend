@@ -109,7 +109,17 @@ export default function ReviewWrite1({isCookie, musicalId, musicalPoster, musica
         }
 
         console.log(`${finalCastings} 캐스팅, ${finalSeat} 좌석, ${year}년 ${month}월 ${day}일 관람, ${star}점, ${isShortReviewSpoiler ? '스포' : '비스포'}일러, ${shortReview}, ${isLongReviewSpoiler ? '스포' : '비스포'}일러, ${longReview}`);
-        reviewWrite(star, shortReview, longReview, finalCastings, `${year}-${month}-${day}`, finalSeat, musicalId);
+        console.log(finalCastings);
+        
+        // year, month, day로 날짜 형식 맞추기 (YYYYMMDD)
+        const yearString = year.toString();
+        const monthString = month.toString();
+        const dayString = day.toString();
+        const finalYear = yearString.padStart(4, '0');
+        const finalMonth = monthString.padStart(2, '0');
+        const finalDay = dayString.padStart(2, '0');
+
+        reviewWrite(star, shortReview, longReview, finalCastings, `${finalYear}-${finalMonth}-${finalDay}`, finalSeat, musicalId);
         Alert.alert("저장되었습니다")
         nav.navigate('MusicalDetail1')
     };
