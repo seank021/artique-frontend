@@ -36,37 +36,37 @@ export default function Mypage ({ isCookie }) {
 
   const [shortReviewInfo, setShortReviewInfo] = useState([]);
 
-  useEffect(() => {
-    memberSummary().then((newMemberInfo) => {
-      setMemberInfo(() => newMemberInfo);
-    }).catch((err) => {
-      console.log(err);
-    });
-  }, []);
+  // useEffect(() => {
+  //   memberSummary().then((newMemberInfo) => {
+  //     setMemberInfo(() => newMemberInfo);
+  //   }).catch((err) => {
+  //     console.log(err);
+  //   });
+  // }, []);
   
-  useEffect(() => {
-    memberStatistics().then((newMemberStat) => {
-      setMemberStat(() => newMemberStat);
-    }).catch((err) => {
-      console.log(err);
-    });
-  }
-  , []);
+  // useEffect(() => {
+  //   memberStatistics().then((newMemberStat) => {
+  //     setMemberStat(() => newMemberStat);
+  //   }).catch((err) => {
+  //     console.log(err);
+  //   });
+  // }
+  // , []);
 
-  useEffect(() => {
-    setAverageRate(memberStat.averageRate);
-    setTotalReviewCount(memberStat.totalReviewCount);
-    setMaxStarRate(memberStat.maxStarRate);
-  }
-  , [memberStat]);
+  // useEffect(() => {
+  //   setAverageRate(memberStat.averageRate);
+  //   setTotalReviewCount(memberStat.totalReviewCount);
+  //   setMaxStarRate(memberStat.maxStarRate);
+  // }
+  // , [memberStat]);
 
-  useEffect(() => {
-    memberShortThumbReviews().then((newShortThumbReviews) => {
-      setShortReviewInfo(() => newShortThumbReviews);
-    }).catch((err) => {
-      console.log(err);
-    });
-  }, []);
+  // useEffect(() => {
+  //   memberShortThumbReviews().then((newShortThumbReviews) => {
+  //     setShortReviewInfo(() => newShortThumbReviews);
+  //   }).catch((err) => {
+  //     console.log(err);
+  //   });
+  // }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -85,7 +85,7 @@ export default function Mypage ({ isCookie }) {
       <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
 
       {/* 프로필 */}
-      <View style={tw`flex-row items-center w-9/10 mt-5 mx-5`}>
+      {/* <View style={tw`flex-row items-center w-9/10 mt-5 mx-5`}>
         <Image source={memberInfo.imageUrl ? { uri: memberInfo.imageUrl } : require('@images/newprofile.png')} style={tw`w-[100px] h-[100px] mr-5`}></Image>
         <View style={tw`flex-col justify-between`}>
           <Text style={tw`text-base text-[#191919] font-medium mb-5`}>{memberInfo.nickname}</Text>
@@ -94,7 +94,7 @@ export default function Mypage ({ isCookie }) {
       </View>
       <Pressable onPress={goToMyReviews} style={tw`self-center w-9/10 h-[33px] mt-[25px] rounded-3xl bg-[#FFF] shadow`}>
         <Text style={tw`text-xs text-[#191919] font-normal text-center leading-[33px]`}>작성한 리뷰 모아보기</Text>
-      </Pressable>
+      </Pressable> */}
         
       {/* 평점 */}
       <View style={tw`mt-7.5 ml-5`}>

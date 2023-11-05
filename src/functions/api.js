@@ -12,17 +12,16 @@ async function getMemberId() {
 }
 
 const getHeaders = async () => {
-  try {
-    const myHeaders = new Headers();
-    const memberId = await getMemberId();
-    myHeaders.append("Authorization", memberId);
-    myHeaders.append("Content-Type", "application/json");
-    // console.log(myHeaders.map)
-    return myHeaders;
-  } catch (err) {
-    console.log(err);
-    return null;
-  }
+    try {
+        const myHeaders = new Headers();
+        const memberId = await getMemberId();
+        myHeaders.append("Authorization", memberId);
+        myHeaders.append("Content-Type", "application/json");
+        return myHeaders;
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
 }
 
 const feedReviews = async (page) => {

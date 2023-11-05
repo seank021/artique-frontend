@@ -19,6 +19,7 @@ export default function ChangeProfile({isCookie}) {
     };
 
     {/*profile 불러오기 및 수정*/}
+    const [imageFile, setImageFile] = useState(null);
     const [profileImage, setProfileImage] = useState('');
     const [nickname, setNickname] = useState('');
     const [introduce, setIntroduce] = useState('');
@@ -38,7 +39,7 @@ export default function ChangeProfile({isCookie}) {
     }, [profileImage]);
     
     const onPressProfileChange = () => {
-        profileUpload(profileImage).then((newProfileImage) => {
+        profileUpload(imageFile).then((newProfileImage) => {
             setProfileImage(() => newProfileImage);
             setImageChangeModalVisible(!imageChangeModalVisible);
         }).catch((err) => {
