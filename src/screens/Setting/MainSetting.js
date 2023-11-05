@@ -25,6 +25,14 @@ export default function MainSetting ({setIsCookie}) {
     nav.navigate('Announcement');
   }
 
+  const goToCSCenter = () => {
+    nav.navigate('CSCenter');
+  }
+
+  const goToArtiqueInfo = () => {
+    nav.navigate('ArtiqueInfo');
+  }
+
   const onPressLogout = () => {
     setLogoutModalVisible(!logoutModalVisible);
     setIsCookie(false);
@@ -55,16 +63,16 @@ export default function MainSetting ({setIsCookie}) {
       </Pressable>
       <View style={tw`border-solid border-b border-[#E5E6E5]`}></View>
 
-      <View style={tw`flex-row justify-between items-center h-[57px] mx-5`}>
+      <Pressable onPress={goToCSCenter} style={tw`flex-row justify-between items-center h-[57px] mx-5`}>
         <Text style={tw`text-sm text-[#191919] font-normal`}>고객센터</Text>
         <Image source={require('@images/chevron_right.png')} style={tw`w-[10px] h-[18px] tint-[#CBCDCB]`}></Image>
-      </View>
+      </Pressable>
       <View style={tw`border-solid border-b border-[#E5E6E5]`}></View>
 
-      <View style={tw`flex-row justify-between items-center h-[57px] mx-5`}>
+      <Pressable onPress={goToArtiqueInfo} style={tw`flex-row justify-between items-center h-[57px] mx-5`}>
         <Text style={tw`text-sm text-[#191919] font-normal`}>Artique 정보</Text>
         <Image source={require('@images/chevron_right.png')} style={tw`w-[10px] h-[18px] tint-[#CBCDCB]`}></Image>
-      </View>
+      </Pressable>
       <View style={tw`border-solid border-b border-[#E5E6E5]`}></View>
 
       <Pressable onPress={onPressLogout} style={tw`flex-row justify-between items-center h-[57px] mx-5`}>
