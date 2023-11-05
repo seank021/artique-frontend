@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
-import { View, Text, Image, Pressable, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Image, Pressable, ScrollView, Alert } from 'react-native';
 import Modal from 'react-native-modal';
+
 import tw from 'twrnc';
+
+import { useNavigation } from '@react-navigation/native';
 
 import { launchImageLibrary } from 'react-native-image-picker';
 
@@ -189,6 +192,138 @@ export const AlertFormForConfirm = (props) => {
                     <Text style={tw`text-sm text-center font-medium text-[#E94A4B]`}>{props.text}</Text>
                 </Pressable>
             </View>
+        </Modal>
+    )
+}
+
+// props: modalVisible, setModalVisible, musicalId, posterUrl, title
+export const AlertFormForModifyAndDelete = (props) => {
+    const nav = useNavigation();
+
+    const [isStep1ForDelete, setIsStep1ForDelete] = useState(true);
+    const [isStep2ForDelete, setIsStep2ForDelete] = useState(false);
+
+    useEffect(() => {
+        setIsStep1ForDelete(true);
+        setIsStep2ForDelete(false);
+    }, [props.modalVisible]);
+
+    const onBackdropPress = () => {
+        props.setModalVisible(false);
+        setIsStep1ForDelete(true);
+        setIsStep2ForDelete(false);
+    }
+
+    const onPressModify = () => {
+        props.setModalVisible(false);
+        console.log(props.musicalId, props.musicalPoster, props.musicalTitle);
+        nav.navigate('ReviewWrite1', {musicalId: props.musicalId, musicalPoster: props.musicalPoster, musicalTitle: props.musicalTitle});
+    }
+
+    const onPressDelete = () => {
+        setIsStep1ForDelete(false);
+        setIsStep2ForDelete(true);
+    }
+
+    const onPressDeleteReview = () => {
+        props.setModalVisible(false);
+        Alert.alert("삭제 구현하기");
+    }
+
+    return (
+        <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={onBackdropPress}>
+            {isStep1ForDelete && !isStep2ForDelete ?
+                <View style={tw`flex flex-col w-[230px] h-[114px] bg-white rounded-[15px] justify-around self-center`}>
+                    <Pressable onPress={onPressModify}><Text style={tw`text-center text-sm text-[#191919] my-[20px]`}>수정하기</Text></Pressable>
+                    <View style={tw`border-b border-solid border-[#D3D4D3]`}></View>
+                    <Pressable onPress={onPressDelete}><Text style={tw`text-center text-sm text-[#E94A4B] my-[20px]`}>삭제하기</Text></Pressable>
+                </View>
+            : isStep2ForDelete && !isStep1ForDelete ?
+                <View style={tw`flex flex-col w-[230px] h-[136px] bg-white rounded-[15px] justify-around self-center`}>
+                    <Text style={tw`text-center text-base text-[#191919] my-[20px]`}>리뷰를 삭제하시겠습니까?</Text>
+                    <View style={tw`border-b border-solid border-[#D3D4D3]`}></View>
+                    <Pressable onPress={onPressDeleteReview}><Text style={tw`text-center text-sm text-[#E94A4B] mb-[14px]`}>삭제하기</Text></Pressable>
+                </View>
+            : null}
+        </Modal>
+    )
+}
+
+// props: modalVisible, setModalVisible
+export const AlertFormForReport = (props) => {
+    const [isStep1, setIsStep1] = useState(true);
+    const [isStep2, setIsStep2] = useState(false);
+    const [isStep3, setIsStep3] = useState(false);
+
+    useEffect(() => {
+        setIsStep1(true);
+        setIsStep2(false);
+        setIsStep3(false);
+    }, [props.modalVisible]);
+
+    const [reportReason, setReportReason] = useState('스포일러 포함');
+
+    const onBackdropPress = () => {
+        props.setModalVisible(false);
+        setIsStep1(true);
+        setIsStep2(false);
+        setIsStep3(false);
+    }
+
+    const onPressReport = () => {
+        setIsStep1(false);
+        setIsStep2(true);
+    }
+
+    const onPressSubmit = () => {
+        console.log(reportReason);
+        setIsStep2(false);
+        setIsStep3(true);
+        setReportReason('스포일러 포함');
+
+        setTimeout(() => {
+            props.setModalVisible(false);
+        }, 1000);
+    }
+
+    return (
+        <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={onBackdropPress}>
+            {isStep1 && !isStep2 && !isStep3 ? 
+                <View style={tw`flex flex-col w-[230px] h-[52px] bg-white rounded-[15px] justify-around self-center`}>
+                    <Pressable onPress={onPressReport}><Text style={tw`text-center text-sm text-[#E94A4B]`}>신고하기</Text></Pressable>
+                </View>
+
+            : isStep2 && !isStep1 && !isStep3 ?
+                <View style={tw`flex flex-col w-[230px] h-[318px] bg-white rounded-[15px] justify-around self-center`}>
+                    <Text style={tw`text-center text-base font-medium text-[#191919] mt-[24px] mb-[24px]`}>신고 사유</Text>
+                    <Pressable style={tw`flex flex-row justify-between items-center`} onPress={() => setReportReason('스포일러 포함')}>
+                        <Text style={tw`text-sm text-left text-[#191919] ml-[24px]`}>스포일러 포함</Text>
+                        {reportReason === '스포일러 포함' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px] mr-[24px]`}></Image>)}
+                    </Pressable>
+                    <Pressable style={tw`flex flex-row justify-between items-center`} onPress={() => setReportReason('부적절한 언어 표현')}>
+                        <Text style={tw`text-sm text-left text-[#191919] ml-[24px]`}>부적절한 언어 표현</Text>
+                        {reportReason === '부적절한 언어 표현' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px] mr-[24px]`}></Image>)}
+                    </Pressable>
+                    <Pressable style={tw`flex flex-row justify-between items-center`} onPress={() => setReportReason('스팸 및 홍보글')}>
+                        <Text style={tw`text-sm text-left text-[#191919] ml-[24px]`}>스팸 및 홍보글</Text>
+                        {reportReason === '스팸 및 홍보글' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px] mr-[24px]`}></Image>)}
+                    </Pressable>
+                    <Pressable style={tw`flex flex-row justify-between items-center`} onPress={() => setReportReason('도배글')}>
+                        <Text style={tw`text-sm text-left text-[#191919] ml-[24px]`}>도배글</Text>
+                        {reportReason === '도배글' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px] mr-[24px]`}></Image>)}
+                    </Pressable>
+                    <View style={tw`border-b border-solid border-[#D3D4D3]`}></View>
+                    <Pressable onPress={onPressSubmit} style={tw`self-center`}>
+                        <Text style={tw`text-sm text-center font-medium text-[#191919] mb-[14px]`}>제출</Text>
+                    </Pressable>
+                </View>
+
+            : isStep3 && !isStep1 && !isStep2 ?
+                <View style={tw`flex flex-col w-[65%] h-[110px] border-solid border-2 rounded-[15px] self-center justify-center items-center bg-[#FAFAFA] border-[#FAFAFA]`}>
+                    <Image source={require("@images/check.png")} style={tw`w-[24px] h-[17.63637px] self-center`}></Image> 
+                    <Text style={tw`text-sm font-medium mt-[20px] text-[#191919]`}>제출되었습니다</Text>
+                </View>
+            : null}
         </Modal>
     )
 }

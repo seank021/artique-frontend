@@ -4,6 +4,7 @@ import { Image } from "react-native";
 import tw from 'twrnc'
 
 import * as Cookies from "@functions/cookie";
+import { memberIdInMypage } from "@functions/api";
 
 import Login1 from "@screens/LoginSignup/Login1";
 import Login2 from "@screens/LoginSignup/Login2";
@@ -53,6 +54,7 @@ const Navigation = () => {
 
     const MainStack = () => {
         const [isCookie, setIsCookie] = useState(false);
+        const [memberId, setMemberId] = useState("");
         const [musicalId, setMusicalId] = useState(0);
         const [reviewId, setReviewId] = useState(0);
         const [musicalPoster, setMusicalPoster] = useState("");
@@ -66,9 +68,17 @@ const Navigation = () => {
             checkCookie();
         }, []);
 
+        useEffect(() => {
+            const memberId = async () => {
+                const memberId = await memberIdInMypage();
+                setMemberId(memberId);
+            };
+            memberId();
+        }, []);
+
         return (
             <Stack.Navigator initialRouteName="Feed1" screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="Feed1" children={() => <Feed1 isCookie={isCookie} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
+                <Stack.Screen name="Feed1" children={() => <Feed1 isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
                 <Stack.Screen name="MusicalDetail1" children={() => <MusicalDetail1 isCookie={isCookie} musicalId={musicalId} setMusicalId={setMusicalId} setMusicalPoster={setMusicalPoster} setMusicalTitle={setMusicalTitle} setReviewId={setReviewId}/>} />
                 <Stack.Screen name="MusicalDetail2" children={() => <MusicalDetail2 isCookie={isCookie} musicalId={musicalId} setMusicalId={setMusicalId} setMusicalPoster={setMusicalPoster} setMusicalTitle={setMusicalTitle} setReviewId={setReviewId}/>} />
                 <Stack.Screen name="ReviewDetail1" children={() => <ReviewDetail1 isCookie={isCookie} reviewId={reviewId}/>} />
