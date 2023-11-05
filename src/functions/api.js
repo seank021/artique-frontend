@@ -15,8 +15,9 @@ const getHeaders = async () => {
     try {
         const myHeaders = new Headers();
         const memberId = await getMemberId();
-        myHeaders.append("Cookie", memberId);
+        myHeaders.append("Authorization", memberId);
         myHeaders.append("Content-Type", "application/json");
+        // console.log(myHeaders.map)
         return myHeaders;
     } catch (err) {
         console.log(err);
@@ -92,9 +93,10 @@ const thumbsUp = async (reviewId, isThumbsUp) => {
     try {
         const myHeaders = await getHeaders();
         // console.log(myHeaders.map);
+        // console.log(reviewId);
         const response = await axios.post(`http://3.39.145.210/thumbs`, {
             reviewId: reviewId,
-            isThumbsUp: isThumbsUp,
+            thumbsUp: isThumbsUp,
         }, {
             headers: myHeaders.map,
         });
@@ -104,6 +106,28 @@ const thumbsUp = async (reviewId, isThumbsUp) => {
         console.log(err.response.data);
     }
 };
+
+const reviewWrite = async (starRating, shortReview, longReview, casting, viewDate, seat, musicalId) => {
+    try {
+        const myHeaders = await getHeaders();
+        // console.log(myHeaders.map);
+        const response = await axios.post(`http://3.39.145.210/write/review`, {
+            starRating: starRating,
+            shortReview: shortReview,
+            longReview: longReview,
+            casting: casting,
+            viewDate: viewDate,
+            seat: seat,
+            musicalId: musicalId,
+        }, {
+            headers: myHeaders.map,
+        });
+        console.log(response.data);
+    } catch (err) {
+        console.log(err.response.data);
+    }
+};
+
 
 const reviewDetail = async (reviewId) => {
     try {
@@ -127,7 +151,11 @@ const searchMusicals = async (keyword, orderBy) => {
 
 const memberIdInMypage = async () => {
     try {
-        const response = await axios.get(`http://3.39.145.210/member/id`);
+        const myHeaders = await getHeaders();
+        const response = await axios.get(`http://3.39.145.210/member/id` , {
+            headers: myHeaders.map,
+        });
+        console.log(response.data)
         return response.data;
     } catch (err) {
         console.log(err.response.data);
@@ -248,4 +276,4 @@ const duplicateNickname = async (nickname) => {
     }
 }
 
-export { feedReviews, musicalReviews, musicalDetails, musicalRateStatistics, musicalReviewsAll, thumbsUp, reviewDetail, searchMusicals, memberSummary, memberStatistics, memberShortThumbReviews, memberIdInMypage, myReviewsAll, searchCreatedReviews, myThumbsAll, searchThumbReviews, profileUpload, updateMember, duplicateNickname};
+export { feedReviews, musicalReviews, musicalDetails, musicalRateStatistics, musicalReviewsAll, thumbsUp, reviewWrite, reviewDetail, searchMusicals, memberSummary, memberStatistics, memberShortThumbReviews, memberIdInMypage, myReviewsAll, searchCreatedReviews, myThumbsAll, searchThumbReviews, profileUpload, updateMember, duplicateNickname};

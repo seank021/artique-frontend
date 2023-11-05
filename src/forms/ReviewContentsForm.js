@@ -8,6 +8,8 @@ import tw from 'twrnc';
 // 캐스팅 입력 모듈
 // props: modalVisible, setModalVisible, castings, setFinalCastings
 export const CastingForm = (props) => {
+    const [placeholder, setPlaceholder] = useState("배우 이름을 입력해주세요")
+    const [editable, setEditable] = useState(true)
     const [casting, setCasting] = useState("") // 배우 이름
     const [castings, setCastings] = useState(props.castings) // 배우 이름 리스트
 
@@ -15,6 +17,14 @@ export const CastingForm = (props) => {
         if (casting.trim() === "") return;
         setCastings([...castings, casting]);
         setCasting("");
+
+        if (castings.length >= 6) {
+            setPlaceholder("최대 7명까지 입력 가능합니다");
+            setEditable(false);
+        } else {
+            setPlaceholder("배우 이름을 입력해주세요");
+            setEditable(true);
+        }
     }
 
     const removeCasting = (index) => {
@@ -28,7 +38,7 @@ export const CastingForm = (props) => {
 
     return (
         <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={() => props.setModalVisible(false)}>
-            <View style={tw`flex flex-col justify-around items-center self-center w-[230px] bg-[#FAFAFA] rounded-[15px]`}>
+            <View style={tw`flex flex-col justify-around items-center self-center w-[230px] bg-[#FAFAFA] rounded-[15px] mb-[150px]`}>
                 <Text style={tw`text-[#191919] text-base font-medium mt-[24px] mb-[12px]`}>캐스팅 입력하기</Text>
                 {castings.map((cast, index) => (
                     <View key={index} style={tw`flex-row items-center`}>
@@ -36,7 +46,7 @@ export const CastingForm = (props) => {
                         <Pressable onPress={() => removeCasting(index)}><Image source={require('@images/x.png')} style={tw`w-[14px] h-[14px] tint-[#ABABAB]`}></Image></Pressable>
                     </View>
                 ))}
-                <TextInput style={tw`text-sm mb-[15px]`} placeholder="배우 이름을 입력해주세요" placeholderTextColor="#B6B6B6" onChangeText={(text) => setCasting(text)} value={casting}></TextInput>
+                <TextInput style={tw`text-sm mb-[15px]`} placeholder={placeholder} editable={editable} placeholderTextColor="#B6B6B6" onChangeText={(text) => setCasting(text)} value={casting}></TextInput>
                 <Pressable onPress={addCasting}><Image source={require('@images/add_button.png')} style={tw`w-[20px] h-[20px] mb-[30px] mt-[5px]`}></Image></Pressable>
                 <View style={tw`w-[100%] border-[0.5px] border-[#D3D4D3]`}></View>
                 <Pressable onPress={onPressSave}><Text style={tw`text-[#191919] text-sm my-[15px]`}>저장</Text></Pressable>
@@ -51,7 +61,7 @@ export const SeatForm = (props) => {
     const [seat, setSeat] = useState(props.seat) // 좌석 위치
 
     const onPressSave = () => { // seat ReviewWrite에 넘겨주기
-        if (seat.trim() === "") return;
+        if (seat.trim() === "") props.setModalVisible(false);
         setSeat(seat);
         props.setFinalSeat(seat);
         props.setModalVisible(false);
@@ -59,7 +69,7 @@ export const SeatForm = (props) => {
 
     return (
         <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={() => props.setModalVisible(false)}>
-            <View style={tw`flex flex-col justify-around items-center self-center w-[230px] bg-[#FAFAFA] rounded-[15px]`}>
+            <View style={tw`flex flex-col justify-around items-center self-center w-[230px] bg-[#FAFAFA] rounded-[15px] mb-[150px]`}>
                 <Text style={tw`text-[#191919] text-base font-medium mt-[24px] mb-[12px]`}>좌석 입력하기</Text>
                 <TextInput style={tw`text-sm mb-[15px]`} defaultValue={seat} placeholder="좌석 위치를 입력해주세요" placeholderTextColor="#B6B6B6" onChangeText={(text) => setSeat(text)}></TextInput>
                 <View style={tw`w-[100%] border-[0.5px] border-[#D3D4D3]`}></View>
@@ -83,7 +93,7 @@ export const ShortReviewForm = (props) => {
     }
 
     const onPressSave = () => { // shortReview ReviewWrite에 넘겨주기
-        if (shortReview.trim() === "") return;
+        if (shortReview.trim() === "") props.setModalVisible(false);
         setShortReview(shortReview);
         props.setFinalShortReview(shortReview);
         props.setModalVisible(false);
@@ -91,7 +101,7 @@ export const ShortReviewForm = (props) => {
 
     return (
         <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={() => props.setModalVisible(false)}>
-            <View style={tw`flex flex-col justify-around items-center self-center w-[300px] bg-[#FAFAFA] rounded-[15px]`}>
+            <View style={tw`flex flex-col justify-around items-center self-center w-[300px] bg-[#FAFAFA] rounded-[15px] mb-[150px]`}>
                 <TextInput style={tw`flex flex-wrap text-sm mt-[28px] self-start mx-[26px]`} defaultValue={shortReview} placeholder="한줄평을 입력해주세요" placeholderTextColor="#B6B6B6" onChangeText={onShortReviewChange} maxLength={50} multiline={true} value={shortReview}></TextInput>
                 <Text style={tw`text-[#B6B6B6] text-sm mb-[27px] self-end mr-[26px]`}>{charCount} / 50</Text>
                 <View style={tw`w-[100%] border-[0.5px] border-[#D3D4D3]`}></View>

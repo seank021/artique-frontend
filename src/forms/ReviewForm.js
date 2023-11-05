@@ -6,6 +6,8 @@ import AlertForm, { LongReviewForm } from '@forms/AlertForm';
 
 import { makeStars, makeStarsForEachReview } from '@functions/makeStars';
 
+import { AlertFormForModifyAndDelete, AlertFormForReport } from '@forms/AlertForm';
+
 {/*기본 화면 설정*/}
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -98,7 +100,7 @@ export function ShortReviewForm(props) {
     );
 }
 
-// props:  reviewInfo, goToMusicalDetail1, goToReviewDetail1, onPressThumbsUp, isCookie
+// props:  reviewInfo, goToMusicalDetail1, goToReviewDetail1, onPressThumbsUp, isCookie / isMine, musicalId, musicalPoster, musicalTitle
 export function ShortReviewFormInFeed(props) {
     const [isCookie, setIsCookie] = useState(props.isCookie);
     const [isThumbsUp, setIsThumbsUp] = useState(props.reviewInfo.isThumbsUp);
@@ -109,6 +111,9 @@ export function ShortReviewFormInFeed(props) {
 
     const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
     const [alertText, setAlertText] = useState('로그인이 필요한 서비스입니다.');
+
+    const [modifynDeleteModalVisible, setModifynDeleteModalVisible] = useState(false);
+    const [reportModalVisible, setReportModalVisible] = useState(false);
 
     useEffect(() => {
         setIsCookie(props.isCookie);
@@ -141,6 +146,12 @@ export function ShortReviewFormInFeed(props) {
         props.onPressThumbsUp(props.reviewInfo.reviewId);
     };
 
+    const onPressMore = () => {
+        console.log(props.isMine)
+        if (props.isMine) setModifynDeleteModalVisible(!modifynDeleteModalVisible);
+        else setReportModalVisible(!reportModalVisible);
+    }
+
     return (
         <>
             <View>
@@ -154,7 +165,12 @@ export function ShortReviewFormInFeed(props) {
                         <Text style={tw`text-[#191919] text-sm mr-[15px]`}>{props.reviewInfo.memberNickname}</Text>
                         <Text style={tw`text-[#ABABAB] text-xs`}>{props.reviewInfo.viewDate}</Text>
                     </View>
+                    <Pressable onPress={onPressMore}><Image style={tw`w-[30px] h-[30px]`} source={require("@images/dots_more.png")}></Image></Pressable>
                 </View>
+                {props.isMine ?
+                    <AlertFormForModifyAndDelete modalVisible={modifynDeleteModalVisible} setModalVisible={setModifynDeleteModalVisible} musicalId={props.musicalId} musicalPoster={props.musicalPoster} musicalTitle={props.musicalTitle}></AlertFormForModifyAndDelete>
+                    : <AlertFormForReport modalVisible={reportModalVisible} setModalVisible={setReportModalVisible}></AlertFormForReport>
+                }
 
                 <View style={[tw`flex flex-row mb-[12px] bg-[#FFFFFF] h-[162px] rounded-4 shadow-sm`]}>
                     <Image source={{uri: props.reviewInfo.posterUrl}} style={tw`w-[122px] rounded-l-4 mr-[10px]`} onTouchEnd={props.goToMusicalDetail1} />

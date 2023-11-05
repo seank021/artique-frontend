@@ -82,9 +82,9 @@ export default function Login1({setGoToFeed, setIsCookie}) {
 
       if (response.data.success === true) {
         // console.log('로그인 성공');
-        console.log(response.headers['set-cookie']);
+        console.log(response.headers['authorization']);
         try {
-          Cookies.setCookie('general', response.headers['set-cookie']);
+          Cookies.setCookie('general', response.headers['authorization']);
           Cookies.setCookie('currentLogin', 'general');
           setGoToFeed(true);
         } catch (err) {

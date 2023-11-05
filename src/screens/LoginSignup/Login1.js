@@ -44,9 +44,9 @@ export default function Login1({setGoToFeed}) {
         token: result.accessToken,
       });
       console.log(response.data.userId);
-      console.log(response.headers['set-cookie']);
+      console.log(response.headers['authorization']);
       try {
-        Cookies.setCookie('kakao', response.headers['set-cookie']);
+        Cookies.setCookie('kakao', response.headers['authorization']);
         Cookies.setCookie('currentLogin', 'kakao');
         setGoToFeed(true);
       } catch (err) {
@@ -75,9 +75,9 @@ export default function Login1({setGoToFeed}) {
         token: userInfo.idToken,
       });
       console.log(response.data.userId);
-      console.log(response.headers['set-cookie']);
+      console.log(response.headers['authorization']);
       try {
-        Cookies.setCookie('google', response.headers['set-cookie']);
+        Cookies.setCookie('google', response.headers['authorization']);
         Cookies.setCookie('currentLogin', 'google');
         setGoToFeed(true);
       } catch (err) {
@@ -101,9 +101,9 @@ export default function Login1({setGoToFeed}) {
     //         token: appleAuthRequestResponse.identityToken,
     //     });
     //     console.log(response.data.userId);
-    //     console.log(response.headers['set-cookie']);
+    //     console.log(response.headers['authorization']);
     //     try {
-    //         Cookies.setCookie("apple", response.headers["set-cookie"]);
+    //         Cookies.setCookie("apple", response.headers["authorization"]);
     //         Cookies.setCookie("currentLogin", "apple");
     //         setGoToFeed(true);
     //     } catch (err) {
