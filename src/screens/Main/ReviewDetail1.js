@@ -45,7 +45,7 @@ export default function ReviewDetail1({isCookie, reviewId}) {
             </View>
             <View style={tw`border-solid border-b border-[#D3D4D3] z-20`}></View>
 
-            <View>
+            <View style={tw`h-[95%] relative`}>
                 <MusicalInfoFormInReviewDetail reviewInfo={reviewInfo}></MusicalInfoFormInReviewDetail>
             </View>
         </SafeAreaView>

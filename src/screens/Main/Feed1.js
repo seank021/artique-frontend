@@ -1,20 +1,43 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { View, Image, StyleSheet, ScrollView } from "react-native";
+import { View, Image, StyleSheet, ScrollView, RefreshControl } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
 
 import { ShortReviewFormInFeed } from "@forms/ReviewForm";
 
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 
 import { feedReviews, thumbsUp } from "@functions/api";
 
 export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, setReviewInfo, setReviewInfo2 }) {
+    const [refreshing, setRefreshing] = useState(false);
+    const isFocused = useIsFocused();
+    const [firstFocus, setFirstFocus] = useState(true);
+    const [onRefreshWhenDelete, setOnRefreshWhenDelete] = useState(false);
+
     const nav = useNavigation();
 
     const [page, setPage] = useState(0);
     const [updatePage, setUpdatePage] = useState(true);
     const [feeds, setFeeds] = useState([]);
+
+    useEffect(() => {
+        if (firstFocus) {
+            setFirstFocus(false);
+            return;
+        }
+        if (!isFocused) {
+            return;
+        }
+        onRefresh();
+    }, [isFocused]);
+
+    useEffect(() => {
+        if (onRefreshWhenDelete) {
+            onRefresh();
+            setOnRefreshWhenDelete(false);
+        }
+    }, [onRefreshWhenDelete]);
 
     useEffect(() => {
         if (updatePage && page === 0) {
@@ -25,6 +48,32 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
             });
         }
     }, [page, updatePage]);
+
+    const onRefresh = React.useCallback(() => {
+        if (refreshing) {
+            return;
+        }
+
+        setRefreshing(true);
+
+        setFeeds([]);
+        setPage(0);
+        setUpdatePage(true);
+
+        if (updatePage && page === 0) {
+            feedReviews(page).then((newFeeds) => {
+                setFeeds((prevFeeds) => [...prevFeeds, ...newFeeds.feeds]);
+            }).catch((err) => {
+                console.log(err);
+            }).finally(() => {
+                setRefreshing(false);
+            });
+        }
+
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 1000);
+    }, [refreshing, page, updatePage]);
 
     const goToMusicalDetail1 = musicalId => {
         // console.log(musicalId);
@@ -92,7 +141,7 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
             </View>
             <View style={tw`border-[0.5px] border-[#D3D4D3]`}></View>
 
-            <ScrollView onScroll={detectScroll}>
+            <ScrollView showsVerticalScrollIndicator={false} onScroll={detectScroll} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
                 {feeds.map((feed, index) => (
                     <Fragment key={index}>
                         <ShortReviewFormInFeed
@@ -104,6 +153,7 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
                             isMine={feed.memberId === memberId}
                             setReviewInfo={setReviewInfo}
                             setReviewInfo2={setReviewInfo2}
+                            setOnRefreshWhenDelete={setOnRefreshWhenDelete}
                         />
                         {index < feeds.length - 1 && (
                             <View style={tw`border-4 border-[#F0F0F0]`}></View>

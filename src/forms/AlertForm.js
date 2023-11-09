@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { Contract1, Contract2 } from '@forms/ContractContents';
 
-import { reviewDetail } from '@functions/api';
+import { reviewDetail, reviewDelete } from '@functions/api';
 
 import { launchImageLibrary } from 'react-native-image-picker';
 
@@ -140,10 +140,10 @@ export function AlertFormForSortInMyReviews(props) {
 export function LongReviewForm(props) {
     return (
         <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.longReviewModalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={() => props.setLongReviewModalVisible(false)}>
-            <View style={tw`flex flex-col w-9.5/10 h-7/10 bg-white rounded-2xl self-center items-center justify-between`}>
-                <Text style={tw`text-base text-[#191919] font-medium mt-6`}>긴줄평</Text>
+            <View style={tw`flex flex-col w-[95%] h-[70%] bg-white rounded-2xl self-center items-center justify-between`}>
+                <Text style={tw`text-base text-[#191919] font-medium my-6`}>긴줄평</Text>
                 <ScrollView style={tw`mx-8 mb-14`} showsVerticalScrollIndicator={false}>
-                    <Text style={tw`text-sm font-normal text-justify mt-8 text-[#191919] leading-6`}>{props.longReview}</Text>
+                    <Text style={tw`text-sm font-normal text-justify text-[#191919] leading-6`}>{props.longReview}</Text>
                 </ScrollView>
             </View>
         </Modal>
@@ -200,7 +200,7 @@ export const AlertFormForConfirm = (props) => {
     )
 }
 
-// props: modalVisible, setModalVisible, reviewInfo, setReviewInfo, setReviewInfo2
+// props: modalVisible, setModalVisible, reviewInfo, setReviewInfo, setReviewInfo2, setOnRefreshWhenDelete
 export const AlertFormForModifyAndDelete = (props) => {
     const nav = useNavigation();
 
@@ -231,9 +231,10 @@ export const AlertFormForModifyAndDelete = (props) => {
         setIsStep2ForDelete(true);
     }
 
-    const onPressDeleteReview = () => {
+    const onPressDeleteReview = async () => {
         props.setModalVisible(false);
-        Alert.alert("삭제 구현하기");
+        await reviewDelete(props.reviewInfo.reviewId);
+        props.setOnRefreshWhenDelete(true);
     }
 
     return (
