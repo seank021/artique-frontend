@@ -24,7 +24,7 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
                 console.log(err);
             });
         }
-    }, [page, updatePage]);
+    }, [page, updatePage, feeds]);
 
     const goToMusicalDetail1 = musicalId => {
         // console.log(musicalId);

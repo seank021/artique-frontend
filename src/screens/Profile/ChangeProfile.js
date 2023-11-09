@@ -19,7 +19,6 @@ export default function Profile() {
     };
 
     {/*profile 불러오기 및 수정*/}
-    const [imageFile, setImageFile] = useState(null);
     const [profileImage, setProfileImage] = useState('');
     const [nickname, setNickname] = useState('');
     const [introduce, setIntroduce] = useState('');
@@ -39,7 +38,7 @@ export default function Profile() {
     }, [profileImage]);
 
     const onPressProfileChange = () => {
-        profileUpload(imageFile).then((newProfileImage) => {
+        profileUpload(profileImage).then((newProfileImage) => {
             setProfileImage(() => newProfileImage);
             setProfileChangeModalVisible(!ProfileChangeModalVisible);
             console.log('IMAGE UPLOAD SUCCESS', profileImage);
@@ -59,14 +58,15 @@ export default function Profile() {
         return;
         } else {
             updateMember(nickname, profileImage, introduce).then((req) => {
+                console.log(req);
                 if (req.success) {
-                    console.log('success');
                     setModalVisible(!modalVisible);
                     setAlertImage(require('@images/check.png'));
                     setAlertText('저장되었습니다');
                     setTimeout(() => {
                         setModalVisible(modalVisible);
                     }, 1000);
+                    nav.navigate('Mypage');
                 }
             }).catch((err) => {
                 console.log(err);
@@ -196,7 +196,7 @@ export default function Profile() {
             <ProfileChangeForm
                 modalVisible={ProfileChangeModalVisible}
                 setModalVisible={setProfileChangeModalVisible}
-                setImage={setImageFile}>
+                setImage={setProfileImage}>
             </ProfileChangeForm>
 
             {/* 상단 바 */}
@@ -214,7 +214,10 @@ export default function Profile() {
             <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
 
             <Pressable onPress={onPressProfileChange}>
-                <Image style={tw`w-[100px] h-[100px] rounded-full mx-auto mt-[20px] mb-[64px]`} source={profileImage ? { uri: profileImage } : require('@images/newprofile.png')}></Image>
+                <Image 
+                    source={profileImage ? { uri: profileImage } : require('@images/newprofile.png')}
+                    style={tw`w-[100px] h-[100px] rounded-full mx-auto mt-[20px] mb-[64px]`}>
+                </Image>
             </Pressable>
 
             <ScrollView contentContainerStyle={styles.contentContainer}>

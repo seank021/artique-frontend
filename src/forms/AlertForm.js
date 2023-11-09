@@ -159,10 +159,8 @@ export function ProfileChangeForm(props) {
             } else if (response.errorCode) {
                 console.log('ImagePicker Error: ', response.errorMessage);
             } else {
-                console.log("RESPONSE", response)
-                let image = response.base64 || response.assets[0]?.base64;
-                console.log(image);
-                props.setImage(image);
+                let imageSource = response.assets[0]?.base64;
+                props.setImage(imageSource);
             }
         };
 
