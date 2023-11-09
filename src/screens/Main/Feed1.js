@@ -13,6 +13,7 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
     const [refreshing, setRefreshing] = useState(false);
     const isFocused = useIsFocused();
     const [firstFocus, setFirstFocus] = useState(true);
+    const [onRefreshWhenDelete, setOnRefreshWhenDelete] = useState(false);
 
     const nav = useNavigation();
 
@@ -30,6 +31,13 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
         }
         onRefresh();
     }, [isFocused]);
+
+    useEffect(() => {
+        if (onRefreshWhenDelete) {
+            onRefresh();
+            setOnRefreshWhenDelete(false);
+        }
+    }, [onRefreshWhenDelete]);
 
     useEffect(() => {
         if (updatePage && page === 0) {
@@ -133,7 +141,7 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
             </View>
             <View style={tw`border-[0.5px] border-[#D3D4D3]`}></View>
 
-            <ScrollView showsVerticalScrollIndicator={false} onScroll={detectScroll} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+            <ScrollView showsVerticalScrollIndicator={false} onScroll={detectScroll} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
                 {feeds.map((feed, index) => (
                     <Fragment key={index}>
                         <ShortReviewFormInFeed
@@ -145,6 +153,7 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
                             isMine={feed.memberId === memberId}
                             setReviewInfo={setReviewInfo}
                             setReviewInfo2={setReviewInfo2}
+                            setOnRefreshWhenDelete={setOnRefreshWhenDelete}
                         />
                         {index < feeds.length - 1 && (
                             <View style={tw`border-4 border-[#F0F0F0]`}></View>

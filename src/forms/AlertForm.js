@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { Contract1, Contract2 } from '@forms/ContractContents';
 
-import { reviewDetail } from '@functions/api';
+import { reviewDetail, reviewDelete } from '@functions/api';
 
 import { launchImageLibrary } from 'react-native-image-picker';
 
@@ -200,7 +200,7 @@ export const AlertFormForConfirm = (props) => {
     )
 }
 
-// props: modalVisible, setModalVisible, reviewInfo, setReviewInfo, setReviewInfo2
+// props: modalVisible, setModalVisible, reviewInfo, setReviewInfo, setReviewInfo2, setOnRefreshWhenDelete
 export const AlertFormForModifyAndDelete = (props) => {
     const nav = useNavigation();
 
@@ -231,9 +231,10 @@ export const AlertFormForModifyAndDelete = (props) => {
         setIsStep2ForDelete(true);
     }
 
-    const onPressDeleteReview = () => {
+    const onPressDeleteReview = async () => {
         props.setModalVisible(false);
-        Alert.alert("삭제 구현하기");
+        await reviewDelete(props.reviewInfo.reviewId);
+        props.setOnRefreshWhenDelete(true);
     }
 
     return (

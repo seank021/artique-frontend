@@ -149,6 +149,18 @@ const reviewUpdate = async (reviewId, starRating, shortReview, longReview, casti
     }
 };
 
+const reviewDelete = async (reviewId) => {
+    try {
+        const myHeaders = await getHeaders();
+        const response = await axios.delete(`http://3.39.145.210/delete/review?review-id=${reviewId}`, {
+            headers: myHeaders.map,
+        });
+        console.log(response.data);
+    } catch (err) {
+        console.log(err.response.data);
+    }
+};
+
 const reviewDetail = async (reviewId) => {
     try {
         const response = await axios.get(`http://3.39.145.210/review?review-id=${reviewId}`);
@@ -296,4 +308,4 @@ const duplicateNickname = async (nickname) => {
     }
 }
 
-export { feedReviews, musicalReviews, musicalDetails, musicalRateStatistics, musicalReviewsAll, thumbsUp, reviewWrite, reviewUpdate, reviewDetail, searchMusicals, memberSummary, memberStatistics, memberShortThumbReviews, memberIdInMypage, myReviewsAll, searchCreatedReviews, myThumbsAll, searchThumbReviews, profileUpload, updateMember, duplicateNickname};
+export { feedReviews, musicalReviews, musicalDetails, musicalRateStatistics, musicalReviewsAll, thumbsUp, reviewWrite, reviewUpdate, reviewDelete, reviewDetail, searchMusicals, memberSummary, memberStatistics, memberShortThumbReviews, memberIdInMypage, myReviewsAll, searchCreatedReviews, myThumbsAll, searchThumbReviews, profileUpload, updateMember, duplicateNickname};
