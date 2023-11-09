@@ -22,7 +22,7 @@ import {useNavigation} from '@react-navigation/native';
 
 import InputForm from '@forms/InputForm';
 import ButtonForm from '@forms/ButtonForm';
-import AlertForm from '@forms/AlertForm';
+import AlertForm, { ContractForm } from '@forms/AlertForm';
 
 export default function Login1() {
   const nav = useNavigation();
@@ -32,6 +32,9 @@ export default function Login1() {
   const [password_, setPassword_] = useState('');
 
   const [modalVisible, setModalVisible] = useState(false);
+
+  const [contractModal1Visible, setContractModal1Visible] = useState(false);
+  const [contractModal2Visible, setContractModal2Visible] = useState(false);
 
   const [ifButtonID, setIfButtonID] = useState(true);
   const [ifCheckID, setIfCheckID] = useState(false);
@@ -157,6 +160,14 @@ export default function Login1() {
       setIfCheckPW(false);
       setIfXPW(false);
     }
+  };
+
+  const onPressContract1 = () => {
+    setContractModal1Visible(!contractModal1Visible);
+  };
+
+  const onPressContract2 = () => {
+    setContractModal2Visible(!contractModal2Visible);
   };
 
   const onPressSignup = async () => {
@@ -325,17 +336,21 @@ export default function Login1() {
           <Pressable onPress={checkRectangle1}>
             <Image source={rectangle1} style={tw`mr-2 w-[16px] h-[16px]`}></Image>
           </Pressable>
-          <Text style={tw`text-[#ABABAB] text-sm underline`}>
-            이용약관 (필수)
-          </Text>
+          <Pressable onPress={onPressContract1}>
+            <Text style={tw`text-[#ABABAB] text-sm underline`}>이용약관 (필수)</Text>
+          </Pressable>
+          <ContractForm modalVisible={contractModal1Visible} setModalVisible={setContractModal1Visible} contractNum={1}></ContractForm>
         </View>
         <View style={tw`flex-row items-center self-start ml-[5%] mt-1 mb-4.5`}>
           <Pressable onPress={checkRectangle2}>
             <Image source={rectangle2} style={tw`mr-2 w-[16px] h-[16px]`}></Image>
           </Pressable>
-          <Text style={tw`text-[#ABABAB] text-sm underline`}>
-            개인정보 처리 방침 (필수)
-          </Text>
+          <Pressable onPress={onPressContract2}>
+            <Text style={tw`text-[#ABABAB] text-sm underline`}>
+              개인정보 처리 방침 (필수)
+            </Text>
+          </Pressable>
+          <ContractForm modalVisible={contractModal2Visible} setModalVisible={setContractModal2Visible} contractNum={2}></ContractForm>
         </View>
 
         <ButtonForm

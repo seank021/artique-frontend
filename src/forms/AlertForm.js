@@ -6,6 +6,8 @@ import tw from 'twrnc';
 
 import { useNavigation } from '@react-navigation/native';
 
+import { Contract1, Contract2 } from '@forms/ContractContents';
+
 import { reviewDetail } from '@functions/api';
 
 import { launchImageLibrary } from 'react-native-image-picker';
@@ -328,6 +330,26 @@ export const AlertFormForReport = (props) => {
                     <Text style={tw`text-sm font-medium mt-[20px] text-[#191919]`}>제출되었습니다</Text>
                 </View>
             : null}
+        </Modal>
+    )
+}
+
+// props: modalVisible, setModalVisible, contractNum
+export const ContractForm = (props) => {
+    return (
+        <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={() => props.setModalVisible(false)}>
+            <View style={tw`flex flex-col w-[95%] h-[90%] bg-[#F5F8F5] rounded-[15px] justify-around self-center`}>
+                <View style={tw`w-[90%] self-center flex-row justify-between items-center`}>
+                    <Image source={require("@images/x.png")} style={tw`tint-[#F5F8F5] w-[20px] h-[20px]`} />
+                    <Text style={tw`text-base font-medium mt-[24px] mb-[20px] text-[#191919]`}>
+                        {props.contractNum === 1 ? '이용약관' : '개인정보 처리 방침'}
+                    </Text>
+                    <Pressable onPress={() => props.setModalVisible(false)}><Image source={require("@images/x.png")} style={tw`tint-[#191919] w-[20px] h-[20px]`} /></Pressable>
+                </View>
+                <ScrollView style={tw`w-[90%] self-center mb-[31px]`}>
+                    {props.contractNum === 1 ? <Contract1 /> : <Contract2 />}
+                </ScrollView>
+            </View>
         </Modal>
     )
 }
