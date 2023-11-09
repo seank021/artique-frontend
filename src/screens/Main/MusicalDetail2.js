@@ -1,12 +1,12 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { View, Pressable, Text, ScrollView, Image, StyleSheet } from "react-native";
+import { View, Pressable, Text, ScrollView, Image, StyleSheet, RefreshControl } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
 
 import { AlertFormForSort } from "@forms/AlertForm";
 import { ShortReviewForm } from '@forms/ReviewForm';
 
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 
 import { musicalDetails, musicalReviews, musicalReviewsAll, thumbsUp } from "@functions/api";
 
@@ -18,12 +18,22 @@ export default function MusicalDetail2({isCookie, musicalId, setMusicalId, setMu
     
     const nav = useNavigation();
 
+    const [refreshing, setRefreshing] = useState(false);
+    const isFocused = useIsFocused();
+
     const [musicalInfo, setMusicalInfo] = useState({});
     const [totalReviewCount, setTotalReviewCount] = useState(0);
 
     const [page, setPage] = useState(0);
     const [updatePage, setUpdatePage] = useState(true);
     const [reviews, setReviews] = useState([]);
+
+    useEffect(() => {
+        if (!isFocused) {
+            return;
+        }
+        onRefresh();
+    }, [isFocused]);
 
     useEffect(() => {
         musicalDetails(musicalId).then((newMusicalInfo) => {
@@ -50,6 +60,46 @@ export default function MusicalDetail2({isCookie, musicalId, setMusicalId, setMu
             });
         }
     }, [page, updatePage, orderBy]);
+
+    const onRefresh = React.useCallback(() => {
+        if (refreshing) {
+            return;
+        }
+
+        setRefreshing(true);
+
+        setMusicalInfo({});
+        setTotalReviewCount(0);
+        setPage(0);
+        setUpdatePage(true);
+        setReviews([]);
+
+        musicalDetails(musicalId).then((newMusicalInfo) => {
+            setMusicalInfo(() => newMusicalInfo);
+        }).catch((err) => {
+            console.log(err);
+        });
+
+        musicalReviews(musicalId).then((newReviews) => {
+            setTotalReviewCount(() => newReviews.totalReviewCount);
+        }).catch((err) => {
+            console.log(err);
+        });
+
+        if (updatePage && page === 0) {
+            musicalReviewsAll(musicalId, page, orderBy).then((newReviews) => {
+                setReviews(newReviews);
+            }).catch((err) => {
+                console.log(err);
+            }).finally(() => {
+                setRefreshing(false);
+            });
+        }
+
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 1000);
+    }, [refreshing, page, updatePage, orderBy]);
 
     const goBack = () => {
         nav.goBack();
@@ -141,7 +191,7 @@ export default function MusicalDetail2({isCookie, musicalId, setMusicalId, setMu
             </View>
             <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
 
-            <ScrollView onScroll={detectScroll}>
+            <ScrollView showsVerticalScrollIndicator={false} onScroll={detectScroll} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
                 <View style={tw`flex flex-row w-[90%] justify-between items-center self-center mt-[15px]`}>
                     <Text style={tw`text-[#191919] text-base font-medium mb-[6px]`}>모든 리뷰 ({totalReviewCount})</Text>
                     <Pressable style={tw`flex flex-row items-center`} onPress={() => setSortModalVisible(true)}>

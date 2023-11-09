@@ -127,16 +127,15 @@ export default function ReviewWrite1({isCookie, musicalId, musicalPoster, musica
             setAlertText('저장되었습니다');
             setTimeout(() => {
                 setModalVisible(modalVisible);
-                nav.navigate('MusicalDetail1')
+                nav.goBack();
             }, 1000);
-
         } catch (err) {
             setModalVisible(!modalVisible);
             setAlertImage(require('@images/x_red.png'));
             setAlertText('저장에 실패하였습니다');
             setTimeout(() => {
                 setModalVisible(modalVisible);
-                nav.navigate('MusicalDetail1')
+                nav.goBack();
             }, 1000);
         }
         

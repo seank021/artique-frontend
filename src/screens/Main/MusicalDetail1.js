@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { View, Pressable, Text, ScrollView, Image, StyleSheet } from 'react-native';
+import { View, Pressable, Text, ScrollView, Image, StyleSheet, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import tw from 'twrnc';
@@ -11,7 +11,7 @@ import StoryForm from '@forms/StoryForm';
 import AverageScoreForm from '@forms/AverageScoreForm';
 import { ShortReviewForm } from '@forms/ReviewForm';
 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 
 import { musicalDetails, musicalReviews, musicalRateStatistics, thumbsUp } from '@functions/api';
 
@@ -27,6 +27,16 @@ export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setMu
     const [reviews, setReviews] = useState([]);
 
     const nav = useNavigation();
+
+    const [refreshing, setRefreshing] = useState(false);
+    const isFocused = useIsFocused();
+
+    useEffect(() => {
+        if (!isFocused) {
+            return;
+        }
+        onRefresh();
+    }, [isFocused]);
 
     useEffect(() => {
         musicalDetails(musicalId).then((newMusicalInfo) => {
@@ -52,6 +62,44 @@ export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setMu
             console.log(err);
         });
     }, []);
+
+    const onRefresh = React.useCallback(() => {
+        if (refreshing) {
+            return;
+        }
+
+        setRefreshing(true);
+
+        setMusicalInfo({});
+        setMusicalRates({});
+        setTotalReviewCount(0);
+        setReviews([]);
+
+        musicalDetails(musicalId).then((newMusicalInfo) => {
+            setMusicalInfo(() => newMusicalInfo);
+        }).catch((err) => {
+            console.log(err);
+        });
+
+        musicalRateStatistics(musicalId).then((newMusicalRates) => {
+            setMusicalRates(() => newMusicalRates.statistic);
+        }).catch((err) => {
+            console.log(err);
+        });
+
+        musicalReviews(musicalId).then((newReviews) => {
+            setTotalReviewCount(() => newReviews.totalReviewCount);
+            setReviews(() => [...newReviews.reviews]);
+        }).catch((err) => {
+            console.log(err);
+        }).finally(() => {
+            setRefreshing(false);
+        });
+
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 1000);
+    }, [refreshing]);
 
     const goBack = () => {
         nav.goBack();
@@ -120,7 +168,7 @@ export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setMu
             </View>
             <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
 
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />} >
                 <View style={tw`mt-[27.56px]`}></View>
                 {musicalInfo.posterUrl && (
                     <MusicalInfoForm poster={musicalInfo.posterUrl} title={musicalInfo.title} score={musicalInfo.averageScore} date={musicalInfo.date} place={musicalInfo.place} duration={musicalInfo.duration} casting={musicalInfo.casting}></MusicalInfoForm>
