@@ -12,6 +12,7 @@ import { feedReviews, thumbsUp } from "@functions/api";
 export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, setReviewInfo, setReviewInfo2 }) {
     const [refreshing, setRefreshing] = useState(false);
     const isFocused = useIsFocused();
+    const [firstFocus, setFirstFocus] = useState(true);
 
     const nav = useNavigation();
 
@@ -20,6 +21,10 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
     const [feeds, setFeeds] = useState([]);
 
     useEffect(() => {
+        if (firstFocus) {
+            setFirstFocus(false);
+            return;
+        }
         if (!isFocused) {
             return;
         }
@@ -37,6 +42,10 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
     }, [page, updatePage]);
 
     const onRefresh = React.useCallback(() => {
+        if (refreshing) {
+            return;
+        }
+
         setRefreshing(true);
 
         setFeeds([]);
@@ -48,13 +57,15 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
                 setFeeds((prevFeeds) => [...prevFeeds, ...newFeeds.feeds]);
             }).catch((err) => {
                 console.log(err);
+            }).finally(() => {
+                setRefreshing(false);
             });
         }
 
         setTimeout(() => {
             setRefreshing(false);
         }, 1000);
-    }, []);
+    }, [refreshing, page, updatePage]);
 
     const goToMusicalDetail1 = musicalId => {
         // console.log(musicalId);

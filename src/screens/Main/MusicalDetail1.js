@@ -64,6 +64,10 @@ export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setMu
     }, []);
 
     const onRefresh = React.useCallback(() => {
+        if (refreshing) {
+            return;
+        }
+
         setRefreshing(true);
 
         setMusicalInfo({});
@@ -88,12 +92,14 @@ export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setMu
             setReviews(() => [...newReviews.reviews]);
         }).catch((err) => {
             console.log(err);
+        }).finally(() => {
+            setRefreshing(false);
         });
 
         setTimeout(() => {
             setRefreshing(false);
         }, 1000);
-    }, []);
+    }, [refreshing]);
 
     const goBack = () => {
         nav.goBack();
