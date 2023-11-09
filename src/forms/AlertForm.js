@@ -150,6 +150,7 @@ export function LongReviewForm(props) {
 
 export function ProfileChangeForm(props) {
     const onPressSelect = async () => {
+    const onPressSelect = async () => {
         const response = await launchImageLibrary({
             mediaType: 'photo',
             includeBase64: true,

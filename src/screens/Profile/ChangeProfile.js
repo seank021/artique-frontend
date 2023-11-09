@@ -19,6 +19,7 @@ export default function Profile() {
     };
 
     {/*profile 불러오기 및 수정*/}
+    const [imageFile, setImageFile] = useState(null);
     const [profileImage, setProfileImage] = useState('');
     const [nickname, setNickname] = useState('');
     const [introduce, setIntroduce] = useState('');
@@ -38,7 +39,7 @@ export default function Profile() {
     }, [profileImage]);
 
     const onPressProfileChange = () => {
-        profileUpload(profileImage).then((newProfileImage) => {
+        profileUpload(imageFile).then((newProfileImage) => {
             setProfileImage(() => newProfileImage);
             setProfileChangeModalVisible(!ProfileChangeModalVisible);
             console.log('IMAGE UPLOAD SUCCESS', profileImage);
@@ -199,6 +200,7 @@ export default function Profile() {
                 setImage={setProfileImage}>
             </ProfileChangeForm>
 
+            {/* 상단 바 */}
             {/* 상단 바 */}
             <View style={tw`flex-row items-center justify-between mt-5 mb-[14px]`}>
                 <Pressable onPress={goBack} style={tw`flex-row`}>

@@ -121,10 +121,10 @@ export default function Mypage ({ isCookie, memberId }) {
       </View>
       <Pressable onPress={goToMyReviews} style={tw`self-center w-9/10 h-[33px] mt-[25px] rounded-3xl bg-[#FFF] shadow`}>
         <Text style={tw`text-xs text-[#191919] font-normal text-center leading-[33px]`}>작성한 리뷰 모아보기</Text>
-      </Pressable>
+      </Pressable> */}
         
       {/* 평점 */}
-      <View style={tw`mt-7.5 ml-5`}>
+      {/* <View style={tw`mt-7.5 ml-5`}>
         <Text style={tw`mb-2`}>
           <Text style={tw`text-sm text-[#191919] font-medium`}>{memberInfo.nickname}</Text>
           <Text style={tw`text-sm text-[#191919] font-normal`}> 님은</Text>
@@ -134,9 +134,9 @@ export default function Mypage ({ isCookie, memberId }) {
           <Text style={tw`text-sm text-[#191919] font-medium`}> '짠돌이 파'</Text>
         </Text>
       </View>
-      <View style={tw`w-9/10 self-center`}>
+      <View style={tw`w-9/10 self-center`}> */}
         {/* {makeBarChart(memberStat.statistic)} */}
-      </View>
+      {/* </View>
       <View style={tw`flex-row justify-between mt-3 mx-5`}>
         <View style={tw`flex-col items-center`}>
           <Text style={tw`text-xs text-[#191919] font-normal`}>별점 평균</Text>
@@ -150,7 +150,7 @@ export default function Mypage ({ isCookie, memberId }) {
           <Text style={tw`text-xs text-[#191919] font-normal`}>많이 준 별점</Text>
           <Text style={tw`text-xs text-[#191919] font-normal`}>{maxStarRate}</Text>
         </View>
-      </View>
+      </View> */}
 
       {/* 공감한 한줄평 */}
       <View style={tw`flex-row justify-between mt-11.5 mx-5`}>
