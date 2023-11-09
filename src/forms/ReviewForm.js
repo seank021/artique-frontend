@@ -148,6 +148,15 @@ export function ShortReviewFormInFeed(props) {
 
     const onPressMore = () => {
         // console.log(props.isMine)
+        if (!props.isCookie) {
+            setModalVisible(!modalVisible);
+            setAlertImage(require('@images/x_red.png'));
+            setAlertText('로그인이 필요한 서비스입니다.');
+            setTimeout(() => {
+                setModalVisible(modalVisible);
+            }, 1000);
+            return;
+        }
         if (props.isMine) setModifynDeleteModalVisible(!modifynDeleteModalVisible);
         else setReportModalVisible(!reportModalVisible);
     }
