@@ -5,17 +5,26 @@ import tw from "twrnc";
 
 import { ShortReviewFormInFeed } from "@forms/ReviewForm";
 
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 
 import { feedReviews, thumbsUp } from "@functions/api";
 
 export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, setReviewInfo, setReviewInfo2 }) {
     const [refreshing, setRefreshing] = useState(false);
+    const isFocused = useIsFocused();
+
     const nav = useNavigation();
 
     const [page, setPage] = useState(0);
     const [updatePage, setUpdatePage] = useState(true);
     const [feeds, setFeeds] = useState([]);
+
+    useEffect(() => {
+        if (!isFocused) {
+            return;
+        }
+        onRefresh();
+    }, [isFocused]);
 
     useEffect(() => {
         if (updatePage && page === 0) {
@@ -29,6 +38,19 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
 
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
+
+        setFeeds([]);
+        setPage(0);
+        setUpdatePage(true);
+
+        if (updatePage && page === 0) {
+            feedReviews(page).then((newFeeds) => {
+                setFeeds((prevFeeds) => [...prevFeeds, ...newFeeds.feeds]);
+            }).catch((err) => {
+                console.log(err);
+            });
+        }
+
         setTimeout(() => {
             setRefreshing(false);
         }, 1000);

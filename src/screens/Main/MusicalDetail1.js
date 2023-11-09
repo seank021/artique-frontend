@@ -11,7 +11,7 @@ import StoryForm from '@forms/StoryForm';
 import AverageScoreForm from '@forms/AverageScoreForm';
 import { ShortReviewForm } from '@forms/ReviewForm';
 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 
 import { musicalDetails, musicalReviews, musicalRateStatistics, thumbsUp } from '@functions/api';
 
@@ -29,6 +29,14 @@ export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setMu
     const nav = useNavigation();
 
     const [refreshing, setRefreshing] = useState(false);
+    const isFocused = useIsFocused();
+
+    useEffect(() => {
+        if (!isFocused) {
+            return;
+        }
+        onRefresh();
+    }, [isFocused]);
 
     useEffect(() => {
         musicalDetails(musicalId).then((newMusicalInfo) => {
@@ -57,6 +65,31 @@ export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setMu
 
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
+
+        setMusicalInfo({});
+        setMusicalRates({});
+        setTotalReviewCount(0);
+        setReviews([]);
+
+        musicalDetails(musicalId).then((newMusicalInfo) => {
+            setMusicalInfo(() => newMusicalInfo);
+        }).catch((err) => {
+            console.log(err);
+        });
+
+        musicalRateStatistics(musicalId).then((newMusicalRates) => {
+            setMusicalRates(() => newMusicalRates.statistic);
+        }).catch((err) => {
+            console.log(err);
+        });
+
+        musicalReviews(musicalId).then((newReviews) => {
+            setTotalReviewCount(() => newReviews.totalReviewCount);
+            setReviews(() => [...newReviews.reviews]);
+        }).catch((err) => {
+            console.log(err);
+        });
+
         setTimeout(() => {
             setRefreshing(false);
         }, 1000);

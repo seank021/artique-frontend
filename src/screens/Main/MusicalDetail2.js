@@ -6,7 +6,7 @@ import tw from "twrnc";
 import { AlertFormForSort } from "@forms/AlertForm";
 import { ShortReviewForm } from '@forms/ReviewForm';
 
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 
 import { musicalDetails, musicalReviews, musicalReviewsAll, thumbsUp } from "@functions/api";
 
@@ -19,6 +19,7 @@ export default function MusicalDetail2({isCookie, musicalId, setMusicalId, setMu
     const nav = useNavigation();
 
     const [refreshing, setRefreshing] = useState(false);
+    const isFocused = useIsFocused();
 
     const [musicalInfo, setMusicalInfo] = useState({});
     const [totalReviewCount, setTotalReviewCount] = useState(0);
@@ -26,6 +27,13 @@ export default function MusicalDetail2({isCookie, musicalId, setMusicalId, setMu
     const [page, setPage] = useState(0);
     const [updatePage, setUpdatePage] = useState(true);
     const [reviews, setReviews] = useState([]);
+
+    useEffect(() => {
+        if (!isFocused) {
+            return;
+        }
+        onRefresh();
+    }, [isFocused]);
 
     useEffect(() => {
         musicalDetails(musicalId).then((newMusicalInfo) => {
@@ -55,6 +63,33 @@ export default function MusicalDetail2({isCookie, musicalId, setMusicalId, setMu
 
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
+
+        setMusicalInfo({});
+        setTotalReviewCount(0);
+        setPage(0);
+        setUpdatePage(true);
+        setReviews([]);
+
+        musicalDetails(musicalId).then((newMusicalInfo) => {
+            setMusicalInfo(() => newMusicalInfo);
+        }).catch((err) => {
+            console.log(err);
+        });
+
+        musicalReviews(musicalId).then((newReviews) => {
+            setTotalReviewCount(() => newReviews.totalReviewCount);
+        }).catch((err) => {
+            console.log(err);
+        });
+
+        if (updatePage && page === 0) {
+            musicalReviewsAll(musicalId, page, orderBy).then((newReviews) => {
+                setReviews(newReviews);
+            }).catch((err) => {
+                console.log(err);
+            });
+        }
+
         setTimeout(() => {
             setRefreshing(false);
         }, 1000);
