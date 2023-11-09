@@ -191,7 +191,7 @@ export default function MusicalDetail2({isCookie, musicalId, setMusicalId, setMu
             </View>
             <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
 
-            <ScrollView onScroll={detectScroll} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+            <ScrollView showsVerticalScrollIndicator={false} onScroll={detectScroll} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
                 <View style={tw`flex flex-row w-[90%] justify-between items-center self-center mt-[15px]`}>
                     <Text style={tw`text-[#191919] text-base font-medium mb-[6px]`}>모든 리뷰 ({totalReviewCount})</Text>
                     <Pressable style={tw`flex flex-row items-center`} onPress={() => setSortModalVisible(true)}>

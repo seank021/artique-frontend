@@ -168,7 +168,7 @@ export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setMu
             </View>
             <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
 
-            <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />} >
+            <ScrollView showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />} >
                 <View style={tw`mt-[27.56px]`}></View>
                 {musicalInfo.posterUrl && (
                     <MusicalInfoForm poster={musicalInfo.posterUrl} title={musicalInfo.title} score={musicalInfo.averageScore} date={musicalInfo.date} place={musicalInfo.place} duration={musicalInfo.duration} casting={musicalInfo.casting}></MusicalInfoForm>

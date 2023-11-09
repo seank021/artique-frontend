@@ -133,7 +133,7 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
             </View>
             <View style={tw`border-[0.5px] border-[#D3D4D3]`}></View>
 
-            <ScrollView onScroll={detectScroll} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+            <ScrollView showsVerticalScrollIndicator={false} onScroll={detectScroll} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
                 {feeds.map((feed, index) => (
                     <Fragment key={index}>
                         <ShortReviewFormInFeed
