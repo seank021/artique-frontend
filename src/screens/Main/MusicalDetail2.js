@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { View, Pressable, Text, ScrollView, Image, StyleSheet } from "react-native";
+import { View, Pressable, Text, ScrollView, Image, StyleSheet, RefreshControl } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
 
@@ -17,6 +17,8 @@ export default function MusicalDetail2({isCookie, musicalId, setMusicalId, setMu
     const orderBy = sortCriteria === "공감순" ? "THUMBS" : sortCriteria === "관람일순" ? "VIEW" : "CREATE";
     
     const nav = useNavigation();
+
+    const [refreshing, setRefreshing] = useState(false);
 
     const [musicalInfo, setMusicalInfo] = useState({});
     const [totalReviewCount, setTotalReviewCount] = useState(0);
@@ -50,6 +52,13 @@ export default function MusicalDetail2({isCookie, musicalId, setMusicalId, setMu
             });
         }
     }, [page, updatePage, orderBy]);
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 1000);
+    }, []);
 
     const goBack = () => {
         nav.goBack();
@@ -141,7 +150,7 @@ export default function MusicalDetail2({isCookie, musicalId, setMusicalId, setMu
             </View>
             <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
 
-            <ScrollView onScroll={detectScroll}>
+            <ScrollView onScroll={detectScroll} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
                 <View style={tw`flex flex-row w-[90%] justify-between items-center self-center mt-[15px]`}>
                     <Text style={tw`text-[#191919] text-base font-medium mb-[6px]`}>모든 리뷰 ({totalReviewCount})</Text>
                     <Pressable style={tw`flex flex-row items-center`} onPress={() => setSortModalVisible(true)}>

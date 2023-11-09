@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { View, Image, StyleSheet, ScrollView } from "react-native";
+import { View, Image, StyleSheet, ScrollView, RefreshControl } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
 
@@ -10,6 +10,7 @@ import { useNavigation } from "@react-navigation/native";
 import { feedReviews, thumbsUp } from "@functions/api";
 
 export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, setReviewInfo, setReviewInfo2 }) {
+    const [refreshing, setRefreshing] = useState(false);
     const nav = useNavigation();
 
     const [page, setPage] = useState(0);
@@ -25,6 +26,13 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
             });
         }
     }, [page, updatePage]);
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 1000);
+    }, []);
 
     const goToMusicalDetail1 = musicalId => {
         // console.log(musicalId);
@@ -92,7 +100,7 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
             </View>
             <View style={tw`border-[0.5px] border-[#D3D4D3]`}></View>
 
-            <ScrollView onScroll={detectScroll}>
+            <ScrollView onScroll={detectScroll} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
                 {feeds.map((feed, index) => (
                     <Fragment key={index}>
                         <ShortReviewFormInFeed

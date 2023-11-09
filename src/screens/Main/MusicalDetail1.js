@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { View, Pressable, Text, ScrollView, Image, StyleSheet } from 'react-native';
+import { View, Pressable, Text, ScrollView, Image, StyleSheet, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import tw from 'twrnc';
@@ -28,6 +28,8 @@ export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setMu
 
     const nav = useNavigation();
 
+    const [refreshing, setRefreshing] = useState(false);
+
     useEffect(() => {
         musicalDetails(musicalId).then((newMusicalInfo) => {
             setMusicalInfo(() => newMusicalInfo);
@@ -51,6 +53,13 @@ export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setMu
         }).catch((err) => {
             console.log(err);
         });
+    }, []);
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 1000);
     }, []);
 
     const goBack = () => {
@@ -120,7 +129,7 @@ export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setMu
             </View>
             <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
 
-            <ScrollView>
+            <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />} >
                 <View style={tw`mt-[27.56px]`}></View>
                 {musicalInfo.posterUrl && (
                     <MusicalInfoForm poster={musicalInfo.posterUrl} title={musicalInfo.title} score={musicalInfo.averageScore} date={musicalInfo.date} place={musicalInfo.place} duration={musicalInfo.duration} casting={musicalInfo.casting}></MusicalInfoForm>
