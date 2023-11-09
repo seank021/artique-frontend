@@ -308,62 +308,12 @@ export function ShortReviewFormInMyReviews(props) {
         </>
     );
 }
-// props: reviewInfo
-// export function MusicalInfoFormInReviewDetail(props) {
-//     const [longReviewModalVisible, setLongReviewModalVisible] = useState(false);
-
-//     return (
-//         <View style={tw`flex-col self-center w-[90%] h-[93%] rounded-[24px] bg-[#FFFFFF] my-[13px]`}>
-//             <View style={tw`w-[60px] h-[60px] rounded-full bg-[#F5F5F5] self-center absolute top-[-30px] overflow-hidden`}></View>
-            
-//             <View style={tw`border-solid border border-[#191919] self-center w-[83%] mt-[57px]`}></View>
-//             <View style={tw`flex-col items-start mt-[23px] ml-[10%] mr-[5%]`}>
-//                 <Text style={tw`text-[22px] text-[#191919] font-medium mb-[22px]`}>{props.reviewInfo.musicalTitle}</Text>
-//                 <Text style={tw`text-sm text-[#191919] mb-[6px]`}>{props.reviewInfo.casting}</Text>
-//                 <Text style={tw`text-sm text-[#191919] mb-[6px]`}>{props.reviewInfo.seat}</Text>
-//                 <Text style={tw`text-sm text-[#191919]`}>{props.reviewInfo.viewDate}</Text>
-//             </View>
-//             <View style={tw`border-solid border border-[#191919] self-center w-[83%] mt-[18px]`}></View>
-            
-//             <View style={tw`flex flex-col items-start mt-[23px] ml-[10%]`}>
-//                 <View style={tw`flex-row w-[90%] justify-between`}>
-//                     <Text style={tw`text-[#191919] text-sm self-start`}>평점</Text>
-//                     {makeStarsForEachReview(props.reviewInfo.rating)}
-//                 </View>
-//                 <View style={tw`flex flex-row items-start w-[90%] justify-between mt-[32.4px] mb-[44px]`}>
-//                     <Text style={tw`text-[#191919] text-sm leading-[26px]`}>한줄평</Text>
-//                     <Text style={tw`w-[65%] text-[#191919] text-sm text-center font-medium leading-[26px]`}>"{props.reviewInfo.shortReview}"</Text>
-//                 </View>
-//             </View>
-
-//             <View style={tw`flex flex-row items-center absolute left-[-10px] right-[-10px] top-[450px] justify-between`}>
-//                 <View style={tw`w-[20px] h-[20px] rounded-full bg-[#F5F5F5]`}></View>
-//                 {Array(15).fill().map((_, index) => (
-//                     <View key={index} style={tw`w-[12px] h-[12px] rounded-full bg-[#F5F5F5]`} />
-//                     ))}
-//                 <View style={tw`w-[20px] h-[20px] rounded-full bg-[#F5F5F5]`}></View>
-//             </View>
-
-//             <View style={tw`flex flex-row items-start mt-[23px] ml-[10%]`}>
-//                 <View style={tw`flex-row items-start w-[90%] justify-between`}>
-//                     <Text style={tw`text-[#191919] text-sm mr-[57px] leading-[23px]`}>긴줄평</Text>
-//                     <ScrollView style={tw`w-[65%] h-[105px]`} showsVerticalScrollIndicator={false} onTouchEnd={() => setLongReviewModalVisible(true)} onMomentumScrollBegin={() => setLongReviewModalVisible(true)}>
-//                         <Text style={tw`text-[#191919] text-sm text-justify font-normal leading-[23px]`}>{props.reviewInfo.longReview}</Text>
-//                     </ScrollView>
-//                     <LongReviewModal longReviewModalVisible={longReviewModalVisible} setLongReviewModalVisible={setLongReviewModalVisible} longReview={props.reviewInfo.longReview}></LongReviewModal>
-//                 </View>
-//             </View>
-
-//             <View style={tw`w-[60px] h-[60px] rounded-full bg-[#F5F5F5] self-center absolute bottom-[-30px] overflow-hidden`}></View>
-//         </View>
-//     )
-// }
 
 export function MusicalInfoFormInReviewDetail(props) {
     const [longReviewModalVisible, setLongReviewModalVisible] = useState(false);
 
     return (
-        <View style={tw`w-[90%] h-[95%] flex-col rounded-3xl bg-white mx-auto my-auto`}>
+        <View style={tw`w-[90%] h-[90%] flex-col rounded-3xl bg-white mx-auto my-auto`}>
             <View style={tw`w-15 h-15 rounded-full bg-[#F5F5F5] self-center absolute top--7.5 z-10`}></View>
             
             {/*뮤지컬 정보*/}
@@ -384,7 +334,7 @@ export function MusicalInfoFormInReviewDetail(props) {
                 </View>
                 <View style={tw`flex flex-row items-start w-[100%] min-h-1/7 justify-between mt-8`}>
                     <Text style={tw`text-gray-900 text-sm leading-6`}>한줄평</Text>
-                    <Text style={tw`w-3/5 h-25 text-gray-900 text-base text-center font-medium leading-6`}>"{props.reviewInfo.shortReview}"</Text>
+                    <Text style={tw`w-3/5 h-25 text-gray-900 text-sm text-center font-medium leading-6`}>"{props.reviewInfo.shortReview}"</Text>
                 </View>
             </View>
 
@@ -398,11 +348,15 @@ export function MusicalInfoFormInReviewDetail(props) {
             </View>
             
             {/*긴줄평*/}
-            <View style={tw`flex flex-row items-start ml-[10%] mr-[7.5%] absolute bottom-[6%]`}>
+            <View style={tw`flex flex-row items-start ml-[10%] mr-[7.5%] absolute bottom-[7%]`}>
                 <View style={tw`flex flex-row items-start w-[100%] justify-between z-20`}>
                     <Text style={tw`text-gray-900 text-sm leading-6 mr-15`}>긴줄평</Text>
                     <ScrollView style={tw`h-[100px]`} showsVerticalScrollIndicator={false} onTouchEnd={() => setLongReviewModalVisible(true)} onMomentumScrollBegin={() => setLongReviewModalVisible(true)}>
-                        <Text style={tw`text-gray-900 text-sm text-justify font-normal leading-6`}>{props.reviewInfo.longReview}</Text>
+                        {(props.reviewInfo.longReview === '') ? (
+                            <Text style={tw`text-[#B6B6B6] text-sm text-justify font-normal leading-6`}>작성된 긴줄평이 없습니다.</Text>
+                        ) : (
+                            <Text style={tw`text-gray-900 text-sm text-justify font-normal leading-6`}>{props.reviewInfo.longReview}</Text>
+                        )}
                     </ScrollView>
                     <LongReviewForm longReviewModalVisible={longReviewModalVisible} setLongReviewModalVisible={setLongReviewModalVisible} longReview={props.reviewInfo.longReview}></LongReviewForm>
                 </View>
