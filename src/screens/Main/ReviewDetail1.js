@@ -32,7 +32,7 @@ export default function ReviewDetail1({isCookie, reviewId}) {
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={tw`flex-row items-center justify-between mt-5 mb-[14px]`}>
+            <View style={tw`flex-row items-center justify-between mt-5 mb-[14px] z-20`}>
                 <Pressable onPress={goBack} style={tw`flex-row`}>
                     <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] mr-[8px] w-[10px] h-[18px] tint-[#191919]`}></Image>
                     <View style={tw`px-[20px]`}></View>
@@ -45,7 +45,7 @@ export default function ReviewDetail1({isCookie, reviewId}) {
             </View>
             <View style={tw`border-solid border-b border-[#D3D4D3] z-20`}></View>
 
-            <View style={tw`h-[95%] relative`}>
+            <View style={tw`h-[95%] relative z-10`}>
                 <MusicalInfoFormInReviewDetail reviewInfo={reviewInfo}></MusicalInfoFormInReviewDetail>
             </View>
         </SafeAreaView>
