@@ -20,16 +20,16 @@ export default function makeBarChart (scoreCount) {
 
     const heightRatio = 100 / maxCount;
 
-    const barStyle05 = {...tw`w-[23px] rounded-t-xl mx-[3px] bg-[#E9494A]`, height: heightRatio * scoreCount["0.5"],};
-    const barStyle10 = {...tw`w-[23px] rounded-t-xl mx-[3px] bg-[#E9494A]`, height: heightRatio * scoreCount["1.0"],};
-    const barStyle15 = {...tw`w-[23px] rounded-t-xl mx-[3px] bg-[#E9494A]`, height: heightRatio * scoreCount["1.5"],};
-    const barStyle20 = {...tw`w-[23px] rounded-t-xl mx-[3px] bg-[#E9494A]`, height: heightRatio * scoreCount["2.0"],};
-    const barStyle25 = {...tw`w-[23px] rounded-t-xl mx-[3px] bg-[#E9494A]`, height: heightRatio * scoreCount["2.5"],};
-    const barStyle30 = {...tw`w-[23px] rounded-t-xl mx-[3px] bg-[#E9494A]`, height: heightRatio * scoreCount["3.0"],};
-    const barStyle35 = {...tw`w-[23px] rounded-t-xl mx-[3px] bg-[#E9494A]`, height: heightRatio * scoreCount["3.5"],};
-    const barStyle40 = {...tw`w-[23px] rounded-t-xl mx-[3px] bg-[#E9494A]`, height: heightRatio * scoreCount["4.0"],};
-    const barStyle45 = {...tw`w-[23px] rounded-t-xl mx-[3px] bg-[#E9494A]`, height: heightRatio * scoreCount["4.5"],};
-    const barStyle50 = {...tw`w-[23px] rounded-t-xl mx-[3px] bg-[#E9494A]`, height: heightRatio * scoreCount["5.0"],};
+    const barStyle05 = {...tw`w-[23px] rounded-t-xl mx-[3px] bg-[#E9494A]`, height: scoreCount["0.5"] > 0 ? heightRatio * scoreCount["0.5"] : 0};
+    const barStyle10 = {...tw`w-[23px] rounded-t-xl mx-[3px] bg-[#E9494A]`, height: scoreCount["1.0"] > 0 ? heightRatio * scoreCount["1.0"] : 0};
+    const barStyle15 = {...tw`w-[23px] rounded-t-xl mx-[3px] bg-[#E9494A]`, height: scoreCount["1.5"] > 0 ? heightRatio * scoreCount["1.5"] : 0}; 
+    const barStyle20 = {...tw`w-[23px] rounded-t-xl mx-[3px] bg-[#E9494A]`, height: scoreCount["2.0"] > 0 ? heightRatio * scoreCount["2.0"] : 0}; 
+    const barStyle25 = {...tw`w-[23px] rounded-t-xl mx-[3px] bg-[#E9494A]`, height: scoreCount["2.5"] > 0 ? heightRatio * scoreCount["2.5"] : 0}; 
+    const barStyle30 = {...tw`w-[23px] rounded-t-xl mx-[3px] bg-[#E9494A]`, height: scoreCount["3.0"] > 0 ? heightRatio * scoreCount["3.0"] : 0}; 
+    const barStyle35 = {...tw`w-[23px] rounded-t-xl mx-[3px] bg-[#E9494A]`, height: scoreCount["3.5"] > 0 ? heightRatio * scoreCount["3.5"] : 0}; 
+    const barStyle40 = {...tw`w-[23px] rounded-t-xl mx-[3px] bg-[#E9494A]`, height: scoreCount["4.0"] > 0 ? heightRatio * scoreCount["4.0"] : 0}; 
+    const barStyle45 = {...tw`w-[23px] rounded-t-xl mx-[3px] bg-[#E9494A]`, height: scoreCount["4.5"] > 0 ? heightRatio * scoreCount["4.5"] : 0}; 
+    const barStyle50 = {...tw`w-[23px] rounded-t-xl mx-[3px] bg-[#E9494A]`, height: scoreCount["5.0"] > 0 ? heightRatio * scoreCount["5.0"] : 0}; 
 
     return (
         <>
