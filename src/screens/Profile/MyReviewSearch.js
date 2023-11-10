@@ -143,7 +143,7 @@ export default function MyReviewSearch({ isCookie, setMusicalId, setReviewId}) {
     }
 
     const onPressSearch = (keyword) => {
-        if (keyword !== '') {
+        if (keyword === '') {
             return;
         }
         Keywords.storeSearchKeyword(keyword);

@@ -10,7 +10,7 @@ import { searchThumbReviews, thumbsUp } from "@functions/api";
 import { useNavigation } from "@react-navigation/native";
 import { ShortReviewFormInFeed } from "@forms/ReviewForm";
 
-export default function MyThumbsSearch({ isCookie, setMusicalId, setReviewId}) {
+export default function MyThumbsSearch({ isCookie, setMusicalId, setReviewId }) {
     {/*페이지 이동*/}
     const nav = useNavigation();
 
