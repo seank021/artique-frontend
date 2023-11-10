@@ -136,7 +136,7 @@ export default function MyThumbsSearch({ isCookie, setMusicalId, setReviewId}) {
     }
 
     const onPressSearch = (keyword) => {
-        if (keyword !== '') {
+        if (keyword === '') {
             return;
         }
         Keywords.storeSearchKeyword(keyword);
@@ -218,7 +218,7 @@ export default function MyThumbsSearch({ isCookie, setMusicalId, setReviewId}) {
                 <>
                 {/* 검색 완료 상단바 */} 
                 <View style={tw`flex-row items-center mx-[5%] mt-[17px] mb-[11px]`}>
-                    <Pressable onPress={()=> {setIsBeforeSearch(true); setSortCriteria('최신순'); setIfX(false);}}>
+                    <Pressable onPress={()=> {setIsBeforeSearch(true); setIfX(false);}}>
                         <Image source={require('@images/chevron_left.png')} style={tw`w-[10px] h-[18px] mr-[22.5px] tint-[#191919]`} />
                     </Pressable>
                     <View style={tw`flex-row justify-between min-h-[34px] bg-[#E6E6E6] rounded-[19.5px]`}>
@@ -226,7 +226,7 @@ export default function MyThumbsSearch({ isCookie, setMusicalId, setReviewId}) {
                             <TextInput style={tw`mx-[14px] font-medium`} defaultValue={placeholderValue} width="80%" onFocus={searchAgain} ref={(text) => this.textInput = text} onChangeText={(text) => onChangeText(text)} onSubmitEditing={() => onPressSearch(value)} returnKeyType="done" />
                         </View>
                         <View style={tw`self-center`}>
-                            <Pressable onPress={()=> {setIsBeforeSearch(true); setSortCriteria('최신순');}}><Image source={require('@images/x.png')} style={tw`mr-[12px] w-[16px] h-[16px] tint-[#ABABAB]`} /></Pressable>
+                            <Pressable onPress={()=> {setIsBeforeSearch(true);}}><Image source={require('@images/x.png')} style={tw`mr-[12px] w-[16px] h-[16px] tint-[#ABABAB]`} /></Pressable>
                         </View>
                     </View>
                 </View>
@@ -234,7 +234,6 @@ export default function MyThumbsSearch({ isCookie, setMusicalId, setReviewId}) {
 
                 {/* 검색 결과 */}
                 {searchedReviews.length !== 0 ?
-                    <>
                     <ScrollView onScroll={detectScroll}>
                         {searchedReviews.map((review, index) => {
                             return (
@@ -245,10 +244,6 @@ export default function MyThumbsSearch({ isCookie, setMusicalId, setReviewId}) {
                                         goToReviewDetail1={() => goToReviewDetail1(review.reviewId)}
                                         onPressThumbsUp={() => onPressThumbsUp(review.reviewId, review.isThumbsUp)}
                                         isCookie={isCookie}
-                                        isMine={null}
-                                        setReviewInfo={null}
-                                        setReviewInfo2={null}
-                                        setOnRefreshWhenDelete={null}
                                     />
                                     {index < searchedReviews.length - 1 && (
                                         <View style={tw`border-4 border-[#F0F0F0]`}></View>
@@ -257,7 +252,6 @@ export default function MyThumbsSearch({ isCookie, setMusicalId, setReviewId}) {
                             );
                         })}
                     </ScrollView>
-                    </>
                 :<Text style={tw`text-[#ABABAB] text-sm mx-[5%] my-[15px]`}>검색 결과가 없습니다.</Text>}
             </>
             }

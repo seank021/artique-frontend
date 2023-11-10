@@ -118,8 +118,8 @@ export function ShortReviewFormInFeed(props) {
     const nav = useNavigation();
 
     const [isCookie, setIsCookie] = useState(props.isCookie);
-    const [isThumbsUp, setIsThumbsUp] = useState(props.reviewInfo.isThumbsUp);
-    const [thumbsCount, setThumbsCount] = useState(props.reviewInfo.thumbsCount);
+    const [isThumbsUp, setIsThumbsUp] = useState(props.reviewInfo?.isThumbsUp);
+    const [thumbsCount, setThumbsCount] = useState(props.reviewInfo?.thumbsCount);
     const [thumbsUpImg, setThumbsUpImg] = useState(require('@images/like_gray_small.png'));
 
     const [modalVisible, setModalVisible] = useState(false);
