@@ -138,9 +138,17 @@ const Navigation = () => {
             checkCookie();
         }, []);
 
+        useEffect(() => {
+            const memberId = async () => {
+                const memberId = await memberIdInMypage();
+                setMemberId(memberId);
+            };
+            memberId();
+        }, []);
+
         return (
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="Mypage" children={() => <Mypage isCookie={isCookie}/>} />
+                <Stack.Screen name="Mypage" children={() => <Mypage isCookie={isCookie} memberId={memberId}/>} />
                 <Stack.Screen name="ChangeProfile" children={() => <ChangeProfile isCookie={isCookie} />} />
                 <Stack.Screen name="MyReviews" children={() => <MyReviews isCookie={isCookie} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
                 <Stack.Screen name="MyReviewSearch" children={() => <MyReviewSearch isCookie={isCookie} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />

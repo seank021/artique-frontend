@@ -7,9 +7,9 @@ import { useNavigation } from "@react-navigation/native";
 import { ShortReviewFormInMypage } from "@forms/ReviewForm";
 import makeBarChart from "@functions/makeBarChart";
 
-import { memberSummary, memberStatistics, memberShortThumbReviews } from "@functions/api";
+import { memberSummary, otherSummary, memberStatistics, otherStatistics, memberShortThumbReviews, otherSearchThumbReviews } from "@functions/api";
 
-export default function Mypage ({ isCookie }) {
+export default function Mypage ({ isCookie, memberId }) {
   const nav = useNavigation();
 
   const goToChangeProfile = () => {
@@ -74,11 +74,15 @@ export default function Mypage ({ isCookie }) {
       <View style={tw`flex-row justify-between items-center mx-5 my-5`}>
         <Text style={tw`text-lg text-[#191919] font-medium`}>마이페이지</Text>
         <View style={tw`flex-row`}>
-          <Pressable onPress={goToChangeProfile}>
-            <Image source={require('@images/profilechange.png')} style={tw`w-[18px] h-[18px] mr-4.5`}></Image>
-          </Pressable>
+          {memberId === memberInfo.id ? (
+            <Pressable onPress={goToChangeProfile}>
+              <Image source={require('@images/profilechange.png')} style={tw`w-[18px] h-[18px] mr-4.5`} />
+            </Pressable>
+          ) : (
+            <View />
+          )}
           <Pressable onPress={goToMainSetting}>
-            <Image source={require('@images/settings.png')} style={tw`w-[18px] h-[18px]`}></Image>
+            <Image source={require('@images/settings.png')} style={tw`w-[18px] h-[18px]`} />
           </Pressable>
         </View>
       </View>
@@ -94,6 +98,7 @@ export default function Mypage ({ isCookie }) {
       </View>
       <Pressable onPress={goToMyReviews} style={tw`self-center w-9/10 h-[33px] mt-[25px] rounded-3xl bg-[#FFF] shadow`}>
         <Text style={tw`text-xs text-[#191919] font-normal text-center leading-[33px]`}>작성한 리뷰 모아보기</Text>
+      </Pressable> */}
       </Pressable> */}
         
       {/* 평점 */}

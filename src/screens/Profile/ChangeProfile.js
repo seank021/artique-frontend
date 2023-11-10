@@ -20,6 +20,7 @@ export default function ChangeProfile({isCookie}) {
 
     {/*profile 불러오기 및 수정*/}
     const [imageFile, setImageFile] = useState(null);
+    const [imageFile, setImageFile] = useState(null);
     const [profileImage, setProfileImage] = useState('');
     const [nickname, setNickname] = useState('');
     const [introduce, setIntroduce] = useState('');
@@ -40,6 +41,7 @@ export default function ChangeProfile({isCookie}) {
     
     const onPressProfileChange = () => {
         profileUpload(imageFile).then((newProfileImage) => {
+        profileUpload(imageFile).then((newProfileImage) => {
             setProfileImage(() => newProfileImage);
             setImageChangeModalVisible(!imageChangeModalVisible);
         }).catch((err) => {
@@ -59,6 +61,7 @@ export default function ChangeProfile({isCookie}) {
         } else {
             updateMember(nickname, profileImage, introduce).then((req) => {
                 console.log(req);
+                console.log(req);
                 if (req.success) {
                     setModalVisible(!modalVisible);
                     setAlertImage(require('@images/check.png'));
@@ -66,6 +69,7 @@ export default function ChangeProfile({isCookie}) {
                     setTimeout(() => {
                         setModalVisible(modalVisible);
                     }, 1000);
+                    nav.navigate('Mypage');
                     nav.navigate('Mypage');
                 }
             }).catch((err) => {
@@ -214,6 +218,10 @@ export default function ChangeProfile({isCookie}) {
             <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
 
             <Pressable onPress={onPressProfileChange}>
+                <Image 
+                    source={profileImage ? { uri: profileImage } : require('@images/newprofile.png')}
+                    style={tw`w-[100px] h-[100px] rounded-full mx-auto mt-[20px] mb-[64px]`}>
+                </Image>
                 <Image 
                     source={profileImage ? { uri: profileImage } : require('@images/newprofile.png')}
                     style={tw`w-[100px] h-[100px] rounded-full mx-auto mt-[20px] mb-[64px]`}>

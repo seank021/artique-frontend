@@ -8,6 +8,8 @@ import { makeStars, makeStarsForEachReview } from '@functions/makeStars';
 
 import { useNavigation } from "@react-navigation/native";
 
+import { useNavigation } from "@react-navigation/native";
+
 import { AlertFormForModifyAndDelete, AlertFormForReport } from '@forms/AlertForm';
 
 {/*기본 화면 설정*/}
@@ -18,6 +20,8 @@ const getFontSize = size => size / fontScale;
 
 // props: reviewInfo, onPressThumbsUp, onPressArrowCircledRight, isCookie
 export function ShortReviewForm(props) {
+    const nav = useNavigation();
+
     const nav = useNavigation();
 
     const [isCookie, setIsCookie] = useState(props.isCookie);
