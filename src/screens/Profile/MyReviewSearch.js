@@ -16,12 +16,12 @@ export default function MyReviewSearch({ isCookie, setMusicalId, setReviewId}) {
     {/*페이지 이동*/}
     const nav = useNavigation();
 
-    const goToMusicalDetail1 = musicalId => {
+    const goToMusicalDetail1 = (musicalId) => {
         setMusicalId(musicalId);
         nav.navigate('MusicalDetail1');
     };
 
-    const goToReviewDetail1 = reviewId => {
+    const goToReviewDetail1 = (reviewId) => {
         setReviewId(reviewId);
         nav.navigate('ReviewDetail1');
     };
@@ -53,7 +53,7 @@ export default function MyReviewSearch({ isCookie, setMusicalId, setReviewId}) {
                 console.log(err);
             });
         }
-    }, [page, updatePage]);
+    }, [page, updatePage, orderBy]);
 
     const detectScroll = async (e) => {
         if (!updatePage) {
@@ -74,9 +74,10 @@ export default function MyReviewSearch({ isCookie, setMusicalId, setReviewId}) {
                 return;
             };
             setUpdatePage(false);
-            setPage(page + 1);
+            const nextPage = page + 1;
+            setPage(nextPage);
 
-            searchCreatedReviews(page, searchValue, orderBy)
+            searchCreatedReviews(nextPage, searchValue, orderBy)
                 .then((newReviews) => {
                     setSearchedReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
                     setUpdatePage(true);
@@ -88,13 +89,14 @@ export default function MyReviewSearch({ isCookie, setMusicalId, setReviewId}) {
     }
 
     {/*검색 관련*/}
-    const [showSearchResult, setShowSearchResult] = useState(false);
+    const [isBeforeSearch, setIsBeforeSearch] = useState(true);
 
     const [value, setValue] = useState('');
     const [placeholderValue, setPlaceholderValue] = useState('');
     const [ifX, setIfX] = useState(false);
 
     const [searchHistory, setSearchHistory] = useState([]);
+
     useEffect(() => {
         const getSearchHistory = async () => {
             const searchHistory = await Keywords.getAllSearchKeywords();
@@ -105,7 +107,7 @@ export default function MyReviewSearch({ isCookie, setMusicalId, setReviewId}) {
 
     const [sortModalVisible, setSortModalVisible] = useState(false);
     const [sortCriteria, setSortCriteria] = useState("최신순");
-    const orderBy = sortCriteria === '최신순' ? 'DATE' : 'REVIEW';
+    const orderBy = sortCriteria === '최신순' ? 'DATE' : 'THUMBS';
 
     const [searchedReviews, setSearchedReviews] = useState([]);
     const [searchValue, setSearchValue] = useState('');
@@ -121,7 +123,7 @@ export default function MyReviewSearch({ isCookie, setMusicalId, setReviewId}) {
                 });
         }
     }
-    , [searchValue, orderBy]);
+    , [page, searchValue, orderBy]);
 
     const onChangeText = (text) => {
         setValue(text);
@@ -137,7 +139,7 @@ export default function MyReviewSearch({ isCookie, setMusicalId, setReviewId}) {
         this.textInput.clear();
         setIfX(false);
         setSortCriteria("최신순");
-        setShowSearchResult(false);
+        setIsBeforeSearch(true);
     }
 
     const onPressSearch = (keyword) => {
@@ -145,21 +147,25 @@ export default function MyReviewSearch({ isCookie, setMusicalId, setReviewId}) {
             return;
         }
         Keywords.storeSearchKeyword(keyword);
-        setShowSearchResult(false);
+        setIsBeforeSearch(false);
         setPlaceholderValue(keyword);
         setValue('');
         if (!searchHistory.includes(keyword)) {
             setSearchHistory([keyword, ...searchHistory]);
-
         } else { 
             setSearchHistory([keyword, ...searchHistory.filter((item) => item !== keyword)]);
         }
+        setSortCriteria("최신순");
         setSearchValue(keyword);
     }
 
     const deleteKeyword = (keyword) => {
         Keywords.removeParticularKeyword(keyword);
-        setSearchHistory(searchHistory.filter((item) => item !== keyword));
+        if (searchHistory.includes(keyword)) {
+            setSearchHistory(searchHistory.filter((item) => item !== keyword));
+        } else {
+            return;
+        }
     }
 
     const deleteAllKeywords = () => {
@@ -167,26 +173,31 @@ export default function MyReviewSearch({ isCookie, setMusicalId, setReviewId}) {
         setSearchHistory([]);
     }
 
+    const searchAgain = () => {
+        setSearchValue('');
+        setValue('');
+    }
+
     return (
         <SafeAreaView style={styles.container}>
-            {!showSearchResult ?
+            {isBeforeSearch ?
             <>
                 {/* 검색 전 상단바 */}
                 <View style={tw`mx-[5%] mt-[23px] mb-[11px]`}>
                     <View style={tw`flex-row justify-between min-h-[34px] bg-[#E6E6E6] rounded-[19.5px]`}>
-                        <View style={tw`flex-row w-[90%] items-center`}>
+                        <View style={tw`flex-row w-[90%] h-[100%] items-center`}>
                             <Image source={require('@images/search.png')} style={tw`ml-[18px] w-[18px] h-[18px] tint-[#ABABAB]`} />
                             <TextInput ref={(text) => this.textInput = text} onChangeText={(text) => onChangeText(text)} onSubmitEditing={() => onPressSearch(value)} returnKeyType="done" placeholder='키워드를 검색해보세요' style={tw`ml-[14px]`}  />
                         </View>
                         <View style={tw`self-center`}>
-                            {ifX ? <Pressable onPress={deleteTextInput}><Image source={require('@images/x.png')} style={tw`mr-[18px] w-[18px] h-[18px] tint-[#ABABAB]`} /></Pressable> : null}
+                            {ifX ? <Pressable onPress={deleteTextInput}><Image source={require('@images/x.png')} style={tw`mr-[12px] w-[16px] h-[16px] tint-[#ABABAB]`} /></Pressable> : null}
                         </View>
                     </View>
                 </View>
                 <View style={tw`border-[0.5px] border-[#D3D4D3]`}></View>
                             
                 {/*검색 기록*/}
-                <View style={tw`flex-row mx-[5%] mt-4 mb-3.5`}>
+                <View style={tw`flex-row mx-[5%] mt-4`}>
                     {searchHistory.length !== 0 ?
                     <>
                         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -194,7 +205,7 @@ export default function MyReviewSearch({ isCookie, setMusicalId, setReviewId}) {
                                 return (
                                     <View key={index} style={tw`flex-row items-center`}>
                                         <Pressable onPress={() => onPressSearch(keyword)}>
-                                            <Text style={tw`text-xs text-[#ABABAB] text-sm`}>{keyword}</Text>
+                                            <Text style={tw`text-xs text-[#ABABAB]`}>{keyword}</Text>
                                         </Pressable>
                                         <Pressable onPress={() => deleteKeyword(keyword)}>
                                             <Image source={require('@images/x.png')} style={tw`ml-[5px]  mr-[13px] w-[14px] h-[14px] tint-[#ABABAB]`} />
@@ -203,7 +214,7 @@ export default function MyReviewSearch({ isCookie, setMusicalId, setReviewId}) {
                                     )
                                 })}
                         </ScrollView>
-                        <Pressable onPress={deleteAllKeywords} style={tw`text-[#191919] text-sm ml-[8px]`}>
+                        <Pressable onPress={deleteAllKeywords}>
                             <Text style={tw`text-[#191919] text-sm ml-[8px]`}>전체 삭제</Text>
                         </Pressable>
                     </>
@@ -212,16 +223,18 @@ export default function MyReviewSearch({ isCookie, setMusicalId, setReviewId}) {
                 </View>
                 </>
             :
-            <>
+                <>
                 {/* 검색 완료 상단바 */} 
-                <View style={tw`flex-row items-center mx-[5%] mt-[23px] mb-[11px]`}>
+                <View style={tw`flex-row items-center mx-[5%] mt-[17px] mb-[11px]`}>
+                    <Pressable onPress={()=> {setIsBeforeSearch(true); setSortCriteria('최신순'); setIfX(false);}}>
+                        <Image source={require('@images/chevron_left.png')} style={tw`w-[10px] h-[18px] mr-[22.5px] tint-[#191919]`} />
+                    </Pressable>
                     <View style={tw`flex-row justify-between min-h-[34px] bg-[#E6E6E6] rounded-[19.5px]`}>
-                        <View style={tw`flex-row w-[90%] items-center`}>
-                            <Image source={require('@images/search.png')} style={tw`ml-[18px] w-[18px] h-[18px] tint-[#ABABAB]`} />
-                            <TextInput style={tw`ml-[14px] font-medium`} placeholder={placeholderValue} placeholderTextColor={"#191919"} editable={false} />
+                        <View style={tw`flex-row items-center`}>
+                            <TextInput style={tw`ml-[14px] font-medium`} defaultValue={placeholderValue} width="80%" onFocus={searchAgain} ref={(text) => this.textInput = text} onChangeText={(text) => onChangeText(text)} onSubmitEditing={() => onPressSearch(value)} returnKeyType="done" />
                         </View>
                         <View style={tw`self-center`}>
-                            {ifX ? <Pressable onPress={deleteTextInput}><Image source={require('@images/x.png')} style={tw`mr-[18px] w-[18px] h-[18px] tint-[#ABABAB]`} /></Pressable> : null}
+                            <Pressable onPress={()=> {setIsBeforeSearch(true); setSortCriteria('최신순');}}><Image source={require('@images/x.png')} style={tw`mr-[12px] w-[16px] h-[16px] tint-[#ABABAB]`} /></Pressable>
                         </View>
                     </View>
                 </View>
@@ -237,6 +250,7 @@ export default function MyReviewSearch({ isCookie, setMusicalId, setReviewId}) {
                         <Image source={require('@images/chevron_down.png')} style={tw`w-[14.4px] h-[8px]`}></Image>
                     </Pressable>
                 </View>
+
                     {searchedReviews.length !== 0 ?
                         <ScrollView onScroll={detectScroll}>
                             {searchedReviews.map((review, index) => {
@@ -244,7 +258,7 @@ export default function MyReviewSearch({ isCookie, setMusicalId, setReviewId}) {
                                     <Fragment key={index}>
                                         <ShortReviewFormInMyReviews
                                             reviewInfo={review}
-                                            goToMusicalDetail1gb={() => goToMusicalDetail1(review.musicalId)}
+                                            goToMusicalDetail1={() => goToMusicalDetail1(review.musicalId)}
                                             goToReviewDetail1={() => goToReviewDetail1(review.reviewId)}
                                             onPressThumbsUp={() => onPressThumbsUp(review.reviewId, review.isThumbsUp)}
                                             isCookie={isCookie}
@@ -256,7 +270,7 @@ export default function MyReviewSearch({ isCookie, setMusicalId, setReviewId}) {
                                 );
                             })}
                         </ScrollView>
-                    : null}
+                    : <Text style={tw`text-[#ABABAB] text-sm mx-[5%] my-[15px]`}>검색 결과가 없습니다.</Text>}
             </>
             }
         </SafeAreaView>
