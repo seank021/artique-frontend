@@ -37,7 +37,7 @@ export default function ReviewDetail1({isCookie, reviewId}) {
                     <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] mr-[8px] w-[10px] h-[18px] tint-[#191919]`}></Image>
                     <View style={tw`px-[20px]`}></View>
                 </Pressable>
-                <Text style={tw`text-[#191919] text-base font-medium`}>{reviewInfo.memberNickname} 님의 리뷰</Text>
+                <Text style={tw`text-[#191919] text-base font-medium`}>{reviewInfo?.memberNickname} 님의 리뷰</Text>
                 <View style={tw`flex-row`}>
                     <View style={tw`px-[20px]`}></View>
                     <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] mr-[8px] w-[10px] h-[18px] tint-[#FAFAFA]`}></Image>

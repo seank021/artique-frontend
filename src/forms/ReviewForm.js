@@ -8,8 +8,6 @@ import { makeStars, makeStarsForEachReview } from '@functions/makeStars';
 
 import { useNavigation } from "@react-navigation/native";
 
-import { useNavigation } from "@react-navigation/native";
-
 import { AlertFormForModifyAndDelete, AlertFormForReport } from '@forms/AlertForm';
 
 {/*기본 화면 설정*/}
@@ -20,8 +18,6 @@ const getFontSize = size => size / fontScale;
 
 // props: reviewInfo, onPressThumbsUp, onPressArrowCircledRight, isCookie
 export function ShortReviewForm(props) {
-    const nav = useNavigation();
-
     const nav = useNavigation();
 
     const [isCookie, setIsCookie] = useState(props.isCookie);
@@ -448,14 +444,16 @@ export function ShortReviewFormInMypage(props) {
                 <View> 
                     {makeStars(props.starRating)}
                 </View>
-                <View style={tw`flex-row items-center bg-[#F5F5F5] rounded-[5px] w-[90%] h-[52px] mt-1.25`}>
-                    <View style={tw`flex-row justify-between mx-1.5 my-1.5`}>
-                        <Text style={tw`text-xs text-[#191919] font-medium`}>"</Text>
-                        <Text numberOfLines={2} ellipsizeMode='tail' style={tw`text-xs text-[#191919] font-medium shrink mr-1.5`}>
-                            {`${props.shortReview}`.replace(/^(.{30}[^\s]*).*/, "$1...\"")}
-                        </Text>
+                <Pressable onPress={props.onPressShortReview}>
+                    <View style={tw`flex-row items-center bg-[#F5F5F5] rounded-[5px] w-[230px] h-[50px] mt-1.25`}>
+                        <View style={tw`flex-row justify-between mx-1.5 my-1.5`}>
+                            <Text style={tw`text-xs text-[#191919] font-medium`}>"</Text>
+                            <Text numberOfLines={2} ellipsizeMode='tail' style={tw`text-xs text-[#191919] font-medium shrink mr-1.5`}>
+                                {`${props.shortReview}`.replace(/^(.{30}[^\s]*).*/, "$1...\"")}
+                            </Text>
+                        </View>
                     </View>
-                </View>
+                </Pressable>
             </View>
         </View>
     )

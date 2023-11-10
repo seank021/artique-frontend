@@ -9,13 +9,6 @@ async function getMemberId() {
     console.log(err);
     return null;
   }
-  try {
-    const cookies = await Cookies.getCurrentLoginCookie();
-    return cookies;
-  } catch (err) {
-    console.log(err);
-    return null;
-  }
 }
 
 const getHeaders = async () => {
@@ -326,25 +319,6 @@ const otherSummary = async memberId => {
     console.log(err.response.data);
   }
 };
-  try {
-    const memberId = await memberIdInMypage();
-    const response = await axios.get(`http://3.39.145.210/member/summary?member-id=${memberId}`);
-    return response.data;
-  } catch (err) {
-    console.log(err.response.data);
-  }
-};
-
-const otherSummary = async memberId => {
-  try {
-    const response = await axios.get(
-      `http://3.39.145.210/member/summary?member-id=${memberId}`,
-    );
-    return response.data;
-  } catch (err) {
-    console.log(err.response.data);
-  }
-};
 
 const memberStatistics = async () => {
   try {
@@ -366,48 +340,8 @@ const otherStatistics = async memberId => {
     console.log(err.response.data);
   }
 };
-  try {
-    const memberId = await memberIdInMypage();
-    const response = await axios.get(`http://3.39.145.210/member/summary/statistics?member-id=${memberId}`);
-    return response.data;
-  } catch (err) {
-    console.log(err.response.data);
-  }
-};
-
-const otherStatistics = async memberId => {
-  try {
-    const response = await axios.get(
-      `http://3.39.145.210/member/summary/statistics?member-id=${memberId}`,
-    );
-    return response.data;
-  } catch (err) {
-    console.log(err.response.data);
-  }
-};
 
 const memberShortThumbReviews = async () => {
-  try {
-    const memberId = await memberIdInMypage();
-    const response = await axios.get(`http://3.39.145.210/member/review/thumbs/short?member-id=${memberId}`);
-    console.log(response.data);
-    return response.data;
-  } catch (err) {
-    console.log(err.response.data);
-  }
-};
-
-const otherShortThumbReviews = async memberId => {
-  try {
-    const response = await axios.get(
-      `http://3.39.145.210/member/review/thumbs/short?member-id=${memberId}`,
-    );
-    // console.log(response.data);
-    return response.data;
-  } catch (err) {
-    console.log(err.response.data);
-  }
-};
   try {
     const memberId = await memberIdInMypage();
     const response = await axios.get(`http://3.39.145.210/member/review/thumbs/short?member-id=${memberId}`);
@@ -473,46 +407,8 @@ const otherSearchCreatedReviews = async (memberId, page, keyword, orderBy) => {
     console.log(err.response.data);
   }
 };
-  try {
-    const memberId = await memberIdInMypage();
-    const response = await axios.get(`http://3.39.145.210/member/review/create/search?member-id=${memberId}&page=${page}&size=10&keyword=${keyword}&order-by=${orderBy}`);
-    return response.data;
-  } catch (err) {
-    console.log(err.response.data);
-  }
-};
-
-const otherSearchCreatedReviews = async (memberId, page, keyword, orderBy) => {
-  try {
-    const response = await axios.get(
-      `http://3.39.145.210/member/review/create/search?member-id=${memberId}&page=${page}&size=10&keyword=${keyword}&order-by=${orderBy}`,
-    );
-    return response.data;
-  } catch (err) {
-    console.log(err.response.data);
-  }
-};
 
 const myThumbsAll = async (page) => {
-  try {
-    const memberId = await memberIdInMypage();
-    const response = await axios.get(`http://3.39.145.210/member/review/thumbs/all?member-id=${memberId}&page=${page}&size=10`);
-    return response.data;
-  } catch (err) {
-    console.log(err.response.data);
-  }
-};
-
-const otherThumbsAll = async (memberId, page) => {
-  try {
-    const response = await axios.get(
-      `http://3.39.145.210/member/review/thumbs/all?member-id=${memberId}&page=${page}&size=10`,
-    );
-    return response.data;
-  } catch (err) {
-    console.log(err.response.data);
-  }
-};
   try {
     const memberId = await memberIdInMypage();
     const response = await axios.get(`http://3.39.145.210/member/review/thumbs/all?member-id=${memberId}&page=${page}&size=10`);
@@ -576,27 +472,6 @@ const profileUpload = async base64 => {
 };
 
 const updateMember = async (nickname, imageUrl, introduce) => {
-  try {
-    const myHeaders = await getHeaders();
-    const memberId = await memberIdInMypage();
-    const response = await axios.post(
-      `http://3.39.145.210/update/member`,
-      {
-        memberId: memberId,
-        nickname: nickname,
-        profileUrl: imageUrl,
-        introduce: introduce,
-        // "password": ""
-      },
-      {
-        headers: myHeaders.map,
-      },
-    );
-    return response.data;
-  } catch (err) {
-    console.log(err.response.data);
-  }
-};
   try {
     const myHeaders = await getHeaders();
     const memberId = await memberIdInMypage();
