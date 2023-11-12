@@ -10,7 +10,7 @@ import { profileUpload, memberSummary, updateMember, duplicateNickname } from "@
 import { NicknameInputForm, IntroduceInputForm } from '@forms/InputForm';
 import AlertForm, { ProfileChangeForm } from '@forms/AlertForm';
 
-export default function Profile() {
+export default function ChangeProfile({isCookie}) {
     {/*뒤로가기*/}
     const nav = useNavigation();
 
@@ -19,6 +19,7 @@ export default function Profile() {
     };
 
     {/*profile 불러오기 및 수정*/}
+    const [imageFile, setImageFile] = useState(null);
     const [profileImage, setProfileImage] = useState('');
     const [nickname, setNickname] = useState('');
     const [introduce, setIntroduce] = useState('');
@@ -34,14 +35,13 @@ export default function Profile() {
     }, []);
 
     useEffect(() => {
-        setProfileChangeModalVisible(false);
+        setImageChangeModalVisible(false);
     }, [profileImage]);
-
+    
     const onPressProfileChange = () => {
-        profileUpload(profileImage).then((newProfileImage) => {
+        profileUpload(imageFile).then((newProfileImage) => {
             setProfileImage(() => newProfileImage);
-            setProfileChangeModalVisible(!ProfileChangeModalVisible);
-            console.log('IMAGE UPLOAD SUCCESS', profileImage);
+            setImageChangeModalVisible(!imageChangeModalVisible);
         }).catch((err) => {
             console.log(err);
         });
@@ -58,14 +58,17 @@ export default function Profile() {
         return;
         } else {
             updateMember(nickname, profileImage, introduce).then((req) => {
+                console.log(req);
+                console.log(req);
                 if (req.success) {
-                    console.log('success');
                     setModalVisible(!modalVisible);
                     setAlertImage(require('@images/check.png'));
                     setAlertText('저장되었습니다');
                     setTimeout(() => {
                         setModalVisible(modalVisible);
                     }, 1000);
+                    nav.navigate('Mypage');
+                    nav.navigate('Mypage');
                 }
             }).catch((err) => {
                 console.log(err);
@@ -75,7 +78,7 @@ export default function Profile() {
 
     {/*input창 속성들 관리*/}
     const [modalVisible, setModalVisible] = useState(false);
-    const [ProfileChangeModalVisible, setProfileChangeModalVisible] = useState(false);
+    const [imageChangeModalVisible, setImageChangeModalVisible] = useState(false);
 
     const [borderColor, setBorderColor] = useState('#B6B6B6');
     const [buttonColor, setButtonColor] = useState('#FFF');
@@ -193,12 +196,12 @@ export default function Profile() {
             </AlertForm>
 
             <ProfileChangeForm
-                modalVisible={ProfileChangeModalVisible}
-                setModalVisible={setProfileChangeModalVisible}
-                // image={profileImage}
+                modalVisible={imageChangeModalVisible}
+                setModalVisible={setImageChangeModalVisible}
                 setImage={setProfileImage}>
             </ProfileChangeForm>
 
+            {/* 상단 바 */}
             <View style={tw`flex-row items-center justify-between mt-5 mb-[14px]`}>
                 <Pressable onPress={goBack} style={tw`flex-row`}>
                     <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] mr-[8px] w-[10px] h-[18px] tint-[#191919]`}></Image>
@@ -213,7 +216,10 @@ export default function Profile() {
             <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
 
             <Pressable onPress={onPressProfileChange}>
-                <Image style={tw`w-[100px] h-[100px] rounded-full mx-auto mt-[20px] mb-[64px]`} source={profileImage ? { uri: profileImage } : require('@images/newprofile.png')}></Image>
+                <Image 
+                    source={profileImage ? { uri: profileImage } : require('@images/newprofile.png')}
+                    style={tw`w-[100px] h-[100px] rounded-full mx-auto mt-[20px] mb-[64px]`}>
+                </Image>
             </Pressable>
 
             <ScrollView contentContainerStyle={styles.contentContainer}>
