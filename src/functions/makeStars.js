@@ -100,7 +100,7 @@ export function makeStarsForEachReview (starRate) {
     return (
         starRateFloat2 === 0.5 ? (
             <View style={tw`flex flex-col items-center`}>
-                <Text style={tw`text-sm font-medium mb-[2px] text-[#191919]`}>많이 아쉬웠던 작품</Text>
+                <Text style={tw`text-sm font-medium mb-[2px] text-[#191919]`}>많이 아쉬운 작품</Text>
                 <View style={tw`flex flex-row`}>
                     <Image source={require("@images/star_half.png")} style={tw`w-[33px] h-[33px]`}/>
                     <Image source={require("@images/star_empty.png")} style={tw`w-[33px] h-[33px]`}/>
@@ -111,7 +111,7 @@ export function makeStarsForEachReview (starRate) {
             </View>
         ) : starRateFloat2 === 1 ? (
             <View style={tw`flex flex-col items-center`}>
-                <Text style={tw`text-sm font-medium mb-[2px] text-[#191919]`}>많이 아쉬웠던 작품</Text>
+                <Text style={tw`text-sm font-medium mb-[2px] text-[#191919]`}>많이 아쉬운 작품</Text>
                 <View style={tw`flex flex-row`}>
                     <Image source={require("@images/star.png")} style={tw`w-[33px] h-[33px]`}/>
                     <Image source={require("@images/star_empty.png")} style={tw`w-[33px] h-[33px]`}/>
@@ -122,7 +122,7 @@ export function makeStarsForEachReview (starRate) {
             </View>
         ) : starRateFloat2 === 1.5 ? (
             <View style={tw`flex flex-col items-center`}>
-                <Text style={tw`text-sm font-medium mb-[2px] text-[#191919]`}>한 번은 볼만한 작품</Text>
+                <Text style={tw`text-sm font-medium mb-[2px] text-[#191919]`}>맣이 아쉬운 작품</Text>
                 <View style={tw`flex flex-row`}>
                     <Image source={require("@images/star.png")} style={tw`w-[33px] h-[33px]`}/>
                     <Image source={require("@images/star_half.png")} style={tw`w-[33px] h-[33px]`}/>
@@ -133,7 +133,7 @@ export function makeStarsForEachReview (starRate) {
             </View>
         ) : starRateFloat2 === 2 ? (
             <View style={tw`flex flex-col items-center`}>
-                <Text style={tw`text-sm font-medium mb-[2px] text-[#191919]`}>한 번은 볼만한 작품</Text>
+                <Text style={tw`text-sm font-medium mb-[2px] text-[#191919]`}>조금 아쉬운 작품</Text>
                 <View style={tw`flex flex-row`}>
                     <Image source={require("@images/star.png")} style={tw`w-[33px] h-[33px]`}/>
                     <Image source={require("@images/star.png")} style={tw`w-[33px] h-[33px]`}/>
@@ -144,7 +144,7 @@ export function makeStarsForEachReview (starRate) {
             </View>
         ) : starRateFloat2 === 2.5 ? (
             <View style={tw`flex flex-col items-center`}>
-                <Text style={tw`text-sm font-medium mb-[2px] text-[#191919]`}>한 번은 볼만한 작품</Text>
+                <Text style={tw`text-sm font-medium mb-[2px] text-[#191919]`}>조금 아쉬운 작품</Text>
                 <View style={tw`flex flex-row`}>
                     <Image source={require("@images/star.png")} style={tw`w-[33px] h-[33px]`}/>
                     <Image source={require("@images/star.png")} style={tw`w-[33px] h-[33px]`}/>
@@ -155,7 +155,7 @@ export function makeStarsForEachReview (starRate) {
             </View>
         ) : starRateFloat2 === 3 ? (
             <View style={tw`flex flex-col items-center`}>
-                <Text style={tw`text-sm font-medium mb-[2px] text-[#191919]`}>다시 한 번 보고 싶은 작품</Text>
+                <Text style={tw`text-sm font-medium mb-[2px] text-[#191919]`}>무난한 작품</Text>
                 <View style={tw`flex flex-row`}>
                     <Image source={require("@images/star.png")} style={tw`w-[33px] h-[33px]`}/>
                     <Image source={require("@images/star.png")} style={tw`w-[33px] h-[33px]`}/>
@@ -166,7 +166,7 @@ export function makeStarsForEachReview (starRate) {
             </View>
         ) : starRateFloat2 === 3.5 ? (
             <View style={tw`flex flex-col items-center`}>
-                <Text style={tw`text-sm font-medium mb-[2px] text-[#191919]`}>다시 한 번 보고 싶은 작품</Text>
+                <Text style={tw`text-sm font-medium mb-[2px] text-[#191919]`}>추천할 만한 작품</Text>
                 <View style={tw`flex flex-row`}>
                     <Image source={require("@images/star.png")} style={tw`w-[33px] h-[33px]`}/>
                     <Image source={require("@images/star.png")} style={tw`w-[33px] h-[33px]`}/>
@@ -177,7 +177,7 @@ export function makeStarsForEachReview (starRate) {
             </View>
         ) : starRateFloat2 === 4 ? (
             <View style={tw`flex flex-col items-center`}>
-                <Text style={tw`text-sm font-medium mb-[2px] text-[#191919]`}>추천하고 싶은 작품</Text>
+                <Text style={tw`text-sm font-medium mb-[2px] text-[#191919]`}>완성도가 높은 작품</Text>
                 <View style={tw`flex flex-row`}>
                     <Image source={require("@images/star.png")} style={tw`w-[33px] h-[33px]`}/>
                     <Image source={require("@images/star.png")} style={tw`w-[33px] h-[33px]`}/>

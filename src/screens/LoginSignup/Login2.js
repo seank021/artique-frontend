@@ -56,7 +56,7 @@ export default function Login1({setGoToFeed, setIsCookie}) {
     if (id === '') {
       setModalVisible(!modalVisible);
       setAlertImage(require('@images/x_red.png'));
-      setAlertText('아이디를 입력해주세요.');
+      setAlertText('이메일을 입력해주세요.');
       setTimeout(() => {
         setModalVisible(modalVisible);
       }, 1000);
@@ -102,7 +102,7 @@ export default function Login1({setGoToFeed, setIsCookie}) {
       if (error.response.data.code === 'INVALID_MEMBER_ID') {
         setModalVisible(!modalVisible);
         setAlertImage(require('@images/x_red.png'));
-        setAlertText('아이디가 틀렸습니다.');
+        setAlertText('이메일이 틀렸습니다.');
         setTimeout(() => {
           setModalVisible(modalVisible);
         }, 1000);
@@ -164,7 +164,7 @@ export default function Login1({setGoToFeed, setIsCookie}) {
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <InputForm
           image={require('@images/id.png')}
-          placeholder={'아이디를 입력해주세요'}
+          placeholder={'이메일을 입력해주세요'}
           setValue={setId}
           compareValue={nullFunc}
           reappearButton={nullFunc}
