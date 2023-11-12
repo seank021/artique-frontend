@@ -115,7 +115,7 @@ export const ShortReviewForm = (props) => {
 // props: modalVisible, setModalVisible, longReview, setFinalLongReview, isLongReviewSpoiler, setIsFinalLongReviewSpoiler
 export const LongReviewForm = (props) => {
     const [isLongReviewSpoiler, setIsLongReviewSpoiler] = useState(props.isLongReviewSpoiler);
-    const [longReviewCheckRectangle, setLongReviewCheckRectangle] = useState(require('@images/rectangle.png'));
+    const [longReviewCheckRectangle, setLongReviewCheckRectangle] = useState(isLongReviewSpoiler ? require('@images/rectangle_checked_with_border.png') : require('@images/rectangle.png'));
 
     const [charCount, setCharCount] = useState(props.longReview.length); // 문자 수
     const [longReview, setLongReview] = useState(props.longReview); // 긴줄평

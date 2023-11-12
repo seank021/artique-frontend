@@ -5,6 +5,7 @@ import tw from 'twrnc'
 
 import * as Cookies from "@functions/cookie";
 import { memberIdInMypage } from "@functions/api";
+import { getAutoLogin } from "@functions/autoLogin";
 
 import Login1 from "@screens/LoginSignup/Login1";
 import Login2 from "@screens/LoginSignup/Login2";
@@ -49,6 +50,18 @@ const Tab = createBottomTabNavigator();
 
 const Navigation = () => {
     const [goToFeed, setGoToFeed] = useState(false);
+
+    useEffect(() => {
+        const autoLogin = async () => {
+            const autoLogin = await getAutoLogin();
+            if (autoLogin === "true") {
+                setGoToFeed(true);
+            } else {
+                setGoToFeed(false);
+            }
+        };
+        autoLogin();
+    }, []);
 
     const AuthStack = () => {
         return (

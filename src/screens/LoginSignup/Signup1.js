@@ -1,16 +1,8 @@
-// TODO: 약관
 // TODO: 중복확인 버튼 스타일 변화 onFocus에 적용 (InputForm, ButtonForm 수정)
 
-import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  Image,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Image, Pressable, ScrollView, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import axios from 'axios';
@@ -18,11 +10,10 @@ import axios from 'axios';
 import hash from '@functions/hash';
 import * as Cookies from '@functions/cookie';
 
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 import InputForm from '@forms/InputForm';
-import ButtonForm from '@forms/ButtonForm';
-import AlertForm, { ContractForm } from '@forms/AlertForm';
+import AlertForm, { ContractForm, EmailVerityForm } from '@forms/AlertForm';
 
 export default function Login1() {
   const nav = useNavigation();
@@ -45,10 +36,16 @@ export default function Login1() {
   const [buttonText, setButtonText] = useState('중복확인');
 
   const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
-  const [alertText, setAlertText] = useState('사용 불가한 아이디입니다');
+  const [alertText, setAlertText] = useState('사용 불가한 이메일입니다');
 
   const [ifCheckPW, setIfCheckPW] = useState(false);
   const [ifXPW, setIfXPW] = useState(false);
+
+  const [opacityBorder, setOpacityBorder] = useState('#ABABAB');
+  const [opacityBg, setOpacityBg] = useState('#3A3D52');
+  const [textColor, setTextColor] = useState('#ABABAB');
+  const [verifyEmailModalVisible, setVerifyEmailModalVisible] = useState(false);  
+  const [ifClearedVerificationStage, setIfClearedVerificationStage] = useState(false);
 
   const [rectangle1, setRectangle1] = useState(
     require('@images/rectangle.png'),
@@ -93,8 +90,9 @@ export default function Login1() {
       const response = await axios.get(
         `http://3.39.145.210/member/duplicate?member-id=${id}`,
       );
-      // console.log(response.data);
+      console.log(response.data);
     } catch (error) {
+      console.log(error.response.data);
       console.log(error.response.data.code);
       if (error.response.data.code === 'DUPLICATE_LOGIN_ID') {
         ifDuplicate = true;
@@ -104,14 +102,14 @@ export default function Login1() {
     if (id === '') {
       setModalVisible(!modalVisible);
       setAlertImage(require('@images/x_red.png'));
-      setAlertText('아이디를 입력해주세요');
+      setAlertText('이메일을 입력해주세요');
       setTimeout(() => {
         setModalVisible(modalVisible);
       }, 1000);
     } else if (ifDuplicate) {
       setModalVisible(!modalVisible);
       setAlertImage(require('@images/x_red.png'));
-      setAlertText('사용 불가한 아이디입니다');
+      setAlertText('사용 불가한 이메일입니다');
       setTimeout(() => {
         setModalVisible(modalVisible);
       }, 1000);
@@ -122,7 +120,7 @@ export default function Login1() {
 
       setModalVisible(!modalVisible);
       setAlertImage(require('@images/check.png'));
-      setAlertText('사용 가능한 아이디입니다');
+      setAlertText('사용 가능한 이메일입니다');
       setTimeout(() => {
         setModalVisible(modalVisible);
       }, 1000);
@@ -170,11 +168,46 @@ export default function Login1() {
     setContractModal2Visible(!contractModal2Visible);
   };
 
-  const onPressSignup = async () => {
+  const finalSignupFunction = async () => {
+    console.log(ifCheckID);
+    console.log(ifCheckPW);
+    console.log(rectangle1 === require('@images/rectangle_checked.png'));
+    console.log(rectangle2 === require('@images/rectangle_checked.png'));
+    console.log(ifClearedVerificationStage);
+    
+    if (ifCheckID && ifCheckPW && rectangle1 === require('@images/rectangle_checked.png') && rectangle2 === require('@images/rectangle_checked.png') && ifClearedVerificationStage) {
+      const hashedPW = hash(password);
+      Cookies.clearCookie();
+      try {
+        const response = await axios.post('http://3.39.145.210/member/join', {
+          memberId: id,
+          memberPW: hashedPW,
+        });
+        console.log(response.data);
+        nav.navigate('Login2');
+      } catch (error) {
+        console.log(error.response.data.code);
+      }
+    } else {
+      setModalVisible(!modalVisible);
+      setAlertImage(require('@images/x_red.png'));
+      setAlertText('다시 시도해주세요');
+      setTimeout(() => {
+        setModalVisible(modalVisible);
+      }, 1000);
+    }
+  };
+
+  useEffect(() => {
+    if (ifClearedVerificationStage)
+      finalSignupFunction();
+  }, [ifClearedVerificationStage]);
+
+  const onPressEmailVerify = () => {
     if (id === '') {
       setModalVisible(!modalVisible);
       setAlertImage(require('@images/x_red.png'));
-      setAlertText('아이디를 입력해주세요');
+      setAlertText('이메일을 입력해주세요');
       setTimeout(() => {
         setModalVisible(modalVisible);
       }, 1000);
@@ -211,7 +244,7 @@ export default function Login1() {
     if (!ifCheckID) {
       setModalVisible(!modalVisible);
       setAlertImage(require('@images/x_red.png'));
-      setAlertText('아이디 중복확인을 해주세요');
+      setAlertText('이메일 중복확인을 해주세요');
       setTimeout(() => {
         setModalVisible(modalVisible);
       }, 1000);
@@ -229,23 +262,6 @@ export default function Login1() {
     }
 
     if (
-      ifCheckID &&
-      ifCheckPW &&
-      rectangle1 === require('@images/rectangle_checked.png') &&
-      rectangle2 === require('@images/rectangle_checked.png')
-    ) {
-      const hashedPW = hash(password);
-      Cookies.clearCookie();
-      try {
-        const response = await axios.post('http://3.39.145.210/member/join', {
-          memberId: id,
-          memberPW: hashedPW,
-        });
-        nav.navigate('Login2');
-      } catch (error) {
-        console.log(error.response.data.code);
-      }
-    } else if (
       rectangle1 !== require('@images/rectangle_checked.png') ||
       rectangle2 !== require('@images/rectangle_checked.png')
     ) {
@@ -255,14 +271,10 @@ export default function Login1() {
       setTimeout(() => {
         setModalVisible(modalVisible);
       }, 1000);
-    } else {
-      setModalVisible(!modalVisible);
-      setAlertImage(require('@images/x_red.png'));
-      setAlertText('다시 시도해주세요');
-      setTimeout(() => {
-        setModalVisible(modalVisible);
-      }, 1000);
+      return;
     }
+
+    setVerifyEmailModalVisible(!verifyEmailModalVisible);
   };
 
   return (
@@ -301,7 +313,7 @@ export default function Login1() {
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <InputForm
           image={require('@images/id.png')}
-          placeholder={'아이디를 입력해주세요'}
+          placeholder={'이메일을 입력해주세요'}
           setValue={setId}
           compareValue={nullFunc}
           reappearButton={reappearButton}
@@ -353,12 +365,10 @@ export default function Login1() {
           <ContractForm modalVisible={contractModal2Visible} setModalVisible={setContractModal2Visible} contractNum={2}></ContractForm>
         </View>
 
-        <ButtonForm
-          borderColor="#ABABAB"
-          textColor="#ABABAB"
-          text={'가입하기'}
-          onPress={onPressSignup}
-          ifOpacity={true}></ButtonForm>
+        <Pressable onPress={onPressEmailVerify} style={tw`w-[90%] h-[46px] border-solid border-2 rounded-3xl self-center justify-center items-center border-[${opacityBorder}] bg-[${opacityBg}]`} ifOpacity={true} onPressIn={() => { setOpacityBorder("#F5F8F5"); setOpacityBg("#F5F8F5"); setTextColor("#191919"); }} onPressOut={() => { setOpacityBorder("#ABABAB"); setOpacityBg("#3A3D52"); setTextColor("#ABABAB"); }}>
+            <Text style={tw`font-semibold text-lg text-[${textColor}]`}>본인인증 후 가입하기</Text>
+        </Pressable>
+        <EmailVerityForm modalVisible={verifyEmailModalVisible} setModalVisible={setVerifyEmailModalVisible} setIfClearedVerificationStage={setIfClearedVerificationStage}></EmailVerityForm>
       </ScrollView>
     </SafeAreaView>
   );

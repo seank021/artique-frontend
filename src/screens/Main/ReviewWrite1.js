@@ -1,7 +1,7 @@
 // 리뷰 작성용 페이지 (수정용 페이지는 따로 만들 예정, 구조는 동일하지만 초기 상태에 정보 채워져 있음)
 
 import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, Pressable, ScrollView, Alert } from 'react-native';
+import { View, Text, Image, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import tw from 'twrnc';
@@ -79,8 +79,8 @@ export default function ReviewWrite1({isCookie, musicalId, musicalPoster, musica
         nav.goBack();
     };
 
-    const onPressSave = () => {
-        if (year === 0 || month === 0 || day === 0) { // TODO: 관람일자를 현재 날짜로 설정하면 이 부분에 안 걸림
+    const onPressSave = async () => {
+        if (year === 0 || month === 0 || day === 0) {
             setModalVisible(!modalVisible);
             setAlertImage(require('@images/x_red.png'));
             setAlertText('관람일자를 입력해주세요');
@@ -120,7 +120,7 @@ export default function ReviewWrite1({isCookie, musicalId, musicalPoster, musica
         const finalDay = dayString.padStart(2, '0');
 
         try {
-            reviewWrite(star, shortReview, longReview, finalCastings, `${finalYear}-${finalMonth}-${finalDay}`, finalSeat, musicalId);
+            await reviewWrite(star, shortReview, longReview, finalCastings, `${finalYear}-${finalMonth}-${finalDay}`, finalSeat, musicalId, isShortReviewSpoiler, isLongReviewSpoiler);
 
             setModalVisible(!modalVisible);
             setAlertImage(require('@images/check.png'));
@@ -222,14 +222,14 @@ export default function ReviewWrite1({isCookie, musicalId, musicalPoster, musica
                 <Text style={tw`text-[#191919] text-sm w-[30%]`}>별점 평가</Text>
                 <View style={tw`flex-col justify-center items-center flex-1`}>
                     {star === 0 ? <Text style={tw`text-[#B6B6B6] text-sm`}>별을 눌러 작품을 평가해주세요</Text>
-                    : star === 0.5 ? <Text style={tw`text-[#191919] text-sm`}>많이 아쉬웠던 작품</Text> 
-                    : star === 1 ? <Text style={tw`text-[#191919] text-sm`}>많이 아쉬웠던 작품</Text>
-                    : star === 1.5 ? <Text style={tw`text-[#191919] text-sm`}>한 번은 볼만한 작품</Text>
-                    : star === 2 ? <Text style={tw`text-[#191919] text-sm`}>한 번은 볼만한 작품</Text>
-                    : star === 2.5 ? <Text style={tw`text-[#191919] text-sm`}>한 번은 볼만한 작품</Text>
-                    : star === 3 ? <Text style={tw`text-[#191919] text-sm`}>다시 한 번 보고 싶은 작품</Text>
-                    : star === 3.5 ? <Text style={tw`text-[#191919] text-sm`}>다시 한 번 보고 싶은 작품</Text>
-                    : star === 4 ? <Text style={tw`text-[#191919] text-sm`}>추천하고 싶은 작품</Text>
+                    : star === 0.5 ? <Text style={tw`text-[#191919] text-sm`}>많이 아쉬운 작품</Text> 
+                    : star === 1 ? <Text style={tw`text-[#191919] text-sm`}>많이 아쉬운 작품</Text>
+                    : star === 1.5 ? <Text style={tw`text-[#191919] text-sm`}>많이 아쉬운 작품</Text>
+                    : star === 2 ? <Text style={tw`text-[#191919] text-sm`}>조금 아쉬운 작품</Text>
+                    : star === 2.5 ? <Text style={tw`text-[#191919] text-sm`}>조금 아쉬운 작품</Text>
+                    : star === 3 ? <Text style={tw`text-[#191919] text-sm`}>무난한 작품</Text>
+                    : star === 3.5 ? <Text style={tw`text-[#191919] text-sm`}>추천할 만한 작품</Text>
+                    : star === 4 ? <Text style={tw`text-[#191919] text-sm`}>완성도가 높은 작품</Text>
                     : star === 4.5 ? <Text style={tw`text-[#191919] text-sm`}>나의 인생작</Text>
                     : <Text style={tw`text-[#191919] text-sm`}>내 인생 최고의 명작</Text>
                     }

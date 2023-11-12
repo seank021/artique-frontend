@@ -143,6 +143,7 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
 
             <ScrollView showsVerticalScrollIndicator={false} onScroll={detectScroll} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
                 {feeds.map((feed, index) => (
+                    // console.log(feed),
                     <Fragment key={index}>
                         <ShortReviewFormInFeed
                             reviewInfo={feed}
@@ -154,6 +155,7 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
                             setReviewInfo={setReviewInfo}
                             setReviewInfo2={setReviewInfo2}
                             setOnRefreshWhenDelete={setOnRefreshWhenDelete}
+                            isShortReviewSpoiler={feed.reviewSpoiler}
                         />
                         {index < feeds.length - 1 && (
                             <View style={tw`border-4 border-[#F0F0F0]`}></View>

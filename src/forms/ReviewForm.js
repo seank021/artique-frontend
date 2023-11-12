@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, Pressable, ScrollView, Platform, StyleSheet, Dimensions, PixelRatio} from 'react-native';
+import { View, Text, Image, Pressable, ScrollView, Dimensions, PixelRatio} from 'react-native';
 import tw from 'twrnc';
 
 import AlertForm, { LongReviewForm } from '@forms/AlertForm';
@@ -16,7 +16,7 @@ const windowHeight = Dimensions.get('window').height;
 const fontScale = PixelRatio.getFontScale();
 const getFontSize = size => size / fontScale;
 
-// props: reviewInfo, onPressThumbsUp, onPressArrowCircledRight, isCookie
+// props: reviewInfo, onPressThumbsUp, onPressArrowCircledRight, isCookie, isShortReviewSpoiler
 export function ShortReviewForm(props) {
     const nav = useNavigation();
 
@@ -29,6 +29,8 @@ export function ShortReviewForm(props) {
 
     const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
     const [alertText, setAlertText] = useState('로그인이 필요한 서비스입니다.');
+
+    const [seeSpoiler, setSeeSpoiler] = useState(!props.isShortReviewSpoiler);
 
     useEffect(() => {
         setIsCookie(props.isCookie);
@@ -91,9 +93,15 @@ export function ShortReviewForm(props) {
                         <Text style={tw`text-[#191919] text-sm`}>{props.reviewInfo.starRating.toFixed(1)}</Text>
                     </View>
                 </View>
-                <View style={tw`flex flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mb-[15px] items-center p-[6px] rounded-2`}>
-                    <Text style={tw`self-start text-[#191919] text-sm font-medium leading-[24px]`}>"</Text>
-                    <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>{props.reviewInfo.shortReview}"</Text>
+                <View onTouchEnd={()=>setSeeSpoiler(true)} style={tw`flex flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mb-[15px] items-center p-[6px] rounded-2`}>
+                    {seeSpoiler ?
+                        <>
+                        <Text style={tw`self-start text-[#191919] text-sm font-medium leading-[24px]`}>"</Text>
+                        <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>{props.reviewInfo.shortReview}"</Text>
+                        </>
+                        :
+                        <Text style={tw`text-[#B6B6B6] text-sm font-medium leading-[24px] border-b-[1px] border-[#B6B6B6]`}>스포일러 보기</Text>
+                    }
                 </View>
                 <View style={tw`flex-row justify-between items-center`}>
                     <View style={tw`flex-row justify-between items-center`}>
@@ -113,7 +121,7 @@ export function ShortReviewForm(props) {
     );
 }
 
-// props:  reviewInfo, goToMusicalDetail1, goToReviewDetail1, onPressThumbsUp, isCookie / isMine, reviewInfo, setReviewInfo, setReviewInfo2, setOnRefreshWhenDelete
+// props:  reviewInfo, goToMusicalDetail1, goToReviewDetail1, onPressThumbsUp, isCookie / isMine, reviewInfo, setReviewInfo, setReviewInfo2, setOnRefreshWhenDelete, isShortReviewSpoiler
 export function ShortReviewFormInFeed(props) {
     const nav = useNavigation();
 
@@ -129,6 +137,8 @@ export function ShortReviewFormInFeed(props) {
 
     const [modifynDeleteModalVisible, setModifynDeleteModalVisible] = useState(false);
     const [reportModalVisible, setReportModalVisible] = useState(false);
+
+    const [seeSpoiler, setSeeSpoiler] = useState(!props.isShortReviewSpoiler);
 
     useEffect(() => {
         setIsCookie(props.isCookie);
@@ -202,7 +212,7 @@ export function ShortReviewFormInFeed(props) {
                 </View>
                 {props.isMine ?
                     <AlertFormForModifyAndDelete modalVisible={modifynDeleteModalVisible} setModalVisible={setModifynDeleteModalVisible} reviewInfo={props.reviewInfo} setReviewInfo={props.setReviewInfo} setReviewInfo2={props.setReviewInfo2} setOnRefreshWhenDelete={props.setOnRefreshWhenDelete} ></AlertFormForModifyAndDelete>
-                    : <AlertFormForReport modalVisible={reportModalVisible} setModalVisible={setReportModalVisible}></AlertFormForReport>
+                    : <AlertFormForReport modalVisible={reportModalVisible} setModalVisible={setReportModalVisible} reviewInfo={props.reviewInfo}></AlertFormForReport>
                 }
 
                 <View style={[tw`flex flex-row mb-[12px] bg-[#FFFFFF] h-[162px] rounded-4 shadow-sm`]}>
@@ -224,10 +234,15 @@ export function ShortReviewFormInFeed(props) {
                             {props.reviewInfo.casting.length > 20 ? `${props.reviewInfo.casting.slice(0, 20)} ...` : props.reviewInfo.casting}
                         </Text>
                         {makeStars(props.reviewInfo.starRating)}
-                        <View style={tw`flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mt-[5px] mb-[14px] p-[6px] rounded-2 w-[95%]`}>
-                            <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>"</Text>
-                            <Text style={[tw`text-[#191919] font-medium leading-[24px]`, {fontSize: getFontSize(14)}]}>{props.reviewInfo.shortReview.length < 25 ? props.reviewInfo.shortReview : props.reviewInfo.shortReview.slice(0, 25) + '···'}"</Text>
-                            {/* <Text style={[tw`text-[#191919] font-medium leading-[24px]`, {fontSize: getFontSize(14)}]}>{props.reviewInfo.shortReview.length < 25 ? props.reviewInfo.shortReview : props.reviewInfo.shortReview.slice(0, 25) + '···'}"</Text> */}
+                        <View onTouchEnd={(e)=> { e.stopPropagation(); setSeeSpoiler(true)}} style={tw`flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mt-[5px] mb-[14px] p-[6px] rounded-2 w-[95%]`}>
+                            {seeSpoiler ?
+                                <>
+                                <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>"</Text>
+                                <Text style={[tw`text-[#191919] font-medium leading-[22px]`, {fontSize: getFontSize(14)}]}>{props.reviewInfo.shortReview.length < 25 ? props.reviewInfo.shortReview : props.reviewInfo.shortReview.slice(0, 25) + '···'}"</Text>
+                                </>
+                                :
+                                <Text style={[tw`text-[#B6B6B6] font-medium leading-[22px] border-b-[1px] border-[#B6B6B6]`, {fontSize: getFontSize(14)}]}>스포일러 보기</Text>
+                            }
                         </View>
                     </View>
                 </View>
@@ -242,6 +257,7 @@ export function ShortReviewFormInFeed(props) {
         </>
     );
 }
+
 // props: reviewInfo, onPressThumbsUp, isCookie, goToReviewDetail1, goToMusicalDetail1
 export function ShortReviewFormInMyReviews(props) {
     const [isCookie, setIsCookie] = useState(props.isCookie);
