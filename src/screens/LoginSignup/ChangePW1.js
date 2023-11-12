@@ -50,17 +50,17 @@ export default function Login1() {
       </Image>
 
       <ScrollView contentContainerStyle={styles.contentContainer}>
-        <Text style={tw`text-[#F5F8F5] text-sm self-center mb-7`}>아이디와 새 비밀번호를 받을 메일 주소를 입력해주세요</Text>
-
-        <View style={tw`flex-row items-center w-[90%] justify-start mb-4.5`}>
-          <Text style={tw`text-[#F5F8F5] text-sm w-[15%]`}>아이디 : </Text>
-          <TextInput placeholder='아이디를 입력해주세요' placeholderTextColor="#ABABAB" inputMode='text' color="#F5F8F5" style={tw`border-b-[1px] border-[#ABABAB] w-[85%]`}></TextInput>
-        </View>
+        <Text style={tw`text-[#F5F8F5] text-sm self-center text-center mb-7`}>가입하신 메일 주소를 입력해주세요.{'\n'}초기화된 비밀번호를 보내드리겠습니다.</Text>
 
         <View style={tw`flex-row items-center w-[90%] justify-start mb-10`}>
+          <Text style={tw`text-[#F5F8F5] text-sm w-[15%]`}>이메일 : </Text>
+          <TextInput placeholder='이메일을 입력해주세요' placeholderTextColor="#ABABAB" inputMode='email' color="#F5F8F5" style={tw`border-b-[1px] border-[#ABABAB] w-[85%]`}></TextInput>
+        </View>
+
+        {/* <View style={tw`flex-row items-center w-[90%] justify-start mb-10`}>
           <Text style={tw`text-[#F5F8F5] text-sm w-[15%]`}>메일 : </Text>
           <TextInput placeholder='새 비밀번호를 받을 메일을 입력해주세요' placeholderTextColor="#ABABAB" inputMode='email' color="#F5F8F5" style={tw`border-b-[1px] border-[#ABABAB] w-[85%]`}></TextInput>
-        </View>
+        </View> */}
 
         <ButtonForm
           borderColor="#ABABAB"
