@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, Pressable, ScrollView, Alert } from 'react-native';
+import { View, Text, Image, Pressable, ScrollView, TextInput } from 'react-native';
 import Modal from 'react-native-modal';
 
 import tw from 'twrnc';
@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { Contract1, Contract2 } from '@forms/ContractContents';
 
-import { reviewDetail, reviewDelete } from '@functions/api';
+import { reviewDetail, reviewDelete, reviewReport } from '@functions/api';
 
 import { launchImageLibrary } from 'react-native-image-picker';
 
@@ -260,7 +260,7 @@ export const AlertFormForModifyAndDelete = (props) => {
     )
 }
 
-// props: modalVisible, setModalVisible
+// props: modalVisible, setModalVisible, reviewInfo
 export const AlertFormForReport = (props) => {
     const [isStep1, setIsStep1] = useState(true);
     const [isStep2, setIsStep2] = useState(false);
@@ -272,7 +272,7 @@ export const AlertFormForReport = (props) => {
         setIsStep3(false);
     }, [props.modalVisible]);
 
-    const [reportReason, setReportReason] = useState('스포일러 포함');
+    const [reportReason, setReportReason] = useState('SPOILER');
 
     const onBackdropPress = () => {
         props.setModalVisible(false);
@@ -286,11 +286,12 @@ export const AlertFormForReport = (props) => {
         setIsStep2(true);
     }
 
-    const onPressSubmit = () => {
-        console.log(reportReason);
+    const onPressSubmit = async () => {
+        await reviewReport(props.reviewInfo.reviewId, reportReason);
+
         setIsStep2(false);
         setIsStep3(true);
-        setReportReason('스포일러 포함');
+        setReportReason('SPOILER');
 
         setTimeout(() => {
             props.setModalVisible(false);
@@ -307,21 +308,21 @@ export const AlertFormForReport = (props) => {
             : isStep2 && !isStep1 && !isStep3 ?
                 <View style={tw`flex flex-col w-[230px] h-[318px] bg-white rounded-[15px] justify-around self-center`}>
                     <Text style={tw`text-center text-base font-medium text-[#191919] mt-[24px] mb-[24px]`}>신고 사유</Text>
-                    <Pressable style={tw`flex flex-row justify-between items-center`} onPress={() => setReportReason('스포일러 포함')}>
+                    <Pressable style={tw`flex flex-row justify-between items-center`} onPress={() => setReportReason('SPOILER')}>
                         <Text style={tw`text-sm text-left text-[#191919] ml-[24px]`}>스포일러 포함</Text>
-                        {reportReason === '스포일러 포함' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px] mr-[24px]`}></Image>)}
+                        {reportReason === 'SPOILER' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px] mr-[24px]`}></Image>)}
                     </Pressable>
-                    <Pressable style={tw`flex flex-row justify-between items-center`} onPress={() => setReportReason('부적절한 언어 표현')}>
+                    <Pressable style={tw`flex flex-row justify-between items-center`} onPress={() => setReportReason('INAPPROPRIATE')}>
                         <Text style={tw`text-sm text-left text-[#191919] ml-[24px]`}>부적절한 언어 표현</Text>
-                        {reportReason === '부적절한 언어 표현' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px] mr-[24px]`}></Image>)}
+                        {reportReason === 'INAPPROPRIATE' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px] mr-[24px]`}></Image>)}
                     </Pressable>
-                    <Pressable style={tw`flex flex-row justify-between items-center`} onPress={() => setReportReason('스팸 및 홍보글')}>
+                    <Pressable style={tw`flex flex-row justify-between items-center`} onPress={() => setReportReason('PROMOTION')}>
                         <Text style={tw`text-sm text-left text-[#191919] ml-[24px]`}>스팸 및 홍보글</Text>
-                        {reportReason === '스팸 및 홍보글' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px] mr-[24px]`}></Image>)}
+                        {reportReason === 'PROMOTION' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px] mr-[24px]`}></Image>)}
                     </Pressable>
-                    <Pressable style={tw`flex flex-row justify-between items-center`} onPress={() => setReportReason('도배글')}>
+                    <Pressable style={tw`flex flex-row justify-between items-center`} onPress={() => setReportReason('SPAM')}>
                         <Text style={tw`text-sm text-left text-[#191919] ml-[24px]`}>도배글</Text>
-                        {reportReason === '도배글' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px] mr-[24px]`}></Image>)}
+                        {reportReason === 'SPAM' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px] mr-[24px]`}></Image>)}
                     </Pressable>
                     <View style={tw`border-b border-solid border-[#D3D4D3]`}></View>
                     <Pressable onPress={onPressSubmit} style={tw`self-center`}>
@@ -354,6 +355,89 @@ export const ContractForm = (props) => {
                 <ScrollView style={tw`w-[90%] self-center mb-[31px]`}>
                     {props.contractNum === 1 ? <Contract1 /> : <Contract2 />}
                 </ScrollView>
+            </View>
+        </Modal>
+    )
+}
+
+// props: modalVisible, setModalVisible, setIfClearedVerificationStage
+export const EmailVerityForm = (props) => {
+    const [verificationNumber, setVerificationNumber] = useState('');
+    const [resendModal, setResendModal] = useState(false);
+    const [verificationSuccessModal, setVerificationSuccessModal] = useState(false);
+    const [verificationFailModal, setVerificationFailModal] = useState(false);
+
+    const code = "123456" // 임시 코드
+
+    const [count, setCount] = useState(300);
+    useEffect(() => {
+        setCount(300);
+    }, [props.modalVisible]);
+
+    useEffect(() => {
+        if (count === 0) {
+            props.setModalVisible(false);
+        }
+        const id = setInterval(() => {
+            setCount((prev) => prev - 1);
+        }, 1000);
+        if (count === 0) {
+            clearInterval(id);
+        }
+        return () => clearInterval(id);
+    }, [count]);
+
+    const onPressResend = () => {
+        setCount(300);
+        setResendModal(!resendModal);
+        setTimeout(() => {
+            setResendModal(resendModal);
+        }, 1000);
+        console.log("재전송 로직 구현"); // TODO: 로직 구현 (백 연결)
+    }
+
+    const onPressConfirm = () => {
+        setCount(300);
+
+        // 인증 완료되면
+        if (verificationNumber === code) {
+            props.setIfClearedVerificationStage(true); // TODO: 로직 구현 (백 연결)
+            setVerificationSuccessModal(true);
+            setTimeout(() => {
+                setVerificationSuccessModal(false);
+            }, 1000);
+            props.setModalVisible(false);
+        } else { // 인증 실패하면
+            setVerificationFailModal(true);
+            setTimeout(() => {
+                setVerificationFailModal(false);
+            }, 1000);
+        }
+    }
+
+    return (
+        <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={() => { props.setModalVisible(false); setCount(300); }}>
+            <View style={tw`flex flex-col w-[90%] h-[200px] border-solid border-2 rounded-[15px] self-center justify-center items-center bg-[#FAFAFA] border-[#FAFAFA] mb-[150px]`}>
+                <Text style={tw`text-sm mt-[20px] text-[#191919]`}>적어주신 이메일로 본인인증 메일을 보냈어요.{'\n'}5분 이내로 메일에 적힌 번호를 입력해주세요.</Text>
+                <TextInput style={tw`w-[90%] border-solid border-2 border-b-2 border-[#ABABAB] rounded-[15px] mt-[20px] bg-[#FAFAFA]`} placeholder="인증번호를 입력해주세요." onChangeText={(text) => setVerificationNumber(text)} onSubmitEditing={onPressConfirm} keyboardType='numeric'></TextInput>
+                <View style={tw`flex-row justify-between w-[90%] mt-[20px]`}>
+                    <View style={tw`flex-row`}>
+                        <Text style={tw`text-sm text-[#191919] mr-[20px]`}>남은 시간</Text>
+                        <Text style={tw`text-sm text-[#E94A4B]`}>{Math.floor(count / 60)}:{count % 60 < 10 ? `0${count % 60}` : count % 60}</Text>
+                    </View>
+                    <View style={tw`flex-row`}>
+                        <Pressable onPress={onPressResend}>
+                            <Text style={tw`text-sm text-[#191919] mr-[20px]`}>재전송</Text>
+                        </Pressable>
+                        <Pressable onPress={onPressConfirm}>
+                            <Text style={tw`text-sm text-[#191919]`}>확인</Text>
+                        </Pressable>
+
+                        <AlertForm modalVisible={resendModal} setModalVisible={setResendModal} borderColor="#FAFAFA" bgColor="#FAFAFA" image={require("@images/check.png")} textColor="#191919" text="재전송 되었습니다" />
+                        <AlertForm modalVisible={verificationSuccessModal} setModalVisible={setVerificationSuccessModal} borderColor="#FAFAFA" bgColor="#FAFAFA" image={require("@images/check.png")} textColor="#191919" text="인증되었습니다" />
+                        <AlertForm modalVisible={verificationFailModal} setModalVisible={setVerificationFailModal} borderColor="#FAFAFA" bgColor="#FAFAFA" image={require("@images/x_red.png")} textColor="#191919" text="인증번호가 일치하지 않습니다" />
+                    </View>
+                </View>
             </View>
         </Modal>
     )
