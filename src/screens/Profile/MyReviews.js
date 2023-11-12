@@ -8,9 +8,9 @@ import { ShortReviewFormInMyReviews } from "@forms/ReviewForm";
 
 import { memberStatistics, myReviewsAll, thumbsUp } from "@functions/api";
 
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
-export default function MyReviews({isCookie, setMusicalId, setReviewId}) {
+export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId}) {
   const nav = useNavigation();
 
   const [sortModalVisible, setSortModalVisible] = useState(false);
@@ -28,7 +28,11 @@ export default function MyReviews({isCookie, setMusicalId, setReviewId}) {
   };
 
   const goToMyReviewSearch = () => {
+    if (route.params?.otherMemberId) {
+      nav.navigate('MyReviewSearch', {otherMemberId: route.params?.otherMemberId});
+    } else {
     nav.navigate('MyReviewSearch');
+    } 
   }
 
   const goToMusicalDetail1 = (musicalId) => {
@@ -41,23 +45,42 @@ export default function MyReviews({isCookie, setMusicalId, setReviewId}) {
       nav.navigate('ReviewDetail1');
   };
 
-  useEffect(() => {
-    memberStatistics().then((newMemberStat) => {
-      setTotalReviewCount(newMemberStat.totalReviewCount);
-    }).catch((err) => {
-      console.log(err);
-    });
-  }, []);
+  const route = useRoute();
+  const otherMemberId = route.params?.otherMemberId;
 
   useEffect(() => {
-    if (updatePage && page === 0) {
-      myReviewsAll(page, orderBy).then((newReviews) => {
-        setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
+    if (otherMemberId) {
+      memberStatistics(otherMemberId).then((newMemberStat) => {
+        setTotalReviewCount(newMemberStat.totalReviewCount);
+      }).catch((err) => {
+        console.log(err);
+      });
+    } else {
+      memberStatistics().then((newMemberStat) => {
+        setTotalReviewCount(newMemberStat.totalReviewCount);
       }).catch((err) => {
         console.log(err);
       });
     }
-  }, [page, updatePage, orderBy]);
+    }, [otherMemberId]);
+
+  useEffect(() => {
+    if (updatePage && page === 0) {
+      if (otherMemberId) {
+        myReviewsAll(otherMemberId, page, orderBy).then((newReviews) => {
+          setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
+        }).catch((err) => {
+          console.log(err);
+        });
+      } else {
+        myReviewsAll(memberId, page, orderBy).then((newReviews) => {
+          setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
+        }).catch((err) => {
+          console.log(err);
+        });
+      }
+    }
+    }, [page, updatePage, orderBy, otherMemberId]);
 
   const onPressThumbsUp = (reviewId, isThumbsUp) => {
     thumbsUp(reviewId, !isThumbsUp).then((res) => {
@@ -65,7 +88,7 @@ export default function MyReviews({isCookie, setMusicalId, setReviewId}) {
         setReviews((prevReviews) => {
             const newReviews = [...prevReviews];
             const reviewIndex = newReviews.findIndex((review) => review.reviewId === reviewId);
-            newReviews[reviewIndex].isThumbsUp = !isThumbsUp; // 프론트상에서만 바꿈 (구현 위함, 서버에서는 안 바뀜)
+            newReviews[reviewIndex].isThumbsUp = !isThumbsUp;
             return newReviews;
         });
     }).catch((err) => {
@@ -95,14 +118,23 @@ export default function MyReviews({isCookie, setMusicalId, setReviewId}) {
         const nextPage = page + 1;
         setPage(nextPage);
         
-        myReviewsAll(page, orderBy).then((newReviews) => {
+        if (otherMemberId) {
+          myReviewsAll(otherMemberId, page, orderBy).then((newReviews) => {
             setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
             setUpdatePage(true);
         }).catch((err) => {
             console.log(err);
-        });
+        }
+        )} else {
+          myReviewsAll(memberId, page, orderBy).then((newReviews) => {
+            setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
+            setUpdatePage(true);
+        }).catch((err) => {
+            console.log(err);
+        }
+        )}
     }
-  }
+  };
 
   const onPressSort = () => {
     setSortModalVisible(true);

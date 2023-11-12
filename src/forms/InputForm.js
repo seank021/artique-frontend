@@ -29,7 +29,7 @@ export function InputFormInPWChange(props) {
     return (
         <View style={tw`flex flex-row justify-between items-center border-solid border-b border-[#ABABAB] w-[90%] mb-2`}>
             <View style={tw`flex-row items-center`}>
-                <Image source={props.image} style={tw`tint-[#ABABAB] ml-10px mr-[36px] w-[15px] h-[16px]`}></Image>
+                <Image source={props.image} style={tw`tint-[#ABABAB] ml-[10px] mr-[36px] w-[15px] h-[16px]`}></Image>
                 <TextInput placeholder={props.placeholder} onChangeText={(text) => { props.setValue(text); props.compareValue(text); }} placeholderTextColor={"#B6B6B6"} secureTextEntry={props.secureTextEntry} color={"#B6B6B6"} style={tw`h-40px`}></TextInput>
             </View>
             <>
@@ -50,14 +50,14 @@ export function NicknameInputForm(props) {
     return (
         <View style={tw`flex flex-row justify-between items-center border-solid border-b border-[#CCCCCC] w-[90%]`}>
             <View style={tw`flex flex-row items-center ml-[5%]`}>
-                <Image source={props.image} style={tw`tint-[#B6B6B6] mr-[30px] w-[13.3px] h-[15px]`}></Image>
+                <Image source={props.image} style={tw`tint-[#B6B6B6] mr-[30px] w-[15px] h-[16px]`}></Image>
                 <TextInput 
                     maxLength={10} 
                     placeholder={props.placeholder} 
                     onChangeText={(text) => { props.setValue(text); props.reappearButton(text); props.inputCount(text, 'nickname');}}
                     placeholderTextColor={"#B6B6B6"} 
                     color={"#191919"} 
-                    style={tw`mb-[7px] h-[30px] text-[#191919] text-sm font-normal`}>
+                    style={tw`h-[40px] text-[#191919] text-sm font-normal`}>
                 </TextInput>
             </View>
             <View style={tw`flex flex-row items-center`}>
@@ -84,7 +84,7 @@ export function IntroduceInputForm(props) {
     return (
         <View style={tw`flex flex-row justify-between items-end border-solid border-b border-[#CCCCCC] w-[90%]`}>
             <View style={tw`flex flex-row shrink items-start ml-[5%] mb-[10px]`}>
-                <Image source={props.image} style={tw`tint-[#B6B6B6] mt-[10px] mr-[30px] w-[13.3px] h-[15px]`}></Image>
+                <Image source={props.image} style={tw`tint-[#B6B6B6] mt-[10px] mr-[30px] w-[15px] h-[16px]`}></Image>
                 <TextInput
                     maxLength={50}
                     placeholder={props.placeholder}

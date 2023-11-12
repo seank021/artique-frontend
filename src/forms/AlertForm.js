@@ -155,7 +155,7 @@ export function LongReviewForm(props) {
 }
 
 export function ProfileChangeForm(props) {
-    const onPressSelect = async() => {
+    const onPressSelect = async () => {
         const response = await launchImageLibrary({
             mediaType: 'photo',
             includeBase64: true,
@@ -165,8 +165,8 @@ export function ProfileChangeForm(props) {
             } else if (response.errorCode) {
                 console.log('ImagePicker Error: ', response.errorMessage);
             } else {
-                let imageUri = response.uri || response.assets[0]?.uri;
-                props.setImage(imageUri);
+                let imageSource = response.assets[0]?.base64;
+                props.setImage(imageSource);
             }
         };
 

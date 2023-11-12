@@ -7,9 +7,9 @@ import { ShortReviewFormInFeed } from "@forms/ReviewForm";
 
 import { myThumbsAll, thumbsUp } from "@functions/api";
 
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused, useRoute } from "@react-navigation/native";
 
-export default function MyThumbs({ isCookie, setMusicalId, setReviewId }) {
+export default function MyThumbs({ isCookie, memberId, setMusicalId, setReviewId }) {
   const nav = useNavigation();
 
   const [page, setPage] = useState(0);
@@ -31,25 +31,41 @@ export default function MyThumbs({ isCookie, setMusicalId, setReviewId }) {
   };
 
   const goToMyThumbsSearch = () => {
+    if (otherMemberId) {
+      nav.navigate('MyThumbsSearch', {otherMemberId: otherMemberId});
+    } else {
     nav.navigate('MyThumbsSearch');
+    }
   }
+
+  const route = useRoute();
+  const otherMemberId= route.params?.otherMemberId;
 
   useEffect(() => {
     if (updatePage && page === 0) {
-      myThumbsAll(page).then((newReviews) => {
+      if (otherMemberId) {
+        myThumbsAll(otherMemberId, page).then((newReviews) => {
+          setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
+        }).catch((err) => {
+          console.log(err);
+        });
+      } else {
+      myThumbsAll(memberId, page).then((newReviews) => {
         setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
       }).catch((err) => {
         console.log(err);
       });
     }
-  }, [page, updatePage]);
+    }
+  }, [page, updatePage, reviews, memberId, otherMemberId]);
 
   const onPressThumbsUp = (reviewId, isThumbsUp) => {
     thumbsUp(reviewId, !isThumbsUp).then((res) => {
+        console.log(res)
         setReviews((prevReviews) => {
             const newReviews = [...prevReviews];
             const reviewIndex = newReviews.findIndex((review) => review.reviewId === reviewId);
-            newReviews[reviewIndex].isThumbsUp = !isThumbsUp; // 프론트상에서만 바꿈 (구현 위함, 서버에서는 안 바뀜)
+            newReviews[reviewIndex].isThumbsUp = !isThumbsUp;
             return newReviews;
         });
     }).catch((err) => {
@@ -79,12 +95,21 @@ export default function MyThumbs({ isCookie, setMusicalId, setReviewId }) {
         const nextPage = page + 1;
         setPage(nextPage);
         
-        myThumbsAll(page).then((newReviews) => {
+        if (otherMemberId) {
+          myThumbsAll(otherMemberId, nextPage).then((newReviews) => {
+            setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
+            setUpdatePage(true);
+          }).catch((err) => {
+            console.log(err);
+          }
+        )} else {
+        myThumbsAll(memberId, nextPage).then((newReviews) => {
           setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
           setUpdatePage(true);
         }).catch((err) => {
           console.log(err);
         });
+      }
     }
   }
   
@@ -101,14 +126,14 @@ export default function MyThumbs({ isCookie, setMusicalId, setReviewId }) {
       </View>
       <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
 
-      <ScrollView onScroll={detectScroll}>
-        {reviews.map((review, index) => (
+      <ScrollView showsVerticalScrollIndicator={false} onScroll={detectScroll}>
+        {reviews?.map((review, index) => (
           <Fragment key={index}>
             <ShortReviewFormInFeed 
-              review={review} 
-              onPressThumbsUp={onPressThumbsUp} 
-              goToReviewDetail1={goToReviewDetail1} 
-              goToMusicalDetail1={goToMusicalDetail1}
+              reviewInfo={review} 
+              onPressThumbsUp={() => onPressThumbsUp(review.reviewId, review.isThumbsUp)} 
+              goToReviewDetail1={() => goToReviewDetail1(review.reviewId)} 
+              goToMusicalDetail1={() => goToMusicalDetail1(review.musicalId)}
               isCookie={isCookie}
             />
             {index < reviews.length - 1 && 

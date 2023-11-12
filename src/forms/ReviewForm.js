@@ -6,6 +6,8 @@ import AlertForm, { LongReviewForm } from '@forms/AlertForm';
 
 import { makeStars, makeStarsForEachReview } from '@functions/makeStars';
 
+import { useNavigation } from "@react-navigation/native";
+
 import { AlertFormForModifyAndDelete, AlertFormForReport } from '@forms/AlertForm';
 
 {/*기본 화면 설정*/}
@@ -16,6 +18,8 @@ const getFontSize = size => size / fontScale;
 
 // props: reviewInfo, onPressThumbsUp, onPressArrowCircledRight, isCookie, isShortReviewSpoiler
 export function ShortReviewForm(props) {
+    const nav = useNavigation();
+
     const [isCookie, setIsCookie] = useState(props.isCookie);
     const [isThumbsUp, setIsThumbsUp] = useState(props.reviewInfo.isThumbsUp);
     const [thumbsCount, setThumbsCount] = useState(props.reviewInfo.thumbsCount);
@@ -59,6 +63,10 @@ export function ShortReviewForm(props) {
         props.onPressThumbsUp(props.reviewInfo.reviewId);
     };
 
+    const onPressProfile = () => {
+        nav.navigate('Mypage', { otherMemberId: props.reviewInfo.memberId });
+    }
+
     const onPressArrowCircledRight = () => {
         props.onPressArrowCircledRight(props.reviewInfo.reviewId);
     };
@@ -71,8 +79,12 @@ export function ShortReviewForm(props) {
             <View style={tw`flex flex-col w-[90%] self-center my-[20px]`}>
                 <View style={tw`flex-row justify-between items-center mb-[15px]`}>
                     <View style={tw`flex-row justify-between items-center`}>
-                        <Image source={{uri: props.reviewInfo.memberImageUrl}} style={tw`w-[24px] h-[24px] rounded-full mr-[10px]`}></Image>
-                        <Text style={tw`text-[#191919] text-sm mr-[15px]`}>{props.reviewInfo.memberNickname}</Text>
+                        <Pressable onPress={onPressProfile}>
+                            <Image source={{uri: props.reviewInfo.memberImageUrl}} style={tw`w-[24px] h-[24px] rounded-full mr-[10px]`}></Image>
+                        </Pressable>
+                        <Pressable onPress={onPressProfile}>
+                            <Text style={tw`text-[#191919] text-sm mr-[15px]`}>{props.reviewInfo.memberNickname}</Text>
+                        </Pressable>
                         <Text style={tw`text-[#ABABAB] text-xs`}>{props.reviewInfo.viewDate}</Text>
                     </View>
                     <View style={tw`flex-row items-center`}>
@@ -110,9 +122,11 @@ export function ShortReviewForm(props) {
 
 // props:  reviewInfo, goToMusicalDetail1, goToReviewDetail1, onPressThumbsUp, isCookie / isMine, reviewInfo, setReviewInfo, setReviewInfo2, setOnRefreshWhenDelete, isShortReviewSpoiler
 export function ShortReviewFormInFeed(props) {
+    const nav = useNavigation();
+
     const [isCookie, setIsCookie] = useState(props.isCookie);
-    const [isThumbsUp, setIsThumbsUp] = useState(props.reviewInfo.isThumbsUp);
-    const [thumbsCount, setThumbsCount] = useState(props.reviewInfo.thumbsCount);
+    const [isThumbsUp, setIsThumbsUp] = useState(props.reviewInfo?.isThumbsUp);
+    const [thumbsCount, setThumbsCount] = useState(props.reviewInfo?.thumbsCount);
     const [thumbsUpImg, setThumbsUpImg] = useState(require('@images/like_gray_small.png'));
 
     const [modalVisible, setModalVisible] = useState(false);
@@ -171,6 +185,10 @@ export function ShortReviewFormInFeed(props) {
         else setReportModalVisible(!reportModalVisible);
     }
 
+    const onPressProfile = () => {
+        nav.navigate('Mypage', { otherMemberId: props.reviewInfo.memberId });
+    }
+
     return (
         <>
             <View>
@@ -180,8 +198,12 @@ export function ShortReviewFormInFeed(props) {
             <View style={tw`flex flex-col w-[90%] self-center my-[20px]`}>
                 <View style={tw`flex-row justify-between items-center mb-[10px] z-20`}>
                     <View style={tw`flex-row justify-between items-center`}>
-                        <Image source={{uri: props.reviewInfo.memberImageUrl}} style={tw`w-[24px] h-[24px] rounded-full mr-[10px]`}></Image>
-                        <Text style={tw`text-[#191919] text-sm mr-[15px]`}>{props.reviewInfo.memberNickname}</Text>
+                        <Pressable onPress={onPressProfile}>
+                            <Image source={{uri: props.reviewInfo.memberImageUrl}} style={tw`w-[24px] h-[24px] rounded-full mr-[10px]`}></Image>
+                        </Pressable>
+                        <Pressable onPress={onPressProfile}>
+                            <Text style={tw`text-[#191919] text-sm mr-[15px]`}>{props.reviewInfo.memberNickname}</Text>
+                        </Pressable>
                         <Text style={tw`text-[#ABABAB] text-xs`}>{props.reviewInfo.viewDate}</Text>
                     </View>
                     <Pressable onPress={onPressMore}><Image style={tw`w-[30px] h-[30px]`} source={require("@images/dots_more.png")}></Image></Pressable>
@@ -391,14 +413,16 @@ export function ShortReviewFormInMypage(props) {
                 <View> 
                     {makeStars(props.starRating)}
                 </View>
-                <View style={tw`flex-row items-center bg-[#F5F5F5] rounded-[5px] w-[90%] h-[52px] mt-1.25`}>
-                    <View style={tw`flex-row justify-between mx-1.5 my-1.5`}>
-                        <Text style={tw`text-xs text-[#191919] font-medium`}>"</Text>
-                        <Text numberOfLines={2} ellipsizeMode='tail' style={tw`text-xs text-[#191919] font-medium shrink mr-1.5`}>
-                            {`${props.shortReview}`.replace(/^(.{30}[^\s]*).*/, "$1...\"")}
-                        </Text>
+                <Pressable onPress={props.onPressShortReview}>
+                    <View style={tw`flex-row items-center bg-[#F5F5F5] rounded-[5px] w-[230px] h-[50px] mt-1.25`}>
+                        <View style={tw`flex-row justify-between mx-1.5 my-1.5`}>
+                            <Text style={tw`text-xs text-[#191919] font-medium`}>"</Text>
+                            <Text numberOfLines={2} ellipsizeMode='tail' style={tw`text-xs text-[#191919] font-medium shrink mr-1.5`}>
+                                {`${props.shortReview}`.replace(/^(.{30}[^\s]*).*/, "$1...\"")}
+                            </Text>
+                        </View>
                     </View>
-                </View>
+                </Pressable>
             </View>
         </View>
     )
