@@ -393,10 +393,10 @@ export const EmailVerityForm = (props) => {
         setTimeout(() => {
             setResendModal(resendModal);
         }, 1000);
-        console.log("재전송 로직 구현"); // TODO: 로직 구현 (백 연결)
+        console.log("재전송 로직 구현"); // TODO: 재전송 눌렀다는 사실을 백에 보내기 (본인인증 후 가입하기 버튼 누르는 것과 같은 로직)
     }
 
-    const onPressConfirm = () => {
+    const onPressConfirm = () => { // TODO: verificationNumber 백에 보내기
         setCount(300);
 
         // 인증 완료되면
