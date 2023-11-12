@@ -220,10 +220,6 @@ export default function ChangeProfile({isCookie}) {
                     source={profileImage ? { uri: profileImage } : require('@images/newprofile.png')}
                     style={tw`w-[100px] h-[100px] rounded-full mx-auto mt-[20px] mb-[64px]`}>
                 </Image>
-                <Image 
-                    source={profileImage ? { uri: profileImage } : require('@images/newprofile.png')}
-                    style={tw`w-[100px] h-[100px] rounded-full mx-auto mt-[20px] mb-[64px]`}>
-                </Image>
             </Pressable>
 
             <ScrollView contentContainerStyle={styles.contentContainer}>

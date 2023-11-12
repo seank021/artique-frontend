@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, StyleSheet, ScrollView, Pressable } from "react-native";
+import { View, Text, Image, StyleSheet, ScrollView, Pressable, RefreshControl } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
 
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute, useIsFocused } from "@react-navigation/native";
 import { ShortReviewFormInMypage } from "@forms/ReviewForm";
 import makeBarChart from "@functions/makeBarChart";
 
@@ -11,6 +11,60 @@ import { memberSummary, memberStatistics, memberShortThumbReviews } from "@funct
 
 export default function Mypage ({ isCookie, memberId, setReviewId }) {
   const nav = useNavigation();
+
+  const [refreshing, setRefreshing] = useState(false);
+  const isFocused = useIsFocused();
+  const [firstFocus, setFirstFocus] = useState(true);
+
+  useEffect(() => {
+    if (firstFocus) {
+      setFirstFocus(false);
+      return;
+    }
+    if (!isFocused) {
+      return;
+    }
+    onRefresh();
+  }, [isFocused]);
+
+  const onRefresh = React.useCallback(() => {
+    if (refreshing) {
+      return;
+    }
+    setRefreshing(true);
+
+    setMemberInfo({});
+    setMemberStat({});
+    setShortReviewInfo([]);
+
+      memberSummary().then((newMemberInfo) => {
+        setMemberInfo(() => newMemberInfo);
+      }).catch((err) => {
+        console.log(err);
+      }).finally(() => {
+        setRefreshing(false);
+      });
+
+      memberStatistics().then((newMemberStat) => {
+        setMemberStat(() => newMemberStat);
+      }).catch((err) => {
+        console.log(err);
+      }).finally(() => {
+        setRefreshing(false);
+      });
+
+      memberShortThumbReviews().then((newShortThumbReviews) => {
+        setShortReviewInfo(() => newShortThumbReviews);
+      }).catch((err) => {
+        console.log(err);
+      }).finally(() => {
+        setRefreshing(false);
+      });
+
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  }, [refreshing, memberInfo, memberStat, shortReviewInfo]);
 
   const goBack = () => {
     nav.goBack();
@@ -140,6 +194,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
       <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
 
       {/* 프로필 */}
+      <ScrollView showsVerticalScrollIndicator={false} refreshcontrol={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
       <View style={tw`flex-row items-center w-9/10 mt-5 mx-5`}>
         {/* <Image source={memberInfo.imageUrl ? { uri: memberInfo.imageUrl } : require('@images/newprofile.png')} style={tw`w-[100px] h-[100px] mr-5`}></Image> */}
         <Image source={require('@images/newprofile.png')} style={tw`w-[100px] h-[100px] mr-5`}></Image>
@@ -200,6 +255,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
             )}
           }
         )}
+      </ScrollView>
       </ScrollView>
     </SafeAreaView>
   )
