@@ -202,7 +202,6 @@ export default function MusicalDetail2({isCookie, musicalId, setMusicalId, setMu
                 </View>
 
                 {reviews.map((review, index) => (
-                    console.log(review),
                     <Fragment key={index}>
                         <ShortReviewForm
                             reviewInfo={review}

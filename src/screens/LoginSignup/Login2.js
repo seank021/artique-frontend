@@ -1,23 +1,17 @@
 // TODO: 자동로그인 기능 구현
 
-import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  Image,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import React, { useState } from 'react';
+import { View, Text, Image, Pressable, ScrollView, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import axios from 'axios';
 
 import hash from '@functions/hash';
 import * as Cookies from '@functions/cookie';
+import { setAutoLogin } from '@functions/autoLogin';
 
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 import InputForm from '@forms/InputForm';
 import ButtonForm from '@forms/ButtonForm';
@@ -35,12 +29,15 @@ export default function Login1({setGoToFeed, setIsCookie}) {
   const [alertText, setAlertText] = useState('다시 시도해주세요.');
 
   const [rectangle, setRectangle] = useState(require('@images/rectangle.png'));
+  const [ifChecked, setIfChecked] = useState(false); // 자동로그인 체크 여부
 
   const checkRectangle = () => {
     if (rectangle === require('@images/rectangle.png')) {
       setRectangle(require('@images/rectangle_checked.png'));
+      setIfChecked(true);
     } else {
       setRectangle(require('@images/rectangle.png'));
+      setIfChecked(false);
     }
   };
 
@@ -86,6 +83,7 @@ export default function Login1({setGoToFeed, setIsCookie}) {
         try {
           Cookies.setCookie('general', response.headers['authorization']);
           Cookies.setCookie('currentLogin', 'general');
+          setAutoLogin(ifChecked);
           setGoToFeed(true);
         } catch (err) {
           console.log(err);
