@@ -1,5 +1,3 @@
-// TODO: 자동로그인 기능 구현
-
 import React, { useState } from 'react';
 import { View, Text, Image, Pressable, ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';

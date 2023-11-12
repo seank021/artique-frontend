@@ -80,7 +80,7 @@ export default function ReviewWrite1({isCookie, musicalId, musicalPoster, musica
     };
 
     const onPressSave = async () => {
-        if (year === 0 || month === 0 || day === 0) { // TODO: 관람일자를 현재 날짜로 설정하면 이 부분에 안 걸림
+        if (year === 0 || month === 0 || day === 0) {
             setModalVisible(!modalVisible);
             setAlertImage(require('@images/x_red.png'));
             setAlertText('관람일자를 입력해주세요');
