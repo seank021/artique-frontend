@@ -7,10 +7,10 @@ import * as Keywords from "@functions/keywords";
 
 import { searchThumbReviews, thumbsUp } from "@functions/api";
 
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { ShortReviewFormInFeed } from "@forms/ReviewForm";
 
-export default function MyThumbsSearch({ isCookie, setMusicalId, setReviewId }) {
+export default function MyThumbsSearch({ isCookie, memberId, setMusicalId, setReviewId }) {
     {/*페이지 이동*/}
     const nav = useNavigation();
 
@@ -23,6 +23,9 @@ export default function MyThumbsSearch({ isCookie, setMusicalId, setReviewId }) 
         setReviewId(reviewId);
         nav.navigate('ReviewDetail1');
     };
+    
+    const route = useRoute();
+    const otherMemberId = route.params?.otherMemberId;
 
     {/*공감*/}
     const onPressThumbsUp = (reviewId, isThumbsUp) => {
@@ -44,14 +47,22 @@ export default function MyThumbsSearch({ isCookie, setMusicalId, setReviewId }) 
     
     useEffect(() => {
         if (updatePage && page === 0) {
-            searchThumbReviews(page, searchValue).then((newReviews) => {
+            if (otherMemberId) {
+                searchThumbReviews(otherMemberId, page, searchValue).then((newReviews) => {
+                    setSearchedReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
+                }).catch((err) => {
+                    console.log(err);
+                });
+            } else {
+            searchThumbReviews(memberId, page, searchValue).then((newReviews) => {
                 setSearchedReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
             }
             ).catch((err) => {
                 console.log(err);
             });
         }
-    }, [page, updatePage]);
+        }
+    }, [page, updatePage, memberId, otherMemberId, searchValue]);
 
     const detectScroll = async (e) => {
         if (!updatePage) {
@@ -75,7 +86,16 @@ export default function MyThumbsSearch({ isCookie, setMusicalId, setReviewId }) 
             const nextPage = page + 1;
             setPage(nextPage);
 
-            searchThumbReviews(nextPage, searchValue)
+            if (otherMemberId) {
+                searchThumbReviews(otherMemberId, nextPage, searchValue)
+                .then((newReviews) => {
+                    setSearchedReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
+                    setUpdatePage(true);
+                }).catch((err) => {
+                    console.log(err);
+                });
+            } else {
+            searchThumbReviews(memberId, nextPage, searchValue)
                 .then((newReviews) => {
                     setSearchedReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
                     setUpdatePage(true);
@@ -83,6 +103,7 @@ export default function MyThumbsSearch({ isCookie, setMusicalId, setReviewId }) 
                 .catch((err) => {
                     console.log(err);
                 });
+            }
         }
     }
 
@@ -108,16 +129,25 @@ export default function MyThumbsSearch({ isCookie, setMusicalId, setReviewId }) 
     
     useEffect(() => {
         if (searchValue !== '') {
-            searchThumbReviews(page, searchValue)
+            if (otherMemberId) {
+                searchThumbReviews(otherMemberId, page, searchValue)
+                .then((res) => {
+                    setSearchedReviews(res.reviews);
+                }).catch((err) => {
+                    console.log(err);
+                });
+            } else {
+            searchThumbReviews(memberId, page, searchValue)
                 .then((res) => {
                     setSearchedReviews(res.reviews);
                 })
                 .catch((err) => {
                     console.log(err);
                 });
+            }
         }
     }
-    , [searchValue, page]);
+    , [searchValue, page, memberId, otherMemberId]);
 
     const onChangeText = (text) => {
         setValue(text);

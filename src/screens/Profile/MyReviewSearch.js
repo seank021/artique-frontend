@@ -9,10 +9,10 @@ import * as Keywords from "@functions/keywords";
 
 import { searchCreatedReviews, thumbsUp } from "@functions/api";
 
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { ShortReviewFormInMyReviews } from "@forms/ReviewForm";
 
-export default function MyReviewSearch({ isCookie, setMusicalId, setReviewId}) {
+export default function MyReviewSearch({ isCookie, memberId, setMusicalId, setReviewId}) {
     {/*페이지 이동*/}
     const nav = useNavigation();
 
@@ -25,6 +25,9 @@ export default function MyReviewSearch({ isCookie, setMusicalId, setReviewId}) {
         setReviewId(reviewId);
         nav.navigate('ReviewDetail1');
     };
+
+    const route = useRoute();
+    const otherMemberId = route.params?.otherMemberId;
 
     {/*공감*/}
     const onPressThumbsUp = (reviewId, isThumbsUp) => {
@@ -46,14 +49,22 @@ export default function MyReviewSearch({ isCookie, setMusicalId, setReviewId}) {
     
     useEffect(() => {
         if (updatePage && page === 0) {
-            searchCreatedReviews(page, searchValue, orderBy).then((newReviews) => {
+            if (otherMemberId) {
+                searchCreatedReviews(otherMemberId, page, searchValue, orderBy).then((newReviews) => {
+                    setSearchedReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
+                }).catch((err) => {
+                    console.log(err);
+                });
+            } else {
+            searchCreatedReviews(memberId, page, searchValue, orderBy).then((newReviews) => {
                 setSearchedReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
             }
             ).catch((err) => {
                 console.log(err);
             });
         }
-    }, [page, updatePage, orderBy]);
+        }
+    }, [page, updatePage, orderBy, otherMemberId, memberId, searchValue]);
 
     const detectScroll = async (e) => {
         if (!updatePage) {
@@ -76,8 +87,18 @@ export default function MyReviewSearch({ isCookie, setMusicalId, setReviewId}) {
             setUpdatePage(false);
             const nextPage = page + 1;
             setPage(nextPage);
-
-            searchCreatedReviews(nextPage, searchValue, orderBy)
+            
+            if (otherMemberId) {
+                searchCreatedReviews(otherMemberId, nextPage, searchValue, orderBy)
+                    .then((newReviews) => {
+                        setSearchedReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
+                        setUpdatePage(true);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            } else {
+            searchCreatedReviews(memberId, nextPage, searchValue, orderBy)
                 .then((newReviews) => {
                     setSearchedReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
                     setUpdatePage(true);
@@ -85,6 +106,7 @@ export default function MyReviewSearch({ isCookie, setMusicalId, setReviewId}) {
                 .catch((err) => {
                     console.log(err);
                 });
+            }
         }
     }
 
@@ -114,16 +136,25 @@ export default function MyReviewSearch({ isCookie, setMusicalId, setReviewId}) {
     
     useEffect(() => {
         if (searchValue !== '') {
-            searchCreatedReviews(page, searchValue, orderBy)
+            if (otherMemberId) {
+                searchCreatedReviews(otherMemberId, page, searchValue, orderBy)
+                    .then((res) => {
+                        setSearchedReviews(res.reviews);
+                    }).catch((err) => {
+                        console.log(err);
+                    });
+            } else {
+            searchCreatedReviews(memberId, page, searchValue, orderBy)
                 .then((res) => {
                     setSearchedReviews(res.reviews);
                 })
                 .catch((err) => {
                     console.log(err);
                 });
+            }
         }
     }
-    , [page, searchValue, orderBy]);
+    , [page, searchValue, orderBy, otherMemberId, memberId]);
 
     const onChangeText = (text) => {
         setValue(text);

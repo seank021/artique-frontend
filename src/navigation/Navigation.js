@@ -95,6 +95,11 @@ const Navigation = () => {
                 <Stack.Screen name="ReviewDetail1" children={() => <ReviewDetail1 isCookie={isCookie} reviewId={reviewId}/>} />
                 <Stack.Screen name="ReviewWrite1" children={() => <ReviewWrite1 isCookie={isCookie} musicalId={musicalId} musicalPoster={musicalPoster} musicalTitle={musicalTitle}/>} />
                 <Stack.Screen name="ReviewUpdate1" children={() => <ReviewUpdate1 isCookie={isCookie} reviewInfo={reviewInfo} reviewInfo2={reviewInfo2}/>} />
+                <Stack.Screen name="Mypage" children={() => <Mypage isCookie={isCookie} memberId={memberId} setReviewId={setReviewId} />} />
+                <Stack.Screen name="MyReviews" children={() => <MyReviews isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
+                <Stack.Screen name="MyReviewSearch" children={() => <MyReviewSearch isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
+                <Stack.Screen name="MyThumbs" children={() => <MyThumbs isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
+                <Stack.Screen name="MyThumbsSearch" children={() => <MyThumbsSearch isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
             </Stack.Navigator>
         )
     };
@@ -127,6 +132,7 @@ const Navigation = () => {
 
     const ProfileStack = () => {
         const [isCookie, setIsCookie] = useState(true);
+        const [memberId, setMemberId] = useState("");
         const [musicalId, setMusicalId] = useState(0);
         const [reviewId, setReviewId] = useState(0);
         const [musicalPoster, setMusicalPoster] = useState("");
@@ -140,14 +146,22 @@ const Navigation = () => {
             checkCookie();
         }, []);
 
+        useEffect(() => {
+            const memberId = async () => {
+                const memberId = await memberIdInMypage();
+                setMemberId(memberId);
+            };
+            memberId();
+        }, []);
+
         return (
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="Mypage" children={() => <Mypage isCookie={isCookie} setReviewId={setReviewId}/>} />
+                <Stack.Screen name="Mypage" children={() => <Mypage isCookie={isCookie} memberId={memberId} setReviewId={setReviewId}/>} />
                 <Stack.Screen name="ChangeProfile" children={() => <ChangeProfile isCookie={isCookie} />} />
-                <Stack.Screen name="MyReviews" children={() => <MyReviews isCookie={isCookie} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
-                <Stack.Screen name="MyReviewSearch" children={() => <MyReviewSearch isCookie={isCookie} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
-                <Stack.Screen name="MyThumbs" children={() => <MyThumbs isCookie={isCookie} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
-                <Stack.Screen name="MyThumbsSearch" children={() => <MyThumbsSearch isCookie={isCookie} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
+                <Stack.Screen name="MyReviews" children={() => <MyReviews isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
+                <Stack.Screen name="MyReviewSearch" children={() => <MyReviewSearch isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
+                <Stack.Screen name="MyThumbs" children={() => <MyThumbs isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
+                <Stack.Screen name="MyThumbsSearch" children={() => <MyThumbsSearch isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
                 <Stack.Screen name="MusicalDetail1" children={() => <MusicalDetail1 isCookie={isCookie} musicalId={musicalId} setMusicalId={setMusicalId} setMusicalPoster={setMusicalPoster} setMusicalTitle={setMusicalTitle} setReviewId={setReviewId}/>} />
                 <Stack.Screen name="MusicalDetail2" children={() => <MusicalDetail2 isCookie={isCookie} musicalId={musicalId} setMusicalId={setMusicalId} setMusicalPoster={setMusicalPoster} setMusicalTitle={setMusicalTitle} setReviewId={setReviewId}/>} />
                 <Stack.Screen name="ReviewDetail1" children={() => <ReviewDetail1 isCookie={isCookie} reviewId={reviewId}/>} />

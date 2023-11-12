@@ -7,9 +7,9 @@ import { ShortReviewFormInFeed } from "@forms/ReviewForm";
 
 import { myThumbsAll, thumbsUp } from "@functions/api";
 
-import { useNavigation, useIsFocused } from "@react-navigation/native";
+import { useNavigation, useIsFocused, useRoute } from "@react-navigation/native";
 
-export default function MyThumbs({ isCookie, setMusicalId, setReviewId }) {
+export default function MyThumbs({ isCookie, memberId, setMusicalId, setReviewId }) {
   const nav = useNavigation();
 
   const [page, setPage] = useState(0);
@@ -31,18 +31,33 @@ export default function MyThumbs({ isCookie, setMusicalId, setReviewId }) {
   };
 
   const goToMyThumbsSearch = () => {
+    if (otherMemberId) {
+      nav.navigate('MyThumbsSearch', {otherMemberId: otherMemberId});
+    } else {
     nav.navigate('MyThumbsSearch');
+    }
   }
+
+  const route = useRoute();
+  const otherMemberId= route.params?.otherMemberId;
 
   useEffect(() => {
     if (updatePage && page === 0) {
-      myThumbsAll(page).then((newReviews) => {
+      if (otherMemberId) {
+        myThumbsAll(otherMemberId, page).then((newReviews) => {
+          setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
+        }).catch((err) => {
+          console.log(err);
+        });
+      } else {
+      myThumbsAll(memberId, page).then((newReviews) => {
         setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
       }).catch((err) => {
         console.log(err);
       });
     }
-  }, [page, updatePage, reviews]);
+    }
+  }, [page, updatePage, reviews, memberId, otherMemberId]);
 
   const onPressThumbsUp = (reviewId, isThumbsUp) => {
     thumbsUp(reviewId, !isThumbsUp).then((res) => {
@@ -80,12 +95,21 @@ export default function MyThumbs({ isCookie, setMusicalId, setReviewId }) {
         const nextPage = page + 1;
         setPage(nextPage);
         
-        myThumbsAll(nextPage).then((newReviews) => {
+        if (otherMemberId) {
+          myThumbsAll(otherMemberId, nextPage).then((newReviews) => {
+            setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
+            setUpdatePage(true);
+          }).catch((err) => {
+            console.log(err);
+          }
+        )} else {
+        myThumbsAll(memberId, nextPage).then((newReviews) => {
           setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
           setUpdatePage(true);
         }).catch((err) => {
           console.log(err);
         });
+      }
     }
   }
   

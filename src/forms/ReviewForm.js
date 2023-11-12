@@ -177,7 +177,8 @@ export function ShortReviewFormInFeed(props) {
     }
 
     const onPressProfile = () => {
-        nav.navigate('Mypage', {params: { memberId: props.reviewInfo.memberId }});
+        console.log("내가 누르고 있는 프로필의 아이디", props.reviewInfo.memberId)
+        nav.navigate('Mypage', { otherMemberId: props.reviewInfo.memberId });
     }
 
     return (

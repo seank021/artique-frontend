@@ -3,25 +3,37 @@ import { View, Text, Image, StyleSheet, ScrollView, Pressable } from "react-nati
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
 
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { ShortReviewFormInMypage } from "@forms/ReviewForm";
 import makeBarChart from "@functions/makeBarChart";
 
-import { memberSummary, otherSummary, memberStatistics, otherStatistics, memberShortThumbReviews, otherSearchThumbReviews } from "@functions/api";
+import { memberSummary, memberStatistics, memberShortThumbReviews } from "@functions/api";
 
-export default function Mypage ({ isCookie, setReviewId }) {
+export default function Mypage ({ isCookie, memberId, setReviewId }) {
   const nav = useNavigation();
+
+  const goBack = () => {
+    nav.goBack();
+  }
 
   const goToChangeProfile = () => {
     nav.navigate('ChangeProfile');
   }
 
   const goToMyReviews = () => {
+    if (route.params?.otherMemberId) {
+      nav.navigate('MyReviews', {otherMemberId: route.params?.otherMemberId});
+    } else {
     nav.navigate('MyReviews');
+    }
   }
 
   const goToMyThumbs = () => {
+    if (route.params?.otherMemberId) {
+      nav.navigate('MyThumbs', {otherMemberId: route.params?.otherMemberId});
+    } else {
     nav.navigate('MyThumbs');
+    }
   }
 
   const goToMainSetting = () => {
@@ -41,22 +53,40 @@ export default function Mypage ({ isCookie, setReviewId }) {
 
   const [shortReviewInfo, setShortReviewInfo] = useState([]);
 
+  const route = useRoute();
+  const otherMemberId = route.params?.otherMemberId;
+
   useEffect(() => {
-    memberSummary().then((newMemberInfo) => {
-      setMemberInfo(() => newMemberInfo);
-    }).catch((err) => {
-      console.log(err);
-    });
-  }, []);
+      if (otherMemberId) {
+        memberSummary(otherMemberId).then((newMemberInfo) => {
+          setMemberInfo(() => newMemberInfo);
+        }).catch((err) => {
+          console.log(err);
+        });
+      } else {
+        memberSummary().then((newMemberInfo) => {
+          setMemberInfo(() => newMemberInfo);
+        }).catch((err) => {
+          console.log(err);
+        });
+      }
+    }, [otherMemberId]);
   
   useEffect(() => {
-    memberStatistics().then((newMemberStat) => {
-      setMemberStat(() => newMemberStat);
-    }).catch((err) => {
-      console.log(err);
-    });
-  }
-  , []);
+    if (otherMemberId) {
+      memberStatistics(otherMemberId).then((newMemberStat) => {
+        setMemberStat(() => newMemberStat);
+      }).catch((err) => {
+        console.log(err);
+      });
+    } else {
+      memberStatistics().then((newMemberStat) => {
+        setMemberStat(() => newMemberStat);
+      }).catch((err) => {
+        console.log(err);
+      }
+    )}
+  }, []);
 
   useEffect(() => {
     setAverageRate(memberStat.averageRate);
@@ -66,32 +96,53 @@ export default function Mypage ({ isCookie, setReviewId }) {
   , [memberStat]);
 
   useEffect(() => {
+    if (otherMemberId) {
+    memberShortThumbReviews(otherMemberId).then((newShortThumbReviews) => {
+      setShortReviewInfo(() => newShortThumbReviews);
+    }).catch((err) => {
+      console.log(err);
+    });
+  } else {
     memberShortThumbReviews().then((newShortThumbReviews) => {
       setShortReviewInfo(() => newShortThumbReviews);
     }).catch((err) => {
       console.log(err);
     });
+  }
   }, []);
 
   return (
     <SafeAreaView style={styles.container}>
       {/* 상단 바 */}
-      <View style={tw`flex-row justify-between items-center mx-5 my-5`}>
-        <Text style={tw`text-lg text-[#191919] font-medium`}>마이페이지</Text>
-        <View style={tw`flex-row`}>
-            <Pressable onPress={goToChangeProfile}>
-              <Image source={require('@images/profilechange.png')} style={tw`w-[18px] h-[18px] mr-4.5`} />
-            </Pressable>
-            <Pressable onPress={goToMainSetting}>
-              <Image source={require('@images/settings.png')} style={tw`w-[18px] h-[18px]`} />
-            </Pressable>
+      {otherMemberId && (otherMemberId !== memberId) ? (
+        <>
+          <View style={tw`flex-row justify-between items-center mt-5 mb-[14px]`}>
+              <Pressable onPress={goBack} style={tw`flex-row`}>
+                  <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] w-[10px] h-[18px] tint-[#191919]`}></Image>
+              </Pressable>
+              <Text style={tw`text-[#191919] text-base font-medium`}>{memberInfo.nickname} 님의 프로필</Text>
+              <View style={tw`mr-[20px]`}></View>
+          </View>
+        </>
+      ) : (
+        <View style={tw`flex-row justify-between items-center mx-5 my-5`}>
+          <Text style={tw`text-lg text-[#191919] font-medium`}>마이페이지</Text>
+          <View style={tw`flex-row`}>
+              <Pressable onPress={goToChangeProfile}>
+                <Image source={require('@images/profilechange.png')} style={tw`w-[18px] h-[18px] mr-4.5`} />
+              </Pressable>
+              <Pressable onPress={goToMainSetting}>
+                <Image source={require('@images/settings.png')} style={tw`w-[18px] h-[18px]`} />
+              </Pressable>
+          </View>
         </View>
-      </View>
+      )}
       <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
 
       {/* 프로필 */}
       <View style={tw`flex-row items-center w-9/10 mt-5 mx-5`}>
-        <Image source={memberInfo.imageUrl ? { uri: memberInfo.imageUrl } : require('@images/newprofile.png')} style={tw`w-[100px] h-[100px] mr-5`}></Image>
+        {/* <Image source={memberInfo.imageUrl ? { uri: memberInfo.imageUrl } : require('@images/newprofile.png')} style={tw`w-[100px] h-[100px] mr-5`}></Image> */}
+        <Image source={require('@images/newprofile.png')} style={tw`w-[100px] h-[100px] mr-5`}></Image>
         <View style={tw`flex-col justify-between`}>
           <Text style={tw`text-base text-[#191919] font-medium mb-5`}>{memberInfo.nickname}</Text>
           <Text style={tw`text-xs text-[#191919] font-normal w-57.5 leading-5`}>{memberInfo.introduce}</Text>
@@ -102,7 +153,7 @@ export default function Mypage ({ isCookie, setReviewId }) {
       </Pressable>
         
       {/* 평점 */}
-      <View style={tw`mt-7.5 ml-5`}>
+      <View style={tw`mt-7.5 ml-5 mb-4`}>
         <Text style={tw`mb-2`}>
           <Text style={tw`text-sm text-[#191919] font-medium`}>{memberInfo.nickname}</Text>
           <Text style={tw`text-sm text-[#191919] font-normal`}> 님은</Text>
@@ -112,13 +163,13 @@ export default function Mypage ({ isCookie, setReviewId }) {
           <Text style={tw`text-sm text-[#191919] font-medium`}> '짠돌이 파'</Text>
         </Text>
       </View>
-      <View style={tw`w-9/10 self-center mb-[12px]`}>
+      <View style={tw`w-9/10 self-center mb-8`}>
         {memberStat.statistic && makeBarChart(memberStat.statistic)}
       </View>
-      <View style={tw`flex-row justify-between mt-3 mx-5`}>
+      <View style={tw`flex-row justify-between mx-5`}>
         <View style={tw`flex-col items-center`}>
           <Text style={tw`text-xs text-[#191919] font-normal`}>별점 평균</Text>
-          <Text style={tw`text-xs text-[#191919] font-normal`}>{averageRate}</Text>
+          <Text style={tw`text-xs text-[#191919] font-normal`}>{Math.round(averageRate * 100)/100}</Text>
         </View>
         <View style={tw`flex-col items-center`}>
           <Text style={tw`text-xs text-[#191919] font-normal`}>작성한 리뷰 수</Text>

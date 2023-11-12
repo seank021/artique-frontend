@@ -186,16 +186,21 @@ const memberIdInMypage = async () => {
     const response = await axios.get(`http://3.39.145.210/member/id` , {
       headers: myHeaders.map,
     });
-    console.log(response.data)
     return response.data;
   } catch (err) {
     console.log(err.response.data);
   }
 }
 
-const memberSummary = async () => {
+const memberSummary = async (otherMemberId) => {
   try {
-    const memberId = await memberIdInMypage();
+    let memberId;
+    
+    if (otherMemberId) {
+      memberId = otherMemberId;
+    } else {
+      memberId = await memberIdInMypage();
+    }
     const response = await axios.get(`http://3.39.145.210/member/summary?member-id=${memberId}`);
     return response.data;
   } catch (err) {
@@ -203,20 +208,15 @@ const memberSummary = async () => {
   }
 };
 
-const otherSummary = async memberId => {
+const memberStatistics = async (otherMemberId) => {
   try {
-    const response = await axios.get(
-      `http://3.39.145.210/member/summary?member-id=${memberId}`,
-    );
-    return response.data;
-  } catch (err) {
-    console.log(err.response.data);
-  }
-};
+    let memberId;
 
-const memberStatistics = async () => {
-  try {
-    const memberId = await memberIdInMypage();
+    if (otherMemberId) {
+      memberId = otherMemberId;
+    } else {
+      memberId = await memberIdInMypage();
+    }
     const response = await axios.get(`http://3.39.145.210/member/summary/statistics?member-id=${memberId}`);
     return response.data;
   } catch (err) {
@@ -224,66 +224,35 @@ const memberStatistics = async () => {
   }
 };
 
-const otherStatistics = async memberId => {
+const memberShortThumbReviews = async (otherMemberId) => {
   try {
-    const response = await axios.get(
-      `http://3.39.145.210/member/summary/statistics?member-id=${memberId}`,
-    );
-    return response.data;
-  } catch (err) {
-    console.log(err.response.data);
-  }
-};
+    let memberId;
 
-const memberShortThumbReviews = async () => {
-  try {
-    const memberId = await memberIdInMypage();
+    if (otherMemberId) {
+      memberId = otherMemberId;
+    } else {
+      memberId = await memberIdInMypage();
+    }
     const response = await axios.get(`http://3.39.145.210/member/review/thumbs/short?member-id=${memberId}`);
-    console.log(response.data);
+    // console.log(response.data)
     return response.data;
   } catch (err) {
     console.log(err.response.data);
   }
 };
 
-const otherShortThumbReviews = async memberId => {
+const myReviewsAll = async (memberId, page, orderBy) => {
   try {
-    const response = await axios.get(
-      `http://3.39.145.210/member/review/thumbs/short?member-id=${memberId}`,
-    );
-    // console.log(response.data);
-    return response.data;
-  } catch (err) {
-    console.log(err.response.data);
-  }
-};
-
-const myReviewsAll = async (page, orderBy) => {
-  try {
-    const memberId = await memberIdInMypage();
     const response = await axios.get(`http://3.39.145.210/member/review/create/all?member-id=${memberId}&page=${page}&size=10&order-by=${orderBy}`);
-    console.log("MYREVIEWS", response.data);
+    console.log("MY REVIEWS ALL", response.data)
     return response.data;
   } catch (err) {
     console.log(err.response.data);
   }
 };
 
-const otherReviewsAll = async (memberId, page, orderBy) => {
+const searchCreatedReviews = async (memberId, page, keyword, orderBy) => {
   try {
-    const response = await axios.get(
-      `http://3.39.145.210/member/review/create/all?member-id=${memberId}&page=${page}&size=10&order-by=${orderBy}`,
-    );
-    console.log('OTHER REVIEWS', response.data);
-    return response.data;
-  } catch (err) {
-    console.log(err.response.data);
-  }
-};
-
-const searchCreatedReviews = async (page, keyword, orderBy) => {
-  try {
-    const memberId = await memberIdInMypage();
     const response = await axios.get(`http://3.39.145.210/member/review/create/search?member-id=${memberId}&page=${page}&size=10&keyword=${keyword}&order-by=${orderBy}`);
     return response.data;
   } catch (err) {
@@ -291,20 +260,8 @@ const searchCreatedReviews = async (page, keyword, orderBy) => {
   }
 };
 
-const otherSearchCreatedReviews = async (memberId, page, keyword, orderBy) => {
+const myThumbsAll = async (memberId, page) => {
   try {
-    const response = await axios.get(
-      `http://3.39.145.210/member/review/create/search?member-id=${memberId}&page=${page}&size=10&keyword=${keyword}&order-by=${orderBy}`,
-    );
-    return response.data;
-  } catch (err) {
-    console.log(err.response.data);
-  }
-};
-
-const myThumbsAll = async (page) => {
-  try {
-    const memberId = await memberIdInMypage();
     const response = await axios.get(`http://3.39.145.210/member/review/thumbs/all?member-id=${memberId}&page=${page}&size=10`);
     console.log("MY THUMBS ALL", response.data)
     return response.data;
@@ -313,33 +270,10 @@ const myThumbsAll = async (page) => {
   }
 };
 
-const otherThumbsAll = async (memberId, page) => {
+const searchThumbReviews = async (memberId, page, keyword) => {
   try {
-    const response = await axios.get(
-      `http://3.39.145.210/member/review/thumbs/all?member-id=${memberId}&page=${page}&size=10`,
-    );
-    return response.data;
-  } catch (err) {
-    console.log(err.response.data);
-  }
-};
-
-const searchThumbReviews = async (page, keyword) => {
-  try {
-    const memberId = await memberIdInMypage();
     const response = await axios.get(`http://3.39.145.210/member/review/thumbs/search?member-id=${memberId}&page=${page}&size=10&keyword=${keyword}`);
     console.log("SEARCH THUMB REVIEWS", response.data)
-    return response.data;
-  } catch (err) {
-    console.log(err.response.data);
-  }
-};
-
-const otherSearchThumbReviews = async (memberId, page, keyword) => {
-  try {
-    const response = await axios.get(
-      `http://3.39.145.210/member/review/thumbs/search?member-id=${memberId}&page=${page}&size=10&keyword=${keyword}`,
-    );
     return response.data;
   } catch (err) {
     console.log(err.response.data);
@@ -411,20 +345,13 @@ export {
   reviewDelete, reviewDetail,
   searchMusicals,
   memberSummary,
-  otherSummary,
   memberStatistics,
-  otherStatistics,
   memberShortThumbReviews,
-  otherShortThumbReviews,
   memberIdInMypage,
   myReviewsAll,
-  otherReviewsAll,
   searchCreatedReviews,
-  otherSearchCreatedReviews,
   myThumbsAll,
-  otherThumbsAll,
   searchThumbReviews,
-  otherSearchThumbReviews,
   profileUpload,
   updateMember,
   duplicateNickname,
