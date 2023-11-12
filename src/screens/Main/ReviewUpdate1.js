@@ -117,8 +117,8 @@ export default function ReviewUpdate1({ isCookie, reviewInfo, reviewInfo2 }) {
         }
 
         // console.log(`${casting} 캐스팅, ${seat} 좌석, ${year}년 ${month}월 ${day}일 관람, ${star}점, ${isShortReviewSpoiler ? '스포' : '비스포'}일러, ${shortReview}, ${isLongReviewSpoiler ? '스포' : '비스포'}일러, ${longReview}`);
-        console.log(isShortReviewSpoiler);
-        console.log(isLongReviewSpoiler);
+        // console.log(isShortReviewSpoiler);
+        // console.log(isLongReviewSpoiler);
 
         // year, month, day로 날짜 형식 맞추기 (YYYYMMDD)
         const yearString = year.toString();
@@ -132,8 +132,6 @@ export default function ReviewUpdate1({ isCookie, reviewInfo, reviewInfo2 }) {
         try {
             await reviewUpdate(reviewInfo2.id, star, shortReview, longReview, casting, `${finalYear}-${finalMonth}-${finalDay}`, seat, isShortReviewSpoiler, isLongReviewSpoiler);
             
-            console.log(reviewInfo2.id, star, shortReview, longReview, casting, `${finalYear}-${finalMonth}-${finalDay}`, seat, isShortReviewSpoiler, isLongReviewSpoiler)
-
             setModalVisible(!modalVisible);
             setAlertImage(require('@images/check.png'));
             setAlertText('리뷰가 수정되었습니다');
