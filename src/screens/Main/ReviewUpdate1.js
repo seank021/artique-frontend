@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, StyleSheet, Pressable, ScrollView, Alert } from 'react-native';
+import { View, Text, Image, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import tw from 'twrnc';
@@ -44,16 +44,18 @@ export default function ReviewUpdate1({ isCookie, reviewInfo, reviewInfo2 }) {
     // 별점 평가
     const [star, setStar] = useState(parseInt(reviewInfo2.rating));
 
+    // console.log(reviewInfo2);
+
     // 한줄평
-    const [isShortReviewSpoiler, setIsShortReviewSpoiler] = useState(false);
-    const [shortReviewCheckRectangle, setShortReviewCheckRectangle] = useState(require('@images/rectangle.png'));
+    const [isShortReviewSpoiler, setIsShortReviewSpoiler] = useState(reviewInfo2.shortSpoiler);
+    const [shortReviewCheckRectangle, setShortReviewCheckRectangle] = reviewInfo2.shortSpoiler ? useState(require('@images/rectangle_checked_with_border.png')) : useState(require('@images/rectangle.png'));
     const [shortReviewModalVisible, setShortReviewModalVisible] = useState(false); // 한줄평 모달
     const [shortReview, setShortReview] = useState(reviewInfo2.shortReview);
 
     // 긴줄평
     const [longReviewModalVisible, setLongReviewModalVisible] = useState(false); // 긴줄평 모달
     const [longReview, setLongReview] = useState(reviewInfo2.longReview);
-    const [isLongReviewSpoiler, setIsLongReviewSpoiler] = useState(false);      
+    const [isLongReviewSpoiler, setIsLongReviewSpoiler] = useState(reviewInfo2.longSpoiler);
 
     const onPressCasting = () => {
         setCastingModalVisible(!castingModalVisible);
@@ -85,7 +87,7 @@ export default function ReviewUpdate1({ isCookie, reviewInfo, reviewInfo2 }) {
         nav.goBack();
     };
 
-    const onPressSave = () => {
+    const onPressSave = async () => {
         if (year === 0 || month === 0 || day === 0) {
             setModalVisible(!modalVisible);
             setAlertImage(require('@images/x_red.png'));
@@ -115,7 +117,9 @@ export default function ReviewUpdate1({ isCookie, reviewInfo, reviewInfo2 }) {
         }
 
         // console.log(`${casting} 캐스팅, ${seat} 좌석, ${year}년 ${month}월 ${day}일 관람, ${star}점, ${isShortReviewSpoiler ? '스포' : '비스포'}일러, ${shortReview}, ${isLongReviewSpoiler ? '스포' : '비스포'}일러, ${longReview}`);
-        
+        console.log(isShortReviewSpoiler);
+        console.log(isLongReviewSpoiler);
+
         // year, month, day로 날짜 형식 맞추기 (YYYYMMDD)
         const yearString = year.toString();
         const monthString = month.toString();
@@ -126,8 +130,10 @@ export default function ReviewUpdate1({ isCookie, reviewInfo, reviewInfo2 }) {
         const finalDay = dayString.padStart(2, '0');
 
         try {
-            reviewUpdate(reviewInfo2.id, star, shortReview, longReview, casting, `${finalYear}-${finalMonth}-${finalDay}`, seat);
+            await reviewUpdate(reviewInfo2.id, star, shortReview, longReview, casting, `${finalYear}-${finalMonth}-${finalDay}`, seat, isShortReviewSpoiler, isLongReviewSpoiler);
             
+            console.log(reviewInfo2.id, star, shortReview, longReview, casting, `${finalYear}-${finalMonth}-${finalDay}`, seat, isShortReviewSpoiler, isLongReviewSpoiler)
+
             setModalVisible(!modalVisible);
             setAlertImage(require('@images/check.png'));
             setAlertText('리뷰가 수정되었습니다');
@@ -228,14 +234,14 @@ export default function ReviewUpdate1({ isCookie, reviewInfo, reviewInfo2 }) {
                 <Text style={tw`text-[#191919] text-sm w-[30%]`}>별점 평가</Text>
                 <View style={tw`flex-col justify-center items-center flex-1`}>
                     {star === 0 ? <Text style={tw`text-[#B6B6B6] text-sm`}>별을 눌러 작품을 평가해주세요</Text>
-                    : star === 0.5 ? <Text style={tw`text-[#191919] text-sm`}>많이 아쉬웠던 작품</Text> 
-                    : star === 1 ? <Text style={tw`text-[#191919] text-sm`}>많이 아쉬웠던 작품</Text>
-                    : star === 1.5 ? <Text style={tw`text-[#191919] text-sm`}>한 번은 볼만한 작품</Text>
-                    : star === 2 ? <Text style={tw`text-[#191919] text-sm`}>한 번은 볼만한 작품</Text>
-                    : star === 2.5 ? <Text style={tw`text-[#191919] text-sm`}>한 번은 볼만한 작품</Text>
-                    : star === 3 ? <Text style={tw`text-[#191919] text-sm`}>다시 한 번 보고 싶은 작품</Text>
-                    : star === 3.5 ? <Text style={tw`text-[#191919] text-sm`}>다시 한 번 보고 싶은 작품</Text>
-                    : star === 4 ? <Text style={tw`text-[#191919] text-sm`}>추천하고 싶은 작품</Text>
+                    : star === 0.5 ? <Text style={tw`text-[#191919] text-sm`}>많이 아쉬운 작품</Text> 
+                    : star === 1 ? <Text style={tw`text-[#191919] text-sm`}>많이 아쉬운 작품</Text>
+                    : star === 1.5 ? <Text style={tw`text-[#191919] text-sm`}>많이 아쉬운 작품</Text>
+                    : star === 2 ? <Text style={tw`text-[#191919] text-sm`}>조금 아쉬운 작품</Text>
+                    : star === 2.5 ? <Text style={tw`text-[#191919] text-sm`}>조금 아쉬운 작품</Text>
+                    : star === 3 ? <Text style={tw`text-[#191919] text-sm`}>무난한 작품</Text>
+                    : star === 3.5 ? <Text style={tw`text-[#191919] text-sm`}>추천할 만한 작품</Text>
+                    : star === 4 ? <Text style={tw`text-[#191919] text-sm`}>완성도가 높은 작품</Text>
                     : star === 4.5 ? <Text style={tw`text-[#191919] text-sm`}>나의 인생작</Text>
                     : <Text style={tw`text-[#191919] text-sm`}>내 인생 최고의 명작</Text>
                     }
