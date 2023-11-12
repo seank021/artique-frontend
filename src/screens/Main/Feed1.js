@@ -47,7 +47,7 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
                 console.log(err);
             });
         }
-    }, [page, updatePage, feeds]);
+    }, [page, updatePage]);
 
     const onRefresh = React.useCallback(() => {
         if (refreshing) {
