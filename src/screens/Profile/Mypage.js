@@ -8,6 +8,7 @@ import { ShortReviewFormInMypage } from "@forms/ReviewForm";
 import makeBarChart from "@functions/makeBarChart";
 
 import { memberSummary, memberStatistics, memberShortThumbReviews } from "@functions/api";
+import UserTendency from "@forms/UserTendency";
 
 export default function Mypage ({ isCookie, memberId, setReviewId }) {
   const nav = useNavigation();
@@ -64,7 +65,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
     setTimeout(() => {
       setRefreshing(false);
     }, 1000);
-  }, [refreshing, memberInfo, memberStat, shortReviewInfo]);
+  }, [refreshing]);
 
   const goBack = () => {
     nav.goBack();
@@ -75,16 +76,16 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
   }
 
   const goToMyReviews = () => {
-    if (route.params?.otherMemberId) {
-      nav.navigate('MyReviews', {otherMemberId: route.params?.otherMemberId});
+    if (otherMemberId) {
+      nav.navigate('MyReviews', {otherMemberId: otherMemberId});
     } else {
     nav.navigate('MyReviews');
     }
   }
 
   const goToMyThumbs = () => {
-    if (route.params?.otherMemberId) {
-      nav.navigate('MyThumbs', {otherMemberId: route.params?.otherMemberId});
+    if (otherMemberId) {
+      nav.navigate('MyThumbs', {otherMemberId: otherMemberId});
     } else {
     nav.navigate('MyThumbs');
     }
@@ -124,7 +125,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
           console.log(err);
         });
       }
-    }, [otherMemberId]);
+    }, []);
   
   useEffect(() => {
     if (otherMemberId) {
@@ -147,7 +148,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
     setTotalReviewCount(memberStat.totalReviewCount);
     setMaxStarRate(memberStat.maxStarRate);
   }
-  , [memberStat]);
+  , []);
 
   useEffect(() => {
     if (otherMemberId) {
@@ -208,16 +209,11 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
       </Pressable>
         
       {/* 평점 */}
-      <View style={tw`mt-7.5 ml-5 mb-4`}>
-        <Text style={tw`mb-2`}>
-          <Text style={tw`text-sm text-[#191919] font-medium`}>{memberInfo.nickname}</Text>
-          <Text style={tw`text-sm text-[#191919] font-normal`}> 님은</Text>
-        </Text>
-        <Text style={tw`items-center`}>
-          <Text style={tw`text-xs text-[#191919] font-normal`}>냉정하게 별점을 매기는</Text>
-          <Text style={tw`text-sm text-[#191919] font-medium`}> '짠돌이 파'</Text>
-        </Text>
-      </View>
+      <UserTendency
+        nickname={memberInfo.nickname}
+        memberStat={memberStat.statistic} 
+        totalReviewCount={totalReviewCount} />
+
       <View style={tw`w-9/10 self-center mb-8`}>
         {memberStat.statistic && makeBarChart(memberStat.statistic)}
       </View>
@@ -248,10 +244,12 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
           if (index < 3) {
             return (
               <ShortReviewFormInMypage 
+                key={index}
                 musicalName={review.musicalName} 
                 starRating={review.starRating} 
                 shortReview={review.shortReview} 
-                onPressShortReview={() => goToReviewDetail1(review.reviewId)}/>
+                onPressShortReview={() => goToReviewDetail1(review.reviewId)}
+                isCookie={isCookie}/>
             )}
           }
         )}
