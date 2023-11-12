@@ -8,10 +8,33 @@ import { ShortReviewFormInMyReviews } from "@forms/ReviewForm";
 
 import { memberStatistics, myReviewsAll, thumbsUp } from "@functions/api";
 
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute, useIsFocused } from "@react-navigation/native";
 
-export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId}) {
+export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId, setReviewInfo, setReviewInfo2}) {
   const nav = useNavigation();
+
+  const [refreshing, setRefreshing] = useState(false);
+  const isFocused = useIsFocused();
+  const [firstFocus, setFirstFocus] = useState(true);
+  const [onRefreshWhenDelete, setOnRefreshWhenDelete] = useState(false);
+
+  useEffect(() => {
+    if (firstFocus) {
+        setFirstFocus(false);
+        return;
+    }
+    if (!isFocused) {
+        return;
+    }
+    onRefresh();
+}, [isFocused]);
+
+  useEffect(() => {
+      if (onRefreshWhenDelete) {
+          onRefresh();
+          setOnRefreshWhenDelete(false);
+      }
+  }, [onRefreshWhenDelete]);
 
   const [sortModalVisible, setSortModalVisible] = useState(false);
   const [sortCriteria, setSortCriteria] = useState("공감순");
@@ -62,7 +85,7 @@ export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId
         console.log(err);
       });
     }
-    }, [otherMemberId]);
+    }, []);
 
   useEffect(() => {
     if (updatePage && page === 0) {
@@ -81,6 +104,40 @@ export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId
       }
     }
     }, [page, updatePage, orderBy, otherMemberId]);
+
+    const onRefresh = React.useCallback(() => {
+      if (refreshing) {
+          return;
+      }
+
+      setRefreshing(true);
+
+      setReviews([]);
+      setPage(0);
+      setUpdatePage(true);
+
+      if (updatePage && page === 0) {
+        if (otherMemberId) {
+          myReviewsAll(otherMemberId, page, orderBy).then((newReviews) => {
+            setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
+            setUpdatePage(true);
+        }).catch((err) => {
+            console.log(err);
+        });
+        } else {
+          myReviewsAll(memberId, page, orderBy).then((newReviews) => {
+            setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
+            setUpdatePage(true);
+        }).catch((err) => {
+            console.log(err);
+        });
+        }
+      }
+
+      setTimeout(() => {
+          setRefreshing(false);
+      }, 1000);
+  }, [refreshing, page, updatePage]);
 
   const onPressThumbsUp = (reviewId, isThumbsUp) => {
     thumbsUp(reviewId, !isThumbsUp).then((res) => {
@@ -172,7 +229,13 @@ export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId
                       onPressThumbsUp={() => onPressThumbsUp(review.reviewId, review.isThumbsUp)}
                       goToMusicalDetail1={() => goToMusicalDetail1(review.musicalId)}
                       goToReviewDetail1={() => goToReviewDetail1(review.reviewId)}
+                      // isShortReviewSpoiler={review.reviewSpoiler}
+                      isShortReviewSpoiler={true}
                       isCookie={isCookie}
+                      isMine={review.memberId === memberId}
+                      setReviewInfo={setReviewInfo}
+                      setReviewInfo2={setReviewInfo2}
+                      setOnRefreshWhenDelete={setOnRefreshWhenDelete}
                   />
                   {index < reviews.length - 1 && (
                       <View style={tw`border-4 border-[#F0F0F0]`}></View>

@@ -256,7 +256,7 @@ export function ShortReviewFormInFeed(props) {
     );
 }
 
-// props: reviewInfo, onPressThumbsUp, isCookie, goToReviewDetail1, goToMusicalDetail1
+// props: reviewInfo, onPressThumbsUp, isCookie, goToReviewDetail1, goToMusicalDetail1, isShortReviewSpoiler, isMine, reviewInfo, setReviewInfo, setReviewInfo2, setOnRefreshWhenDelete
 export function ShortReviewFormInMyReviews(props) {
     const [isCookie, setIsCookie] = useState(props.isCookie);
     const [isThumbsUp, setIsThumbsUp] = useState(props.reviewInfo.isThumbsUp);
@@ -267,6 +267,11 @@ export function ShortReviewFormInMyReviews(props) {
 
     const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
     const [alertText, setAlertText] = useState('로그인이 필요한 서비스입니다.');
+
+    const [modifynDeleteModalVisible, setModifynDeleteModalVisible] = useState(false);
+    const [reportModalVisible, setReportModalVisible] = useState(false);
+
+    const [seeSpoiler, setSeeSpoiler] = useState(!props.isShortReviewSpoiler);
 
     useEffect(() => {
         setIsCookie(props.isCookie);
@@ -299,6 +304,20 @@ export function ShortReviewFormInMyReviews(props) {
         props.onPressThumbsUp(props.reviewInfo.reviewId);
     };
 
+    const onPressMore = () => {
+        if (!props.isCookie) {
+            setModalVisible(!modalVisible);
+            setAlertImage(require('@images/x_red.png'));
+            setAlertText('로그인이 필요한 서비스입니다.');
+            setTimeout(() => {
+                setModalVisible(modalVisible);
+            }, 1000);
+            return;
+        }
+        if (props.isMine) setModifynDeleteModalVisible(!modifynDeleteModalVisible);
+        else setReportModalVisible(!reportModalVisible);
+    }
+
     return (
         <>
             <View>
@@ -307,8 +326,14 @@ export function ShortReviewFormInMyReviews(props) {
             <View style={tw`flex flex-col w-[90%] self-center my-[20px]`}>
                 <View style={tw`flex-row justify-between items-center mb-[10px] z-20`}>
                     <Text style={tw`text-[#ABABAB] text-xs`}>{props.reviewInfo.viewDate}</Text>
-                    <Image source={require('@images/threedots.png')} style={tw`w-[16px] h-[3.5px] mr-[4px]`}></Image>
+                    <Pressable onPress={onPressMore}>
+                        <Image source={require('@images/threedots.png')} style={tw`w-[16px] h-[3.5px] mr-[4px]`}></Image>
+                    </Pressable>
                 </View>
+                {props.isMine ?
+                    <AlertFormForModifyAndDelete modalVisible={modifynDeleteModalVisible} setModalVisible={setModifynDeleteModalVisible} reviewInfo={props.reviewInfo} setReviewInfo={props.setReviewInfo} setReviewInfo2={props.setReviewInfo2} setOnRefreshWhenDelete={props.setOnRefreshWhenDelete} ></AlertFormForModifyAndDelete>
+                    : <AlertFormForReport modalVisible={reportModalVisible} setModalVisible={setReportModalVisible} reviewInfo={props.reviewInfo}></AlertFormForReport>
+                }
 
                 <View style={tw`flex flex-row mb-[12px] bg-[#FFFFFF] h-[162px] rounded-4 shadow-sm`}>
                     <Image source={{uri: props.reviewInfo.posterUrl}} style={tw`w-[122px] rounded-l-4 mr-[20px]`} onTouchEnd={props.goToMusicalDetail1} />
@@ -323,15 +348,22 @@ export function ShortReviewFormInMyReviews(props) {
                         <View style={tw`w-[10px] h-[10px] rounded-full bg-[#F8F8F8] ml-[4px] mt-[9px]`}></View>
                         <View style={tw`w-[18px] h-[18px] rounded-full bg-[#F8F8F8] mt-[10px]`}></View>
                     </View>
+                    
                     <View style={[tw`flex-col justify-between ml-[10px]`, { flex: 1 }]} onTouchEnd={props.goToReviewDetail1}>
                         <Text style={tw`text-[#191919] text-base font-medium mt-[14px] mb-[4px]`}>{props.reviewInfo.musicalName}</Text>
                         <Text style={tw`text-[#191919] text-xs mb-[14px]`}>
                             {props.reviewInfo.casting.length > 20 ? `${props.reviewInfo.casting.slice(0, 20)} ...` : props.reviewInfo.casting}
                         </Text>
                         {makeStars(props.reviewInfo.starRating)}
-                        <View style={tw`flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mt-[5px] mb-[14px] p-[6px] rounded-2 w-[95%]`}>
-                            <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>"</Text>
-                            <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>{props.reviewInfo.shortReview.length < 25 ? props.reviewInfo.shortReview : props.reviewInfo.shortReview.slice(0, 25) + '···'}"</Text>
+                        <View onTouchEnd={(e)=> { e.stopPropagation(); setSeeSpoiler(true)}} style={tw`flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mt-[5px] mb-[14px] p-[6px] rounded-2 w-[95%]`}>
+                            {seeSpoiler ?
+                                <>
+                                    <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>"</Text>
+                                    <Text style={tw`text-[#191919] font-medium leading-[22px]`}>{props.reviewInfo.shortReview.length < 25 ? props.reviewInfo.shortReview : props.reviewInfo.shortReview.slice(0, 25) + '···'}"</Text>
+                                </>
+                                :
+                                <Text style={[tw`text-[#B6B6B6] font-medium leading-[22px] underline`, {fontSize: getFontSize(14)}]}>스포일러 보기</Text>
+                            }
                         </View>
                     </View>
                 </View>
@@ -404,8 +436,10 @@ export function MusicalInfoFormInReviewDetail(props) {
         </View>
     )
 }
-{/* props: reviewId, musicalName, starRating, shortReview*/}
+{/* props: reviewId, musicalName, starRating, shortReview, isShortReviewSpoiler*/}
 export function ShortReviewFormInMypage(props) {
+    const [seeSpoiler, setSeeSpoiler] = useState(!props.isShortReviewSpoiler);
+    
     return (
         <View style={tw`w-[250px] h-[120px] bg-[#FFF] rounded-[10px] shadow mr-2`}>
             <View style={tw`w-full flex-col items-start mx-3 my-3`}>
@@ -413,16 +447,21 @@ export function ShortReviewFormInMypage(props) {
                 <View> 
                     {makeStars(props.starRating)}
                 </View>
-                <Pressable onPress={props.onPressShortReview}>
-                    <View style={tw`flex-row items-center bg-[#F5F5F5] rounded-[5px] w-[230px] h-[50px] mt-1.25`}>
+                <View onTouchEnd={props.onPressShortReview} style={tw`flex-row items-center bg-[#F5F5F5] rounded-[5px] w-[230px] h-[50px] mt-1.25`}>
+                    {seeSpoiler ?
                         <View style={tw`flex-row justify-between mx-1.5 my-1.5`}>
                             <Text style={tw`text-xs text-[#191919] font-medium`}>"</Text>
                             <Text numberOfLines={2} ellipsizeMode='tail' style={tw`text-xs text-[#191919] font-medium shrink mr-1.5`}>
                                 {`${props.shortReview}`.replace(/^(.{30}[^\s]*).*/, "$1...\"")}
                             </Text>
                         </View>
-                    </View>
-                </Pressable>
+                        :
+                        <View style={tw`mx-2 my-1.5`}>
+                            <Text onTouchEnd={(e)=> { e.stopPropagation(); setSeeSpoiler(true)}} style={[tw`text-[#B6B6B6] font-medium underline`, {fontSize: getFontSize(12)}]}>스포일러 보기</Text>
+                        </View>
+                    }
+                </View>
+
             </View>
         </View>
     )

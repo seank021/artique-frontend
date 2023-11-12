@@ -65,7 +65,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
     setTimeout(() => {
       setRefreshing(false);
     }, 1000);
-  }, [refreshing]);
+  }, [refreshing, memberInfo]);
 
   const goBack = () => {
     nav.goBack();
@@ -249,7 +249,8 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
                 starRating={review.starRating} 
                 shortReview={review.shortReview} 
                 onPressShortReview={() => goToReviewDetail1(review.reviewId)}
-                isCookie={isCookie}/>
+                isShortReviewSpoiler={review.reviewSpoiler}
+                />
             )}
           }
         )}

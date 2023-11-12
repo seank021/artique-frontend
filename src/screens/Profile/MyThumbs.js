@@ -57,7 +57,7 @@ export default function MyThumbs({ isCookie, memberId, setMusicalId, setReviewId
       });
     }
     }
-  }, [page, updatePage, reviews, memberId, otherMemberId]);
+  }, [page, updatePage, reviews]);
 
   const onPressThumbsUp = (reviewId, isThumbsUp) => {
     thumbsUp(reviewId, !isThumbsUp).then((res) => {
@@ -135,6 +135,7 @@ export default function MyThumbs({ isCookie, memberId, setMusicalId, setReviewId
               goToReviewDetail1={() => goToReviewDetail1(review.reviewId)} 
               goToMusicalDetail1={() => goToMusicalDetail1(review.musicalId)}
               isCookie={isCookie}
+              isMine={review.memberId === memberId}
             />
             {index < reviews.length - 1 && 
               <View style={tw`border-4 border-[#F0F0F0]`}></View>

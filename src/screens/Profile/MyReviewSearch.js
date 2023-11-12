@@ -64,7 +64,7 @@ export default function MyReviewSearch({ isCookie, memberId, setMusicalId, setRe
             });
         }
         }
-    }, [page, updatePage, orderBy, otherMemberId, memberId, searchValue]);
+    }, [page, updatePage, orderBy, searchValue]);
 
     const detectScroll = async (e) => {
         if (!updatePage) {
@@ -154,7 +154,7 @@ export default function MyReviewSearch({ isCookie, memberId, setMusicalId, setRe
             }
         }
     }
-    , [page, searchValue, orderBy, otherMemberId, memberId]);
+    , [page, searchValue, orderBy]);
 
     const onChangeText = (text) => {
         setValue(text);

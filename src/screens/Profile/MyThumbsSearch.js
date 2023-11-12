@@ -62,7 +62,7 @@ export default function MyThumbsSearch({ isCookie, memberId, setMusicalId, setRe
             });
         }
         }
-    }, [page, updatePage, memberId, otherMemberId, searchValue]);
+    }, [page, updatePage, searchValue]);
 
     const detectScroll = async (e) => {
         if (!updatePage) {
@@ -147,7 +147,7 @@ export default function MyThumbsSearch({ isCookie, memberId, setMusicalId, setRe
             }
         }
     }
-    , [searchValue, page, memberId, otherMemberId]);
+    , [searchValue, page]);
 
     const onChangeText = (text) => {
         setValue(text);
