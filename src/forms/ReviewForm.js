@@ -256,6 +256,58 @@ export function ShortReviewFormInFeed(props) {
     );
 }
 
+// props: musicalName, casting, starRating, shortReview
+export function ShortReviewFormInTutorial1(props) {
+    return (
+        <View style={tw`flex flex-col w-full self-center`}>
+            <View style={tw`flex-col absolute left-[113px] top-[-9px] z-20`}>
+                <View style={tw`w-[18px] h-[18px] rounded-full border-[#EFEFEF] bg-[#191919] mb-[10px]`}></View>
+                <View style={tw`w-[10px] h-[10px] rounded-full border-[#EFEFEF] bg-[#191919] ml-[4px]`}></View>
+                <View style={tw`w-[10px] h-[10px] rounded-full border-[#EFEFEF] bg-[#191919] ml-[4px] mt-[9px]`}></View>
+                <View style={tw`w-[10px] h-[10px] rounded-full border-[#EFEFEF] bg-[#191919] ml-[4px] mt-[9px]`}></View>
+                <View style={tw`w-[10px] h-[10px] rounded-full border-[#EFEFEF] bg-[#191919] ml-[4px] mt-[9px]`}></View>
+                <View style={tw`w-[10px] h-[10px] rounded-full border-[#EFEFEF] bg-[#191919] ml-[4px] mt-[9px]`}></View>
+                <View style={tw`w-[10px] h-[10px] rounded-full border-[#EFEFEF] bg-[#191919] ml-[4px] mt-[9px]`}></View>
+                <View style={tw`w-[10px] h-[10px] rounded-full border-[#EFEFEF] bg-[#191919] ml-[4px] mt-[9px]`}></View>
+                <View style={tw`w-[18px] h-[18px] rounded-full border-[#EFEFEF] bg-[#191919] mt-[10px]`}></View>
+            </View>
+            <View style={tw`flex-col justify-between bg-[#FFFFFF] h-[162px] ml-[10px] left-[113px] rounded-r-4 w-[62%]`}>
+                <Text style={tw`text-[#191919] text-base font-medium mt-[14px] mb-[4px] ml-[15px]`}>{props.musicalName}</Text>
+                <Text style={tw`text-[#191919] text-xs mb-[14px] ml-[15px]`}>
+                    {props.casting.length > 20 ? `${props.casting.slice(0, 20)} ...` : props.casting}
+                </Text>
+                <View style={tw`ml-[15px]`}>{makeStars(props.starRating)}</View>
+                <View style={tw`flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mt-[5px] mb-[14px] p-[6px] rounded-2 w-[85%] ml-[15px]`}>
+                    <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>"</Text>
+                    <Text style={[tw`text-[#191919] font-medium leading-[22px]`, {fontSize: getFontSize(14)}]}>{props.shortReview.length < 25 ? props.shortReview : props.shortReview.slice(0, 25) + '···'}"</Text>
+                </View>
+            </View>
+        </View>
+    );
+}
+
+// props: posterUrl
+export function ShortReviewFormInTutorial2(props) {
+    return (
+        <View style={tw`flex flex-col w-full self-center my-[20px]`}>
+            <View style={[tw`flex flex-row mb-[12px] h-[162px] rounded-4`]}>
+                <Image source={{uri: props.posterUrl}} style={tw`w-[122px] rounded-l-4 mr-[10px]`} />
+                <View style={tw`flex-col absolute left-[113px] top-[-9px]`}>
+                    <View style={tw`w-[18px] h-[18px] rounded-full border-[#EFEFEF] bg-[#191919] mb-[10px]`}></View>
+                    <View style={tw`w-[10px] h-[10px] rounded-full border-[#EFEFEF] bg-[#191919] ml-[4px]`}></View>
+                    <View style={tw`w-[10px] h-[10px] rounded-full border-[#EFEFEF] bg-[#191919] ml-[4px] mt-[9px]`}></View>
+                    <View style={tw`w-[10px] h-[10px] rounded-full border-[#EFEFEF] bg-[#191919] ml-[4px] mt-[9px]`}></View>
+                    <View style={tw`w-[10px] h-[10px] rounded-full border-[#EFEFEF] bg-[#191919] ml-[4px] mt-[9px]`}></View>
+                    <View style={tw`w-[10px] h-[10px] rounded-full border-[#EFEFEF] bg-[#191919] ml-[4px] mt-[9px]`}></View>
+                    <View style={tw`w-[10px] h-[10px] rounded-full border-[#EFEFEF] bg-[#191919] ml-[4px] mt-[9px]`}></View>
+                    <View style={tw`w-[10px] h-[10px] rounded-full border-[#EFEFEF] bg-[#191919] ml-[4px] mt-[9px]`}></View>
+                    <View style={tw`w-[18px] h-[18px] rounded-full border-[#EFEFEF] bg-[#191919] mt-[10px]`}></View>
+                </View>
+            </View>
+        </View>
+    );
+}
+
 // props: reviewInfo, onPressThumbsUp, isCookie, goToReviewDetail1, goToMusicalDetail1
 export function ShortReviewFormInMyReviews(props) {
     const [isCookie, setIsCookie] = useState(props.isCookie);
