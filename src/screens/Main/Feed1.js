@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
 
 import { ShortReviewFormInFeed } from "@forms/ReviewForm";
+import { TutorialModal1 } from "@screens/Main/Tutorial1";
 
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 
@@ -20,6 +21,8 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
     const [page, setPage] = useState(0);
     const [updatePage, setUpdatePage] = useState(true);
     const [feeds, setFeeds] = useState([]);
+
+    const [tutorialModalVisible, setTutorialModalVisible] = useState(true);
 
     useEffect(() => {
         if (firstFocus) {
@@ -136,6 +139,8 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
 
     return (        
         <SafeAreaView style={styles.container}>
+            <TutorialModal1 modalVisible={tutorialModalVisible} setModalVisible={setTutorialModalVisible}/>
+
             <View style={tw`ml-[5%] mt-[18px] mb-[12px] flex-col`}>
                 <Image source={require("@images/logo_small_black.png")} style={tw`w-[110px] h-[37.64781px]`}></Image>
             </View>

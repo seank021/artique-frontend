@@ -418,8 +418,8 @@ export const EmailVerityForm = (props) => {
     return (
         <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={() => { props.setModalVisible(false); setCount(300); }}>
             <View style={tw`flex flex-col w-[90%] h-[200px] border-solid border-2 rounded-[15px] self-center justify-center items-center bg-[#FAFAFA] border-[#FAFAFA] mb-[150px]`}>
-                <Text style={tw`text-sm mt-[20px] text-[#191919]`}>적어주신 이메일로 본인인증 메일을 보냈어요.{'\n'}5분 이내로 메일에 적힌 번호를 입력해주세요.</Text>
-                <TextInput style={tw`w-[90%] border-solid border-2 border-b-2 border-[#ABABAB] rounded-[15px] mt-[20px] bg-[#FAFAFA]`} placeholder="인증번호를 입력해주세요." onChangeText={(text) => setVerificationNumber(text)} onSubmitEditing={onPressConfirm} keyboardType='numeric'></TextInput>
+                <Text style={tw`text-sm mt-[10px] text-[#191919]`}>적어주신 이메일로 본인인증 메일을 보냈어요.{'\n'}5분 이내로 메일에 적힌 번호를 입력해주세요.</Text>
+                <TextInput style={tw`w-[90%] border-solid border-b-2 border-[#ABABAB] mt-[20px] bg-[#FAFAFA]`} placeholder="인증번호를 입력해주세요." onChangeText={(text) => setVerificationNumber(text)} onSubmitEditing={onPressConfirm} keyboardType='numeric'></TextInput>
                 <View style={tw`flex-row justify-between w-[90%] mt-[20px]`}>
                     <View style={tw`flex-row`}>
                         <Text style={tw`text-sm text-[#191919] mr-[20px]`}>남은 시간</Text>
