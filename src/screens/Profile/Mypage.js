@@ -125,7 +125,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
           console.log(err);
         });
       }
-    }, []);
+    }, [memberId, otherMemberId, memberInfo]);
   
   useEffect(() => {
     if (otherMemberId) {
@@ -141,14 +141,14 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
         console.log(err);
       }
     )}
-  }, []);
+  }, [memberId, otherMemberId, memberStat]);
 
   useEffect(() => {
     setAverageRate(memberStat.averageRate);
     setTotalReviewCount(memberStat.totalReviewCount);
     setMaxStarRate(memberStat.maxStarRate);
   }
-  , []);
+  , [memberStat, averageRate, totalReviewCount, maxStarRate]);
 
   useEffect(() => {
     if (otherMemberId) {
@@ -164,7 +164,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
       console.log(err);
     });
   }
-  }, []);
+  }, [memberId, otherMemberId, shortReviewInfo]);
 
   return (
     <SafeAreaView style={styles.container}>

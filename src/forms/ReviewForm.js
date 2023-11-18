@@ -239,7 +239,7 @@ export function ShortReviewFormInFeed(props) {
                                 <Text style={[tw`text-[#191919] font-medium leading-[22px]`, {fontSize: getFontSize(14)}]}>{props.reviewInfo.shortReview.length < 25 ? props.reviewInfo.shortReview : props.reviewInfo.shortReview.slice(0, 25) + '···'}"</Text>
                                 </>
                                 :
-                                <Text style={[tw`text-[#B6B6B6] font-medium leading-[22px] border-b-[1px] border-[#B6B6B6]`, {fontSize: getFontSize(14)}]}>스포일러 보기</Text>
+                                <Text style={[tw`text-[#B6B6B6] font-medium leading-[22px] border-b-[1px] border-[#B6B6B6] underline`, {fontSize: getFontSize(14)}]}>스포일러 보기</Text>
                             }
                         </View>
                     </View>

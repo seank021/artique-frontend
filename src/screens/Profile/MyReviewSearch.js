@@ -12,7 +12,7 @@ import { searchCreatedReviews, thumbsUp } from "@functions/api";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { ShortReviewFormInMyReviews } from "@forms/ReviewForm";
 
-export default function MyReviewSearch({ isCookie, memberId, setMusicalId, setReviewId}) {
+export default function MyReviewSearch({ isCookie, memberId, setMusicalId, setReviewId, setReviewInfo, setReviewInfo2 }) {
     {/*페이지 이동*/}
     const nav = useNavigation();
 
@@ -293,6 +293,9 @@ export default function MyReviewSearch({ isCookie, memberId, setMusicalId, setRe
                                             goToReviewDetail1={() => goToReviewDetail1(review.reviewId)}
                                             onPressThumbsUp={() => onPressThumbsUp(review.reviewId, review.isThumbsUp)}
                                             isCookie={isCookie}
+                                            setReviewInfo={setReviewInfo}
+                                            setReviewInfo2={setReviewInfo2}
+                                            isShortReviewSpoiler={review.isShortReviewSpoiler}
                                         />
                                         {index < searchedReviews.length - 1 && (
                                             <View style={tw`border-4 border-[#F0F0F0]`}></View>

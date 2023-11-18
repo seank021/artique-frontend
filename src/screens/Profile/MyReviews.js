@@ -229,8 +229,7 @@ export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId
                       onPressThumbsUp={() => onPressThumbsUp(review.reviewId, review.isThumbsUp)}
                       goToMusicalDetail1={() => goToMusicalDetail1(review.musicalId)}
                       goToReviewDetail1={() => goToReviewDetail1(review.reviewId)}
-                      // isShortReviewSpoiler={review.reviewSpoiler}
-                      isShortReviewSpoiler={true}
+                      isShortReviewSpoiler={review.reviewSpoiler}
                       isCookie={isCookie}
                       isMine={review.memberId === memberId}
                       setReviewInfo={setReviewInfo}
