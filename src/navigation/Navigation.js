@@ -40,6 +40,8 @@ import FAQ from "@screens/Setting/CSCenter/FAQ";
 import FAQDetail from "@screens/Setting/CSCenter/FAQDetail";
 import DBRequest from "@screens/Setting/CSCenter/DBRequest";
 import ArtiqueInfo from "@screens/Setting/ArtiqueInfo/ArtiqueInfo";
+import Terms from "@screens/Setting/ArtiqueInfo/Terms";
+import Privacy from "@screens/Setting/ArtiqueInfo/Privacy";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -193,6 +195,8 @@ const Navigation = () => {
                 <Stack.Screen name="FAQDetail" children={() => <FAQDetail isCookie={isCookie} />} />
                 <Stack.Screen name="DBRequest" children={() => <DBRequest isCookie={isCookie} />} />
                 <Stack.Screen name="ArtiqueInfo" children={() => <ArtiqueInfo isCookie={isCookie} />} />
+                <Stack.Screen name="Terms" children={() => <Terms isCookie={isCookie} />} />
+                <Stack.Screen name="Privacy" children={() => <Privacy isCookie={isCookie} />} />
             </Stack.Navigator>
         )
     };
