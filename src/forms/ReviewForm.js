@@ -228,15 +228,15 @@ export function ShortReviewFormInFeed(props) {
                     </View>
                     <View style={[tw`flex-col justify-between ml-[10px]`, { flex: 1 }]} onTouchEnd={props.goToReviewDetail1}>
                         <Text style={tw`text-[#191919] text-base font-medium mt-[14px] mb-[4px]`}>{props.reviewInfo.musicalName}</Text>
-                        <Text style={tw`text-[#191919] text-xs mb-[14px]`}>
-                            {props.reviewInfo.casting.length > 20 ? `${props.reviewInfo.casting.slice(0, 20)} ...` : props.reviewInfo.casting}
+                        <Text numberOfLines={1} style={tw`text-[#191919] text-xs mb-[14px] w-[90%]`}>
+                            {props.reviewInfo.casting}
                         </Text>
                         {makeStars(props.reviewInfo.starRating)}
                         <View onTouchEnd={(e)=> { e.stopPropagation(); setSeeSpoiler(true)}} style={tw`flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mt-[5px] mb-[14px] p-[6px] rounded-2 w-[95%]`}>
                             {seeSpoiler ?
                                 <>
                                 <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>"</Text>
-                                <Text style={[tw`text-[#191919] font-medium leading-[22px]`, {fontSize: getFontSize(14)}]}>{props.reviewInfo.shortReview.length < 25 ? props.reviewInfo.shortReview : props.reviewInfo.shortReview.slice(0, 25) + '···'}"</Text>
+                                <Text numberOfLines={1} style={[tw`text-[#191919] font-medium leading-[22px] w-full`, {fontSize: getFontSize(14)}]}>{props.reviewInfo.shortReview}"</Text>
                                 </>
                                 :
                                 <Text style={[tw`text-[#B6B6B6] font-medium leading-[22px] border-b-[1px] border-[#B6B6B6]`, {fontSize: getFontSize(14)}]}>스포일러 보기</Text>
@@ -274,12 +274,12 @@ export function ShortReviewFormInTutorial1(props) {
             <View style={tw`flex-col justify-between bg-[#FFFFFF] h-[162px] ml-[10px] left-[113px] rounded-r-4 w-[62%]`}>
                 <Text style={tw`text-[#191919] text-base font-medium mt-[14px] mb-[4px] ml-[15px]`}>{props.musicalName}</Text>
                 <Text style={tw`text-[#191919] text-xs mb-[14px] ml-[15px]`}>
-                    {props.casting.length > 20 ? `${props.casting.slice(0, 20)} ...` : props.casting}
+                    {props.casting}
                 </Text>
                 <View style={tw`ml-[15px]`}>{makeStars(props.starRating)}</View>
                 <View style={tw`flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mt-[5px] mb-[14px] p-[6px] rounded-2 w-[85%] ml-[15px]`}>
                     <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>"</Text>
-                    <Text style={[tw`text-[#191919] font-medium leading-[22px]`, {fontSize: getFontSize(14)}]}>{props.shortReview.length < 25 ? props.shortReview : props.shortReview.slice(0, 25) + '···'}"</Text>
+                    <Text style={[tw`text-[#191919] font-medium leading-[22px]`, {fontSize: getFontSize(14)}]}>{props.shortReview}"</Text>
                 </View>
             </View>
         </View>
@@ -377,13 +377,13 @@ export function ShortReviewFormInMyReviews(props) {
                     </View>
                     <View style={[tw`flex-col justify-between ml-[10px]`, { flex: 1 }]} onTouchEnd={props.goToReviewDetail1}>
                         <Text style={tw`text-[#191919] text-base font-medium mt-[14px] mb-[4px]`}>{props.reviewInfo.musicalName}</Text>
-                        <Text style={tw`text-[#191919] text-xs mb-[14px]`}>
-                            {props.reviewInfo.casting.length > 20 ? `${props.reviewInfo.casting.slice(0, 20)} ...` : props.reviewInfo.casting}
+                        <Text numberOfLines={1} style={tw`text-[#191919] text-xs mb-[14px] w-[90%]`}>
+                            {props.reviewInfo.casting}
                         </Text>
                         {makeStars(props.reviewInfo.starRating)}
                         <View style={tw`flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mt-[5px] mb-[14px] p-[6px] rounded-2 w-[95%]`}>
                             <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>"</Text>
-                            <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>{props.reviewInfo.shortReview.length < 25 ? props.reviewInfo.shortReview : props.reviewInfo.shortReview.slice(0, 25) + '···'}"</Text>
+                            <Text numberOfLines={1} style={tw`text-[#191919] text-sm font-medium leading-[24px] w-full`}>{props.reviewInfo.shortReview}"</Text>
                         </View>
                     </View>
                 </View>

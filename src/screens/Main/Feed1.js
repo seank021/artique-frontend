@@ -32,7 +32,7 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
         if (!isFocused) {
             return;
         }
-        // onRefresh();
+        onRefresh();
     }, [isFocused]);
 
     useEffect(() => {
