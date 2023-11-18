@@ -40,7 +40,7 @@ export const TutorialModal1 = (props) => {
                     </View>
 
                     <View style={tw`relative ml-[50px]`}>
-                        <Text style={tw`text-[#191919] text-[12px] text-center leading-[23px] w-[108px] h-[26px] border-[#FAFAFA] bg-[#FAFAFA] rounded-full`}>2023-06-02</Text>
+                        <Text style={tw`text-[#191919] text-[12px] text-center leading-[23px] w-[108px] h-[26px] border-[#FAFAFA] bg-[#FAFAFA] rounded-full`}>2022-04-28</Text>
                         <Image source={require("@images/arrow3.png")} style={tw`w-[84px] h-[20px] absolute top-[-30px] left-[54px]`}></Image>
                         <Text style={tw`text-[#FFFFFF] font-bold text-[16px] leading-[16px] mb-[10px] absolute left-[130px]`}>감상일자</Text>
                         <Text style={tw`text-[#FFFFFF] font-medium text-[12px] leading-[18px] w-[100%] absolute left-[130px] top-[25px]`}>작품을 감상한 날짜예요</Text>
