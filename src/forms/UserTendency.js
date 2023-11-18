@@ -25,7 +25,7 @@ export default function UserTendency(props) {
     setMaxUpper(Math.max(memberStat['5.0'] ?? 0, memberStat['4.5'] ?? 0, memberStat['4.0'] ?? 0));
     setMaxMiddle(Math.max(memberStat['2.0'] ?? 0, memberStat['2.5'] ?? 0, memberStat['3.0'] ?? 0, memberStat['3.5'] ?? 0));
     setMaxLower(Math.max(memberStat['0.5'] ?? 0, memberStat['1.0'] ?? 0, memberStat['1.5'] ?? 0));
-  }, [props.memberStat]);
+  }, []);
 
   useEffect(() => {
     if (props.totalReviewCount > 0) {
@@ -34,36 +34,36 @@ export default function UserTendency(props) {
 
       {/*A 후하다*/}
       if (upperPercentage >= 0.33 && lowerPercentage < 0.33) {
-        if (maxUpper < maxMiddle && maxUpper < maxLower) {
+        if (maxUpper < maxMiddle && maxUpper < maxLower || maxMiddle === maxLower && maxMiddle > maxUpper) {
           setName('미식가 관객');
           setDescription('좋은 작품을 제대로 즐길 줄 아는');
-        } else if (maxMiddle < maxUpper && maxMiddle < maxLower) {
+        } else if (maxMiddle < maxUpper && maxMiddle < maxLower || maxUpper === maxLower && maxUpper > maxMiddle) {
           setName('미식가 관객');
           setDescription('좋은 작품에는 그만한 이유가 있다');
-        } else if (maxLower < maxUpper && maxLower < maxMiddle) {
+        } else if (maxLower < maxUpper && maxLower < maxMiddle || maxLower === maxUpper && maxLower === maxMiddle || maxUpper === maxMiddle && maxUpper > maxLower) {
           setName('박애주의자 관객');
           setDescription('세상에 좋은 작품이 너무 많아');
         }
       {/*B 신중하다*/}
       } else if (upperPercentage < 0.33 && lowerPercentage < 0.33) {
         // Update state based on conditions for B
-        if (maxUpper < maxMiddle && maxUpper < maxLower) {
+        if (maxUpper < maxMiddle && maxUpper < maxLower || maxUpper === maxMiddle && maxUpper === maxLower || maxMiddle === maxLower && maxMiddle > maxUpper) {
           setName('신중한 관객');
           setDescription('균형잡힌 시선으로 작품을 보는 평가자');
-        } else if (maxMiddle < maxUpper && maxMiddle < maxLower) {
+        } else if (maxMiddle < maxUpper && maxMiddle < maxLower || maxUpper === maxLower && maxUpper > maxMiddle) {
           setName('신중한 관객');
           setDescription('나만의 취향을 만들어가는 중');
-        } else if (maxLower < maxUpper && maxLower < maxMiddle) {
+        } else if (maxLower < maxUpper && maxLower < maxMiddle || maxUpper === maxMiddle && maxUpper > maxLower) {
           setName('신중한 관객');
           setDescription('균형잡힌 시선으로 작품을 보는 평가자');
         }
       {/*C 극단적이다*/}
       } else if (upperPercentage >= 0.33 && lowerPercentage >= 0.33) {
         // Update state based on conditions for C
-        if (maxUpper < maxMiddle && maxUpper < maxLower) {
+        if (maxUpper < maxMiddle && maxUpper < maxLower || maxMiddle === maxLower && maxMiddle > maxUpper) {
           setName('소신 있는 관객');
           setDescription('아쉬운 작품에는 솔직하게 평가하는');
-        } else if (maxMiddle < maxUpper && maxMiddle < maxLower) {
+        } else if (maxMiddle < maxUpper && maxMiddle < maxLower || maxMiddle === maxUpper && maxMiddle === maxLower || maxUpper === maxLower && maxUpper > maxMiddle) {
           setName('소신 있는 관객');
           setDescription('내 평가에 망설임은 없다');
         } else if (maxLower < maxUpper && maxLower < maxMiddle) {
@@ -73,13 +73,13 @@ export default function UserTendency(props) {
       {/*D 짜다*/}
       } else if (upperPercentage < 0.33 && lowerPercentage >= 0.33) {
         // Update state based on conditions for D
-        if (maxUpper < maxMiddle && maxUpper < maxLower) {
+        if (maxUpper < maxMiddle && maxUpper < maxLower || maxUpper === maxMiddle && maxUpper === maxLower || maxMiddle === maxLower && maxMiddle > maxUpper) {
           setName('날카로운 관객');
           setDescription('작품 평가는 날카롭고 꼼꼼하게');
-        } else if (maxMiddle < maxUpper && maxMiddle < maxLower) {
+        } else if (maxMiddle < maxUpper && maxMiddle < maxLower || maxUpper === maxLower && maxUpper > maxMiddle) {
           setName('날카로운 관객');
           setDescription('좋아하는 포인트가 확실한 편');
-        } else if (maxLower < maxUpper && maxLower < maxMiddle) {
+        } else if (maxLower < maxUpper && maxLower < maxMiddle || maxUpper === maxMiddle && maxUpper > maxLower) {
           setName('날카로운 관객');
           setDescription('매의 눈으로 작품을 보는 평가자');
         }
