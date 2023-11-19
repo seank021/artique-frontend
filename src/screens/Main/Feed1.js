@@ -22,7 +22,7 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
     const [updatePage, setUpdatePage] = useState(true);
     const [feeds, setFeeds] = useState([]);
 
-    const [tutorialModalVisible, setTutorialModalVisible] = useState(true);
+    const [tutorialModalVisible, setTutorialModalVisible] = useState(false);
 
     useEffect(() => {
         if (firstFocus) {
@@ -95,6 +95,10 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
         // isThumbsUp이 false: 공감 안 되어 있음 -> 공감 버튼 누른다는 것: 공감
         thumbsUp(reviewId, !isThumbsUp).then((res) => {
             console.log(res);
+            if (res === "banned member") {
+                alert("신고된 회원입니다.");
+                return;
+            }
             setFeeds((prevFeeds) => {
                 const newFeeds = [...prevFeeds];
                 const feedIndex = newFeeds.findIndex((feed) => feed.reviewId === reviewId);
