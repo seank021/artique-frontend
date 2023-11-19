@@ -203,7 +203,7 @@ export default function Login1() {
       finalSignupFunction();
   }, [ifClearedVerificationStage]);
 
-  const onPressEmailVerify = () => {
+  const onPressEmailVerify = async () => {
     if (id === '') {
       setModalVisible(!modalVisible);
       setAlertImage(require('@images/x_red.png'));
@@ -274,7 +274,16 @@ export default function Login1() {
       return;
     }
 
-    setVerifyEmailModalVisible(!verifyEmailModalVisible);
+    try {
+      const response = await axios.post('http://3.39.145.210/member/join/email', {
+        "mailAddress": id,
+      });
+      if (response.data === "ok") {
+        setVerifyEmailModalVisible(!verifyEmailModalVisible);
+      }
+    } catch (error) {
+      console.log(error.response.data)
+    }
   };
 
   return (
@@ -368,7 +377,7 @@ export default function Login1() {
         <Pressable onPress={onPressEmailVerify} style={tw`w-[90%] h-[46px] border-solid border-2 rounded-3xl self-center justify-center items-center border-[${opacityBorder}] bg-[${opacityBg}]`} ifOpacity={true} onPressIn={() => { setOpacityBorder("#F5F8F5"); setOpacityBg("#F5F8F5"); setTextColor("#191919"); }} onPressOut={() => { setOpacityBorder("#ABABAB"); setOpacityBg("#3A3D52"); setTextColor("#ABABAB"); }}>
             <Text style={tw`font-semibold text-lg text-[${textColor}]`}>본인인증 후 가입하기</Text>
         </Pressable>
-        <EmailVerityForm modalVisible={verifyEmailModalVisible} setModalVisible={setVerifyEmailModalVisible} setIfClearedVerificationStage={setIfClearedVerificationStage}></EmailVerityForm>
+        <EmailVerityForm modalVisible={verifyEmailModalVisible} setModalVisible={setVerifyEmailModalVisible} setIfClearedVerificationStage={setIfClearedVerificationStage} email={id}></EmailVerityForm>
       </ScrollView>
     </SafeAreaView>
   );

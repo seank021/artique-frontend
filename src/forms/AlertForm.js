@@ -4,6 +4,8 @@ import Modal from 'react-native-modal';
 
 import tw from 'twrnc';
 
+import axios from 'axios';
+
 import { useNavigation } from '@react-navigation/native';
 
 import { Contract1, Contract2 } from '@forms/ContractContents';
@@ -419,14 +421,12 @@ export const ContractForm = (props) => {
     )
 }
 
-// props: modalVisible, setModalVisible, setIfClearedVerificationStage
+// props: modalVisible, setModalVisible, setIfClearedVerificationStage, email
 export const EmailVerityForm = (props) => {
     const [verificationNumber, setVerificationNumber] = useState('');
     const [resendModal, setResendModal] = useState(false);
     const [verificationSuccessModal, setVerificationSuccessModal] = useState(false);
     const [verificationFailModal, setVerificationFailModal] = useState(false);
-
-    const code = "123456" // 임시 코드
 
     const [count, setCount] = useState(300);
     useEffect(() => {
@@ -446,31 +446,47 @@ export const EmailVerityForm = (props) => {
         return () => clearInterval(id);
     }, [count]);
 
-    const onPressResend = () => {
+    const onPressResend = async () => {
         setCount(300);
         setResendModal(!resendModal);
         setTimeout(() => {
             setResendModal(resendModal);
         }, 1000);
-        console.log("재전송 로직 구현"); // TODO: 재전송 눌렀다는 사실을 백에 보내기 (본인인증 후 가입하기 버튼 누르는 것과 같은 로직)
+
+        try {
+            const response = await axios.post('http://3.39.145.210/member/join/email', {
+                "mailAddress": id,
+            });
+            console.log(response.data)
+        } catch (error) {
+            console.log(error.response.data)
+        }
     }
 
-    const onPressConfirm = () => { // TODO: verificationNumber 백에 보내기
+    const onPressConfirm = async () => {
         setCount(300);
 
-        // 인증 완료되면
-        if (verificationNumber === code) {
-            props.setIfClearedVerificationStage(true); // TODO: 로직 구현 (백 연결)
-            setVerificationSuccessModal(true);
-            setTimeout(() => {
-                setVerificationSuccessModal(false);
-            }, 1000);
-            props.setModalVisible(false);
-        } else { // 인증 실패하면
-            setVerificationFailModal(true);
-            setTimeout(() => {
-                setVerificationFailModal(false);
-            }, 1000);
+        try {
+            const response = await axios.post('http://3.39.145.210/member/join/email/verify', {
+                "email": props.email,
+                "code": verificationNumber,
+            });
+            if (response.data) {
+                props.setIfClearedVerificationStage(true);
+                setVerificationSuccessModal(true);
+                setTimeout(() => {
+                    setVerificationSuccessModal(false);
+                }, 1000);
+                props.setModalVisible(false);
+            }
+            else {
+                setVerificationFailModal(true);
+                setTimeout(() => {
+                    setVerificationFailModal(false);
+                }, 1000);
+            }
+        } catch (error) {
+            console.log(error.response.data)
         }
     }
 
