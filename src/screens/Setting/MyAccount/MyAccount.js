@@ -5,8 +5,9 @@ import tw from "twrnc";
 
 import { useNavigation } from "@react-navigation/native";
 import { AlertFormForConfirm } from "@forms/AlertForm";
+import { clearCookie } from "@functions/cookie";
 
-export default function MyAccount ({ isCookie }) {
+export default function MyAccount ({ isCookie, setGoToFeed }) {
   const nav = useNavigation();
 
   const [exitModalVisible, setExitModalVisible] = useState(false);
@@ -21,7 +22,12 @@ export default function MyAccount ({ isCookie }) {
 
   const onPressExit = () => {
     setExitModalVisible(!exitModalVisible)
-    console.log("탈퇴")
+  }
+
+  const onPressExitConfirm = async () => {
+    await clearCookie();
+    await removeAutoLogin();
+    setGoToFeed(false);
   }
   
   return (
@@ -63,9 +69,10 @@ export default function MyAccount ({ isCookie }) {
       <AlertFormForConfirm
         modalVisible={exitModalVisible}
         setModalVisible={setExitModalVisible}
-        onPress={onPressExit}
         question="탈퇴하시겠습니까?"
-        text="탈퇴하기"/>
+        text="탈퇴하기"
+        onPress={onPressExitConfirm}
+        />
     </SafeAreaView>
   )
 }

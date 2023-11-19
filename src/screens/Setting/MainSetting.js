@@ -5,8 +5,11 @@ import tw from "twrnc";
 
 import { useNavigation } from "@react-navigation/native";
 import { AlertFormForConfirm } from "@forms/AlertForm";
+import { removeAutoLogin } from "@functions/autoLogin";
 
-export default function MainSetting ({setIsCookie}) {
+import * as Cookies from "@functions/cookie";
+
+export default function MainSetting ({setIsCookie, setGoToFeed}) {
   const nav = useNavigation();
 
   const [logoutModalVisible, setLogoutModalVisible] = useState(false);
@@ -31,9 +34,15 @@ export default function MainSetting ({setIsCookie}) {
     nav.navigate('ArtiqueInfo');
   }
 
-  const onPressLogout = () => {
+  const onPressLogout = async () => {
     setLogoutModalVisible(!logoutModalVisible);
-    setIsCookie(false);
+  }
+
+  const onPressLogoutConfirm = async () => {
+    const currentLogin = await Cookies.getCurrentLogin();
+    await Cookies.removeCookie(currentLogin);
+    await removeAutoLogin();
+    setGoToFeed(false);
   }
 
   return (
@@ -81,9 +90,9 @@ export default function MainSetting ({setIsCookie}) {
       <AlertFormForConfirm
         modalVisible={logoutModalVisible}
         setModalVisible={setLogoutModalVisible}
-        onPress={onPressLogout}
         question="로그아웃 하시겠습니까?"
         text='로그아웃'
+        onPress={onPressLogoutConfirm}
         />
     </SafeAreaView>
   )

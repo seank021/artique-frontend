@@ -166,6 +166,7 @@ export function ProfileChangeForm(props) {
                 console.log('ImagePicker Error: ', response.errorMessage);
             } else {
                 let imageSource = response.assets[0]?.base64;
+                console.log("IMAGE SOURCE", imageSource)
                 props.setImage(imageSource);
             }
         };
@@ -189,7 +190,7 @@ export function ProfileChangeForm(props) {
     )
 }
 
-// props: modalVisible, setModalVisible, onPress, question, text
+// props: modalVisible, setModalVisible, question, text, onPress
 export const AlertFormForConfirm = (props) => {
     return (
         <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={() => props.setModalVisible(false)}>

@@ -183,8 +183,8 @@ const Navigation = () => {
                 <Stack.Screen name="MusicalDetail2" children={() => <MusicalDetail2 isCookie={isCookie} musicalId={musicalId} setMusicalId={setMusicalId} setMusicalPoster={setMusicalPoster} setMusicalTitle={setMusicalTitle} setReviewId={setReviewId}/>} />
                 <Stack.Screen name="ReviewDetail1" children={() => <ReviewDetail1 isCookie={isCookie} reviewId={reviewId}/>} />
 
-                <Stack.Screen name="MainSetting" children={() => <MainSetting setIsCookie={setIsCookie}/>} />
-                <Stack.Screen name="MyAccount" children={() => <MyAccount isCookie={isCookie}/>} />
+                <Stack.Screen name="MainSetting" children={() => <MainSetting setIsCookie={setIsCookie} setGoToFeed={setGoToFeed}/>} />
+                <Stack.Screen name="MyAccount" children={() => <MyAccount isCookie={isCookie} setGoToFeed={setGoToFeed}/>} />
                 <Stack.Screen name="PWChange" children={() => <PWChange isCookie={isCookie}/>} />
                 <Stack.Screen name="PWReset" children={() => <PWReset isCookie={isCookie}/>} />
                 <Stack.Screen name="Announcement" children={() => <Annoucement isCookie={isCookie} />} />
