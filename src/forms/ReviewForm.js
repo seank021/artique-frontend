@@ -214,7 +214,7 @@ export function ShortReviewFormInFeed(props) {
                 }
 
                 <View style={[tw`flex flex-row mb-[12px] bg-[#FFFFFF] h-[162px] rounded-4 shadow-sm`]}>
-                    <Image source={{uri: props.reviewInfo.posterUrl}} style={tw`w-[122px] rounded-l-4 mr-[10px]`} onTouchEnd={props.goToMusicalDetail1} />
+                    <Image source={{uri: props.reviewInfo.posterUrl}} style={tw`w-[122px] rounded-l-4 mr-[10px]`} onPress={props.goToMusicalDetail1} />
                     <View style={tw`flex-col absolute left-[113px] top-[-9px]`}>
                         <View style={tw`w-[18px] h-[18px] rounded-full border-[#EFEFEF] bg-[#F8F8F8] mb-[10px]`}></View>
                         <View style={tw`w-[10px] h-[10px] rounded-full border-[#EFEFEF] bg-[#F8F8F8] ml-[4px]`}></View>
@@ -226,7 +226,7 @@ export function ShortReviewFormInFeed(props) {
                         <View style={tw`w-[10px] h-[10px] rounded-full border-[#EFEFEF] bg-[#F8F8F8] ml-[4px] mt-[9px]`}></View>
                         <View style={tw`w-[18px] h-[18px] rounded-full border-[#EFEFEF] bg-[#F8F8F8] mt-[10px]`}></View>
                     </View>
-                    <View style={[tw`flex-col justify-between ml-[10px]`, { flex: 1 }]} onTouchEnd={props.goToReviewDetail1}>
+                    <View style={[tw`flex-col justify-between ml-[10px]`, { flex: 1 }]} onPress={props.goToReviewDetail1}>
                         <Text style={tw`text-[#191919] text-base font-medium mt-[14px] mb-[4px]`}>{props.reviewInfo.musicalName}</Text>
                         <Text numberOfLines={1} style={tw`text-[#191919] text-xs mb-[14px] w-[90%]`}>
                             {props.reviewInfo.casting}
@@ -363,7 +363,7 @@ export function ShortReviewFormInMyReviews(props) {
                 </View>
 
                 <View style={tw`flex flex-row mb-[12px] bg-[#FFFFFF] h-[162px] rounded-4 shadow-sm`}>
-                    <Image source={{uri: props.reviewInfo.posterUrl}} style={tw`w-[122px] rounded-l-4 mr-[20px]`} onTouchEnd={props.goToMusicalDetail1} />
+                    <Image source={{uri: props.reviewInfo.posterUrl}} style={tw`w-[122px] rounded-l-4 mr-[20px]`} onPress={props.goToMusicalDetail1} />
                     <View style={tw`flex-col absolute left-[113px] top-[-9px]`}>
                         <View style={tw`w-[18px] h-[18px] rounded-full bg-[#F8F8F8] mb-[10px]`}></View>
                         <View style={tw`w-[10px] h-[10px] rounded-full bg-[#F8F8F8] ml-[4px]`}></View>
@@ -375,7 +375,7 @@ export function ShortReviewFormInMyReviews(props) {
                         <View style={tw`w-[10px] h-[10px] rounded-full bg-[#F8F8F8] ml-[4px] mt-[9px]`}></View>
                         <View style={tw`w-[18px] h-[18px] rounded-full bg-[#F8F8F8] mt-[10px]`}></View>
                     </View>
-                    <View style={[tw`flex-col justify-between ml-[10px]`, { flex: 1 }]} onTouchEnd={props.goToReviewDetail1}>
+                    <View style={[tw`flex-col justify-between ml-[10px]`, { flex: 1 }]} onPress={props.goToReviewDetail1}>
                         <Text style={tw`text-[#191919] text-base font-medium mt-[14px] mb-[4px]`}>{props.reviewInfo.musicalName}</Text>
                         <Text numberOfLines={1} style={tw`text-[#191919] text-xs mb-[14px] w-[90%]`}>
                             {props.reviewInfo.casting}
