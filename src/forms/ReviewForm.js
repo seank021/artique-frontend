@@ -492,7 +492,7 @@ export function ShortReviewFormInMypage(props) {
     const [seeSpoiler, setSeeSpoiler] = useState(!props.isShortReviewSpoiler);
     
     return (
-        <View style={tw`w-[250px] h-[120px] bg-[#FFF] rounded-[10px] shadow mr-2`}>
+        <View style={tw`w-[250px] h-[120px] bg-[#FFF] rounded-[10px] shadow mr-2 mb-5`}>
             <View style={tw`w-full flex-col items-start mx-3 my-3`}>
                 <Text style={tw`text-sm text-[#191919] font-medium mb-2`}>{props.musicalName}</Text>
                 <View> 
@@ -503,7 +503,7 @@ export function ShortReviewFormInMypage(props) {
                         <View style={tw`flex-row justify-between mx-1.5 my-1.5`}>
                             <Text style={tw`text-xs text-[#191919] font-medium`}>"</Text>
                             <Text numberOfLines={2} ellipsizeMode='tail' style={tw`text-xs text-[#191919] font-medium shrink mr-1.5`}>
-                                {`${props.shortReview}`.replace(/^(.{30}[^\s]*).*/, "$1...\"")}
+                                {`${props.shortReview}`.replace(/^(.{30}[^\s]*).*/, "$1...\"")}"
                             </Text>
                         </View>
                         :
