@@ -13,8 +13,10 @@ import AlertForm from '@forms/AlertForm';
 import { CastingForm, SeatForm, ShortReviewForm, LongReviewForm } from '@forms/ReviewContentsForm';
 
 import { reviewUpdate } from '@functions/api';
+import * as Cookies from '@functions/cookie';
+import { removeAutoLogin } from '@functions/autoLogin';
 
-export default function ReviewUpdate1({ isCookie, reviewInfo, reviewInfo2 }) {
+export default function ReviewUpdate1({ isCookie, reviewInfo, reviewInfo2, setGoToFeed }) {
     const nav = useNavigation();
 
     const [modalVisible, setModalVisible] = useState(false);
@@ -86,6 +88,13 @@ export default function ReviewUpdate1({ isCookie, reviewInfo, reviewInfo2 }) {
     const goBack = () => {
         nav.goBack();
     };
+    
+    const logout = async () => {
+        const currentLogin = await Cookies.getCurrentLogin();
+        await Cookies.removeCookie(currentLogin);
+        await removeAutoLogin();
+        setGoToFeed(false);
+    }
 
     const onPressSave = async () => {
         if (year === 0 || month === 0 || day === 0) {
@@ -130,8 +139,19 @@ export default function ReviewUpdate1({ isCookie, reviewInfo, reviewInfo2 }) {
         const finalDay = dayString.padStart(2, '0');
 
         try {
-            await reviewUpdate(reviewInfo2.id, star, shortReview, longReview, casting, `${finalYear}-${finalMonth}-${finalDay}`, seat, isShortReviewSpoiler, isLongReviewSpoiler);
-            
+            const res = await reviewUpdate(reviewInfo2.id, star, shortReview, longReview, casting, `${finalYear}-${finalMonth}-${finalDay}`, seat, isShortReviewSpoiler, isLongReviewSpoiler);
+            if (res === "banned member") {
+                setModalVisible(!modalVisible);
+                setAlertImage(require('@images/x_red.png'));
+                setAlertText('신고로 사용이 정지된 회원입니다.');
+                setTimeout(() => {
+                    setModalVisible(modalVisible);
+                }, 1000);
+                setTimeout(() => {
+                    logout();
+                }, 2000);
+                return;
+            }
             setModalVisible(!modalVisible);
             setAlertImage(require('@images/check.png'));
             setAlertText('리뷰가 수정되었습니다');

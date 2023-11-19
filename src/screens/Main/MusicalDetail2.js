@@ -3,14 +3,16 @@ import { View, Pressable, Text, ScrollView, Image, StyleSheet, RefreshControl } 
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
 
-import { AlertFormForSort } from "@forms/AlertForm";
+import AlertForm, { AlertFormForSort } from "@forms/AlertForm";
 import { ShortReviewForm } from '@forms/ReviewForm';
 
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 
 import { musicalDetails, musicalReviews, musicalReviewsAll, thumbsUp } from "@functions/api";
+import * as Cookies from "@functions/cookie";
+import { removeAutoLogin } from "@functions/autoLogin";
 
-export default function MusicalDetail2({isCookie, musicalId, setMusicalId, setMusicalPoster, setMusicalTitle, setReviewId}) {
+export default function MusicalDetail2({isCookie, musicalId, setMusicalId, setMusicalPoster, setMusicalTitle, setReviewId, setGoToFeed}) {
     const [modalVisible, setModalVisible] = useState(false);
     const [sortModalVisible, setSortModalVisible] = useState(false);
     const [sortCriteria, setSortCriteria] = useState("공감순");
@@ -27,6 +29,10 @@ export default function MusicalDetail2({isCookie, musicalId, setMusicalId, setMu
     const [page, setPage] = useState(0);
     const [updatePage, setUpdatePage] = useState(true);
     const [reviews, setReviews] = useState([]);
+
+    const [alertModalVisible, setAlertModalVisible] = useState(false);
+    const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
+    const [alertText, setAlertText] = useState('신고로 사용이 정지된 회원입니다.');
 
     useEffect(() => {
         if (!isFocused) {
@@ -120,12 +126,31 @@ export default function MusicalDetail2({isCookie, musicalId, setMusicalId, setMu
         setMusicalTitle(musicalInfo.title);
         nav.navigate('ReviewWrite1', {musicalId: musicalInfo.musicalId, musicalPoster: musicalInfo.posterUrl, musicalTitle: musicalInfo.title});
     };
+
+    const logout = async () => {
+        const currentLogin = await Cookies.getCurrentLogin();
+        await Cookies.removeCookie(currentLogin);
+        await removeAutoLogin();
+        setGoToFeed(false);
+    }
     
     const onPressThumbsUp = (reviewId, isThumbsUp) => {
         // isThumbsUp이 true: 이미 공감되어 있음 -> 공감 버튼 누른다는 것: 공감 취소
         // isThumbsUp이 false: 공감 안 되어 있음 -> 공감 버튼 누른다는 것: 공감
         thumbsUp(reviewId, !isThumbsUp).then((res) => {
             console.log(res);
+            if (res === "banned member") {
+                setAlertModalVisible(!alertModalVisible);
+                setAlertImage(require('@images/x_red.png'));
+                setAlertText('신고로 사용이 정지된 회원입니다.');
+                setTimeout(() => {
+                    setAlertModalVisible(alertModalVisible);
+                }, 1000);
+                setTimeout(() => {
+                    logout();
+                }, 2000);
+                return;
+            }
             setReviews((prevReviews) => {
                 const newReviews = [...prevReviews];
                 const reviewIndex = newReviews.findIndex((review) => review.reviewId === reviewId);
@@ -176,6 +201,8 @@ export default function MusicalDetail2({isCookie, musicalId, setMusicalId, setMu
 
     return (
         <SafeAreaView style={styles.container}>
+            <AlertForm modalVisible={alertModalVisible} setModalVisible={setAlertModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
+
             <View style={tw`flex-row items-center justify-between mt-5 mb-[14px]`}>
                 <Pressable onPress={goBack} style={tw`flex-row`}>
                     <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] mr-[8px] w-[10px] h-[18px] tint-[#191919]`}></Image>

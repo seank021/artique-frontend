@@ -15,8 +15,10 @@ import AlertForm from '@forms/AlertForm';
 import { CastingForm, SeatForm, ShortReviewForm, LongReviewForm } from '@forms/ReviewContentsForm';
 
 import { reviewWrite } from '@functions/api';
+import * as Cookies from '@functions/cookie';
+import { removeAutoLogin } from '@functions/autoLogin';
 
-export default function ReviewWrite1({isCookie, musicalId, musicalPoster, musicalTitle}) {
+export default function ReviewWrite1({isCookie, musicalId, musicalPoster, musicalTitle, setGoToFeed}) {
     const nav = useNavigation();
 
     const [modalVisible, setModalVisible] = useState(false);
@@ -79,6 +81,13 @@ export default function ReviewWrite1({isCookie, musicalId, musicalPoster, musica
         nav.goBack();
     };
 
+    const logout = async () => {
+        const currentLogin = await Cookies.getCurrentLogin();
+        await Cookies.removeCookie(currentLogin);
+        await removeAutoLogin();
+        setGoToFeed(false);
+    }
+
     const onPressSave = async () => {
         if (year === 0 || month === 0 || day === 0) {
             setModalVisible(!modalVisible);
@@ -120,8 +129,19 @@ export default function ReviewWrite1({isCookie, musicalId, musicalPoster, musica
         const finalDay = dayString.padStart(2, '0');
 
         try {
-            await reviewWrite(star, shortReview, longReview, finalCastings, `${finalYear}-${finalMonth}-${finalDay}`, finalSeat, musicalId, isShortReviewSpoiler, isLongReviewSpoiler);
-
+            const res = await reviewWrite(star, shortReview, longReview, finalCastings, `${finalYear}-${finalMonth}-${finalDay}`, finalSeat, musicalId, isShortReviewSpoiler, isLongReviewSpoiler);
+            if (res === "banned member") {
+                setModalVisible(!modalVisible);
+                setAlertImage(require('@images/x_red.png'));
+                setAlertText('신고로 사용이 정지된 회원입니다.');
+                setTimeout(() => {
+                    setModalVisible(modalVisible);
+                }, 1000);
+                setTimeout(() => {
+                    logout();
+                }, 2000);
+                return;
+            }
             setModalVisible(!modalVisible);
             setAlertImage(require('@images/check.png'));
             setAlertText('저장되었습니다');

@@ -30,7 +30,7 @@ const feedReviews = async (page) => {
     // console.log(myHeaders.map);
     const response = await axios.get(`http://3.39.145.210/feed?page=${page}&size=15`, {
         headers: myHeaders.map,
-      });
+    });
     // console.log(response.data);
     // console.log(response.data.feeds);
     return response.data;
@@ -102,6 +102,9 @@ const thumbsUp = async (reviewId, isThumbsUp) => {
     console.log(response.data);
     return response.data;
   } catch (err) {
+    if (err.response.data.message === "banned member") {
+      return "banned member";
+    }
     console.log(err.response.data);
   }
 };
@@ -125,6 +128,9 @@ const reviewWrite = async (starRating, shortReview, longReview, casting, viewDat
         });
         // console.log(response.data);
     } catch (err) {
+        if (err.response.data.message === "banned member") {
+          return "banned member";
+        }
         console.log(err.response.data);
     }
 };
@@ -148,6 +154,9 @@ const reviewUpdate = async (reviewId, starRating, shortReview, longReview, casti
         });
         console.log(response.data);
     } catch (err) {
+        if (err.response.data.message === "banned member") {
+          return "banned member";
+        }
         console.log(err.response.data);
     }
 };
@@ -160,6 +169,9 @@ const reviewDelete = async (reviewId) => {
         });
         // console.log(response.data);
     } catch (err) {
+        if (err.response.data.message === "banned member") {
+          return "banned member";
+        }
         console.log(err.response.data);
     }
 };
@@ -173,6 +185,9 @@ const reviewReport = async (reviewId, reportReason) => {
         });
         console.log(response.data);
     } catch (err) {
+        if (err.response.data.message === "banned member") {
+          return "banned member";
+        }
         console.log(err.response.data);
     }
 }

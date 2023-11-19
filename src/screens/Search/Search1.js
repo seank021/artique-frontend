@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Image, TextInput, ScrollView, Text, Pressable, FlatList } from "react-native";
+import { View, StyleSheet, Image, TextInput, ScrollView, Text, Pressable, FlatList, Dimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from 'twrnc'
 
@@ -119,7 +119,7 @@ export default function Search1({ isCookie, setMusicalId }) {
             <FlatList
                 data={data}
                 numColumns={3}
-                columnWrapperStyle={{ justifyContent: 'space-between' }}
+                columnWrapperStyle={{ justifyContent: 'space-around' }}
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item }) => (
                     item.musicalId === 0 ?
@@ -198,7 +198,7 @@ export default function Search1({ isCookie, setMusicalId }) {
                             </Pressable>
                             <AlertFormForSort2 sortModalVisible={sortModalVisible} setSortModalVisible={setSortModalVisible} sortCriteria={sortCriteria} setSortCriteria={setSortCriteria}></AlertFormForSort2>
                         
-                            <View style={{flex : 1, marginHorizontal : "2%"}}>
+                            <View style={{flex : 1, justifyContent : 'space-around'}}>
                                 <MusicalsList data={searchedMusicals} />
                             </View>
                         </>
