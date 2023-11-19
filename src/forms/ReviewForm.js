@@ -120,7 +120,7 @@ export function ShortReviewForm(props) {
     );
 }
 
-// props:  reviewInfo, goToMusicalDetail1, goToReviewDetail1, onPressThumbsUp, isCookie / isMine, reviewInfo, setReviewInfo, setReviewInfo2, setOnRefreshWhenDelete, isShortReviewSpoiler
+// props:  reviewInfo, goToMusicalDetail1, goToReviewDetail1, onPressThumbsUp, isCookie / isMine, reviewInfo, setReviewInfo, setReviewInfo2, setOnRefreshWhenDelete, isShortReviewSpoiler / setGoToFeed
 export function ShortReviewFormInFeed(props) {
     const nav = useNavigation();
 
@@ -209,8 +209,8 @@ export function ShortReviewFormInFeed(props) {
                     <Pressable onPress={onPressMore}><Image style={tw`w-[30px] h-[30px]`} source={require("@images/dots_more.png")}></Image></Pressable>
                 </View>
                 {props.isMine ?
-                    <AlertFormForModifyAndDelete modalVisible={modifynDeleteModalVisible} setModalVisible={setModifynDeleteModalVisible} reviewInfo={props.reviewInfo} setReviewInfo={props.setReviewInfo} setReviewInfo2={props.setReviewInfo2} setOnRefreshWhenDelete={props.setOnRefreshWhenDelete} ></AlertFormForModifyAndDelete>
-                    : <AlertFormForReport modalVisible={reportModalVisible} setModalVisible={setReportModalVisible} reviewInfo={props.reviewInfo}></AlertFormForReport>
+                    <AlertFormForModifyAndDelete modalVisible={modifynDeleteModalVisible} setModalVisible={setModifynDeleteModalVisible} reviewInfo={props.reviewInfo} setReviewInfo={props.setReviewInfo} setReviewInfo2={props.setReviewInfo2} setOnRefreshWhenDelete={props.setOnRefreshWhenDelete} setGoToFeed={props.setGoToFeed}></AlertFormForModifyAndDelete>
+                    : <AlertFormForReport modalVisible={reportModalVisible} setModalVisible={setReportModalVisible} reviewInfo={props.reviewInfo} setGoToFeed={props.setGoToFeed}></AlertFormForReport>
                 }
 
                 <View style={[tw`flex flex-row mb-[12px] bg-[#FFFFFF] h-[162px] rounded-4 shadow-sm`]}>

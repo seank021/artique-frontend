@@ -3,14 +3,17 @@ import { View, Image, StyleSheet, ScrollView, RefreshControl } from "react-nativ
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
 
+import AlertForm from "@forms/AlertForm"; 
 import { ShortReviewFormInFeed } from "@forms/ReviewForm";
 import { TutorialModal1 } from "@screens/Main/Tutorial1";
 
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 
 import { feedReviews, thumbsUp } from "@functions/api";
+import * as Cookies from "@functions/cookie";
+import { removeAutoLogin } from "@functions/autoLogin";
 
-export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, setReviewInfo, setReviewInfo2 }) {
+export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, setReviewInfo, setReviewInfo2, setGoToFeed }) {
     const [refreshing, setRefreshing] = useState(false);
     const isFocused = useIsFocused();
     const [firstFocus, setFirstFocus] = useState(true);
@@ -23,6 +26,10 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
     const [feeds, setFeeds] = useState([]);
 
     const [tutorialModalVisible, setTutorialModalVisible] = useState(false);
+
+    const [alertModalVisible, setAlertModalVisible] = useState(false);
+    const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
+    const [alertText, setAlertText] = useState('신고로 사용이 정지된 회원입니다.');
 
     useEffect(() => {
         if (firstFocus) {
@@ -90,19 +97,33 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
         nav.navigate('ReviewDetail1');
     };
 
+    const logout = async () => {
+        const currentLogin = await Cookies.getCurrentLogin();
+        await Cookies.removeCookie(currentLogin);
+        await removeAutoLogin();
+        setGoToFeed(false);
+    }
+
     const onPressThumbsUp = (reviewId, isThumbsUp) => {
         // isThumbsUp이 true: 이미 공감되어 있음 -> 공감 버튼 누른다는 것: 공감 취소
         // isThumbsUp이 false: 공감 안 되어 있음 -> 공감 버튼 누른다는 것: 공감
         thumbsUp(reviewId, !isThumbsUp).then((res) => {
-            console.log(res);
             if (res === "banned member") {
-                alert("신고된 회원입니다.");
+                setAlertModalVisible(!alertModalVisible);
+                setAlertImage(require('@images/x_red.png'));
+                setAlertText('신고로 사용이 정지된 회원입니다.');
+                setTimeout(() => {
+                    setAlertModalVisible(alertModalVisible);
+                }, 1000);
+                setTimeout(() => {
+                    logout();
+                }, 2000);
                 return;
             }
             setFeeds((prevFeeds) => {
                 const newFeeds = [...prevFeeds];
                 const feedIndex = newFeeds.findIndex((feed) => feed.reviewId === reviewId);
-                newFeeds[feedIndex].isThumbsUp = !isThumbsUp; // 프론트상에서만 바꿈 (구현 위함, 서버에서는 안 바뀜)
+                newFeeds[feedIndex].isThumbsUp = !isThumbsUp;
                 return newFeeds;
             });
         }).catch((err) => {
@@ -143,6 +164,7 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
 
     return (        
         <SafeAreaView style={styles.container}>
+            <AlertForm modalVisible={alertModalVisible} setModalVisible={setAlertModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
             <TutorialModal1 modalVisible={tutorialModalVisible} setModalVisible={setTutorialModalVisible}/>
 
             <View style={tw`ml-[5%] mt-[18px] mb-[12px] flex-col`}>
@@ -165,6 +187,7 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
                             setReviewInfo2={setReviewInfo2}
                             setOnRefreshWhenDelete={setOnRefreshWhenDelete}
                             isShortReviewSpoiler={feed.reviewSpoiler}
+                            setGoToFeed={setGoToFeed}
                         />
                         {index < feeds.length - 1 && (
                             <View style={tw`border-4 border-[#F0F0F0]`}></View>
