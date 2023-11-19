@@ -97,8 +97,8 @@ export default function UserTendency(props) {
         <Text style={tw`text-sm text-[#191919] font-normal`}> 님은</Text>
       </Text>
       <Text style={tw`items-center`}>
-        <Text style={tw`text-xs text-[#191919] font-normal`}>{description}</Text>
-        <Text style={tw`text-sm text-[#191919] font-medium`}> '{name}'</Text>
+        <Text style={tw`text-sm text-[#191919] font-medium`}>'{name}'</Text>
+        <Text style={tw`text-xs text-[#191919] font-normal`}>_{description}</Text>
       </Text>
     </View>
   );

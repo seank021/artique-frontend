@@ -197,8 +197,8 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
       {/* 프로필 */}
       <ScrollView showsVerticalScrollIndicator={false} refreshcontrol={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
       <View style={tw`flex-row items-center w-9/10 mt-5 mx-5`}>
-        {/* <Image source={memberInfo.imageUrl ? { uri: memberInfo.imageUrl } : require('@images/newprofile.png')} style={tw`w-[100px] h-[100px] mr-5`}></Image> */}
-        <Image source={require('@images/newprofile.png')} style={tw`w-[100px] h-[100px] mr-5`}></Image>
+        <Image source={memberInfo.imageUrl ? { uri: memberInfo.imageUrl } : require('@images/newprofile.png')} style={tw`w-[100px] h-[100px] rounded-full mr-5`}></Image>
+        {/* <Image source={require('@images/newprofile.png')} style={tw`w-[100px] h-[100px] mr-5`}></Image> */}
         <View style={tw`flex-col justify-between`}>
           <Text style={tw`text-base text-[#191919] font-medium mb-5`}>{memberInfo.nickname}</Text>
           <Text style={tw`text-xs text-[#191919] font-normal w-57.5 leading-5`}>{memberInfo.introduce}</Text>
@@ -220,7 +220,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
       <View style={tw`flex-row justify-between mx-5`}>
         <View style={tw`flex-col items-center`}>
           <Text style={tw`text-xs text-[#191919] font-normal`}>별점 평균</Text>
-          <Text style={tw`text-xs text-[#191919] font-normal`}>{Math.round(averageRate * 100)/100}</Text>
+          <Text style={tw`text-xs text-[#191919] font-normal`}>{Math.round(averageRate * 10)/10}</Text>
         </View>
         <View style={tw`flex-col items-center`}>
           <Text style={tw`text-xs text-[#191919] font-normal`}>작성한 리뷰 수</Text>
