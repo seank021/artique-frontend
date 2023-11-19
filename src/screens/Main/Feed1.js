@@ -25,7 +25,7 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
     const [updatePage, setUpdatePage] = useState(true);
     const [feeds, setFeeds] = useState([]);
 
-    const [tutorialModalVisible, setTutorialModalVisible] = useState(false);
+    const [tutorialModalVisible, setTutorialModalVisible] = useState(true);
 
     const [alertModalVisible, setAlertModalVisible] = useState(false);
     const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
