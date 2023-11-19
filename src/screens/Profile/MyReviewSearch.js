@@ -48,21 +48,22 @@ export default function MyReviewSearch({ isCookie, memberId, setMusicalId, setRe
     const [updatePage, setUpdatePage] = useState(true);
     
     useEffect(() => {
-        if (updatePage && page === 0) {
-            if (otherMemberId) {
-                searchCreatedReviews(otherMemberId, page, searchValue, orderBy).then((newReviews) => {
-                    setSearchedReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
-                }).catch((err) => {
-                    console.log(err);
-                });
-            } else {
-            searchCreatedReviews(memberId, page, searchValue, orderBy).then((newReviews) => {
-                setSearchedReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
+        if (updatePage && page === 0 ) {
+            if (searchValue !== '') {
+                if (otherMemberId) {
+                    searchCreatedReviews(otherMemberId, page, searchValue, orderBy).then((newReviews) => {
+                        setSearchedReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
+                    }).catch((err) => {
+                        console.log(err);
+                    });
+                } else {
+                    searchCreatedReviews(memberId, page, searchValue, orderBy).then((newReviews) => {
+                        setSearchedReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
+                    }).catch((err) => {
+                        console.log(err);
+                    })
+                }
             }
-            ).catch((err) => {
-                console.log(err);
-            });
-        }
         }
     }, [page, updatePage, orderBy, searchValue]);
 
@@ -89,23 +90,19 @@ export default function MyReviewSearch({ isCookie, memberId, setMusicalId, setRe
             setPage(nextPage);
             
             if (otherMemberId) {
-                searchCreatedReviews(otherMemberId, nextPage, searchValue, orderBy)
-                    .then((newReviews) => {
-                        setSearchedReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
-                        setUpdatePage(true);
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    });
-            } else {
-            searchCreatedReviews(memberId, nextPage, searchValue, orderBy)
-                .then((newReviews) => {
+                searchCreatedReviews(otherMemberId, nextPage, searchValue, orderBy).then((newReviews) => {
                     setSearchedReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
                     setUpdatePage(true);
-                })
-                .catch((err) => {
+                }).catch((err) => {
                     console.log(err);
                 });
+            } else {
+                searchCreatedReviews(memberId, nextPage, searchValue, orderBy).then((newReviews) => {
+                    setSearchedReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
+                    setUpdatePage(true);
+                }).catch((err) => {
+                    console.log(err);
+                })
             }
         }
     }
@@ -293,6 +290,7 @@ export default function MyReviewSearch({ isCookie, memberId, setMusicalId, setRe
                                             goToReviewDetail1={() => goToReviewDetail1(review.reviewId)}
                                             onPressThumbsUp={() => onPressThumbsUp(review.reviewId, review.isThumbsUp)}
                                             isCookie={isCookie}
+                                            isMine={review.memberId === memberId}
                                             setReviewInfo={setReviewInfo}
                                             setReviewInfo2={setReviewInfo2}
                                             isShortReviewSpoiler={review.isShortReviewSpoiler}

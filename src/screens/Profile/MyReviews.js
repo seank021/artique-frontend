@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { View, Pressable, Text, Image, ScrollView, StyleSheet } from "react-native";
+import { View, Pressable, Text, Image, ScrollView, StyleSheet, RefreshControl } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
 
@@ -20,8 +20,8 @@ export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId
 
   useEffect(() => {
     if (firstFocus) {
-        setFirstFocus(false);
-        return;
+      setFirstFocus(false);
+      return;
     }
     if (!isFocused) {
         return;
@@ -120,24 +120,40 @@ export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId
         if (otherMemberId) {
           myReviewsAll(otherMemberId, page, orderBy).then((newReviews) => {
             setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
-            setUpdatePage(true);
         }).catch((err) => {
             console.log(err);
+        }).finally(() => {
+          setRefreshing(false);
         });
         } else {
           myReviewsAll(memberId, page, orderBy).then((newReviews) => {
             setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
-            setUpdatePage(true);
         }).catch((err) => {
             console.log(err);
-        });
-        }
-      }
-
-      setTimeout(() => {
+        }).finally(() => {
           setRefreshing(false);
-      }, 1000);
-  }, [refreshing, page, updatePage]);
+        });
+      }
+    }
+
+    if (otherMemberId) {
+      memberStatistics(otherMemberId).then((newMemberStat) => {
+        setTotalReviewCount(newMemberStat.totalReviewCount);
+      }).catch((err) => {
+        console.log(err);
+      });
+    } else {
+      memberStatistics().then((newMemberStat) => {
+        setTotalReviewCount(newMemberStat.totalReviewCount);
+      }).catch((err) => {
+        console.log(err);
+      });
+    }
+
+    setTimeout(() => {
+        setRefreshing(false);
+    }, 1000);
+  }, [refreshing, page, updatePage, orderBy, otherMemberId]);
 
   const onPressThumbsUp = (reviewId, isThumbsUp) => {
     thumbsUp(reviewId, !isThumbsUp).then((res) => {
@@ -176,14 +192,14 @@ export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId
         setPage(nextPage);
         
         if (otherMemberId) {
-          myReviewsAll(otherMemberId, page, orderBy).then((newReviews) => {
+          myReviewsAll(otherMemberId, nextPage, orderBy).then((newReviews) => {
             setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
             setUpdatePage(true);
         }).catch((err) => {
             console.log(err);
         }
         )} else {
-          myReviewsAll(memberId, page, orderBy).then((newReviews) => {
+          myReviewsAll(memberId, nextPage, orderBy).then((newReviews) => {
             setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
             setUpdatePage(true);
         }).catch((err) => {
@@ -213,7 +229,7 @@ export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId
             <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
 
       {/* 리뷰 목록*/}
-        <View style={tw`flex-row w-9/10 items-center justify-between mt-4 mx-5`}>
+        <View style={tw`flex-row w-9/10 items-center justify-between mt-4 mb-2 mx-5`}>
             <Text style={tw`text-sm text-[#191919] font-medium`}>모든 리뷰 ({totalReviewCount})</Text>
             <Pressable style={tw`flex flex-row items-center`} onPress={onPressSort}>
                 <Text style={tw`text-[#191919] text-xs font-medium mr-[7px]`}>{sortCriteria}</Text>
@@ -221,7 +237,7 @@ export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId
             </Pressable>
         </View>
 
-        <ScrollView onScroll={detectScroll}>
+        <ScrollView onScroll={detectScroll} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
           {reviews.map((review, index) => (
               <Fragment key={index}>
                   <ShortReviewFormInMyReviews
