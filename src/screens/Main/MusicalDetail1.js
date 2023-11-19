@@ -158,7 +158,7 @@ export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setMu
                     <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] mr-[8px] w-[10px] h-[18px] tint-[#191919]`}></Image>
                     <View style={tw`px-[20px]`}></View>
                 </Pressable>
-                <Text numberOfLines={1} style={tw`text-[#191919] text-base font-medium w-[50%]`}>
+                <Text numberOfLines={1} style={tw`text-[#191919] text-base font-medium w-[50%] text-center`}>
                     {musicalInfo.title}
                 </Text>
                 <Pressable onPress={onPressWrite} style={tw`flex-row`}>
@@ -171,7 +171,7 @@ export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setMu
             <ScrollView showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />} >
                 <View style={tw`mt-[27.56px]`}></View>
                 {musicalInfo.posterUrl && (
-                    <MusicalInfoForm poster={musicalInfo.posterUrl} title={musicalInfo.title} score={musicalInfo.averageScore} date={musicalInfo.date} place={musicalInfo.place} duration={musicalInfo.duration} casting={musicalInfo.casting}></MusicalInfoForm>
+                    <MusicalInfoForm poster={musicalInfo.posterUrl} title={musicalInfo.title} score={musicalInfo.averageScore} date={musicalInfo.date} place={musicalInfo.place} casting={musicalInfo.casting}></MusicalInfoForm>
                 )}                
                 <View style={tw`mb-[27.56px]`}></View>
                 <StoryForm story={musicalInfo.story}></StoryForm>
