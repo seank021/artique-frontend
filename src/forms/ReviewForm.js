@@ -214,7 +214,9 @@ export function ShortReviewFormInFeed(props) {
                 }
 
                 <View style={[tw`flex flex-row mb-[12px] bg-[#FFFFFF] h-[162px] rounded-4 shadow-sm`]}>
-                    <Image source={{uri: props.reviewInfo.posterUrl}} style={tw`w-[122px] rounded-l-4 mr-[10px]`} onTouchEnd={props.goToMusicalDetail1} />
+                    <Pressable onPress={props.goToMusicalDetail1}>
+                        <Image source={{uri: props.reviewInfo.posterUrl}} style={tw`w-[122px] h-[100%] rounded-l-4 mr-[10px]`} />
+                    </Pressable>
                     <View style={tw`flex-col absolute left-[113px] top-[-9px]`}>
                         <View style={tw`w-[18px] h-[18px] rounded-full border-[#EFEFEF] bg-[#F8F8F8] mb-[10px]`}></View>
                         <View style={tw`w-[10px] h-[10px] rounded-full border-[#EFEFEF] bg-[#F8F8F8] ml-[4px]`}></View>
@@ -226,23 +228,27 @@ export function ShortReviewFormInFeed(props) {
                         <View style={tw`w-[10px] h-[10px] rounded-full border-[#EFEFEF] bg-[#F8F8F8] ml-[4px] mt-[9px]`}></View>
                         <View style={tw`w-[18px] h-[18px] rounded-full border-[#EFEFEF] bg-[#F8F8F8] mt-[10px]`}></View>
                     </View>
-                    <View style={[tw`flex-col justify-between ml-[10px]`, { flex: 1 }]} onTouchEnd={props.goToReviewDetail1}>
-                        <Text style={tw`text-[#191919] text-base font-medium mt-[14px] mb-[4px]`}>{props.reviewInfo.musicalName}</Text>
-                        <Text numberOfLines={1} style={tw`text-[#191919] text-xs mb-[14px] w-[90%]`}>
-                            {props.reviewInfo.casting}
-                        </Text>
-                        {makeStars(props.reviewInfo.starRating)}
-                        <View onTouchEnd={(e)=> { e.stopPropagation(); setSeeSpoiler(true)}} style={tw`flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mt-[5px] mb-[14px] p-[6px] rounded-2 w-[95%]`}>
-                            {seeSpoiler ?
-                                <>
-                                <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>"</Text>
-                                <Text numberOfLines={1} style={[tw`text-[#191919] font-medium leading-[22px] w-full`, {fontSize: getFontSize(14)}]}>{props.reviewInfo.shortReview}"</Text>
-                                </>
-                                :
-                                <Text style={[tw`text-[#B6B6B6] font-medium leading-[22px] border-b-[1px] border-[#B6B6B6]`, {fontSize: getFontSize(14)}]}>스포일러 포함</Text>
-                            }
+                    <Pressable onPress={props.goToReviewDetail1} style={{ flex: 1 }}>
+                        <View style={[tw`flex-col justify-between ml-[5px]`, { flex: 1 }]}>
+                            <Text style={tw`text-[#191919] text-base font-medium mt-[14px] mb-[4px]`}>{props.reviewInfo.musicalName}</Text>
+                            <Text numberOfLines={1} style={tw`text-[#191919] text-xs mb-[14px] w-[90%]`}>
+                                {props.reviewInfo.casting}
+                            </Text>
+                            {makeStars(props.reviewInfo.starRating)}
+                            <Pressable onTouchEnd={(e)=> { e.stopPropagation(); setSeeSpoiler(true)}}>
+                                <View style={tw`flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mt-[5px] mb-[14px] p-[6px] rounded-2 w-[95%]`}>
+                                    {seeSpoiler ?
+                                        <>
+                                        <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>"</Text>
+                                        <Text numberOfLines={1} style={[tw`text-[#191919] font-medium leading-[22px] w-full`, {fontSize: getFontSize(14)}]}>{props.reviewInfo.shortReview}"</Text>
+                                        </>
+                                        :
+                                        <Text style={[tw`text-[#B6B6B6] font-medium leading-[22px] border-b-[1px] border-[#B6B6B6]`, {fontSize: getFontSize(14)}]}>스포일러 포함</Text>
+                                    }
+                                </View>
+                            </Pressable>
                         </View>
-                    </View>
+                    </Pressable>
                 </View>
 
                 <View style={tw`flex-row items-center z-20`}>
@@ -311,7 +317,9 @@ export function ShortReviewFormInMyReviews(props) {
                 </View>
 
                 <View style={tw`flex flex-row mb-[12px] bg-[#FFFFFF] h-[162px] rounded-4 shadow-sm`}>
-                    <Image source={{uri: props.reviewInfo.posterUrl}} style={tw`w-[122px] rounded-l-4 mr-[20px]`} onTouchEnd={props.goToMusicalDetail1} />
+                    <Pressable onPress={props.goToMusicalDetail1}>
+                        <Image source={{uri: props.reviewInfo.posterUrl}} style={tw`w-[122px] h-[100%] rounded-l-4 mr-[20px]`} />
+                    </Pressable>
                     <View style={tw`flex-col absolute left-[113px] top-[-9px]`}>
                         <View style={tw`w-[18px] h-[18px] rounded-full bg-[#F8F8F8] mb-[10px]`}></View>
                         <View style={tw`w-[10px] h-[10px] rounded-full bg-[#F8F8F8] ml-[4px]`}></View>
@@ -323,17 +331,19 @@ export function ShortReviewFormInMyReviews(props) {
                         <View style={tw`w-[10px] h-[10px] rounded-full bg-[#F8F8F8] ml-[4px] mt-[9px]`}></View>
                         <View style={tw`w-[18px] h-[18px] rounded-full bg-[#F8F8F8] mt-[10px]`}></View>
                     </View>
-                    <View style={[tw`flex-col justify-between ml-[10px]`, { flex: 1 }]} onTouchEnd={props.goToReviewDetail1}>
-                        <Text style={tw`text-[#191919] text-base font-medium mt-[14px] mb-[4px]`}>{props.reviewInfo.musicalName}</Text>
-                        <Text numberOfLines={1} style={tw`text-[#191919] text-xs mb-[14px] w-[90%]`}>
-                            {props.reviewInfo.casting}
-                        </Text>
-                        {makeStars(props.reviewInfo.starRating)}
-                        <View style={tw`flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mt-[5px] mb-[14px] p-[6px] rounded-2 w-[95%]`}>
-                            <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>"</Text>
-                            <Text numberOfLines={1} style={tw`text-[#191919] text-sm font-medium leading-[24px] w-full`}>{props.reviewInfo.shortReview}"</Text>
+                    <Pressable onPress={props.goToReviewDetail1} style={{ flex: 1 }}>
+                        <View style={[tw`flex-col justify-between`, { flex: 1 }]}>
+                            <Text style={tw`text-[#191919] text-base font-medium mt-[14px] mb-[4px]`}>{props.reviewInfo.musicalName}</Text>
+                            <Text numberOfLines={1} style={tw`text-[#191919] text-xs mb-[14px] w-[90%]`}>
+                                {props.reviewInfo.casting}
+                            </Text>
+                            {makeStars(props.reviewInfo.starRating)}
+                            <View style={tw`flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mt-[5px] mb-[14px] p-[6px] rounded-2 w-[95%]`}>
+                                <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>"</Text>
+                                <Text numberOfLines={1} style={tw`text-[#191919] text-sm font-medium leading-[24px] w-full`}>{props.reviewInfo.shortReview}"</Text>
+                            </View>
                         </View>
-                    </View>
+                    </Pressable>
                 </View>
 
                 <View style={tw`flex-row items-center z-20`}>
@@ -355,7 +365,7 @@ export function MusicalInfoFormInReviewDetail(props) {
             <Image source={require("@images/half_circle.png")} style={tw`w-[60px] h-[30px] tint-[#F5F5F5] self-center absolute top-0`}></Image>
             
             {/*뮤지컬 정보*/}
-            <View style={tw`border border-gray-900 border-[0.7px] self-center w-[85%] mt-14`}></View>
+            <View style={tw`border border-gray-900 border-[0.7px] self-center w-[85%] mt-13`}></View>
             <View style={tw`flex-col items-start mt-3 mx-[10%] z-20`}>
                 <Text style={tw`text-1.375rem text-gray-900 font-medium mb-4`}>{props.reviewInfo.musicalTitle}</Text>
                 <Text numberOfLines={1} style={tw`text-sm text-gray-900 mb-1.5 w-[95%]`}>{props.reviewInfo.casting}</Text>
@@ -370,7 +380,7 @@ export function MusicalInfoFormInReviewDetail(props) {
                     <Text style={tw`text-gray-900 text-sm self-start ml-[10%]`}>평점</Text>
                     <View style={tw`mr-[10%]`}>{makeStarsForEachReview(props.reviewInfo.rating)}</View>
                 </View>
-                <View style={tw`flex flex-row items-start w-[100%] min-h-1/7 justify-between mt-3`}>
+                <View style={tw`flex flex-row items-start w-[100%] min-h-1/7 justify-between mt-4`}>
                     <Text style={tw`text-gray-900 text-sm leading-6 ml-[10%] mr-[7.5%]`}>한줄평</Text>
                     <Text numberOfLines={5} style={tw`w-[60%] h-[120px] text-gray-900 text-sm text-center font-medium leading-6 self-center mr-[5%]`}>"{props.reviewInfo.shortReview}"</Text>
                 </View>
