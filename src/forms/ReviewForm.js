@@ -99,7 +99,7 @@ export function ShortReviewForm(props) {
                         <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>{props.reviewInfo.shortReview}"</Text>
                         </>
                         :
-                        <Text style={tw`text-[#B6B6B6] text-sm font-medium leading-[24px] border-b-[1px] border-[#B6B6B6]`}>스포일러 보기</Text>
+                        <Text style={tw`text-[#B6B6B6] text-sm font-medium leading-[24px] border-b-[1px] border-[#B6B6B6]`}>스포일러 포함</Text>
                     }
                 </View>
                 <View style={tw`flex-row justify-between items-center`}>
