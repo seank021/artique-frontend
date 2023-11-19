@@ -11,11 +11,14 @@ import StoryForm from '@forms/StoryForm';
 import AverageScoreForm from '@forms/AverageScoreForm';
 import { ShortReviewForm } from '@forms/ReviewForm';
 
+import * as Cookies from '@functions/cookie';
+import { removeAutoLogin } from '@functions/autoLogin';
+
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 
 import { musicalDetails, musicalReviews, musicalRateStatistics, thumbsUp } from '@functions/api';
 
-export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setMusicalPoster, setMusicalTitle, setReviewId}) {
+export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setMusicalPoster, setMusicalTitle, setReviewId, setGoToFeed}) {
     const [modalVisible, setModalVisible] = useState(false);
 
     const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
@@ -126,11 +129,30 @@ export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setMu
         nav.navigate('MusicalDetail2');
     };
 
+    const logout = async () => {
+        const currentLogin = await Cookies.getCurrentLogin();
+        await Cookies.removeCookie(currentLogin);
+        await removeAutoLogin();
+        setGoToFeed(false);
+    }
+
     const onPressThumbsUp = (reviewId, isThumbsUp) => {
         // isThumbsUp이 true: 이미 공감되어 있음 -> 공감 버튼 누른다는 것: 공감 취소
         // isThumbsUp이 false: 공감 안 되어 있음 -> 공감 버튼 누른다는 것: 공감
         thumbsUp(reviewId, !isThumbsUp).then((res) => {
             console.log(res);
+            if (res === "banned member") {
+                setModalVisible(!modalVisible);
+                setAlertImage(require('@images/x_red.png'));
+                setAlertText('신고로 사용이 정지된 회원입니다.');
+                setTimeout(() => {
+                    setModalVisible(modalVisible);
+                }, 1000);
+                setTimeout(() => {
+                    logout();
+                }, 2000);
+                return;
+            }
             setReviews((prevReviews) => {
                 const newReviews = [...prevReviews];
                 const reviewIndex = newReviews.findIndex((review) => review.reviewId === reviewId);
@@ -158,7 +180,7 @@ export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setMu
                     <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] mr-[8px] w-[10px] h-[18px] tint-[#191919]`}></Image>
                     <View style={tw`px-[20px]`}></View>
                 </Pressable>
-                <Text numberOfLines={1} style={tw`text-[#191919] text-base font-medium w-[50%]`}>
+                <Text numberOfLines={1} style={tw`text-[#191919] text-base font-medium w-[50%] text-center`}>
                     {musicalInfo.title}
                 </Text>
                 <Pressable onPress={onPressWrite} style={tw`flex-row`}>
@@ -171,7 +193,7 @@ export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setMu
             <ScrollView showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />} >
                 <View style={tw`mt-[27.56px]`}></View>
                 {musicalInfo.posterUrl && (
-                    <MusicalInfoForm poster={musicalInfo.posterUrl} title={musicalInfo.title} score={musicalInfo.averageScore} date={musicalInfo.date} place={musicalInfo.place} duration={musicalInfo.duration} casting={musicalInfo.casting}></MusicalInfoForm>
+                    <MusicalInfoForm poster={musicalInfo.posterUrl} title={musicalInfo.title} score={musicalInfo.averageScore} date={musicalInfo.date} place={musicalInfo.place} casting={musicalInfo.casting}></MusicalInfoForm>
                 )}                
                 <View style={tw`mb-[27.56px]`}></View>
                 <StoryForm story={musicalInfo.story}></StoryForm>
