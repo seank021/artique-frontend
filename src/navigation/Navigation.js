@@ -180,7 +180,7 @@ const Navigation = () => {
                 <Stack.Screen name="ReviewDetail1" children={() => <ReviewDetail1 isCookie={isCookie} reviewId={reviewId}/>} />
 
                 <Stack.Screen name="MainSetting" children={() => <MainSetting setIsCookie={setIsCookie} setGoToFeed={setGoToFeed}/>} />
-                <Stack.Screen name="MyAccount" children={() => <MyAccount isCookie={isCookie} setGoToFeed={setGoToFeed}/>} />
+                <Stack.Screen name="MyAccount" children={() => <MyAccount isCookie={isCookie} setGoToFeed={setGoToFeed} memberId={memberId}/>} />
                 <Stack.Screen name="PWChange" children={() => <PWChange isCookie={isCookie}/>} />
                 <Stack.Screen name="PWReset" children={() => <PWReset isCookie={isCookie}/>} />
                 <Stack.Screen name="Announcement" children={() => <Annoucement isCookie={isCookie} />} />

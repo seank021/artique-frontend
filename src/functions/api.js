@@ -357,4 +357,13 @@ const duplicateNickname = async (nickname) => {
   }
 }
 
-export { feedReviews, musicalReviews, musicalDetails, musicalRateStatistics, musicalReviewsAll, thumbsUp, reviewWrite, reviewUpdate, reviewDelete, reviewReport, reviewDetail, searchMusicals, memberSummary, memberStatistics, memberShortThumbReviews, memberIdInMypage, myReviewsAll, searchCreatedReviews, myThumbsAll, searchThumbReviews, profileUpload, updateMember, duplicateNickname};
+const announcementList = async () => {
+  try {
+    const response = await axios.get(`http://3.39.145.210/config/notice`);
+    return response.data;
+  } catch (err) {
+    console.log(err.response.data);
+  }
+}
+
+export { feedReviews, musicalReviews, musicalDetails, musicalRateStatistics, musicalReviewsAll, thumbsUp, reviewWrite, reviewUpdate, reviewDelete, reviewReport, reviewDetail, searchMusicals, memberSummary, memberStatistics, memberShortThumbReviews, memberIdInMypage, myReviewsAll, searchCreatedReviews, myThumbsAll, searchThumbReviews, profileUpload, updateMember, duplicateNickname, announcementList };
