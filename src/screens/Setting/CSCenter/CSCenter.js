@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, StyleSheet, Pressable } from "react-native";
+import { View, Text, Image, StyleSheet, Pressable, Linking } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
 
-import { useNavigation } from "@react-navigation/native";
+import { Link, useNavigation } from "@react-navigation/native";
 import { AlertFormForConfirm } from "@forms/AlertForm";
 
 export default function CSCenter ({setIsCookie}) {
@@ -16,15 +16,15 @@ export default function CSCenter ({setIsCookie}) {
   }
 
   const goToOneOnOneInquiry = () => {
-    nav.navigate('OneOnOneInquiry');
+    Linking.openURL('https://forms.gle/qKhucAvewtg4qrzs8');
   }
 
   const goToFAQ = () => {
-    nav.navigate('FAQ');
+    Linking.openURL('https://artiqueluta.notion.site/Artique-FAQ-16e0d85eedfe4119b440441a55c5977a')
   }
 
   const goToDBRequest = () => {
-    nav.navigate('DBRequest');
+    Linking.openURL('https://forms.gle/o8mx63bJCW8FT1jv7');
   }
 
   const onPressLogout = () => {
