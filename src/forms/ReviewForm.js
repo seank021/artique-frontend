@@ -125,8 +125,8 @@ export function ShortReviewFormInFeed(props) {
     const nav = useNavigation();
 
     const [isCookie, setIsCookie] = useState(props.isCookie);
-    const [isThumbsUp, setIsThumbsUp] = useState(props.reviewInfo?.isThumbsUp);
-    const [thumbsCount, setThumbsCount] = useState(props.reviewInfo?.thumbsCount);
+    const [isThumbsUp, setIsThumbsUp] = useState(props.reviewInfo.isThumbsUp);
+    const [thumbsCount, setThumbsCount] = useState(props.reviewInfo.thumbsCount);
     const [thumbsUpImg, setThumbsUpImg] = useState(require('@images/like_gray_small.png'));
 
     const [modalVisible, setModalVisible] = useState(false);
@@ -264,8 +264,7 @@ export function ShortReviewFormInFeed(props) {
 
 // props: reviewInfo, onPressThumbsUp, isCookie, goToReviewDetail1, goToMusicalDetail1
 export function ShortReviewFormInMyReviews(props) {
-    const nav = useNavigation();
-
+    
     const [isCookie, setIsCookie] = useState(props.isCookie);
     const [isThumbsUp, setIsThumbsUp] = useState(props.reviewInfo.isThumbsUp);
     const [thumbsCount, setThumbsCount] = useState(props.reviewInfo.thumbsCount);
@@ -394,6 +393,9 @@ export function ShortReviewFormInMyReviews(props) {
 export function MusicalInfoFormInReviewDetail(props) {
     const [longReviewModalVisible, setLongReviewModalVisible] = useState(false);
 
+    const [seeShortSpoiler, setSeeShortSpoiler] = useState(!props.isShortReviewSpoiler);
+    const [seeLongSpoiler, setSeeLongSpoiler] = useState(!props.isLongReviewSpoiler);
+
     return (
         <View style={tw`w-[90%] h-[95%] rounded-3xl bg-white mx-auto my-auto`}>
             <Image source={require("@images/half_circle.png")} style={tw`w-[60px] h-[30px] tint-[#F5F5F5] self-center absolute top-0`}></Image>
@@ -416,7 +418,13 @@ export function MusicalInfoFormInReviewDetail(props) {
                 </View>
                 <View style={tw`flex flex-row items-start w-[100%] min-h-1/7 justify-between mt-4`}>
                     <Text style={tw`text-gray-900 text-sm leading-6 ml-[10%] mr-[7.5%]`}>한줄평</Text>
-                    <Text numberOfLines={5} style={tw`w-[60%] h-[120px] text-gray-900 text-sm text-center font-medium leading-6 self-center mr-[5%]`}>"{props.reviewInfo.shortReview}"</Text>
+                    { seeShortSpoiler ?
+                        <Text numberOfLines={5} style={tw`w-[60%] h-[120px] text-gray-900 text-sm text-center font-medium leading-6 self-center mr-[5%]`}>"{props.reviewInfo.shortReview}"</Text>
+                        :
+                        <Pressable onTouchEnd={(e)=> { e.stopPropagation(); setSeeShortSpoiler(true)}} style={tw`w-[200px] h-auto justify-center mr-[5%]`}>
+                            <Text style={[tw`text-[#B6B6B6] font-medium text-center leading-[22px] border-b-[1px] border-[#B6B6B6] underline`, {fontSize: getFontSize(14)}]}>스포일러 포함</Text>
+                        </Pressable>
+                    }
                 </View>
             </View>
 
@@ -437,10 +445,15 @@ export function MusicalInfoFormInReviewDetail(props) {
                         {(props.reviewInfo.longReview === '') ? (
                             <Text style={tw`text-[#B6B6B6] text-sm text-justify font-normal leading-6`}>작성된 긴줄평이 없습니다.</Text>
                         ) : (
-                            <Text style={tw`text-gray-900 text-sm text-justify font-normal leading-6`}>{props.reviewInfo.longReview}</Text>
+                            seeLongSpoiler ?
+                                <Text style={tw`text-gray-900 text-sm text-justify font-normal leading-6`}>{props.reviewInfo.longReview}</Text>
+                                :
+                                <Pressable onTouchEnd={(e)=> { e.stopPropagation(); setSeeLongSpoiler(true)}} style={tw`w-[200px] h-auto ml-[7.5%] self-center justify-center`}>
+                                    <Text style={[tw`text-[#B6B6B6] font-medium text-center leading-[22px] border-b-[1px] border-[#B6B6B6] underline`, {fontSize: getFontSize(14)}]}>스포일러 포함</Text>
+                                </Pressable>
                         )}
                     </ScrollView>
-                    <LongReviewForm longReviewModalVisible={longReviewModalVisible} setLongReviewModalVisible={setLongReviewModalVisible} longReview={props.reviewInfo.longReview}></LongReviewForm>
+                    <LongReviewForm seeLongSpoiler={seeLongSpoiler} setSeeLongSpoiler={setSeeLongSpoiler} longReviewModalVisible={longReviewModalVisible} setLongReviewModalVisible={setLongReviewModalVisible} longReview={props.reviewInfo.longReview}></LongReviewForm>
                 </View>
             </View>
 

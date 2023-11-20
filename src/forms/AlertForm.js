@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, Pressable, ScrollView, TextInput } from 'react-native';
+import { View, Text, Image, Pressable, ScrollView, TextInput, PixelRatio } from 'react-native';
 import Modal from 'react-native-modal';
 
 import tw from 'twrnc';
@@ -8,11 +8,12 @@ import { useNavigation } from '@react-navigation/native';
 
 import { Contract1, Contract2 } from '@forms/ContractContents';
 
-import { reviewDetail, reviewDelete, reviewReport } from '@functions/api';
-import * as Cookies from '@functions/cookie';
-import { removeAutoLogin } from '@functions/autoLogin';
+import { reviewDetail, reviewDelete, reviewReport, profileUpload } from '@functions/api';
 
 import { launchImageLibrary } from 'react-native-image-picker';
+
+const fontScale = PixelRatio.getFontScale();
+const getFontSize = size => size / fontScale;
 
 // props: modalVisible, setModalVisible / borderColor, bgColor, image, textColor, text
 export default function AlertForm(props) {
@@ -146,9 +147,15 @@ export function LongReviewForm(props) {
                 <Text style={tw`text-base text-[#191919] font-medium my-6`}>긴줄평</Text>
                 <ScrollView style={tw`mx-8 mb-14`} showsVerticalScrollIndicator={false}>
                     {(props.longReview === '') ? (
-                        <Text style={tw`text-sm font-normal text-left text-[#B6B6B6]`}>작성된 긴줄평이 없습니다.</Text> 
+                        <Text style={tw`text-sm font-normal text-justify text-[#B6B6B6] leading-6`}>리뷰가 없습니다.</Text>
                     ) : (
-                    <Text style={tw`text-sm font-normal text-justify text-[#191919] leading-6`}>{props.longReview}</Text>
+                        props.seeLongSpoiler ? (
+                            <Text style={tw`text-sm font-normal text-justify text-[#191919] leading-6`}>{props.longReview}</Text>
+                        ) : (
+                            <Pressable onTouchEnd={(e)=> { e.stopPropagation(); props.setSeeLongSpoiler(true)}} style={tw`w-[200px] h-auto self-center justify-center`}>
+                                <Text style={[tw`text-[#B6B6B6] font-medium text-center leading-[22px] border-b-[1px] border-[#B6B6B6] underline`, {fontSize: getFontSize(14)}]}>스포일러 포함</Text>
+                            </Pressable>
+                        )
                     )}
                 </ScrollView>
             </View>
@@ -157,24 +164,37 @@ export function LongReviewForm(props) {
 }
 
 export function ProfileChangeForm(props) {
+
+    function filepathToURI(filePath) {
+        // 파일 경로를 URI로 변환
+        // let path = filePath.replace(/\\/g, '/'); // Windows에서 역슬래시(\)를 슬래시(/)로 변환
+        let uri = encodeURI(filePath);
+        return uri;
+    }
+
     const onPressSelect = async () => {
-        const response = await launchImageLibrary({
+        const options = {
             mediaType: 'photo',
             includeBase64: true,
-        });
-            if (response.didCancel) {
+        }
+
+        await launchImageLibrary(options, (res) => {
+            
+            if (res.didCancel) {
                 console.log('User cancelled image picker');
-            } else if (response.errorCode) {
-                console.log('ImagePicker Error: ', response.errorMessage);
-            } else {
-                let imageSource = response.assets[0]?.base64;
-                console.log("IMAGE SOURCE", imageSource)
-                props.setImage(imageSource);
-            }
-        };
+            } else if (res.errorCode) {
+                console.log('ImagePicker Error: ', res.errorMessage);
+            } else {        
+                let imageSource = res.assets[0].base64;
+                props.setProfileImage(filepathToURI(imageSource));
+                console.log(filepathToURI(imageSource))
+                props.setModalVisible(false);
+            };
+        });
+    }
 
     const onPressDelete = () => {
-        props.setImage(null);
+        props.setProfileImage(null);
     }
 
     return(
