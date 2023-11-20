@@ -99,7 +99,7 @@ export function ShortReviewForm(props) {
                         <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>{props.reviewInfo.shortReview}"</Text>
                         </>
                         :
-                        <Text style={tw`text-[#B6B6B6] text-sm font-medium leading-[24px] border-b-[1px] border-[#B6B6B6]`}>스포일러 포함</Text>
+                        <Text style={tw`text-[#B6B6B6] text-sm font-medium leading-[24px] border-b-[1px] border-[#B6B6B6] underline`}>스포일러 포함</Text>
                     }
                 </View>
                 <View style={tw`flex-row justify-between items-center`}>
@@ -125,8 +125,8 @@ export function ShortReviewFormInFeed(props) {
     const nav = useNavigation();
 
     const [isCookie, setIsCookie] = useState(props.isCookie);
-    const [isThumbsUp, setIsThumbsUp] = useState(props.reviewInfo?.isThumbsUp);
-    const [thumbsCount, setThumbsCount] = useState(props.reviewInfo?.thumbsCount);
+    const [isThumbsUp, setIsThumbsUp] = useState(props.reviewInfo.isThumbsUp);
+    const [thumbsCount, setThumbsCount] = useState(props.reviewInfo.thumbsCount);
     const [thumbsUpImg, setThumbsUpImg] = useState(require('@images/like_gray_small.png'));
 
     const [modalVisible, setModalVisible] = useState(false);
@@ -239,11 +239,11 @@ export function ShortReviewFormInFeed(props) {
                                 <View style={tw`flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mt-[5px] mb-[14px] p-[6px] rounded-2 w-[95%]`}>
                                     {seeSpoiler ?
                                         <>
-                                        <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>"</Text>
-                                        <Text numberOfLines={1} style={[tw`text-[#191919] font-medium leading-[22px] w-full`, {fontSize: getFontSize(14)}]}>{props.reviewInfo.shortReview}"</Text>
+                                            <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>"</Text>
+                                            <Text numberOfLines={1} style={[tw`text-[#191919] font-medium leading-[22px] w-full`, {fontSize: getFontSize(14)}]}>{props.reviewInfo.shortReview}"</Text>
                                         </>
                                         :
-                                        <Text style={[tw`text-[#B6B6B6] font-medium leading-[22px] border-b-[1px] border-[#B6B6B6]`, {fontSize: getFontSize(14)}]}>스포일러 포함</Text>
+                                        <Text style={[tw`text-[#B6B6B6] font-medium leading-[22px] border-b-[1px] border-[#B6B6B6] underline`, {fontSize: getFontSize(14)}]}>스포일러 포함</Text>
                                     }
                                 </View>
                             </Pressable>
@@ -264,6 +264,7 @@ export function ShortReviewFormInFeed(props) {
 
 // props: reviewInfo, onPressThumbsUp, isCookie, goToReviewDetail1, goToMusicalDetail1
 export function ShortReviewFormInMyReviews(props) {
+    
     const [isCookie, setIsCookie] = useState(props.isCookie);
     const [isThumbsUp, setIsThumbsUp] = useState(props.reviewInfo.isThumbsUp);
     const [thumbsCount, setThumbsCount] = useState(props.reviewInfo.thumbsCount);
@@ -273,6 +274,11 @@ export function ShortReviewFormInMyReviews(props) {
 
     const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
     const [alertText, setAlertText] = useState('로그인이 필요한 서비스입니다.');
+
+    const [modifynDeleteModalVisible, setModifynDeleteModalVisible] = useState(false);
+    const [reportModalVisible, setReportModalVisible] = useState(false);
+
+    const [seeSpoiler, setSeeSpoiler] = useState(!props.isShortReviewSpoiler);
 
     useEffect(() => {
         setIsCookie(props.isCookie);
@@ -305,16 +311,35 @@ export function ShortReviewFormInMyReviews(props) {
         props.onPressThumbsUp(props.reviewInfo.reviewId);
     };
 
+    const onPressMore = () => {
+        if (!props.isCookie) {
+            setModalVisible(!modalVisible);
+            setAlertImage(require('@images/x_red.png'));
+            setAlertText('로그인이 필요한 서비스입니다.');
+            setTimeout(() => {
+                setModalVisible(modalVisible);
+            }, 1000);
+            return;
+        }
+        if (props.isMine) setModifynDeleteModalVisible(!modifynDeleteModalVisible);
+        else setReportModalVisible(!reportModalVisible);
+    }
+
     return (
         <>
             <View>
                 <AlertForm modalVisible={modalVisible} setModalVisible={setModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
             </View>
+
             <View style={tw`flex flex-col w-[90%] self-center my-[20px]`}>
                 <View style={tw`flex-row justify-between items-center mb-[10px] z-20`}>
                     <Text style={tw`text-[#ABABAB] text-xs`}>{props.reviewInfo.viewDate}</Text>
-                    <Image source={require('@images/threedots.png')} style={tw`w-[16px] h-[3.5px] mr-[4px]`}></Image>
+                    <Pressable onPress={onPressMore}><Image style={tw`w-[30px] h-[20px]`} source={require("@images/dots_more.png")}></Image></Pressable>
                 </View>
+                {props.isMine ?
+                    <AlertFormForModifyAndDelete modalVisible={modifynDeleteModalVisible} setModalVisible={setModifynDeleteModalVisible} reviewInfo={props.reviewInfo} setReviewInfo={props.setReviewInfo} setReviewInfo2={props.setReviewInfo2} setOnRefreshWhenDelete={props.setOnRefreshWhenDelete} setGoToFeed={props.setGoToFeed}></AlertFormForModifyAndDelete>
+                    : <AlertFormForReport modalVisible={reportModalVisible} setModalVisible={setReportModalVisible} reviewInfo={props.reviewInfo} setGoToFeed={props.setGoToFeed}></AlertFormForReport>
+                }
 
                 <View style={tw`flex flex-row mb-[12px] bg-[#FFFFFF] h-[162px] rounded-4 shadow-sm`}>
                     <Pressable onPress={props.goToMusicalDetail1}>
@@ -338,10 +363,18 @@ export function ShortReviewFormInMyReviews(props) {
                                 {props.reviewInfo.casting}
                             </Text>
                             {makeStars(props.reviewInfo.starRating)}
-                            <View style={tw`flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mt-[5px] mb-[14px] p-[6px] rounded-2 w-[95%]`}>
-                                <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>"</Text>
-                                <Text numberOfLines={1} style={tw`text-[#191919] text-sm font-medium leading-[24px] w-full`}>{props.reviewInfo.shortReview}"</Text>
-                            </View>
+                            <Pressable onTouchEnd={(e)=> { e.stopPropagation(); setSeeSpoiler(true)}}>
+                                <View style={tw`flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mt-[5px] mb-[14px] p-[6px] rounded-2 w-[95%]`}>
+                                    {seeSpoiler ?
+                                        <>
+                                            <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>"</Text>
+                                            <Text numberOfLines={1} style={tw`text-[#191919] text-sm font-medium leading-[24px] w-full`}>{props.reviewInfo.shortReview}"</Text>
+                                        </>
+                                        :
+                                        <Text style={[tw`text-[#B6B6B6] font-medium leading-[22px] underline`, {fontSize: getFontSize(14)}]}>스포일러 포함</Text>
+                                    }
+                                </View>
+                            </Pressable>
                         </View>
                     </Pressable>
                 </View>
@@ -359,7 +392,15 @@ export function ShortReviewFormInMyReviews(props) {
 
 export function MusicalInfoFormInReviewDetail(props) {
     const [longReviewModalVisible, setLongReviewModalVisible] = useState(false);
+    console.log("PROPS", !props?.isShortReviewSpoiler, props?.isLongReviewSpoiler)
+    const [seeShortSpoiler, setSeeShortSpoiler] = useState(false);
+    const [seeLongSpoiler, setSeeLongSpoiler] = useState(false);
 
+    useEffect(() => {
+        setSeeShortSpoiler(!props?.isShortReviewSpoiler);
+        setSeeLongSpoiler(!props?.isLongReviewSpoiler);
+    }, [props.isShortReviewSpoiler, props.isLongReviewSpoiler]);
+    
     return (
         <View style={tw`w-[90%] h-[95%] rounded-3xl bg-white mx-auto my-auto`}>
             <Image source={require("@images/half_circle.png")} style={tw`w-[60px] h-[30px] tint-[#F5F5F5] self-center absolute top-0`}></Image>
@@ -382,7 +423,13 @@ export function MusicalInfoFormInReviewDetail(props) {
                 </View>
                 <View style={tw`flex flex-row items-start w-[100%] min-h-1/7 justify-between mt-4`}>
                     <Text style={tw`text-gray-900 text-sm leading-6 ml-[10%] mr-[7.5%]`}>한줄평</Text>
-                    <Text numberOfLines={5} style={tw`w-[60%] h-[120px] text-gray-900 text-sm text-center font-medium leading-6 self-center mr-[5%]`}>"{props.reviewInfo.shortReview}"</Text>
+                    {seeShortSpoiler ?
+                        <Text numberOfLines={5} style={tw`w-[60%] h-[120px] text-gray-900 text-sm text-center font-medium leading-6 self-center mr-[5%]`}>"{props.reviewInfo.shortReview}"</Text>
+                        :
+                        <Pressable onTouchEnd={(e)=> { e.stopPropagation(); setSeeShortSpoiler(true)}} style={tw`w-[200px] h-auto justify-center mr-[5%]`}>
+                            <Text style={[tw`text-[#B6B6B6] font-medium text-center leading-[22px] border-b-[1px] border-[#B6B6B6] underline`, {fontSize: getFontSize(14)}]}>스포일러 포함</Text>
+                        </Pressable>
+                    }
                 </View>
             </View>
 
@@ -403,10 +450,15 @@ export function MusicalInfoFormInReviewDetail(props) {
                         {(props.reviewInfo.longReview === '') ? (
                             <Text style={tw`text-[#B6B6B6] text-sm text-justify font-normal leading-6`}>작성된 긴줄평이 없습니다.</Text>
                         ) : (
-                            <Text style={tw`text-gray-900 text-sm text-justify font-normal leading-6`}>{props.reviewInfo.longReview}</Text>
+                            seeLongSpoiler ?
+                                <Text style={tw`text-gray-900 text-sm text-justify font-normal leading-6`}>{props.reviewInfo.longReview}</Text>
+                                :
+                                <Pressable onTouchEnd={(e)=> { e.stopPropagation(); setSeeLongSpoiler(true)}} style={tw`w-[200px] h-auto ml-[7.5%] self-center justify-center`}>
+                                    <Text style={[tw`text-[#B6B6B6] font-medium text-center leading-[22px] border-b-[1px] border-[#B6B6B6] underline`, {fontSize: getFontSize(14)}]}>스포일러 포함</Text>
+                                </Pressable>
                         )}
                     </ScrollView>
-                    <LongReviewForm longReviewModalVisible={longReviewModalVisible} setLongReviewModalVisible={setLongReviewModalVisible} longReview={props.reviewInfo.longReview}></LongReviewForm>
+                    <LongReviewForm seeLongSpoiler={seeLongSpoiler} setSeeLongSpoiler={setSeeLongSpoiler} longReviewModalVisible={longReviewModalVisible} setLongReviewModalVisible={setLongReviewModalVisible} longReview={props.reviewInfo.longReview}></LongReviewForm>
                 </View>
             </View>
 
@@ -416,23 +468,31 @@ export function MusicalInfoFormInReviewDetail(props) {
 }
 {/* props: reviewId, musicalName, starRating, shortReview*/}
 export function ShortReviewFormInMypage(props) {
+    const [seeSpoiler, setSeeSpoiler] = useState(!props.isShortReviewSpoiler);
+
     return (
-        <View style={tw`w-[250px] h-[120px] bg-[#FFF] rounded-[10px] shadow mr-2`}>
-            <View style={tw`w-full flex-col items-start mx-3 my-3`}>
+        <View style={tw`w-[254px] h-[121px] bg-[#FFF] rounded-[10px] shadow mr-2 mb-5`}>
+            <View style={tw`flex flex-col w-full h-full items-start justify-between px-3 py-3`}>
                 <Text style={tw`text-sm text-[#191919] font-medium mb-2`}>{props.musicalName}</Text>
                 <View> 
                     {makeStars(props.starRating)}
-                </View>
-                <Pressable onPress={props.onPressShortReview}>
-                    <View style={tw`flex-row items-center bg-[#F5F5F5] rounded-[5px] w-[230px] h-[50px] mt-1.25`}>
-                        <View style={tw`flex-row justify-between mx-1.5 my-1.5`}>
-                            <Text style={tw`text-xs text-[#191919] font-medium`}>"</Text>
-                            <Text numberOfLines={2} ellipsizeMode='tail' style={tw`text-xs text-[#191919] font-medium shrink mr-1.5`}>
-                                {`${props.shortReview}`.replace(/^(.{30}[^\s]*).*/, "$1...\"")}
-                            </Text>
+                    <Pressable onPress={props.onPressShortReview}>
+                        <View style={tw`flex-row items-center bg-[#F5F5F5] rounded-[5px] w-[230px] min-h-[30px] mt-[5px]`}>
+                            {seeSpoiler ?
+                                <View style={tw`flex-row justify-between mx-1.5 my-1.5`}>
+                                    <Text style={tw`text-xs text-[#191919] font-medium`}>"</Text>
+                                    <Text numberOfLines={2} ellipsizeMode='tail' style={tw`text-xs text-[#191919] font-medium shrink mr-1.5`}>
+                                        {`${props.shortReview}`.replace(/^(.{30}[^\s]*).*/, "$1...")}"
+                                    </Text>
+                                </View>
+                                :
+                                <View style={tw`mx-2 my-1.5`}>
+                                    <Text onTouchEnd={(e)=> { e.stopPropagation(); setSeeSpoiler(true)}} style={[tw`text-[#B6B6B6] font-medium underline`, {fontSize: getFontSize(12)}]}>스포일러 보기</Text>
+                                </View>
+                            }
                         </View>
-                    </View>
-                </Pressable>
+                    </Pressable>
+                </View>
             </View>
         </View>
     )

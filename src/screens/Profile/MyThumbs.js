@@ -7,9 +7,9 @@ import { ShortReviewFormInFeed } from "@forms/ReviewForm";
 
 import { myThumbsAll, thumbsUp } from "@functions/api";
 
-import { useNavigation, useIsFocused, useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
-export default function MyThumbs({ isCookie, memberId, setMusicalId, setReviewId }) {
+export default function MyThumbs({ isCookie, memberId, setMusicalId, setReviewId, setReviewInfo, setReviewInfo2 }) {
   const nav = useNavigation();
 
   const [page, setPage] = useState(0);
@@ -57,7 +57,7 @@ export default function MyThumbs({ isCookie, memberId, setMusicalId, setReviewId
       });
     }
     }
-  }, [page, updatePage, reviews, memberId, otherMemberId]);
+  }, [page, updatePage, otherMemberId]);
 
   const onPressThumbsUp = (reviewId, isThumbsUp) => {
     thumbsUp(reviewId, !isThumbsUp).then((res) => {
@@ -135,6 +135,10 @@ export default function MyThumbs({ isCookie, memberId, setMusicalId, setReviewId
               goToReviewDetail1={() => goToReviewDetail1(review.reviewId)} 
               goToMusicalDetail1={() => goToMusicalDetail1(review.musicalId)}
               isCookie={isCookie}
+              isMine={review.memberId === memberId}
+              setReviewInfo={setReviewInfo}
+              setReviewInfo2={setReviewInfo2}
+              isShortReviewSpoiler={review.reviewSpoiler}
             />
             {index < reviews.length - 1 && 
               <View style={tw`border-4 border-[#F0F0F0]`}></View>

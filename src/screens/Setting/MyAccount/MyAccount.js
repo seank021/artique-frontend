@@ -5,11 +5,13 @@ import tw from "twrnc";
 
 import { useNavigation } from "@react-navigation/native";
 import { AlertFormForConfirm } from "@forms/AlertForm";
+import { clearCookie, getCurrentLogin } from "@functions/cookie";
 
-export default function MyAccount ({ isCookie }) {
+export default function MyAccount ({ isCookie, setGoToFeed, memberId }) {
   const nav = useNavigation();
 
   const [exitModalVisible, setExitModalVisible] = useState(false);
+  const [loginMethod, setLoginMethod] = useState('');
 
   const goBack = () => {
     nav.goBack();
@@ -21,8 +23,29 @@ export default function MyAccount ({ isCookie }) {
 
   const onPressExit = () => {
     setExitModalVisible(!exitModalVisible)
-    console.log("탈퇴")
   }
+
+  const onPressExitConfirm = async () => {
+    await clearCookie();
+    await removeAutoLogin();
+    setGoToFeed(false);
+  }
+
+  useEffect(() => {
+    getCurrentLogin().then((currentLogin) => {
+      if (currentLogin === 'kakao') {
+        setLoginMethod('카카오톡');
+      } else if (currentLogin === 'google') {
+        setLoginMethod('구글');
+      } else if (currentLogin === 'apple') {
+        setLoginMethod('애플');
+      } else {
+        setLoginMethod('일반');
+      }
+    }).catch((err) => {
+      console.log(err);
+    });
+  }, []);
   
   return (
     <SafeAreaView style={styles.container}>
@@ -39,13 +62,13 @@ export default function MyAccount ({ isCookie }) {
       {/* 계정 정보 */}
       <View style={tw`flex-row items-center h-[57px] mx-5`}>
         <Text style={tw`text-sm text-[#191919] font-normal`}>가입 계정</Text>
-        <Text style={tw`text-sm text-[#191919] font-normal absolute left-[140px]`}>카카오톡</Text>
+        <Text style={tw`text-sm text-[#191919] font-normal absolute left-[140px]`}>{loginMethod}</Text>
       </View>
       <View style={tw`border-solid border-b border-[#E5E6E5]`}></View>
 
       <View style={tw`flex-row items-center h-[57px] mx-5`}>
         <Text style={tw`text-sm text-[#191919] font-normal`}>아이디</Text>
-        <Text style={tw`text-sm text-[#191919] font-normal absolute left-[140px]`}>artique</Text>
+        <Text style={tw`text-sm text-[#191919] font-normal absolute left-[140px]`}>{memberId}</Text>
       </View>
       <View style={tw`border-solid border-b border-[#E5E6E5]`}></View>
 
@@ -63,9 +86,10 @@ export default function MyAccount ({ isCookie }) {
       <AlertFormForConfirm
         modalVisible={exitModalVisible}
         setModalVisible={setExitModalVisible}
-        onPress={onPressExit}
         question="탈퇴하시겠습니까?"
-        text="탈퇴하기"/>
+        text="탈퇴하기"
+        onPress={onPressExitConfirm}
+        />
     </SafeAreaView>
   )
 }

@@ -13,11 +13,11 @@ export default function ArtiqueInfo ({ isCookie }) {
   }
 
   const goToTerms = () => {
-    console.log("이용약관")
+    nav.navigate('Terms');
   }
 
   const goToPrivacy = () => {
-    console.log("개인정보 처리방침")
+    nav.navigate('Privacy');
   }
   
   return (

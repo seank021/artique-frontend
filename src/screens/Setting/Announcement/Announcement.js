@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
 
 import { useNavigation } from "@react-navigation/native";
+import { announcementList } from "@functions/api";
 
 export default function Announcement ({isCookie}) {
   const nav = useNavigation();
@@ -15,6 +16,16 @@ export default function Announcement ({isCookie}) {
   const goToDocument = () => {
     nav.navigate('AnnounceDetail');
   }
+
+  const [notice, setNotice] = useState([]);
+
+  useEffect(() => {
+    announcementList().then((newAnnouncement) => {
+      setNotice(() => newAnnouncement);
+    }).catch((err) => {
+      console.log(err);
+    });
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -28,17 +39,18 @@ export default function Announcement ({isCookie}) {
         </View>
         <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
 
-        {/* 공지사항 */}
-        <ScrollView style={tw`flex-col`}>
-          <Pressable onPress={goToDocument} style={tw`flex-row justify-between items-center h-[57px] mx-5`}>
-            <View style={tw`flex-col`}>
-              <Text style={tw`text-sm text-[#191919] font-normal`}>공지제목</Text>
-              <Text style={tw`text-[10px] text-[#B6B6B6] font-normal`}>2021.09.01</Text>
-            </View>
-            <Image source={require('@images/chevron_right.png')} style={tw`w-[10px] h-[18px] tint-[#CBCDCB]`}></Image>
-          </Pressable>
-          <View style={tw`border-solid border-b border-[#E5E6E5]`}></View>
-        </ScrollView>
+        {/* 공지사항 -> 현재 공지사항이 빈 배열이라 에러남*/}
+        {/* <ScrollView style={tw`flex-col`}>
+          {notice?.map((item, index) => (
+            <>
+              <Pressable key={index} onPress={goToDocument} style={tw`flex-row justify-between items-center h-[57px] mx-5`}>
+                <Text style={tw`text-sm text-[#191919] font-normal`}>{item.title}</Text>
+                <Image source={require('@images/chevron_right.png')} style={tw`w-[10px] h-[18px] tint-[#CBCDCB]`}></Image>
+              </Pressable>
+              <View style={tw`border-solid border-b border-[#E5E6E5]`}></View>
+            </>
+          ))}
+        </ScrollView> */}
     </SafeAreaView>
   )
 }
