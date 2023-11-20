@@ -1,9 +1,9 @@
-// TODO: 요청하기 버튼 로직 구현
-
 import React, { useState } from 'react';
 import { View, Text, Image, Pressable, StyleSheet, ScrollView, Alert, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
+
+import axios from 'axios';
 
 import { useNavigation } from '@react-navigation/native';
 
@@ -22,7 +22,7 @@ export default function Login1() {
     nav.goBack();
   };
 
-  const onPressRequest = () => {
+  const onPressRequest = async () => {
     if (email === '') {
       setModalVisible(!modalVisible);
       setAlertImage(require('@images/x_red.png'));
@@ -32,8 +32,25 @@ export default function Login1() {
       }, 1000);
       return;
     }
-    console.log(email);
-    Alert.alert("요청 로직 구현");
+
+    try {
+      const response = await axios.post(`http://3.39.145.210/member/password/renew?member-email=${email}`);
+      if (response.data === "ok") {
+        setModalVisible(!modalVisible);
+        setAlertImage(require('@images/check.png'));
+        setAlertText('이메일로 초기화된 비밀번호를 전송하였습니다.');
+        setTimeout(() => {
+          setModalVisible(modalVisible);
+        }, 1000);
+        setTimeout(() => {
+          nav.navigate('Login2');
+        }, 2000);
+        return;
+      }
+    }
+    catch (error) {
+      console.log(error.response);
+    }
   }
 
   return (
@@ -62,7 +79,7 @@ export default function Login1() {
       </Image>
 
       <ScrollView contentContainerStyle={styles.contentContainer}>
-        <Text style={tw`text-[#F5F8F5] text-sm self-center text-center mb-7`}>가입하신 메일 주소를 입력해주세요.{'\n'}초기화된 비밀번호를 보내드리겠습니다.</Text>
+        <Text style={tw`text-[#F5F8F5] text-sm self-center text-center mb-7`}>가입하신 메일 주소를 입력해주세요.{'\n'}초기화된 비밀번호를 보내드리겠습니다.{'\n'}로그인 후 꼭 비밀번호를 변경해주세요.</Text>
 
         <View style={tw`flex-row items-center w-[90%] justify-start mb-10`}>
           <Text style={tw`text-[#F5F8F5] text-sm w-[15%]`}>이메일 : </Text>
