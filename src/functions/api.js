@@ -177,7 +177,10 @@ const reviewReport = async (reviewId, reportReason) => {
 
 const reviewDetail = async (reviewId) => {
     try {
-        const response = await axios.get(`http://3.39.145.210/review?review-id=${reviewId}`);
+        const myHeaders = await getHeaders();
+        const response = await axios.get(`http://3.39.145.210/review?review-id=${reviewId}`, {
+            headers: myHeaders.map,
+        });
         return response.data;
     } catch (err) {
         console.log(err.response.data);

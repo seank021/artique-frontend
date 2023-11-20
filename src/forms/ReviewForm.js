@@ -392,10 +392,15 @@ export function ShortReviewFormInMyReviews(props) {
 
 export function MusicalInfoFormInReviewDetail(props) {
     const [longReviewModalVisible, setLongReviewModalVisible] = useState(false);
+    console.log("PROPS", !props?.isShortReviewSpoiler, props?.isLongReviewSpoiler)
+    const [seeShortSpoiler, setSeeShortSpoiler] = useState(false);
+    const [seeLongSpoiler, setSeeLongSpoiler] = useState(false);
 
-    const [seeShortSpoiler, setSeeShortSpoiler] = useState(!props.isShortReviewSpoiler);
-    const [seeLongSpoiler, setSeeLongSpoiler] = useState(!props.isLongReviewSpoiler);
-
+    useEffect(() => {
+        setSeeShortSpoiler(!props?.isShortReviewSpoiler);
+        setSeeLongSpoiler(!props?.isLongReviewSpoiler);
+    }, [props.isShortReviewSpoiler, props.isLongReviewSpoiler]);
+    
     return (
         <View style={tw`w-[90%] h-[95%] rounded-3xl bg-white mx-auto my-auto`}>
             <Image source={require("@images/half_circle.png")} style={tw`w-[60px] h-[30px] tint-[#F5F5F5] self-center absolute top-0`}></Image>
@@ -418,7 +423,7 @@ export function MusicalInfoFormInReviewDetail(props) {
                 </View>
                 <View style={tw`flex flex-row items-start w-[100%] min-h-1/7 justify-between mt-4`}>
                     <Text style={tw`text-gray-900 text-sm leading-6 ml-[10%] mr-[7.5%]`}>한줄평</Text>
-                    { seeShortSpoiler ?
+                    {seeShortSpoiler ?
                         <Text numberOfLines={5} style={tw`w-[60%] h-[120px] text-gray-900 text-sm text-center font-medium leading-6 self-center mr-[5%]`}>"{props.reviewInfo.shortReview}"</Text>
                         :
                         <Pressable onTouchEnd={(e)=> { e.stopPropagation(); setSeeShortSpoiler(true)}} style={tw`w-[200px] h-auto justify-center mr-[5%]`}>
