@@ -27,12 +27,9 @@ const getHeaders = async () => {
 const feedReviews = async (page) => {
   try {
     const myHeaders = await getHeaders();
-    // console.log(myHeaders.map);
     const response = await axios.get(`http://3.39.145.210/feed?page=${page}&size=15`, {
         headers: myHeaders.map,
     });
-    // console.log(response.data);
-    // console.log(response.data.feeds);
     return response.data;
   } catch (err) {
     console.log(err.response.data);
@@ -42,12 +39,9 @@ const feedReviews = async (page) => {
 const musicalReviewsAll = async (musicalId, page, orderBy) => {
   try {
     const myHeaders = await getHeaders();
-    // console.log(myHeaders);
     const response = await axios.get(`http://3.39.145.210/musical/reviews/all?musical-id=${musicalId}&page=${page}&size=10&order-by=${orderBy}`, {
         headers: myHeaders.map,
       });
-    // console.log(response.data);
-    // console.log(response.data.reviews);
     return response.data.reviews;
   } catch (err) {
     console.log(err.response.data);
@@ -57,11 +51,9 @@ const musicalReviewsAll = async (musicalId, page, orderBy) => {
 const musicalReviews = async (musicalId) => {
   try {
     const myHeaders = await getHeaders();
-    // console.log(myHeaders);
     const response = await axios.get(`http://3.39.145.210/musical/reviews?musical-id=${musicalId}`, {
         headers:  myHeaders.map,
       });
-    // console.log(response.data);
     return response.data;
   } catch (err) {
     console.log(err.response.data);
@@ -71,7 +63,6 @@ const musicalReviews = async (musicalId) => {
 const musicalDetails = async (musicalId) => {
   try {
     const response = await axios.get(`http://3.39.145.210/musical/detail?musical-id=${musicalId}`);
-    // console.log(response.data);
     return response.data;
   } catch (err) {
     console.log(err.response.data);
@@ -81,7 +72,6 @@ const musicalDetails = async (musicalId) => {
 const musicalRateStatistics = async (musicalId) => {
   try {
     const response = await axios.get(`http://3.39.145.210/musical/rate/statistics?musical-id=${musicalId}`);
-    // console.log(response.data);
     return response.data;
   } catch (err) {
     console.log(err.response.data);
@@ -91,8 +81,6 @@ const musicalRateStatistics = async (musicalId) => {
 const thumbsUp = async (reviewId, isThumbsUp) => {
   try {
     const myHeaders = await getHeaders();
-    // console.log(myHeaders.map);
-    // console.log(reviewId);
     const response = await axios.post(`http://3.39.145.210/thumbs`, {
         reviewId: reviewId,
         thumbsUp: isThumbsUp,
@@ -112,7 +100,6 @@ const thumbsUp = async (reviewId, isThumbsUp) => {
 const reviewWrite = async (starRating, shortReview, longReview, casting, viewDate, seat, musicalId, shortSpoiler, longSpoiler) => {
     try {
         const myHeaders = await getHeaders();
-        // console.log(myHeaders.map);
         const response = await axios.post(`http://3.39.145.210/write/review`, {
             starRating: starRating,
             shortReview: shortReview,
@@ -126,7 +113,6 @@ const reviewWrite = async (starRating, shortReview, longReview, casting, viewDat
         }, {
             headers: myHeaders.map,
         });
-        // console.log(response.data);
     } catch (err) {
         if (err.response.data.message === "banned member") {
           return "banned member";
@@ -138,7 +124,6 @@ const reviewWrite = async (starRating, shortReview, longReview, casting, viewDat
 const reviewUpdate = async (reviewId, starRating, shortReview, longReview, casting, viewDate, seat, shortSpoiler, longSpoiler) => {
     try {
         const myHeaders = await getHeaders();
-        // console.log(myHeaders.map);
         const response = await axios.post(`http://3.39.145.210/update/review`, {
             reviewId: reviewId,
             starRating: starRating,
@@ -167,7 +152,6 @@ const reviewDelete = async (reviewId) => {
         const response = await axios.delete(`http://3.39.145.210/delete/review?review-id=${reviewId}`, {
             headers: myHeaders.map,
         });
-        // console.log(response.data);
     } catch (err) {
         if (err.response.data.message === "banned member") {
           return "banned member";
@@ -179,7 +163,6 @@ const reviewDelete = async (reviewId) => {
 const reviewReport = async (reviewId, reportReason) => {
     try {
         const myHeaders = await getHeaders();
-        // console.log(myHeaders.map)
         const response = await axios.post(`http://3.39.145.210/report?review-id=${reviewId}&type=${reportReason}`, {}, {
             headers: myHeaders.map,
         });
@@ -194,8 +177,10 @@ const reviewReport = async (reviewId, reportReason) => {
 
 const reviewDetail = async (reviewId) => {
     try {
-        const response = await axios.get(`http://3.39.145.210/review?review-id=${reviewId}`);
-        // console.log(response.data);
+        const myHeaders = await getHeaders();
+        const response = await axios.get(`http://3.39.145.210/review?review-id=${reviewId}`, {
+            headers: myHeaders.map,
+        });
         return response.data;
     } catch (err) {
         console.log(err.response.data);
@@ -205,7 +190,6 @@ const reviewDetail = async (reviewId) => {
 const searchMusicals = async (keyword, orderBy) => {
   try {
     const response = await axios.get(`http://3.39.145.210/search?key-word=${keyword}&order-by=${orderBy}`);
-    // console.log(response.data);
     return response.data;
   } catch (err) {
     console.log(err.response.data);
@@ -215,7 +199,7 @@ const searchMusicals = async (keyword, orderBy) => {
 const memberIdInMypage = async () => {
   try {
     const myHeaders = await getHeaders();
-    const response = await axios.get(`http://3.39.145.210/member/id` , {
+    const response = await axios.get(`http://3.39.145.210/member/id`, {
       headers: myHeaders.map,
     });
     return response.data;
@@ -227,7 +211,6 @@ const memberIdInMypage = async () => {
 const memberSummary = async (otherMemberId) => {
   try {
     let memberId;
-    
     if (otherMemberId) {
       memberId = otherMemberId;
     } else {
@@ -243,7 +226,6 @@ const memberSummary = async (otherMemberId) => {
 const memberStatistics = async (otherMemberId) => {
   try {
     let memberId;
-
     if (otherMemberId) {
       memberId = otherMemberId;
     } else {
@@ -259,14 +241,12 @@ const memberStatistics = async (otherMemberId) => {
 const memberShortThumbReviews = async (otherMemberId) => {
   try {
     let memberId;
-
     if (otherMemberId) {
       memberId = otherMemberId;
     } else {
       memberId = await memberIdInMypage();
     }
     const response = await axios.get(`http://3.39.145.210/member/review/thumbs/short?member-id=${memberId}`);
-    // console.log(response.data)
     return response.data;
   } catch (err) {
     console.log(err.response.data);
@@ -275,7 +255,10 @@ const memberShortThumbReviews = async (otherMemberId) => {
 
 const myReviewsAll = async (memberId, page, orderBy) => {
   try {
-    const response = await axios.get(`http://3.39.145.210/member/review/create/all?member-id=${memberId}&page=${page}&size=10&order-by=${orderBy}`);
+    const myHeaders = await getHeaders();
+    const response = await axios.get(`http://3.39.145.210/member/review/create/all?member-id=${memberId}&page=${page}&size=10&order-by=${orderBy}`, {
+      headers: myHeaders.map,
+    });
     console.log("MY REVIEWS ALL", response.data)
     return response.data;
   } catch (err) {
@@ -285,7 +268,11 @@ const myReviewsAll = async (memberId, page, orderBy) => {
 
 const searchCreatedReviews = async (memberId, page, keyword, orderBy) => {
   try {
-    const response = await axios.get(`http://3.39.145.210/member/review/create/search?member-id=${memberId}&page=${page}&size=10&keyword=${keyword}&order-by=${orderBy}`);
+    const myHeaders = await getHeaders();
+    const response = await axios.get(`http://3.39.145.210/member/review/create/search?member-id=${memberId}&page=${page}&size=10&keyword=${keyword}&order-by=${orderBy}`, {
+      headers: myHeaders.map,
+    });
+    console.log("SEARCH CREATED REVIEWS", response.data)
     return response.data;
   } catch (err) {
     console.log(err.response.data);
@@ -294,8 +281,10 @@ const searchCreatedReviews = async (memberId, page, keyword, orderBy) => {
 
 const myThumbsAll = async (memberId, page) => {
   try {
-    const response = await axios.get(`http://3.39.145.210/member/review/thumbs/all?member-id=${memberId}&page=${page}&size=10`);
-    console.log("MY THUMBS ALL", response.data)
+    const myHeaders = await getHeaders();
+    const response = await axios.get(`http://3.39.145.210/member/review/thumbs/all?member-id=${memberId}&page=${page}&size=10`, {
+      headers: myHeaders.map,
+    });
     return response.data;
   } catch (err) {
     console.log(err.response.data);
@@ -304,7 +293,10 @@ const myThumbsAll = async (memberId, page) => {
 
 const searchThumbReviews = async (memberId, page, keyword) => {
   try {
-    const response = await axios.get(`http://3.39.145.210/member/review/thumbs/search?member-id=${memberId}&page=${page}&size=10&keyword=${keyword}`);
+    const myHeaders = await getHeaders();
+    const response = await axios.get(`http://3.39.145.210/member/review/thumbs/search?member-id=${memberId}&page=${page}&size=10&keyword=${keyword}`, {
+      headers: myHeaders.map,
+    });
     console.log("SEARCH THUMB REVIEWS", response.data)
     return response.data;
   } catch (err) {
@@ -312,13 +304,11 @@ const searchThumbReviews = async (memberId, page, keyword) => {
   }
 };
 
-const profileUpload = async base64 => {
+const profileUpload = async (base64) => {
   try {
-    // console.log("base64", base64);
     const myHeaders = await getHeaders();
     const memberId = await memberIdInMypage();
-    const response = await axios.post(
-      `http://3.39.145.210/image`,
+    const response = await axios.post(`http://3.39.145.210/image`, 
       {
         memberId: memberId,
         file: base64,
@@ -327,9 +317,10 @@ const profileUpload = async base64 => {
         headers: myHeaders.map,
       },
     );
+    console.log("PROFILE UPLOAD 결과", response.data)
     return response.data;
   } catch (err) {
-    console.log("에러 여기야 여기", err.response.data);
+    console.log(err.response.data);
   }
 };
 
@@ -337,14 +328,12 @@ const updateMember = async (nickname, imageUrl, introduce) => {
   try {
     const myHeaders = await getHeaders();
     const memberId = await memberIdInMypage();
-    const response = await axios.post(
-      `http://3.39.145.210/update/member`,
+    const response = await axios.post(`http://3.39.145.210/update/member`,
       {
         memberId: memberId,
         nickname: nickname,
         profileUrl: imageUrl,
         introduce: introduce,
-        // "password": ""
       },
       {
         headers: myHeaders.map,
@@ -358,11 +347,23 @@ const updateMember = async (nickname, imageUrl, introduce) => {
 
 const duplicateNickname = async (nickname) => {
   try {
-    const response = await axios.get(`http://3.39.145.210/member/nickname/duplicate?nickname=${nickname}`);
+    const myHeaders = await getHeaders();
+    const response = await axios.get(`http://3.39.145.210/member/nickname/duplicate?nickname=${nickname}`, {
+      headers: myHeaders.map,
+    });
     return response.data;
   } catch (err) {
     console.log(err.response.data);
   }
 }
 
-export { feedReviews, musicalReviews, musicalDetails, musicalRateStatistics, musicalReviewsAll, thumbsUp, reviewWrite, reviewUpdate, reviewDelete, reviewReport, reviewDetail, searchMusicals, memberSummary, memberStatistics, memberShortThumbReviews, memberIdInMypage, myReviewsAll, searchCreatedReviews, myThumbsAll, searchThumbReviews, profileUpload, updateMember, duplicateNickname};
+const announcementList = async () => {
+  try {
+    const response = await axios.get(`http://3.39.145.210/config/notice`);
+    return response.data;
+  } catch (err) {
+    console.log(err.response.data);
+  }
+}
+
+export { feedReviews, musicalReviews, musicalDetails, musicalRateStatistics, musicalReviewsAll, thumbsUp, reviewWrite, reviewUpdate, reviewDelete, reviewReport, reviewDetail, searchMusicals, memberSummary, memberStatistics, memberShortThumbReviews, memberIdInMypage, myReviewsAll, searchCreatedReviews, myThumbsAll, searchThumbReviews, profileUpload, updateMember, duplicateNickname, announcementList };

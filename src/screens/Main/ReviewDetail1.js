@@ -28,8 +28,6 @@ export default function ReviewDetail1({isCookie, reviewId}) {
         });
     }, []);
 
-    // console.log(reviewInfo);
-
     return (
         <SafeAreaView style={styles.container}>
             <View style={tw`flex-row items-center justify-between py-[5%] z-20 bg-[#FAFAFA]`}>
@@ -45,7 +43,11 @@ export default function ReviewDetail1({isCookie, reviewId}) {
             </View>
             <View style={tw`border-solid border-b border-[#D3D4D3] z-20 mb-[2%]`}></View>
             <View style={tw`h-[90%] z-10`}>
-                <MusicalInfoFormInReviewDetail reviewInfo={reviewInfo}></MusicalInfoFormInReviewDetail>
+                <MusicalInfoFormInReviewDetail 
+                    reviewInfo={reviewInfo}
+                    isShortReviewSpoiler={reviewInfo.shortSpoiler}
+                    isLongReviewSpoiler={reviewInfo.longSpoiler}
+                    />
             </View>
         </SafeAreaView>
     )

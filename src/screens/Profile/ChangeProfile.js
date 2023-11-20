@@ -11,7 +11,6 @@ import { NicknameInputForm, IntroduceInputForm } from '@forms/InputForm';
 import AlertForm, { ProfileChangeForm } from '@forms/AlertForm';
 
 export default function ChangeProfile({isCookie}) {
-    {/*뒤로가기*/}
     const nav = useNavigation();
 
     const goBack = () => {
