@@ -476,7 +476,7 @@ export const EmailVerityForm = (props) => {
 
         try {
             const response = await axios.post('http://3.39.145.210/member/join/email', {
-                "mailAddress": id,
+                "mailAddress": props.email,
             });
             console.log(response.data)
         } catch (error) {
