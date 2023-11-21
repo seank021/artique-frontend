@@ -6,6 +6,7 @@ import tw from "twrnc";
 import { useNavigation } from "@react-navigation/native";
 import { AlertFormForConfirm } from "@forms/AlertForm";
 import { clearCookie, getCurrentLogin } from "@functions/cookie";
+import { exit } from "@functions/api";
 
 export default function MyAccount ({ isCookie, setGoToFeed, memberId }) {
   const nav = useNavigation();
@@ -26,8 +27,7 @@ export default function MyAccount ({ isCookie, setGoToFeed, memberId }) {
   }
 
   const onPressExitConfirm = async () => {
-    await clearCookie();
-    await removeAutoLogin();
+    await exit();
     setGoToFeed(false);
   }
 

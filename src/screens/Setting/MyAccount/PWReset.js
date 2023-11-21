@@ -3,6 +3,8 @@ import { View, Text, Image, StyleSheet, Pressable, TextInput, Alert } from "reac
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
 
+import axios from "axios";
+
 import { useNavigation } from "@react-navigation/native";
 import AlertForm from "@forms/AlertForm";
 
@@ -12,36 +14,41 @@ export default function PWReset ({ isCookie }) {
   const goBack = () => {
     nav.goBack();
   }
-  const [id, setId] = useState('');
+
   const [email, setEmail] = useState('');
 
   const [modalVisible, setModalVisible] = useState(false);
   const [alertImage, setAlertImage] = useState(require('@images/check.png'));
-  const [alertText, setAlertText] = useState('비밀번호가 변경되었습니다.');
+  const [alertText, setAlertText] = useState('다시 시도해주세요.');
 
-  const onPressSave = () => {
-    if (id === '') {
+  const onPressSave = async () => {
+    if (email === '') {
       setModalVisible(!modalVisible);
       setAlertImage(require('@images/x_red.png'));
-      setAlertText('아이디를 입력해주세요');
+      setAlertText('이메일을 입력해주세요');
       setTimeout(() => {
         setModalVisible(modalVisible);
       }, 1000);
-    } else if (email === '') {
-      setModalVisible(!modalVisible);
-      setAlertImage(require('@images/x_red.png'));
-      setAlertText('메일을 입력해주세요');
-      setTimeout(() => {
-        setModalVisible(modalVisible);
-      }, 1000);
-    } else {
-    setModalVisible(!modalVisible);
-    setAlertImage(require('@images/check.png'));
-    setAlertText('초기화 메일이 발송되었습니다');
-    setTimeout(() => {
-      setModalVisible(modalVisible);
-    }, 1000);
-  }
+    } 
+
+    try {
+      const response = await axios.post(`http://3.39.145.210/member/password/renew?member-email=${email}`);
+      if (response.data === "ok") {
+        setModalVisible(!modalVisible);
+        setAlertImage(require('@images/check.png'));
+        setAlertText('이메일로 초기화된 비밀번호를 전송하였습니다.');
+        setTimeout(() => {
+          setModalVisible(modalVisible);
+        }, 1000);
+        setTimeout(() => {
+          nav.navigate('Login2');
+        }, 2000);
+        return;
+      }
+    }
+    catch (error) {
+      console.log(error.response);
+    }
   }
 
   return (
@@ -53,6 +60,7 @@ export default function PWReset ({ isCookie }) {
         bgColor="#FAFAFA"
         image={alertImage}
         text={alertText}
+        textColor="#191919"
       />
       {/* 상단 바 */}
       <View style={tw`flex-row items-center justify-between mt-5 mb-[14px]`}>
@@ -72,14 +80,9 @@ export default function PWReset ({ isCookie }) {
 
       {/* 비밀번호 초기화 */}
       <View style={tw`w-[90%] mt-[25px] mx-5`}>
-        <Text>아이디와 새 비밀번호를 받을 메일 주소를 입력해주세요</Text>
+        <Text>새 비밀번호를 받을 메일 주소를 입력해주세요</Text>
       </View>
       <View style={tw`mt-[35px] mx-5`}>
-        <View style={tw`flex-row items-start w-[90%] justify-start mb-[50px]`}>
-          <Text style={tw`text-[#191919] text-sm w-[15%]`}>아이디 : </Text>
-          <TextInput placeholder='아이디를 입력해주세요' placeholderTextColor="#ABABAB" inputMode='text' value={id} onChangeText={setId} color="#191919" style={tw`absolute left-15 pb-[10px] border-b-[1px] border-[#ABABAB] w-[85%]`}></TextInput>
-        </View>
-
         <View style={tw`flex-row items-start w-[90%] justify-start mb-10`}>
           <Text style={tw`text-[#191919] text-sm w-[15%]`}>메일 : </Text>
           <TextInput placeholder='새 비밀번호를 받을 메일을 입력해주세요' placeholderTextColor="#ABABAB" inputMode='email' value={email} onChangeText={setEmail} color="#191919" style={tw`absolute left-15 pb-[10px] border-b-[1px] border-[#ABABAB] w-[85%]`}></TextInput>
