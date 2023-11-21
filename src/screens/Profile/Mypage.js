@@ -39,6 +39,15 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
     setMemberStat({});
     setShortReviewInfo([]);
 
+    if (otherMemberId) {
+      memberSummary(otherMemberId).then((newMemberInfo) => {
+        setMemberInfo(() => newMemberInfo);
+      }).catch((err) => {
+        console.log(err);
+      }).finally(() => {
+        setRefreshing(false);
+      });
+    } else {
       memberSummary().then((newMemberInfo) => {
         setMemberInfo(() => newMemberInfo);
       }).catch((err) => {
@@ -46,7 +55,17 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
       }).finally(() => {
         setRefreshing(false);
       });
+    }
 
+    if (otherMemberId) {
+      memberStatistics(otherMemberId).then((newMemberStat) => {
+        setMemberStat(() => newMemberStat);
+      }).catch((err) => {
+        console.log(err);
+      }).finally(() => {
+        setRefreshing(false);
+      });
+    } else {
       memberStatistics().then((newMemberStat) => {
         setMemberStat(() => newMemberStat);
       }).catch((err) => {
@@ -54,7 +73,17 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
       }).finally(() => {
         setRefreshing(false);
       });
+    }
 
+    if (otherMemberId) {
+      memberShortThumbReviews(otherMemberId).then((newShortThumbReviews) => {
+        setShortReviewInfo(() => newShortThumbReviews);
+      }).catch((err) => {
+        console.log(err);
+      }).finally(() => {
+        setRefreshing(false);
+      });
+    } else {
       memberShortThumbReviews().then((newShortThumbReviews) => {
         setShortReviewInfo(() => newShortThumbReviews);
       }).catch((err) => {
@@ -62,6 +91,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
       }).finally(() => {
         setRefreshing(false);
       });
+    }
 
     setTimeout(() => {
       setRefreshing(false);
