@@ -6,6 +6,9 @@ import tw from "twrnc";
 import { useNavigation } from "@react-navigation/native";
 import { InputFormInPWChange }from "@forms/InputForm";
 import AlertForm from '@forms/AlertForm';
+import { currentPWCheck, updatePW } from "@functions/api";
+
+import hash from '@functions/hash';
 
 export default function PWChange ({ isCookie }) {
   const nav = useNavigation();
@@ -51,40 +54,52 @@ export default function PWChange ({ isCookie }) {
       setTimeout(() => {
         setModalVisible(modalVisible);
       }, 1000);
-    } else if (!checkCurrentPW && !checkNewPW) {
+    } else if (!checkCurrentPW || !checkNewPW) {
       setModalVisible(!modalVisible);
       setAlertImage(require('@images/x_red.png'));
       setAlertText('비밀번호가 일치하지 않습니다');
       setTimeout(() => {
         setModalVisible(modalVisible);
       }, 1000);
-    } 
-    if (checkCurrentPW && checkNewPW) {
-      setModalVisible(!modalVisible);
-      setAlertImage(require('@images/check.png'));
-      setAlertText('저장되었습니다');
-      setTimeout(() => {
-        setModalVisible(modalVisible);
-      }, 1000);
+    } else if (checkCurrentPW && checkNewPW) {
+      const hashedPW = hash(newPassword);
+      try {
+        updatePW(hashedPW).then((req) => {
+          console.log(req);
+          if (req.success) {
+            setModalVisible(!modalVisible);
+            setAlertImage(require('@images/check.png'));
+            setAlertText('저장되었습니다');
+            setTimeout(() => {
+              setModalVisible(modalVisible);
+            }, 1000);
+            nav.navigate('Mypage');
+          }
+        }).catch((err) => {
+          console.log(err);
+        });
+      } catch (error) {
+        console.log(error.response);
+      }
     }
-  }
-
-  const nullFunc = () => {
-    return;
   }
 
   const [password, setPassword] = useState('');
   const [checkCurrentPW, setCheckCurrentPW] = useState(false); // 현재 비밀번호가 맞았을 때 체크 표시
   const [XCurrentPW, setXCurrentPW] = useState(false); // 현재 비밀번호가 틀렸을 때 [X] 표시
   
-  const ifPWCorrect = () => {
-    if (password === '') {
-      setCheckCurrentPW(false);
-      setXCurrentPW(false);
-    } else {
-      setCheckCurrentPW(true);
-      setXCurrentPW(false);
-    }
+  const ifPWCorrect = (text) => {
+    currentPWCheck(hash(text)).then((res) => {
+      if (res) {
+        setCheckCurrentPW(true);
+        setXCurrentPW(false);
+      } else {
+        setCheckCurrentPW(false);
+        setXCurrentPW(true);
+      }
+    }).catch((err) => {
+      console.log(err);
+    });
   }
 
   const [newPassword, setNewPassword] = useState('');
@@ -168,7 +183,7 @@ export default function PWChange ({ isCookie }) {
           placeholder={'새 비밀번호를 입력해주세요 (7자 이상)'}
           secureTextEntry={true}
           setValue={setNewPassword}
-          compareValue={nullFunc}
+          compareValue={comparePW}
         ></InputFormInPWChange>
       </View>
 
@@ -178,8 +193,8 @@ export default function PWChange ({ isCookie }) {
           image={require('@images/lock.png')}
           placeholder={'새 비밀번호를 다시 확인해주세요'}
           secureTextEntry={true}
-          setValue={setNewPassword}
-          compareValue={comparePW}
+          setValue={setNewPassword_}
+          compareValue={comparePW_}
           ifCheck={checkNewPW}
           ifX={XNewPW}
         ></InputFormInPWChange>
