@@ -65,7 +65,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
     setTimeout(() => {
       setRefreshing(false);
     }, 1000);
-  }, [refreshing, memberInfo]);
+  }, [refreshing]);
 
   const goBack = () => {
     nav.goBack();
@@ -125,7 +125,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
           console.log(err);
         });
       }
-    }, [memberId, otherMemberId, memberInfo]);
+    }, [otherMemberId]);
   
   useEffect(() => {
     if (otherMemberId) {
@@ -141,14 +141,14 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
         console.log(err);
       }
     )}
-  }, [memberId, otherMemberId, memberStat]);
+  }, [otherMemberId]);
 
   useEffect(() => {
     setAverageRate(memberStat.averageRate);
     setTotalReviewCount(memberStat.totalReviewCount);
     setMaxStarRate(memberStat.maxStarRate);
   }
-  , [memberStat, averageRate, totalReviewCount, maxStarRate]);
+  , [memberStat]);
 
   useEffect(() => {
     if (otherMemberId) {
@@ -164,7 +164,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
       console.log(err);
     });
   }
-  }, [memberId, otherMemberId, shortReviewInfo]);
+  }, [otherMemberId]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -196,65 +196,65 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
 
       {/* 프로필 */}
       <ScrollView showsVerticalScrollIndicator={false} refreshcontrol={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
-      <View style={tw`flex-row items-center w-9/10 mt-5 mx-5`}>
-        <Image source={memberInfo.imageUrl ? { uri: memberInfo.imageUrl } : require('@images/newprofile.png')} style={tw`w-[100px] h-[100px] rounded-full mr-5`}></Image>
-        {/* <Image source={require('@images/newprofile.png')} style={tw`w-[100px] h-[100px] mr-5`}></Image> */}
-        <View style={tw`flex-col justify-between`}>
-          <Text style={tw`text-base text-[#191919] font-medium mb-5`}>{memberInfo.nickname}</Text>
-          <Text style={tw`text-xs text-[#191919] font-normal w-57.5 leading-5`}>{memberInfo.introduce}</Text>
+        <View style={tw`flex-row items-center w-9/10 mt-5 mx-5`}>
+          <Image source={memberInfo.imageUrl ? { uri: memberInfo.imageUrl } : require('@images/newprofile.png')} style={tw`w-[100px] h-[100px] rounded-full mr-5`}></Image>
+          <View style={tw`flex-col justify-between`}>
+            <Text style={tw`text-base text-[#191919] font-medium mb-5`}>{memberInfo.nickname}</Text>
+            <Text style={tw`text-xs text-[#191919] font-normal w-57.5 leading-5`}>{memberInfo.introduce}</Text>
+          </View>
         </View>
-      </View>
-      <Pressable onPress={goToMyReviews} style={tw`self-center w-9/10 h-[33px] mt-[25px] rounded-3xl bg-[#FFF] shadow`}>
-        <Text style={tw`text-xs text-[#191919] font-normal text-center leading-[33px]`}>작성한 리뷰 모아보기</Text>
-      </Pressable>
-        
-      {/* 평점 */}
-      <UserTendency
-        nickname={memberInfo.nickname}
-        memberStat={memberStat.statistic} 
-        totalReviewCount={totalReviewCount} />
-
-      <View style={tw`w-9/10 self-center mb-8`}>
-        {memberStat.statistic && makeBarChart(memberStat.statistic)}
-      </View>
-      <View style={tw`flex-row justify-between mx-5`}>
-        <View style={tw`flex-col items-center`}>
-          <Text style={tw`text-xs text-[#191919] font-normal`}>별점 평균</Text>
-          <Text style={tw`text-xs text-[#191919] font-normal`}>{Math.round(averageRate * 10)/10}</Text>
-        </View>
-        <View style={tw`flex-col items-center`}>
-          <Text style={tw`text-xs text-[#191919] font-normal`}>작성한 리뷰 수</Text>
-          <Text style={tw`text-xs text-[#191919] font-normal`}>{totalReviewCount}</Text>
-        </View>
-        <View style={tw`flex-col items-center`}>
-          <Text style={tw`text-xs text-[#191919] font-normal`}>많이 준 별점</Text>
-          <Text style={tw`text-xs text-[#191919] font-normal`}>{maxStarRate}</Text>
-        </View>
-      </View>
-
-      {/* 공감한 한줄평 */}
-      <View style={tw`flex-row justify-between mt-11.5 mx-5`}>
-        <Text style={tw`text-sm text-[#191919] font-medium`}>공감한 한줄평</Text>
-        <Pressable onPress={goToMyThumbs} style={tw`w-[50px] h-[21px]`}>
-          <Text style={tw`text-xs text-[#191919] font-normal`}>전체보기</Text>
+        <Pressable onPress={goToMyReviews} style={tw`self-center w-9/10 h-[33px] mt-[25px] rounded-3xl bg-[#FFF] shadow`}>
+          <Text style={tw`text-xs text-[#191919] font-normal text-center leading-[33px]`}>작성한 리뷰 모아보기</Text>
         </Pressable>
-      </View>
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={tw`mt-3 ml-5`}>
-        {shortReviewInfo.reviews?.map((review, index) => {
-          if (index < 3) {
-            return (
-              <ShortReviewFormInMypage 
-                key={index}
-                musicalName={review.musicalName} 
-                starRating={review.starRating} 
-                shortReview={review.shortReview} 
-                onPressShortReview={() => goToReviewDetail1(review.reviewId)}
-                isShortReviewSpoiler={review.reviewSpoiler}
-                />
-            )}
-          }
-        )}
-      </ScrollView>
+          
+        {/* 평점 */}
+        <UserTendency
+          nickname={memberInfo.nickname}
+          memberStat={memberStat.statistic} 
+          totalReviewCount={totalReviewCount} 
+          />
+
+        <View style={tw`w-9/10 self-center mb-8`}>
+          {memberStat.statistic && makeBarChart(memberStat.statistic)}
+        </View>
+        <View style={tw`flex-row justify-between mx-5`}>
+          <View style={tw`flex-col items-center`}>
+            <Text style={tw`text-xs text-[#191919] font-normal`}>별점 평균</Text>
+            <Text style={tw`text-xs text-[#191919] font-normal`}>{Math.round(averageRate * 10)/10}</Text>
+          </View>
+          <View style={tw`flex-col items-center`}>
+            <Text style={tw`text-xs text-[#191919] font-normal`}>작성한 리뷰 수</Text>
+            <Text style={tw`text-xs text-[#191919] font-normal`}>{totalReviewCount}</Text>
+          </View>
+          <View style={tw`flex-col items-center`}>
+            <Text style={tw`text-xs text-[#191919] font-normal`}>많이 준 별점</Text>
+            <Text style={tw`text-xs text-[#191919] font-normal`}>{maxStarRate}</Text>
+          </View>
+        </View>
+
+        {/* 공감한 한줄평 */}
+        <View style={tw`flex-row justify-between mt-11.5 mx-5`}>
+          <Text style={tw`text-sm text-[#191919] font-medium`}>공감한 한줄평</Text>
+          <Pressable onPress={goToMyThumbs} style={tw`w-[50px] h-[21px]`}>
+            <Text style={tw`text-xs text-[#191919] font-normal`}>전체보기</Text>
+          </Pressable>
+        </View>
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={tw`mt-3 ml-5`}>
+          {shortReviewInfo.reviews?.map((review, index) => {
+            if (index < 3) {
+              return (
+                <ShortReviewFormInMypage 
+                  key={index}
+                  musicalName={review.musicalName} 
+                  starRating={review.starRating} 
+                  shortReview={review.shortReview} 
+                  onPressShortReview={() => goToReviewDetail1(review.reviewId)}
+                  isShortReviewSpoiler={review.reviewSpoiler}
+                  />
+              )}
+            }
+          )}
+        </ScrollView>
       </ScrollView>
     </SafeAreaView>
   )
