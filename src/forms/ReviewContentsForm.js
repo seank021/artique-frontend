@@ -183,8 +183,10 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         backgroundColor: '#FAFAFA',
         width: '100%',
-        height: '100%',
+        height: '90%',
         borderRadius: 15,
+        position: 'absolute',
+        top: "5%",
     },
 });
 
