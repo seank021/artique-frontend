@@ -229,7 +229,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
           </View>
           <View style={tw`flex-col items-center`}>
             <Text style={tw`text-xs text-[#191919] font-normal`}>많이 준 별점</Text>
-            <Text style={tw`text-xs text-[#191919] font-normal`}>{maxStarRate}</Text>
+            <Text style={tw`text-xs text-[#191919] font-normal`}>{(totalReviewCount === 0) ? 0 : maxStarRate}</Text>
           </View>
         </View>
 
