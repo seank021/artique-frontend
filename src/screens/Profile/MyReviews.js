@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { View, Pressable, Text, Image, ScrollView, StyleSheet } from "react-native";
+import { View, Pressable, Text, Image, ScrollView, StyleSheet, RefreshControl } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
 
@@ -8,10 +8,33 @@ import { ShortReviewFormInMyReviews } from "@forms/ReviewForm";
 
 import { memberStatistics, myReviewsAll, thumbsUp } from "@functions/api";
 
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute, useIsFocused } from "@react-navigation/native";
 
-export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId}) {
+export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId, setReviewInfo, setReviewInfo2}) {
   const nav = useNavigation();
+
+  const [refreshing, setRefreshing] = useState(false);
+  const isFocused = useIsFocused();
+  const [firstFocus, setFirstFocus] = useState(true);
+  const [onRefreshWhenDelete, setOnRefreshWhenDelete] = useState(false);
+
+  useEffect(() => {
+    if (firstFocus) {
+      setFirstFocus(false);
+      return;
+    }
+    if (!isFocused) {
+        return;
+    }
+    onRefresh();
+}, [isFocused]);
+
+  useEffect(() => {
+      if (onRefreshWhenDelete) {
+          onRefresh();
+          setOnRefreshWhenDelete(false);
+      }
+  }, [onRefreshWhenDelete]);
 
   const [sortModalVisible, setSortModalVisible] = useState(false);
   const [sortCriteria, setSortCriteria] = useState("공감순");
@@ -62,7 +85,7 @@ export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId
         console.log(err);
       });
     }
-    }, [otherMemberId]);
+    }, []);
 
   useEffect(() => {
     if (updatePage && page === 0) {
@@ -81,6 +104,56 @@ export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId
       }
     }
     }, [page, updatePage, orderBy, otherMemberId]);
+
+    const onRefresh = React.useCallback(() => {
+      if (refreshing) {
+          return;
+      }
+
+      setRefreshing(true);
+
+      setReviews([]);
+      setPage(0);
+      setUpdatePage(true);
+
+      if (updatePage && page === 0) {
+        if (otherMemberId) {
+          myReviewsAll(otherMemberId, page, orderBy).then((newReviews) => {
+            setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
+        }).catch((err) => {
+            console.log(err);
+        }).finally(() => {
+          setRefreshing(false);
+        });
+        } else {
+          myReviewsAll(memberId, page, orderBy).then((newReviews) => {
+            setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
+        }).catch((err) => {
+            console.log(err);
+        }).finally(() => {
+          setRefreshing(false);
+        });
+      }
+    }
+
+    if (otherMemberId) {
+      memberStatistics(otherMemberId).then((newMemberStat) => {
+        setTotalReviewCount(newMemberStat.totalReviewCount);
+      }).catch((err) => {
+        console.log(err);
+      });
+    } else {
+      memberStatistics().then((newMemberStat) => {
+        setTotalReviewCount(newMemberStat.totalReviewCount);
+      }).catch((err) => {
+        console.log(err);
+      });
+    }
+
+    setTimeout(() => {
+        setRefreshing(false);
+    }, 1000);
+  }, [refreshing, page, updatePage, orderBy, otherMemberId]);
 
   const onPressThumbsUp = (reviewId, isThumbsUp) => {
     thumbsUp(reviewId, !isThumbsUp).then((res) => {
@@ -119,14 +192,14 @@ export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId
         setPage(nextPage);
         
         if (otherMemberId) {
-          myReviewsAll(otherMemberId, page, orderBy).then((newReviews) => {
+          myReviewsAll(otherMemberId, nextPage, orderBy).then((newReviews) => {
             setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
             setUpdatePage(true);
         }).catch((err) => {
             console.log(err);
         }
         )} else {
-          myReviewsAll(memberId, page, orderBy).then((newReviews) => {
+          myReviewsAll(memberId, nextPage, orderBy).then((newReviews) => {
             setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
             setUpdatePage(true);
         }).catch((err) => {
@@ -156,7 +229,7 @@ export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId
             <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
 
       {/* 리뷰 목록*/}
-        <View style={tw`flex-row w-9/10 items-center justify-between mt-4 mx-5`}>
+        <View style={tw`flex-row w-9/10 items-center justify-between mt-4 mb-2 mx-5`}>
             <Text style={tw`text-sm text-[#191919] font-medium`}>모든 리뷰 ({totalReviewCount})</Text>
             <Pressable style={tw`flex flex-row items-center`} onPress={onPressSort}>
                 <Text style={tw`text-[#191919] text-xs font-medium mr-[7px]`}>{sortCriteria}</Text>
@@ -164,7 +237,7 @@ export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId
             </Pressable>
         </View>
 
-        <ScrollView onScroll={detectScroll}>
+        <ScrollView onScroll={detectScroll} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
           {reviews.map((review, index) => (
               <Fragment key={index}>
                   <ShortReviewFormInMyReviews
@@ -172,7 +245,12 @@ export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId
                       onPressThumbsUp={() => onPressThumbsUp(review.reviewId, review.isThumbsUp)}
                       goToMusicalDetail1={() => goToMusicalDetail1(review.musicalId)}
                       goToReviewDetail1={() => goToReviewDetail1(review.reviewId)}
+                      isShortReviewSpoiler={review.reviewSpoiler}
                       isCookie={isCookie}
+                      isMine={review.memberId === memberId}
+                      setReviewInfo={setReviewInfo}
+                      setReviewInfo2={setReviewInfo2}
+                      setOnRefreshWhenDelete={setOnRefreshWhenDelete}
                   />
                   {index < reviews.length - 1 && (
                       <View style={tw`border-4 border-[#F0F0F0]`}></View>
