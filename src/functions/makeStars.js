@@ -122,7 +122,7 @@ export function makeStarsForEachReview (starRate) {
             </View>
         ) : starRateFloat2 === 1.5 ? (
             <View style={tw`flex flex-col items-center`}>
-                <Text style={tw`text-sm font-medium mb-[2px] text-[#191919]`}>맣이 아쉬운 작품</Text>
+                <Text style={tw`text-sm font-medium mb-[2px] text-[#191919]`}>많이 아쉬운 작품</Text>
                 <View style={tw`flex flex-row`}>
                     <Image source={require("@images/star.png")} style={tw`w-[33px] h-[33px]`}/>
                     <Image source={require("@images/star_half.png")} style={tw`w-[33px] h-[33px]`}/>
