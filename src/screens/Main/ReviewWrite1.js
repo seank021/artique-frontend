@@ -133,7 +133,7 @@ export default function ReviewWrite1({isCookie, musicalId, musicalPoster, musica
             if (res === "banned member") {
                 setModalVisible(!modalVisible);
                 setAlertImage(require('@images/x_red.png'));
-                setAlertText('신고로 사용이 정지된 회원입니다.');
+                setAlertText('신고 누적으로 사용이 정지된 회원입니다.');
                 setTimeout(() => {
                     setModalVisible(modalVisible);
                 }, 1000);
