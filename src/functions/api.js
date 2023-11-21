@@ -216,7 +216,10 @@ const memberSummary = async (otherMemberId) => {
     } else {
       memberId = await memberIdInMypage();
     }
-    const response = await axios.get(`http://3.39.145.210/member/summary?member-id=${memberId}`);
+    const myHeaders = await getHeaders();
+    const response = await axios.get(`http://3.39.145.210/member/summary?member-id=${memberId}`, {
+      headers: myHeaders.map,
+    });
     return response.data;
   } catch (err) {
     console.log(err.response.data);
@@ -231,7 +234,10 @@ const memberStatistics = async (otherMemberId) => {
     } else {
       memberId = await memberIdInMypage();
     }
-    const response = await axios.get(`http://3.39.145.210/member/summary/statistics?member-id=${memberId}`);
+    const myHeaders = await getHeaders();
+    const response = await axios.get(`http://3.39.145.210/member/summary/statistics?member-id=${memberId}`, {
+      headers: myHeaders.map,
+    });
     return response.data;
   } catch (err) {
     console.log(err.response.data);
@@ -246,7 +252,10 @@ const memberShortThumbReviews = async (otherMemberId) => {
     } else {
       memberId = await memberIdInMypage();
     }
-    const response = await axios.get(`http://3.39.145.210/member/review/thumbs/short?member-id=${memberId}`);
+    const myHeaders = await getHeaders();
+    const response = await axios.get(`http://3.39.145.210/member/review/thumbs/short?member-id=${memberId}`, {
+      headers: myHeaders.map,
+    });
     return response.data;
   } catch (err) {
     console.log(err.response.data);
@@ -259,7 +268,6 @@ const myReviewsAll = async (memberId, page, orderBy) => {
     const response = await axios.get(`http://3.39.145.210/member/review/create/all?member-id=${memberId}&page=${page}&size=10&order-by=${orderBy}`, {
       headers: myHeaders.map,
     });
-    console.log("MY REVIEWS ALL", response.data)
     return response.data;
   } catch (err) {
     console.log(err.response.data);
@@ -272,7 +280,6 @@ const searchCreatedReviews = async (memberId, page, keyword, orderBy) => {
     const response = await axios.get(`http://3.39.145.210/member/review/create/search?member-id=${memberId}&page=${page}&size=10&keyword=${keyword}&order-by=${orderBy}`, {
       headers: myHeaders.map,
     });
-    console.log("SEARCH CREATED REVIEWS", response.data)
     return response.data;
   } catch (err) {
     console.log(err.response.data);
@@ -285,6 +292,7 @@ const myThumbsAll = async (memberId, page) => {
     const response = await axios.get(`http://3.39.145.210/member/review/thumbs/all?member-id=${memberId}&page=${page}&size=10`, {
       headers: myHeaders.map,
     });
+    console.log("MY THUMBS ALL", response.data)
     return response.data;
   } catch (err) {
     console.log(err.response.data);
@@ -297,7 +305,6 @@ const searchThumbReviews = async (memberId, page, keyword) => {
     const response = await axios.get(`http://3.39.145.210/member/review/thumbs/search?member-id=${memberId}&page=${page}&size=10&keyword=${keyword}`, {
       headers: myHeaders.map,
     });
-    console.log("SEARCH THUMB REVIEWS", response.data)
     return response.data;
   } catch (err) {
     console.log(err.response.data);
@@ -317,7 +324,6 @@ const profileUpload = async (base64) => {
         headers: myHeaders.map,
       },
     );
-    console.log("PROFILE UPLOAD 결과", response.data)
     return response.data;
   } catch (err) {
     console.log(err.response.data);
@@ -341,9 +347,35 @@ const updateMember = async (nickname, imageUrl, introduce) => {
     );
     return response.data;
   } catch (err) {
+    if (err.response.data.message === "banned member") {
+      return "banned member";
+    }
     console.log(err.response.data);
   }
 };
+
+const updatePW = async (password) => {
+  try {
+    const myHeaders = await getHeaders();
+    const memberId = await memberIdInMypage();
+    const response = await axios.post(`http://3.39.145.210/update/member`,
+      {
+        memberId: memberId,
+        password: password,
+      },
+      {
+        headers: myHeaders.map,
+      },
+    );
+    return response.data;
+  } catch (err) {
+    if (err.response.data.message === "banned member") {
+      return "banned member";
+    }
+    console.log(err.response.data);
+  }
+};
+
 
 const duplicateNickname = async (nickname) => {
   try {
@@ -366,4 +398,33 @@ const announcementList = async () => {
   }
 }
 
-export { feedReviews, musicalReviews, musicalDetails, musicalRateStatistics, musicalReviewsAll, thumbsUp, reviewWrite, reviewUpdate, reviewDelete, reviewReport, reviewDetail, searchMusicals, memberSummary, memberStatistics, memberShortThumbReviews, memberIdInMypage, myReviewsAll, searchCreatedReviews, myThumbsAll, searchThumbReviews, profileUpload, updateMember, duplicateNickname, announcementList };
+const currentPWCheck = async (password) => {
+  try {
+    const myHeaders = await getHeaders();
+    const response = await axios.post(`http://3.39.145.210/validation/member/password`,
+      {
+        password: password
+      },
+      {
+        headers: myHeaders.map,
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err.response.data);
+  }
+}
+
+const exit = async () => {
+  try {
+    const myHeaders = await getHeaders();
+    const response = await axios.delete(`http://3.39.145.210/delete/member`, {
+      headers: myHeaders.map,
+    });
+    return response.data;
+  } catch (err) {
+    console.log(err.response.data);
+  }
+}
+
+export { feedReviews, musicalReviews, musicalDetails, musicalRateStatistics, musicalReviewsAll, thumbsUp, reviewWrite, reviewUpdate, reviewDelete, reviewReport, reviewDetail, searchMusicals, memberSummary, memberStatistics, memberShortThumbReviews, memberIdInMypage, myReviewsAll, searchCreatedReviews, myThumbsAll, searchThumbReviews, profileUpload, updateMember, updatePW, duplicateNickname, announcementList, currentPWCheck, exit };
