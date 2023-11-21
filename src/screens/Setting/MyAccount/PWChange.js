@@ -4,11 +4,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
 
 import { useNavigation } from "@react-navigation/native";
+
 import { InputFormInPWChange }from "@forms/InputForm";
 import AlertForm from '@forms/AlertForm';
-import { currentPWCheck, updatePW } from "@functions/api";
 
+import { currentPWCheck, updatePW } from "@functions/api";
 import hash from '@functions/hash';
+import * as Cookies from "@functions/cookie";
+import { removeAutoLogin } from "@functions/autoLogin";
 
 export default function PWChange ({ isCookie }) {
   const nav = useNavigation();
@@ -21,11 +24,18 @@ export default function PWChange ({ isCookie }) {
     nav.navigate('PWReset');
   }
 
+  const logout = async () => {
+    const currentLogin = await Cookies.getCurrentLogin();
+    await Cookies.removeCookie(currentLogin);
+    await removeAutoLogin();
+    setGoToFeed(false);
+}
+
   const [modalVisible, setModalVisible] = useState(false);
   const [alertImage, setAlertImage] = useState(require('@images/check.png'));
   const [alertText, setAlertText] = useState('비밀번호가 변경되었습니다.');
 
-  const onPressSave = () => {
+  const onPressSave = async () => {
     if (password === '') {
       setModalVisible(!modalVisible);
       setAlertImage(require('@images/x_red.png'));
@@ -64,9 +74,20 @@ export default function PWChange ({ isCookie }) {
     } else if (checkCurrentPW && checkNewPW) {
       const hashedPW = hash(newPassword);
       try {
-        updatePW(hashedPW).then((req) => {
-          console.log(req);
-          if (req.success) {
+        const res = await updatePW(hashedPW)
+          if (res === "banned member") {
+            setModalVisible(!modalVisible);
+            setAlertImage(require('@images/x_red.png'));
+            setAlertText('신고로 사용이 정지된 회원입니다.');
+            setTimeout(() => {
+                setModalVisible(modalVisible);
+            }, 1000);
+            setTimeout(() => {
+                logout();
+            }, 2000);
+            return;
+          }
+          if (res.success) {
             setModalVisible(!modalVisible);
             setAlertImage(require('@images/check.png'));
             setAlertText('저장되었습니다');
@@ -75,11 +96,14 @@ export default function PWChange ({ isCookie }) {
             }, 1000);
             nav.navigate('Mypage');
           }
-        }).catch((err) => {
-          console.log(err);
-        });
-      } catch (error) {
-        console.log(error.response);
+      } catch (err) {
+        setModalVisible(!modalVisible);
+        setAlertImage(require('@images/x_red.png'));
+        setAlertText('저장에 실패하였습니다');
+        setTimeout(() => {
+            setModalVisible(modalVisible);
+            nav.goBack();
+        }, 1000);
       }
     }
   }

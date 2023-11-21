@@ -171,10 +171,10 @@ const Navigation = () => {
             <Stack.Navigator screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="Mypage" children={() => <Mypage isCookie={isCookie} memberId={memberId} setReviewId={setReviewId}/>} />
                 <Stack.Screen name="ChangeProfile" children={() => <ChangeProfile isCookie={isCookie} />} />
-                <Stack.Screen name="MyReviews" children={() => <MyReviews isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
-                <Stack.Screen name="MyReviewSearch" children={() => <MyReviewSearch isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
-                <Stack.Screen name="MyThumbs" children={() => <MyThumbs isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
-                <Stack.Screen name="MyThumbsSearch" children={() => <MyThumbsSearch isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId}/>} />
+                <Stack.Screen name="MyReviews" children={() => <MyReviews isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId} setGoToFeed={setGoToFeed}/>} />
+                <Stack.Screen name="MyReviewSearch" children={() => <MyReviewSearch isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId} setGoToFeed={setGoToFeed}/>} />
+                <Stack.Screen name="MyThumbs" children={() => <MyThumbs isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId} setGoToFeed={setGoToFeed}/>} />
+                <Stack.Screen name="MyThumbsSearch" children={() => <MyThumbsSearch isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId} setGoToFeed={setGoToFeed}/>} />
                 <Stack.Screen name="MusicalDetail1" children={() => <MusicalDetail1 isCookie={isCookie} musicalId={musicalId} setMusicalId={setMusicalId} setMusicalPoster={setMusicalPoster} setMusicalTitle={setMusicalTitle} setReviewId={setReviewId}/>} />
                 <Stack.Screen name="MusicalDetail2" children={() => <MusicalDetail2 isCookie={isCookie} musicalId={musicalId} setMusicalId={setMusicalId} setMusicalPoster={setMusicalPoster} setMusicalTitle={setMusicalTitle} setReviewId={setReviewId}/>} />
                 <Stack.Screen name="ReviewDetail1" children={() => <ReviewDetail1 isCookie={isCookie} reviewId={reviewId}/>} />
@@ -189,6 +189,8 @@ const Navigation = () => {
                 <Stack.Screen name="ArtiqueInfo" children={() => <ArtiqueInfo isCookie={isCookie} />} />
                 <Stack.Screen name="Terms" children={() => <Terms isCookie={isCookie} />} />
                 <Stack.Screen name="Privacy" children={() => <Privacy isCookie={isCookie} />} />
+
+                <Stack.Screen name="Login2" children={() => <Login2 setGoToFeed={setGoToFeed} />} />
             </Stack.Navigator>
         )
     };

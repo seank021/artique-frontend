@@ -3,12 +3,13 @@ import { View, Text, Image, StyleSheet, ScrollView, Pressable, RefreshControl } 
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
 
-import { useNavigation, useRoute, useIsFocused } from "@react-navigation/native";
 import { ShortReviewFormInMypage } from "@forms/ReviewForm";
 import makeBarChart from "@functions/makeBarChart";
+import UserTendency from "@forms/UserTendency";
 
 import { memberSummary, memberStatistics, memberShortThumbReviews } from "@functions/api";
-import UserTendency from "@forms/UserTendency";
+
+import { useNavigation, useRoute, useIsFocused } from "@react-navigation/native";
 
 export default function Mypage ({ isCookie, memberId, setReviewId }) {
   const nav = useNavigation();

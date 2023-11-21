@@ -3,18 +3,25 @@ import { View, Text, Image, Pressable, ScrollView, StyleSheet } from "react-nati
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
 
+import AlertForm from "@forms/AlertForm"; 
 import { ShortReviewFormInFeed } from "@forms/ReviewForm";
 
 import { myThumbsAll, thumbsUp } from "@functions/api";
+import * as Cookies from "@functions/cookie";
+import { removeAutoLogin } from "@functions/autoLogin";
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 
-export default function MyThumbs({ isCookie, memberId, setMusicalId, setReviewId, setReviewInfo, setReviewInfo2 }) {
+export default function MyThumbs({ isCookie, memberId, setMusicalId, setReviewId, setReviewInfo, setReviewInfo2, setGoToFeed }) {
   const nav = useNavigation();
 
   const [page, setPage] = useState(0);
   const [updatePage, setUpdatePage] = useState(true);
   const [reviews, setReviews] = useState([]);
+
+  const [alertModalVisible, setAlertModalVisible] = useState(false);
+  const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
+  const [alertText, setAlertText] = useState('신고로 사용이 정지된 회원입니다.');
 
   const goBack = () => {
     nav.goBack();
@@ -38,6 +45,13 @@ export default function MyThumbs({ isCookie, memberId, setMusicalId, setReviewId
     }
   }
 
+  const logout = async () => {
+    const currentLogin = await Cookies.getCurrentLogin();
+    await Cookies.removeCookie(currentLogin);
+    await removeAutoLogin();
+    setGoToFeed(false);
+  };
+
   const route = useRoute();
   const otherMemberId= route.params?.otherMemberId;
 
@@ -60,8 +74,19 @@ export default function MyThumbs({ isCookie, memberId, setMusicalId, setReviewId
   }, [page, updatePage, otherMemberId]);
 
   const onPressThumbsUp = (reviewId, isThumbsUp) => {
-    thumbsUp(reviewId, !isThumbsUp).then((res) => {
-        console.log(res)
+        thumbsUp(reviewId, !isThumbsUp).then((res) => {
+          if (res === "banned member") {
+            setAlertModalVisible(!alertModalVisible);
+            setAlertImage(require('@images/x_red.png'));
+            setAlertText('신고로 사용이 정지된 회원입니다.');
+            setTimeout(() => {
+                setAlertModalVisible(alertModalVisible);
+            }, 1000);
+            setTimeout(() => {
+                logout();
+            }, 2000);
+            return;
+        }
         setReviews((prevReviews) => {
             const newReviews = [...prevReviews];
             const reviewIndex = newReviews.findIndex((review) => review.reviewId === reviewId);
@@ -115,6 +140,7 @@ export default function MyThumbs({ isCookie, memberId, setMusicalId, setReviewId
   
   return (
     <SafeAreaView style={styles.container}>
+      <AlertForm modalVisible={alertModalVisible} setModalVisible={setAlertModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
       <View style={tw`flex-row items-center justify-between mt-5 mb-[14px]`}>
         <Pressable onPress={goBack} style={tw`flex-row`}>
           <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] w-[10px] h-[18px] mr-[7.5px] tint-[#191919]`}></Image>
@@ -139,6 +165,7 @@ export default function MyThumbs({ isCookie, memberId, setMusicalId, setReviewId
               setReviewInfo={setReviewInfo}
               setReviewInfo2={setReviewInfo2}
               isShortReviewSpoiler={review.reviewSpoiler}
+              setGoToFeed={setGoToFeed}
             />
             {index < reviews.length - 1 && 
               <View style={tw`border-4 border-[#F0F0F0]`}></View>
