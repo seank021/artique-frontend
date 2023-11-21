@@ -28,6 +28,11 @@ export default function UserTendency(props) {
   }, []);
 
   useEffect(() => {
+    if (props.totalReviewCount === 0) {
+      setName('잠재력이 무한한 관객');
+      setDescription('작품 평가를 입력해주세요');
+    } 
+
     if (props.totalReviewCount > 0) {
       const upperPercentage = upper / props.totalReviewCount;
       const lowerPercentage = lower / props.totalReviewCount;
