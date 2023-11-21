@@ -29,7 +29,7 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
 
     const [alertModalVisible, setAlertModalVisible] = useState(false);
     const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
-    const [alertText, setAlertText] = useState('신고로 사용이 정지된 회원입니다.');
+    const [alertText, setAlertText] = useState('신고 누적으로 사용이 정지된 회원입니다.');
 
     useEffect(() => {
         if (firstFocus) {
@@ -111,7 +111,7 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
             if (res === "banned member") {
                 setAlertModalVisible(!alertModalVisible);
                 setAlertImage(require('@images/x_red.png'));
-                setAlertText('신고로 사용이 정지된 회원입니다.');
+                setAlertText('신고 누적으로 사용이 정지된 회원입니다.');
                 setTimeout(() => {
                     setAlertModalVisible(alertModalVisible);
                 }, 1000);

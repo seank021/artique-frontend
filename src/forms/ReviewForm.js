@@ -392,7 +392,7 @@ export function ShortReviewFormInMyReviews(props) {
 
 export function MusicalInfoFormInReviewDetail(props) {
     const [longReviewModalVisible, setLongReviewModalVisible] = useState(false);
-    console.log("PROPS", !props?.isShortReviewSpoiler, props?.isLongReviewSpoiler)
+    // console.log("PROPS", !props?.isShortReviewSpoiler, props?.isLongReviewSpoiler)
     const [seeShortSpoiler, setSeeShortSpoiler] = useState(false);
     const [seeLongSpoiler, setSeeLongSpoiler] = useState(false);
 
@@ -409,8 +409,16 @@ export function MusicalInfoFormInReviewDetail(props) {
             <View style={tw`border border-gray-900 border-[0.7px] self-center w-[85%] mt-13`}></View>
             <View style={tw`flex-col items-start mt-3 mx-[10%] z-20`}>
                 <Text style={tw`text-1.375rem text-gray-900 font-medium mb-4`}>{props.reviewInfo.musicalTitle}</Text>
-                <Text numberOfLines={1} style={tw`text-sm text-gray-900 mb-1.5 w-[95%]`}>{props.reviewInfo.casting}</Text>
-                <Text style={tw`text-sm text-gray-900 mb-1.5`}>{props.reviewInfo.seat}</Text>
+                {(props.reviewInfo.casting === '') ? 
+                    <Text style={tw`text-[#B6B6B6] text-sm text-justify font-normal leading-6`}>캐스팅 정보가 없습니다.</Text>
+                    :
+                    <Text numberOfLines={1} style={tw`text-sm text-gray-900 mb-1.5 w-[95%]`}>{props.reviewInfo.casting}</Text>
+                }
+                {(props.reviewInfo.seat === '') ? 
+                    <Text style={tw`text-[#B6B6B6] text-sm text-justify font-normal leading-6`}>좌석 정보가 없습니다.</Text>
+                    :
+                    <Text style={tw`text-sm text-gray-900 mb-1.5`}>{props.reviewInfo.seat}</Text>
+                }
                 <Text style={tw`text-sm text-gray-900`}>{props.reviewInfo.viewDate}</Text>
             </View>
             <View style={tw`border border-gray-900 border-[0.7px] self-center w-[85%] mt-3`}></View>
@@ -466,6 +474,7 @@ export function MusicalInfoFormInReviewDetail(props) {
         </View>
     )
 }
+
 {/* props: reviewId, musicalName, starRating, shortReview*/}
 export function ShortReviewFormInMypage(props) {
     const [seeSpoiler, setSeeSpoiler] = useState(!props.isShortReviewSpoiler);
