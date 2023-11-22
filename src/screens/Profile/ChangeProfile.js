@@ -20,6 +20,7 @@ export default function ChangeProfile({isCookie, setGoToFeed}) {
     };
 
     {/*profile 불러오기 및 수정*/}
+    const [prevNickname, setPrevNickname] = useState('');
     const [profileImage, setProfileImage] = useState('');
     const [nickname, setNickname] = useState('');
     const [introduce, setIntroduce] = useState('');
@@ -29,6 +30,7 @@ export default function ChangeProfile({isCookie, setGoToFeed}) {
             setProfileImage(() => newMemberInfo.imageUrl);
             setNickname(() => newMemberInfo.nickname);
             setIntroduce(() => newMemberInfo.introduce);
+            setPrevNickname(() => newMemberInfo.nickname);
         }).catch((err) => {
             console.log(err);
         });
@@ -55,7 +57,7 @@ export default function ChangeProfile({isCookie, setGoToFeed}) {
     }
 
     const onPressSave = async () => {
-        if (!ifCheckNickname) {
+        if (prevNickname!== nickname && !ifCheckNickname) {
             setModalVisible(!modalVisible);
             setAlertImage(require('@images/x_red.png'));
             setAlertText('닉네임 중복 확인을 해주세요.');
@@ -100,7 +102,7 @@ export default function ChangeProfile({isCookie, setGoToFeed}) {
     const [buttonColor, setButtonColor] = useState('#FFF');
     const [buttonTextColor, setButtonTextColor] = useState('#B6B6B6');
     const [buttonText, setButtonText] = useState('중복확인');
-    const [ifButtonID, setIfButtonID] = useState(true);
+    const [ifButtonID, setIfButtonID] = useState(false);
 
     const [alertModalVisible, setAlertModalVisible] = useState(false);
     const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
@@ -216,7 +218,7 @@ export default function ChangeProfile({isCookie, setGoToFeed}) {
             <ProfileChangeForm
                 modalVisible={imageChangeModalVisible}
                 setModalVisible={setImageChangeModalVisible}
-                setImage={setProfileImage}>
+                setProfileImage={setProfileImage}>
             </ProfileChangeForm>
 
             {/* 상단 바 */}
