@@ -200,37 +200,40 @@ export default function PWChange ({ isCookie, setGoToFeed }) {
       {/* 현재 비밀번호 확인 */}
       <View style={tw`self-center items-center w-[90%] mt-[90px]`}>
         <InputFormInPWChange
-          image={require('@images/lock.png')}
+          image={require('@images/password.png')}
           placeholder={'현재 비밀번호를 입력해주세요'}
           secureTextEntry={true}
           setValue={setPassword}
           compareValue={ifPWCorrect}
           ifCheck={checkCurrentPW}
           ifX={XCurrentPW}
+          style={tw`mb-2.5`}
         ></InputFormInPWChange>
       </View>
 
       {/* 새 비밀번호 */}
       <View style={tw`self-center items-center w-[90%] mt-[50px]`}>
         <InputFormInPWChange
-          image={require('@images/lock.png')}
+          image={require('@images/password.png')}
           placeholder={'새 비밀번호를 입력해주세요 (7자 이상)'}
           secureTextEntry={true}
           setValue={setNewPassword}
           compareValue={comparePW}
+          style={tw`mb-2.5`}
         ></InputFormInPWChange>
       </View>
 
       {/* 새 비밀번호 확인 */}
       <View style={tw`self-center items-center w-[90%] mt-[30px]`}>
         <InputFormInPWChange
-          image={require('@images/lock.png')}
+          image={require('@images/password.png')}
           placeholder={'새 비밀번호를 다시 확인해주세요'}
           secureTextEntry={true}
           setValue={setNewPassword_}
           compareValue={comparePW_}
           ifCheck={checkNewPW}
           ifX={XNewPW}
+          style={tw`mb-2.5`}
         ></InputFormInPWChange>
       </View>
 
