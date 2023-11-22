@@ -122,7 +122,7 @@ export default function PWChange ({ isCookie, setGoToFeed }) {
             logout();
         }, 2000);
         return;
-      }s
+      }
       if (res) {
         setCheckCurrentPW(true);
         setXCurrentPW(false);
