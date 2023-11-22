@@ -3,20 +3,27 @@ import { View, Pressable, Text, Image, ScrollView, StyleSheet, RefreshControl } 
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
 
+import AlertForm from "@forms/AlertForm";
 import { AlertFormForSortInMyReviews } from "@forms/AlertForm";
 import { ShortReviewFormInMyReviews } from "@forms/ReviewForm";
 
 import { memberStatistics, myReviewsAll, thumbsUp } from "@functions/api";
+import * as Cookies from "@functions/cookie";
+import { removeAutoLogin } from "@functions/autoLogin";
 
 import { useNavigation, useRoute, useIsFocused } from "@react-navigation/native";
 
-export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId, setReviewInfo, setReviewInfo2}) {
+export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId, setReviewInfo, setReviewInfo2, setGoToFeed}) {
   const nav = useNavigation();
 
   const [refreshing, setRefreshing] = useState(false);
   const isFocused = useIsFocused();
   const [firstFocus, setFirstFocus] = useState(true);
   const [onRefreshWhenDelete, setOnRefreshWhenDelete] = useState(false);
+
+  const [alertModalVisible, setAlertModalVisible] = useState(false);
+  const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
+  const [alertText, setAlertText] = useState('신고로 사용이 정지된 회원입니다.');
 
   useEffect(() => {
     if (firstFocus) {
@@ -67,6 +74,13 @@ export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId
       setReviewId(reviewId);
       nav.navigate('ReviewDetail1');
   };
+
+  const logout = async () => {
+    const currentLogin = await Cookies.getCurrentLogin();
+    await Cookies.removeCookie(currentLogin);
+    await removeAutoLogin();
+    setGoToFeed(false);
+}
 
   const route = useRoute();
   const otherMemberId = route.params?.otherMemberId;
@@ -157,7 +171,18 @@ export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId
 
   const onPressThumbsUp = (reviewId, isThumbsUp) => {
     thumbsUp(reviewId, !isThumbsUp).then((res) => {
-        console.log(res);
+        if (res === "banned member") {
+          setAlertModalVisible(!alertModalVisible);
+          setAlertImage(require('@images/x_red.png'));
+          setAlertText('신고로 사용이 정지된 회원입니다.');
+          setTimeout(() => {
+              setAlertModalVisible(alertModalVisible);
+          }, 1000);
+          setTimeout(() => {
+              logout();
+          }, 2000);
+          return;
+      }
         setReviews((prevReviews) => {
             const newReviews = [...prevReviews];
             const reviewIndex = newReviews.findIndex((review) => review.reviewId === reviewId);
@@ -215,6 +240,7 @@ export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId
 
   return (
     <SafeAreaView style={styles.container}>
+      <AlertForm modalVisible={alertModalVisible} setModalVisible={setAlertModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
       <AlertFormForSortInMyReviews sortModalVisible={sortModalVisible} setSortModalVisible={setSortModalVisible} sortCriteria={sortCriteria} setSortCriteria={setSortCriteria}></AlertFormForSortInMyReviews>
       {/* 상단 바 */}
       <View style={tw`flex-row items-center justify-between mt-5 mb-[14px]`}>
@@ -251,6 +277,7 @@ export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId
                       setReviewInfo={setReviewInfo}
                       setReviewInfo2={setReviewInfo2}
                       setOnRefreshWhenDelete={setOnRefreshWhenDelete}
+                      setGoToFeed={setGoToFeed}
                   />
                   {index < reviews.length - 1 && (
                       <View style={tw`border-4 border-[#F0F0F0]`}></View>

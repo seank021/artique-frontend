@@ -6,11 +6,13 @@ import tw from 'twrnc';
 import { useNavigation } from '@react-navigation/native';
 
 import { profileUpload, memberSummary, updateMember, duplicateNickname } from "@functions/api";
+import * as Cookies from '@functions/cookie';
+import { removeAutoLogin } from '@functions/autoLogin';
 
 import { NicknameInputForm, IntroduceInputForm } from '@forms/InputForm';
 import AlertForm, { ProfileChangeForm } from '@forms/AlertForm';
 
-export default function ChangeProfile({isCookie}) {
+export default function ChangeProfile({isCookie, setGoToFeed}) {
     const nav = useNavigation();
 
     const goBack = () => {
@@ -18,7 +20,6 @@ export default function ChangeProfile({isCookie}) {
     };
 
     {/*profile 불러오기 및 수정*/}
-    const [imageFile, setImageFile] = useState(null);
     const [profileImage, setProfileImage] = useState('');
     const [nickname, setNickname] = useState('');
     const [introduce, setIntroduce] = useState('');
@@ -38,12 +39,19 @@ export default function ChangeProfile({isCookie}) {
     }, [profileImage]);
     
     const onPressProfileChange = () => {
-        profileUpload(imageFile).then((newProfileImage) => {
+        profileUpload(profileImage).then((newProfileImage) => {
             setProfileImage(() => newProfileImage);
             setImageChangeModalVisible(!imageChangeModalVisible);
         }).catch((err) => {
             console.log(err);
         });
+    }
+
+    const logout = async () => {
+        const currentLogin = await Cookies.getCurrentLogin();
+        await Cookies.removeCookie(currentLogin);
+        await removeAutoLogin();
+        setGoToFeed(false);
     }
 
     const onPressSave = async () => {
@@ -57,8 +65,18 @@ export default function ChangeProfile({isCookie}) {
         return;
         } else {
             updateMember(nickname, profileImage, introduce).then((req) => {
-                console.log(req);
-                console.log(req);
+                if (req === "banned member") {
+                    setAlertModalVisible(!alertModalVisible);
+                    setAlertImage(require('@images/x_red.png'));
+                    setAlertText('신고 누적으로 사용이 정지된 회원입니다.');
+                    setTimeout(() => {
+                        setAlertModalVisible(alertModalVisible);
+                    }, 1000);
+                    setTimeout(() => {
+                        logout();
+                    }, 2000);
+                    return;
+                }
                 if (req.success) {
                     setModalVisible(!modalVisible);
                     setAlertImage(require('@images/check.png'));
@@ -67,12 +85,11 @@ export default function ChangeProfile({isCookie}) {
                         setModalVisible(modalVisible);
                     }, 1000);
                     nav.navigate('Mypage');
-                    nav.navigate('Mypage');
                 }
             }).catch((err) => {
                 console.log(err);
-            });
-        }
+            }
+        )}
     };
 
     {/*input창 속성들 관리*/}
@@ -85,6 +102,7 @@ export default function ChangeProfile({isCookie}) {
     const [buttonText, setButtonText] = useState('중복확인');
     const [ifButtonID, setIfButtonID] = useState(true);
 
+    const [alertModalVisible, setAlertModalVisible] = useState(false);
     const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
     const [alertText, setAlertText] = useState('사용 불가한 닉네임입니다.');
 
@@ -149,7 +167,7 @@ export default function ChangeProfile({isCookie}) {
     let ifDuplicate = false;
     const checkDuplicate = async () => {
         duplicateNickname(nickname).then((res) => {
-            ifDuplicate = res.unique;
+            ifDuplicate = !res.unique;
         }).catch((err) => {
             console.log(err);
         });
@@ -184,6 +202,7 @@ export default function ChangeProfile({isCookie}) {
 
     return (
         <SafeAreaView style={styles.container}>
+            <AlertForm modalVisible={alertModalVisible} setModalVisible={setAlertModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
             <AlertForm
                 modalVisible={modalVisible}
                 setModalVisible={setModalVisible}

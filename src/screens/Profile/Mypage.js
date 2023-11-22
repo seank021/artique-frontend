@@ -3,12 +3,13 @@ import { View, Text, Image, StyleSheet, ScrollView, Pressable, RefreshControl } 
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
 
-import { useNavigation, useRoute, useIsFocused } from "@react-navigation/native";
 import { ShortReviewFormInMypage } from "@forms/ReviewForm";
 import makeBarChart from "@functions/makeBarChart";
+import UserTendency from "@forms/UserTendency";
 
 import { memberSummary, memberStatistics, memberShortThumbReviews } from "@functions/api";
-import UserTendency from "@forms/UserTendency";
+
+import { useNavigation, useRoute, useIsFocused } from "@react-navigation/native";
 
 export default function Mypage ({ isCookie, memberId, setReviewId }) {
   const nav = useNavigation();
@@ -38,6 +39,15 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
     setMemberStat({});
     setShortReviewInfo([]);
 
+    if (otherMemberId) {
+      memberSummary(otherMemberId).then((newMemberInfo) => {
+        setMemberInfo(() => newMemberInfo);
+      }).catch((err) => {
+        console.log(err);
+      }).finally(() => {
+        setRefreshing(false);
+      });
+    } else {
       memberSummary().then((newMemberInfo) => {
         setMemberInfo(() => newMemberInfo);
       }).catch((err) => {
@@ -45,7 +55,17 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
       }).finally(() => {
         setRefreshing(false);
       });
+    }
 
+    if (otherMemberId) {
+      memberStatistics(otherMemberId).then((newMemberStat) => {
+        setMemberStat(() => newMemberStat);
+      }).catch((err) => {
+        console.log(err);
+      }).finally(() => {
+        setRefreshing(false);
+      });
+    } else {
       memberStatistics().then((newMemberStat) => {
         setMemberStat(() => newMemberStat);
       }).catch((err) => {
@@ -53,7 +73,17 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
       }).finally(() => {
         setRefreshing(false);
       });
+    }
 
+    if (otherMemberId) {
+      memberShortThumbReviews(otherMemberId).then((newShortThumbReviews) => {
+        setShortReviewInfo(() => newShortThumbReviews);
+      }).catch((err) => {
+        console.log(err);
+      }).finally(() => {
+        setRefreshing(false);
+      });
+    } else {
       memberShortThumbReviews().then((newShortThumbReviews) => {
         setShortReviewInfo(() => newShortThumbReviews);
       }).catch((err) => {
@@ -61,6 +91,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
       }).finally(() => {
         setRefreshing(false);
       });
+    }
 
     setTimeout(() => {
       setRefreshing(false);
@@ -228,7 +259,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
           </View>
           <View style={tw`flex-col items-center`}>
             <Text style={tw`text-xs text-[#191919] font-normal`}>많이 준 별점</Text>
-            <Text style={tw`text-xs text-[#191919] font-normal`}>{maxStarRate}</Text>
+            <Text style={tw`text-xs text-[#191919] font-normal`}>{(totalReviewCount === 0) ? 0 : maxStarRate}</Text>
           </View>
         </View>
 

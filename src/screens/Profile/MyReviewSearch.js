@@ -3,18 +3,24 @@ import { View, StyleSheet, Image, TextInput, ScrollView, Text, Pressable } from 
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from 'twrnc'
 
+import AlertForm from "@forms/AlertForm"; 
 import { AlertFormForSort2 } from "@forms/AlertForm";
-
-import * as Keywords from "@functions/keywords";
-
-import { searchCreatedReviews, thumbsUp } from "@functions/api";
-
-import { useNavigation, useRoute } from "@react-navigation/native";
 import { ShortReviewFormInMyReviews } from "@forms/ReviewForm";
 
-export default function MyReviewSearch({ isCookie, memberId, setMusicalId, setReviewId, setReviewInfo, setReviewInfo2 }) {
+import * as Keywords from "@functions/keywords";
+import { searchCreatedReviews, thumbsUp } from "@functions/api";
+import * as Cookies from "@functions/cookie";
+import { removeAutoLogin } from "@functions/autoLogin";
+
+import { useNavigation, useRoute } from "@react-navigation/native";
+
+export default function MyReviewSearch({ isCookie, memberId, setMusicalId, setReviewId, setReviewInfo, setReviewInfo2, setGoToFeed }) {
     {/*페이지 이동*/}
     const nav = useNavigation();
+
+    const [alertModalVisible, setAlertModalVisible] = useState(false);
+    const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
+    const [alertText, setAlertText] = useState('신고로 사용이 정지된 회원입니다.');
 
     const goToMusicalDetail1 = (musicalId) => {
         setMusicalId(musicalId);
@@ -26,12 +32,31 @@ export default function MyReviewSearch({ isCookie, memberId, setMusicalId, setRe
         nav.navigate('ReviewDetail1');
     };
 
+    const logout = async () => {
+        const currentLogin = await Cookies.getCurrentLogin();
+        await Cookies.removeCookie(currentLogin);
+        await removeAutoLogin();
+        setGoToFeed(false);
+    }
+
     const route = useRoute();
     const otherMemberId = route.params?.otherMemberId;
 
     {/*공감*/}
     const onPressThumbsUp = (reviewId, isThumbsUp) => {
         thumbsUp(reviewId, !isThumbsUp).then((res) => {
+            if (res === "banned member") {
+                setAlertModalVisible(!alertModalVisible);
+                setAlertImage(require('@images/x_red.png'));
+                setAlertText('신고로 사용이 정지된 회원입니다.');
+                setTimeout(() => {
+                    setAlertModalVisible(alertModalVisible);
+                }, 1000);
+                setTimeout(() => {
+                    logout();
+                }, 2000);
+                return;
+            }
             setSearchedReviews((prevReviews) => {
                 const newReviews = [...prevReviews];
                 const reviewIndex = newReviews.findIndex((review) => review.reviewId === reviewId);
@@ -252,6 +277,7 @@ export default function MyReviewSearch({ isCookie, memberId, setMusicalId, setRe
                 </>
             :
                 <>
+                <AlertForm modalVisible={alertModalVisible} setModalVisible={setAlertModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
                 {/* 검색 완료 상단바 */} 
                 <View style={tw`flex-row items-center mx-[5%] mt-[17px] mb-[11px]`}>
                     <Pressable onPress={()=> {setIsBeforeSearch(true); setSortCriteria('최신순'); setIfX(false);}}>
@@ -294,6 +320,7 @@ export default function MyReviewSearch({ isCookie, memberId, setMusicalId, setRe
                                             setReviewInfo={setReviewInfo}
                                             setReviewInfo2={setReviewInfo2}
                                             isShortReviewSpoiler={review.isShortReviewSpoiler}
+                                            setGoToFeed={setGoToFeed}
                                         />
                                         {index < searchedReviews.length - 1 && (
                                             <View style={tw`border-4 border-[#F0F0F0]`}></View>

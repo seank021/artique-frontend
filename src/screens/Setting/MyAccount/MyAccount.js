@@ -72,11 +72,17 @@ export default function MyAccount ({ isCookie, setGoToFeed, memberId }) {
       </View>
       <View style={tw`border-solid border-b border-[#E5E6E5]`}></View>
 
+      {loginMethod === '일반' ? (
+        <>
       <Pressable onPress={goToPWChange} style={tw`flex-row justify-between items-center h-[57px] mx-5`}>
         <Text style={tw`text-sm text-[#191919] font-normal`}>비밀번호 변경</Text>
         <Image source={require('@images/chevron_right.png')} style={tw`w-[10px] h-[18px] tint-[#CBCDCB]`}></Image>
       </Pressable>
       <View style={tw`border-solid border-b border-[#E5E6E5]`}></View>
+        </>
+      ) : (
+        <></>
+      )}
 
       <Pressable onPress={onPressExit} style={tw`flex-row justify-between items-center h-[57px] mx-5`}>
         <Text style={tw`text-sm text-[#191919] font-normal`}>탈퇴하기</Text>
