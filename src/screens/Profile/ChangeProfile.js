@@ -41,12 +41,7 @@ export default function ChangeProfile({isCookie, setGoToFeed}) {
     }, [profileImage]);
     
     const onPressProfileChange = () => {
-        profileUpload(profileImage).then((newProfileImage) => {
-            setProfileImage(() => newProfileImage);
-            setImageChangeModalVisible(!imageChangeModalVisible);
-        }).catch((err) => {
-            console.log(err);
-        });
+        setImageChangeModalVisible(!imageChangeModalVisible);
     }
 
     const logout = async () => {
@@ -237,7 +232,7 @@ export default function ChangeProfile({isCookie, setGoToFeed}) {
 
             <Pressable onPress={onPressProfileChange}>
                 <Image 
-                    source={profileImage ? { uri: profileImage } : require('@images/newprofile.png')}
+                    source={profileImage !== '' ? { uri: profileImage } : require('@images/newprofile.png')}
                     style={tw`w-[100px] h-[100px] rounded-full mx-auto mt-[20px] mb-[64px]`}>
                 </Image>
             </Pressable>

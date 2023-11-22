@@ -310,20 +310,19 @@ const searchThumbReviews = async (memberId, page, keyword) => {
   }
 };
 
-const profileUpload = async (base64) => {
+const profileUpload = async (formdata) => {
   try {
     const myHeaders = await getHeaders();
-    const memberId = await memberIdInMypage();
-    const response = await axios.post(`http://3.39.145.210/image`, 
-      {
-        memberId: memberId,
-        file: base64,
-      },
-      {
-        headers: myHeaders.map,
-      },
-    );
-    return response.data;
+    const requestOptions = {
+      method: 'POST',
+      headers: myHeaders.map,
+      body: formdata,
+      redirect: 'follow'
+    };
+
+    const response = await fetch(`http://3.39.145.210/image`, requestOptions)
+    const result = await response.json();
+    return result.url;
   } catch (err) {
     console.log(err.response.data);
   }

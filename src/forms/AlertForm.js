@@ -167,36 +167,41 @@ export function LongReviewForm(props) {
 
 export function ProfileChangeForm(props) {
 
-    function filepathToURI(filePath) {
-        // 파일 경로를 URI로 변환
-        // let path = filePath.replace(/\\/g, '/'); // Windows에서 역슬래시(\)를 슬래시(/)로 변환
-        let uri = encodeURI(filePath);
-        return uri;
-    }
-
     const onPressSelect = async () => {
         const options = {
             mediaType: 'photo',
             includeBase64: true,
         }
 
-        await launchImageLibrary(options, (res) => {
-            
+        await launchImageLibrary(options, async (res) => {          
             if (res.didCancel) {
                 console.log('User cancelled image picker');
             } else if (res.errorCode) {
                 console.log('ImagePicker Error: ', res.errorMessage);
             } else {        
-                let imageSource = res.assets[0].base64;
-                props.setProfileImage(filepathToURI(imageSource));
-                console.log(filepathToURI(imageSource))
-                props.setModalVisible(false);
-            };
+                let imageSource = res.assets[0].uri;
+                imageSource = imageSource.replace('file://', '');
+
+                const formdata = new FormData();
+                formdata.append('file', {
+                    uri: imageSource,
+                    type: 'image/jpeg',
+                    name: res.assets[0].fileName,
+                });
+
+                try {
+                    const response = await profileUpload(formdata);
+                    props.setProfileImage(response);
+                    props.setModalVisible(false);
+                } catch (error) {
+                    console.log(error.response.data);
+                }
+            }
         });
     }
 
     const onPressDelete = () => {
-        props.setProfileImage(null);
+        props.setProfileImage('');
     }
 
     return(
