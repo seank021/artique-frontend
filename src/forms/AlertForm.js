@@ -421,7 +421,8 @@ export const AlertFormForReport = (props) => {
                         <Image source={require("@images/check.png")} style={tw`w-[24px] h-[17.63637px] self-center`}></Image> 
                         <Text style={tw`text-sm font-medium mt-[20px] text-[#191919]`}>제출되었습니다</Text>
                     </View>
-                : null}
+                    
+                : <View></View>}
             </Modal>
         </>
     )

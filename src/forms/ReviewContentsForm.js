@@ -101,7 +101,7 @@ export const ShortReviewForm = (props) => {
 
     return (
         <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={() => props.setModalVisible(false)}>
-            <View style={tw`flex flex-col justify-around items-center self-center w-[300px] bg-[#FAFAFA] rounded-[15px] mb-[150px]`}>
+            <View style={tw`flex flex-col justify-around items-center self-center w-[300px] bg-[#FAFAFA] rounded-[15px] absolute top-[40%]`}>
                 <TextInput style={tw`flex flex-wrap text-sm mt-[28px] self-start mx-[26px]`} defaultValue={shortReview} placeholder="한줄평을 입력해주세요" placeholderTextColor="#B6B6B6" onChangeText={onShortReviewChange} maxLength={50} multiline={true} value={shortReview}></TextInput>
                 <Text style={tw`text-[#B6B6B6] text-sm mb-[27px] self-end mr-[26px]`}>{charCount} / 50</Text>
                 <View style={tw`w-[100%] border-[0.5px] border-[#D3D4D3]`}></View>
@@ -169,8 +169,8 @@ export const LongReviewForm = (props) => {
                     <Text style={tw`text-[#B6B6B6] text-xs mb-[21px] self-end mr-[5%]`}>{charCount} / 2500</Text>
                 </View>
                 
-                <View style={tw`flex flex-row justify-between bg-[#F5F5F5] w-[90%] h-[80%] self-center rounded-[5px]`}>
-                    <TextInput style={tw`flex flex-wrap text-sm self-start mx-[26px] my-[15px]`} defaultValue={longReview} placeholder="긴줄평을 입력해주세요" placeholderTextColor="#B6B6B6" onChangeText={onLongReviewChange} maxLength={2500} multiline={true} value={longReview}></TextInput>
+                <View style={tw`flex-1 flex-row justify-between bg-[#F5F5F5] w-[90%] h-[80%] self-center rounded-[5px] mb-[10px]`}>
+                    <TextInput style={tw`flex flex-wrap text-sm self-start mx-[26px] my-[10px]`} defaultValue={longReview} placeholder="긴줄평을 입력해주세요" placeholderTextColor="#B6B6B6" onChangeText={onLongReviewChange} maxLength={2500} multiline={true} value={longReview}></TextInput>
                 </View>
             </SafeAreaView>
         </Modal>

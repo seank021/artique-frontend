@@ -99,7 +99,7 @@ export function ShortReviewForm(props) {
                         <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>{props.reviewInfo.shortReview}"</Text>
                         </>
                         :
-                        <Text style={tw`text-[#B6B6B6] text-sm font-medium leading-[24px] border-b-[1px] border-[#B6B6B6] underline`}>스포일러 포함</Text>
+                        <Text style={tw`text-[#B6B6B6] text-sm font-medium leading-[24px] underline`}>스포일러 포함</Text>
                     }
                 </View>
                 <View style={tw`flex-row justify-between items-center`}>
@@ -243,7 +243,7 @@ export function ShortReviewFormInFeed(props) {
                                             <Text numberOfLines={1} style={[tw`text-[#191919] font-medium leading-[22px] w-full`, {fontSize: getFontSize(14)}]}>{props.reviewInfo.shortReview}"</Text>
                                         </>
                                         :
-                                        <Text style={[tw`text-[#B6B6B6] font-medium leading-[22px] border-b-[1px] border-[#B6B6B6] underline`, {fontSize: getFontSize(14)}]}>스포일러 포함</Text>
+                                        <Text style={[tw`text-[#B6B6B6] font-medium leading-[22px] underline`, {fontSize: getFontSize(14)}]}>스포일러 포함</Text>
                                     }
                                 </View>
                             </Pressable>
@@ -435,7 +435,7 @@ export function MusicalInfoFormInReviewDetail(props) {
                         <Text numberOfLines={5} style={tw`w-[60%] h-[120px] text-gray-900 text-sm text-center font-medium leading-6 self-center mr-[5%]`}>"{props.reviewInfo.shortReview}"</Text>
                         :
                         <Pressable onTouchEnd={(e)=> { e.stopPropagation(); setSeeShortSpoiler(true)}} style={tw`w-[200px] h-auto justify-center mr-[5%]`}>
-                            <Text style={[tw`text-[#B6B6B6] font-medium text-center leading-[22px] border-b-[1px] border-[#B6B6B6] underline`, {fontSize: getFontSize(14)}]}>스포일러 포함</Text>
+                            <Text style={[tw`text-[#B6B6B6] font-medium text-center leading-[22px] underline`, {fontSize: getFontSize(14)}]}>스포일러 포함</Text>
                         </Pressable>
                     }
                 </View>
@@ -462,7 +462,7 @@ export function MusicalInfoFormInReviewDetail(props) {
                                 <Text style={tw`text-gray-900 text-sm text-justify font-normal leading-6`}>{props.reviewInfo.longReview}</Text>
                                 :
                                 <Pressable onTouchEnd={(e)=> { e.stopPropagation(); setSeeLongSpoiler(true)}} style={tw`w-[200px] h-auto ml-[7.5%] self-center justify-center`}>
-                                    <Text style={[tw`text-[#B6B6B6] font-medium text-center leading-[22px] border-b-[1px] border-[#B6B6B6] underline`, {fontSize: getFontSize(14)}]}>스포일러 포함</Text>
+                                    <Text style={[tw`text-[#B6B6B6] font-medium text-center leading-[22px] underline`, {fontSize: getFontSize(14)}]}>스포일러 포함</Text>
                                 </Pressable>
                         )}
                     </ScrollView>
@@ -496,7 +496,7 @@ export function ShortReviewFormInMypage(props) {
                                 </View>
                                 :
                                 <View style={tw`mx-2 my-1.5`}>
-                                    <Text onTouchEnd={(e)=> { e.stopPropagation(); setSeeSpoiler(true)}} style={[tw`text-[#B6B6B6] font-medium underline`, {fontSize: getFontSize(12)}]}>스포일러 보기</Text>
+                                    <Text onTouchEnd={(e)=> { e.stopPropagation(); setSeeSpoiler(true)}} style={[tw`text-[#B6B6B6] font-medium underline`, {fontSize: getFontSize(12)}]}>스포일러 포함</Text>
                                 </View>
                             }
                         </View>
