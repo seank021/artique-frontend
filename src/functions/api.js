@@ -292,7 +292,6 @@ const myThumbsAll = async (memberId, page) => {
     const response = await axios.get(`http://3.39.145.210/member/review/thumbs/all?member-id=${memberId}&page=${page}&size=10`, {
       headers: myHeaders.map,
     });
-    console.log("MY THUMBS ALL", response.data)
     return response.data;
   } catch (err) {
     console.log(err.response.data);
@@ -376,7 +375,6 @@ const updatePW = async (password) => {
   }
 };
 
-
 const duplicateNickname = async (nickname) => {
   try {
     const myHeaders = await getHeaders();
@@ -411,6 +409,9 @@ const currentPWCheck = async (password) => {
     );
     return response.data;
   } catch (err) {
+    if (err.response.data.message === "banned member") {
+      return "banned member";
+    }
     console.log(err.response.data);
   }
 }

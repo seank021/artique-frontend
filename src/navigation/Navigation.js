@@ -170,7 +170,7 @@ const Navigation = () => {
         return (
             <Stack.Navigator screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="Mypage" children={() => <Mypage isCookie={isCookie} memberId={memberId} setReviewId={setReviewId}/>} />
-                <Stack.Screen name="ChangeProfile" children={() => <ChangeProfile isCookie={isCookie} />} />
+                <Stack.Screen name="ChangeProfile" children={() => <ChangeProfile isCookie={isCookie} setGoToFeed={setGoToFeed}/>} />
                 <Stack.Screen name="MyReviews" children={() => <MyReviews isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId} setGoToFeed={setGoToFeed}/>} />
                 <Stack.Screen name="MyReviewSearch" children={() => <MyReviewSearch isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId} setGoToFeed={setGoToFeed}/>} />
                 <Stack.Screen name="MyThumbs" children={() => <MyThumbs isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId} setGoToFeed={setGoToFeed}/>} />
@@ -181,7 +181,7 @@ const Navigation = () => {
 
                 <Stack.Screen name="MainSetting" children={() => <MainSetting setIsCookie={setIsCookie} setGoToFeed={setGoToFeed}/>} />
                 <Stack.Screen name="MyAccount" children={() => <MyAccount isCookie={isCookie} setGoToFeed={setGoToFeed} memberId={memberId}/>} />
-                <Stack.Screen name="PWChange" children={() => <PWChange isCookie={isCookie}/>} />
+                <Stack.Screen name="PWChange" children={() => <PWChange isCookie={isCookie} setGoToFeed={setGoToFeed}/>} />
                 <Stack.Screen name="PWReset" children={() => <PWReset isCookie={isCookie}/>} />
                 <Stack.Screen name="Announcement" children={() => <Annoucement isCookie={isCookie} />} />
                 <Stack.Screen name="AnnounceDetail" children={() => <AnnounceDetail isCookie={isCookie} />} />
