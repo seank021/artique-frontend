@@ -13,7 +13,7 @@ import hash from '@functions/hash';
 import * as Cookies from "@functions/cookie";
 import { removeAutoLogin } from "@functions/autoLogin";
 
-export default function PWChange ({ isCookie }) {
+export default function PWChange ({ isCookie, setGoToFeed }) {
   const nav = useNavigation();
 
   const goBack = () => {
@@ -30,12 +30,12 @@ export default function PWChange ({ isCookie }) {
     await removeAutoLogin();
     setGoToFeed(false);
 }
-
+  const [alertModalVisible, setAlertModalVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [alertImage, setAlertImage] = useState(require('@images/check.png'));
   const [alertText, setAlertText] = useState('비밀번호가 변경되었습니다.');
 
-  const onPressSave = async () => {
+  const onPressSave = async() => {
     if (password === '') {
       setModalVisible(!modalVisible);
       setAlertImage(require('@images/x_red.png'));
@@ -74,9 +74,9 @@ export default function PWChange ({ isCookie }) {
     } else if (checkCurrentPW && checkNewPW) {
       const hashedPW = hash(newPassword);
       try {
-        const res = await updatePW(hashedPW)
-          if (res === "banned member") {
-            setModalVisible(!modalVisible);
+        updatePW(hashedPW).then((req) => {
+          if (req === "banned member") {
+            setAlertModalVisible(!modalVisible);
             setAlertImage(require('@images/x_red.png'));
             setAlertText('신고로 사용이 정지된 회원입니다.');
             setTimeout(() => {
@@ -87,7 +87,7 @@ export default function PWChange ({ isCookie }) {
             }, 2000);
             return;
           }
-          if (res.success) {
+          if (req.success) {
             setModalVisible(!modalVisible);
             setAlertImage(require('@images/check.png'));
             setAlertText('저장되었습니다');
@@ -96,14 +96,11 @@ export default function PWChange ({ isCookie }) {
             }, 1000);
             nav.navigate('Mypage');
           }
+        }).catch((err) => {
+          console.log(err);
+        });
       } catch (err) {
-        setModalVisible(!modalVisible);
-        setAlertImage(require('@images/x_red.png'));
-        setAlertText('저장에 실패하였습니다');
-        setTimeout(() => {
-            setModalVisible(modalVisible);
-            nav.goBack();
-        }, 1000);
+        console.log(err);
       }
     }
   }
@@ -114,6 +111,18 @@ export default function PWChange ({ isCookie }) {
   
   const ifPWCorrect = (text) => {
     currentPWCheck(hash(text)).then((res) => {
+      if (res === "banned member") {
+        setAlertModalVisible(!modalVisible);
+        setAlertImage(require('@images/x_red.png'));
+        setAlertText('신고로 사용이 정지된 회원입니다.');
+        setTimeout(() => {
+            setModalVisible(modalVisible);
+        }, 1000);
+        setTimeout(() => {
+            logout();
+        }, 2000);
+        return;
+      }s
       if (res) {
         setCheckCurrentPW(true);
         setXCurrentPW(false);
@@ -163,6 +172,7 @@ export default function PWChange ({ isCookie }) {
 
   return (
     <SafeAreaView style={styles.container}>
+      <AlertForm modalVisible={alertModalVisible} setModalVisible={setAlertModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
       <AlertForm
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
