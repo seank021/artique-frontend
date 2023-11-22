@@ -29,7 +29,7 @@ export function InputFormInPWChange(props) {
     return (
         <View style={tw`flex flex-row justify-between items-center border-solid border-b border-[#ABABAB] w-[90%] mb-2`}>
             <View style={tw`flex-row items-center`}>
-                <Image source={props.image} style={tw`tint-[#ABABAB] ml-[10px] mr-[36px] w-[15px] h-[16px]`}></Image>
+                <Image source={props.image} style={tw`tint-[#ABABAB] ml-[10px] mr-[33px] w-[20px] h-[20px]`}></Image>
                 <TextInput placeholder={props.placeholder} onChangeText={(text) => { props.setValue(text); props.compareValue(text); }} placeholderTextColor={"#B6B6B6"} secureTextEntry={props.secureTextEntry} color={"#B6B6B6"} style={tw`h-40px`}></TextInput>
             </View>
             <>
@@ -50,7 +50,7 @@ export function NicknameInputForm(props) {
     return (
         <View style={tw`flex flex-row justify-between items-center border-solid border-b border-[#CCCCCC] w-[90%]`}>
             <View style={tw`flex flex-row items-center ml-[5%]`}>
-                <Image source={props.image} style={tw`tint-[#B6B6B6] mr-[30px] w-[15px] h-[16px]`}></Image>
+                <Image source={props.image} style={tw`tint-[#B6B6B6] mr-[30px] w-[18px] h-[18px]`}></Image>
                 <TextInput 
                     maxLength={10} 
                     placeholder={props.placeholder} 
@@ -83,20 +83,20 @@ export function NicknameInputForm(props) {
 export function IntroduceInputForm(props) {
     return (
         <View style={tw`flex flex-row justify-between items-end border-solid border-b border-[#CCCCCC] w-[90%]`}>
-            <View style={tw`flex flex-row shrink items-start ml-[5%] mb-[10px]`}>
-                <Image source={props.image} style={tw`tint-[#B6B6B6] mt-[10px] mr-[30px] w-[15px] h-[16px]`}></Image>
+            <View style={tw`flex flex-row items-start ml-[5%] mb-[10px] w-[83%]`}>
+                <Image source={props.image} style={tw`mt-[7px] mr-[30px] w-[18px] h-[18px]`}></Image>
                 <TextInput
                     maxLength={50}
                     placeholder={props.placeholder}
                     onChangeText={(text) => { props.setValue(text); props.inputCount(text, 'introduce'); }}
                     placeholderTextColor={"#B6B6B6"}
                     color={"#191919"}
-                    style={tw`shrink mr-[10%] min-h-[30px] leading-[22px] text-[#191919] text-sm font-normal`}
+                    style={tw`shrink leading-[22px] text-[#191919] text-sm font-normal`}
                     multiline={true}
                     textAlignVertical="top">
                 </TextInput>
             </View>
-            <View style={tw`items-start mb-[10px]`}>
+            <View style={tw`mb-[10px]`}>
                 {props.ifWriting ?
                     <Text style={[
                         tw`text-[#B6B6B6] text-[10px] leading-[22px] font-normal`,

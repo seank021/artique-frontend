@@ -7,6 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import { AlertFormForConfirm } from "@forms/AlertForm";
 import { clearCookie, getCurrentLogin } from "@functions/cookie";
 import { exit } from "@functions/api";
+import { login } from "@react-native-seoul/kakao-login";
 
 export default function MyAccount ({ isCookie, setGoToFeed, memberId }) {
   const nav = useNavigation();
@@ -66,11 +67,17 @@ export default function MyAccount ({ isCookie, setGoToFeed, memberId }) {
       </View>
       <View style={tw`border-solid border-b border-[#E5E6E5]`}></View>
 
+      {loginMethod === '일반' ? (
+        <>
       <View style={tw`flex-row items-center h-[57px] mx-5`}>
         <Text style={tw`text-sm text-[#191919] font-normal`}>아이디</Text>
         <Text style={tw`text-sm text-[#191919] font-normal absolute left-[140px]`}>{memberId}</Text>
       </View>
       <View style={tw`border-solid border-b border-[#E5E6E5]`}></View>
+        </>
+      ) : (
+        <></>
+      )}
 
       {loginMethod === '일반' ? (
         <>
