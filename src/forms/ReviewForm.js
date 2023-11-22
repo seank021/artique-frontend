@@ -495,9 +495,9 @@ export function ShortReviewFormInMypage(props) {
                                     </Text>
                                 </View>
                                 :
-                                <View style={tw`mx-2 my-1.5`}>
-                                    <Text onTouchEnd={(e)=> { e.stopPropagation(); setSeeSpoiler(true)}} style={[tw`text-[#B6B6B6] font-medium underline`, {fontSize: getFontSize(12)}]}>스포일러 포함</Text>
-                                </View>
+                                <Pressable onTouchEnd={(e)=> { e.stopPropagation(); setSeeSpoiler(true)}} style={tw`mx-2 my-1.5`}>
+                                    <Text style={[tw`text-[#B6B6B6] font-medium underline`, {fontSize: getFontSize(12)}]}>스포일러 포함</Text>
+                                </Pressable>
                             }
                         </View>
                     </Pressable>
