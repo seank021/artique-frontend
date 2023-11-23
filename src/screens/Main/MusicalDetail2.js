@@ -208,7 +208,7 @@ export default function MusicalDetail2({isCookie, musicalId, setMusicalId, setMu
                     <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] mr-[8px] w-[10px] h-[18px] tint-[#191919]`}></Image>
                     <View style={tw`px-[20px]`}></View>
                 </Pressable>
-                <Text numberOfLines={1} style={tw`text-[#191919] text-base font-medium w-[50%]`}>
+                <Text numberOfLines={1} style={tw`text-[#191919] text-base font-medium w-[50%] text-center`}>
                     {musicalInfo.title}
                 </Text>
                 <Pressable onPress={onPressWrite} style={tw`flex-row`}>
