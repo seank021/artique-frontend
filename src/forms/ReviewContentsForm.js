@@ -71,7 +71,7 @@ export const SeatForm = (props) => {
         <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={() => props.setModalVisible(false)}>
             <View style={tw`flex flex-col justify-around items-center self-center w-[230px] bg-[#FAFAFA] rounded-[15px] mb-[150px]`}>
                 <Text style={tw`text-[#191919] text-base font-medium mt-[24px] mb-[12px]`}>좌석 입력하기</Text>
-                <TextInput style={tw`text-sm mb-[15px]`} value={seat} defaultValue={seat} placeholder="좌석 위치를 입력해주세요" placeholderTextColor="#B6B6B6" onChangeText={(text) => setSeat(text)}></TextInput>
+                <TextInput style={tw`text-sm mb-[15px] text-center`} value={seat} defaultValue={seat} placeholder="좌석 위치를 입력해주세요" placeholderTextColor="#B6B6B6" onChangeText={(text) => setSeat(text)}></TextInput>
                 <View style={tw`w-[100%] border-[0.5px] border-[#D3D4D3]`}></View>
                 <Pressable onPress={onPressSave}><Text style={tw`text-[#191919] text-sm my-[15px]`}>저장</Text></Pressable>
             </View>
@@ -170,7 +170,7 @@ export const LongReviewForm = (props) => {
                 </View>
                 
                 <View style={tw`flex-1 flex-row justify-between bg-[#F5F5F5] w-[90%] h-[80%] self-center rounded-[5px] mb-[10px]`}>
-                    <TextInput style={tw`flex flex-wrap text-sm self-start mx-[26px] my-[10px]`} defaultValue={longReview} placeholder="긴줄평을 입력해주세요" placeholderTextColor="#B6B6B6" onChangeText={onLongReviewChange} maxLength={2500} multiline={true} value={longReview}></TextInput>
+                    <TextInput style={tw`flex flex-wrap text-sm self-start px-[10px] my-[10px]`} defaultValue={longReview} placeholder="긴줄평을 입력해주세요" placeholderTextColor="#B6B6B6" onChangeText={onLongReviewChange} maxLength={2500} multiline={true} value={longReview}></TextInput>
                 </View>
             </SafeAreaView>
         </Modal>
