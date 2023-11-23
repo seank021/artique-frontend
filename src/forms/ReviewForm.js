@@ -232,7 +232,10 @@ export function ShortReviewFormInFeed(props) {
                         <View style={[tw`flex-col justify-between ml-[5px]`, { flex: 1 }]}>
                             <Text style={tw`text-[#191919] text-base font-medium mt-[14px] mb-[4px]`}>{props.reviewInfo.musicalName}</Text>
                             <Text numberOfLines={1} style={tw`text-[#191919] text-xs mb-[14px] w-[90%]`}>
-                                {props.reviewInfo.casting}
+                                {props.reviewInfo.casting.split(',').map((item, index) => {
+                                    if (index === 0) return item;
+                                    else return ', ' + item;
+                                })}
                             </Text>
                             {makeStars(props.reviewInfo.starRating)}
                             <Pressable onTouchEnd={(e)=> { e.stopPropagation(); setSeeSpoiler(true)}}>
@@ -359,7 +362,10 @@ export function ShortReviewFormInMyReviews(props) {
                         <View style={[tw`flex-col justify-between`, { flex: 1 }]}>
                             <Text style={tw`text-[#191919] text-base font-medium mt-[14px] mb-[4px]`}>{props.reviewInfo.musicalName}</Text>
                             <Text numberOfLines={1} style={tw`text-[#191919] text-xs mb-[14px] w-[90%]`}>
-                                {props.reviewInfo.casting}
+                                {props.reviewInfo.casting.split(',').map((item, index) => {
+                                    if (index === 0) return item;
+                                    else return ', ' + item;
+                                })}
                             </Text>
                             {makeStars(props.reviewInfo.starRating)}
                             <Pressable onTouchEnd={(e)=> { e.stopPropagation(); setSeeSpoiler(true)}}>
@@ -411,7 +417,12 @@ export function MusicalInfoFormInReviewDetail(props) {
                 {(props.reviewInfo.casting === '') ? 
                     <Text style={tw`text-[#B6B6B6] text-sm text-justify font-normal leading-6`}>캐스팅 정보가 없습니다.</Text>
                     :
-                    <Text numberOfLines={1} style={tw`text-sm text-gray-900 mb-1.5 w-[95%]`}>{props.reviewInfo.casting}</Text>
+                    <Text numberOfLines={1} style={tw`text-sm text-gray-900 mb-1.5 w-[95%]`}>
+                        {props.reviewInfo.casting.split(',').map((item, index) => {
+                            if (index === 0) return item;
+                            else return ', ' + item;
+                        })}
+                    </Text>
                 }
                 {(props.reviewInfo.seat === '') ? 
                     <Text style={tw`text-[#B6B6B6] text-sm text-justify font-normal leading-6`}>좌석 정보가 없습니다.</Text>
