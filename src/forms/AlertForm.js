@@ -149,7 +149,7 @@ export function LongReviewForm(props) {
                 <Text style={tw`text-base text-[#191919] font-medium my-6`}>긴줄평</Text>
                 <ScrollView style={tw`mx-8 mb-14`} showsVerticalScrollIndicator={false}>
                     {(props.longReview === '') ? (
-                        <Text style={tw`text-sm font-normal text-justify text-[#B6B6B6] leading-6`}>리뷰가 없습니다.</Text>
+                        <Text style={tw`text-sm font-normal text-justify text-[#B6B6B6] leading-6`}>작성된 긴줄평이 없습니다.</Text>
                     ) : (
                         props.seeLongSpoiler ? (
                             <Text style={tw`text-sm font-normal text-justify text-[#191919] leading-6`}>{props.longReview}</Text>

@@ -213,7 +213,7 @@ export function ShortReviewFormInFeed(props) {
                     : <AlertFormForReport modalVisible={reportModalVisible} setModalVisible={setReportModalVisible} reviewInfo={props.reviewInfo} setGoToFeed={props.setGoToFeed}></AlertFormForReport>
                 }
 
-                <View style={[tw`flex flex-row mb-[12px] bg-[#FFFFFF] h-[162px] rounded-4 shadow-sm`]}>
+                <View style={[tw`flex flex-row mb-[12px] bg-[#FFFFFF] h-[162px] rounded-4 shadow`]}>
                     <Pressable onPress={props.goToMusicalDetail1}>
                         <Image source={{uri: props.reviewInfo.posterUrl}} style={tw`w-[122px] h-[100%] rounded-l-4 mr-[10px]`} />
                     </Pressable>
@@ -239,8 +239,7 @@ export function ShortReviewFormInFeed(props) {
                                 <View style={tw`flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mt-[5px] mb-[14px] p-[6px] rounded-2 w-[95%]`}>
                                     {seeSpoiler ?
                                         <>
-                                            <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>"</Text>
-                                            <Text numberOfLines={1} style={[tw`text-[#191919] font-medium leading-[22px] w-full`, {fontSize: getFontSize(14)}]}>{props.reviewInfo.shortReview}"</Text>
+                                            <Text numberOfLines={1} style={[tw`text-[#191919] font-medium leading-[22px] w-full`, {fontSize: getFontSize(14)}]}>"{props.reviewInfo.shortReview}"</Text>
                                         </>
                                         :
                                         <Text style={[tw`text-[#B6B6B6] font-medium leading-[22px] underline`, {fontSize: getFontSize(14)}]}>스포일러 포함</Text>
@@ -489,9 +488,8 @@ export function ShortReviewFormInMypage(props) {
                         <View style={tw`flex-row items-center bg-[#F5F5F5] rounded-[5px] w-[230px] min-h-[30px] mt-[5px]`}>
                             {seeSpoiler ?
                                 <View style={tw`flex-row justify-between mx-1.5 my-1.5`}>
-                                    <Text style={tw`text-xs text-[#191919] font-medium`}>"</Text>
-                                    <Text numberOfLines={2} ellipsizeMode='tail' style={tw`text-xs text-[#191919] font-medium shrink mr-1.5`}>
-                                        {`${props.shortReview}`.replace(/^(.{30}[^\s]*).*/, "$1...")}"
+                                    <Text numberOfLines={1} style={tw`w-full text-xs text-[#191919] font-medium mr-1.5`}>
+                                        "{props.shortReview}"
                                     </Text>
                                 </View>
                                 :
