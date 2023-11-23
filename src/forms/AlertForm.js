@@ -155,7 +155,7 @@ export function LongReviewForm(props) {
                             <Text style={tw`text-sm font-normal text-justify text-[#191919] leading-6`}>{props.longReview}</Text>
                         ) : (
                             <Pressable onTouchEnd={(e)=> { e.stopPropagation(); props.setSeeLongSpoiler(true)}} style={tw`w-[200px] h-auto self-center justify-center`}>
-                                <Text style={[tw`text-[#B6B6B6] font-medium text-center leading-[22px] border-b-[1px] border-[#B6B6B6] underline`, {fontSize: getFontSize(14)}]}>스포일러 포함</Text>
+                                <Text style={[tw`text-[#B6B6B6] font-medium text-center leading-[22px] underline`, {fontSize: getFontSize(14)}]}>스포일러 포함</Text>
                             </Pressable>
                         )
                     )}

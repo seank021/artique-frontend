@@ -463,7 +463,7 @@ export function MusicalInfoFormInReviewDetail(props) {
             {/*긴줄평*/}
             <View style={tw`flex flex-row items-start ml-[10%] mr-[7.5%] absolute bottom-[7%]`}>
                 <View style={tw`flex flex-row items-start w-[100%] justify-between z-20`}>
-                    <Text style={tw`text-gray-900 text-sm leading-6 mr-15`}>긴줄평</Text>
+                    <Text style={tw`text-gray-900 text-sm leading-6 mr-[7.5%]`}>긴줄평</Text>
                     <ScrollView style={tw`h-[100px]`} showsVerticalScrollIndicator={false} onTouchEnd={() => setLongReviewModalVisible(true)} onMomentumScrollBegin={() => setLongReviewModalVisible(true)}>
                         {(props.reviewInfo.longReview === '') ? (
                             <Text style={tw`text-[#B6B6B6] text-sm text-center font-normal leading-6`}>작성된 긴줄평이 없습니다.</Text>
