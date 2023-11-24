@@ -414,6 +414,8 @@ export function ShortReviewFormInMyReviews(props) {
                     <Text style={tw`text-[10px] text-[#191919]`}>공감 {thumbsCount}회</Text>
                 </View>
             </View>
+
+            <View style={tw`border-4 border-[#F0F0F0]`}></View>
         </>
     );
 }
