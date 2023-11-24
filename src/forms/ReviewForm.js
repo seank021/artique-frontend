@@ -140,7 +140,8 @@ export function ShortReviewFormInFeed(props) {
 
     const [seeSpoiler, setSeeSpoiler] = useState(!props.isShortReviewSpoiler);
 
-    const [blocked, setBlocked] = useState(false);
+    const [blockedReview, setBlockedReview] = useState(false);
+    const [blockedUser, setBlockedUser] = useState(false);
 
     useEffect(() => {
         setIsCookie(props.isCookie);
@@ -156,13 +157,15 @@ export function ShortReviewFormInFeed(props) {
 
     useEffect(() => {
         ifReviewBlocked(props.reviewInfo.reviewId).then((result) => {
-            setBlocked(result);
+            setBlockedReview(result);
         }).catch((err) => {
             console.log(err);
-        });
+        });        
+    }, []);
 
+    useEffect(() => {
         ifUserBlocked(props.reviewInfo.memberId).then((result) => {
-            setBlocked(result);
+            setBlockedUser(result);
         }).catch((err) => {
             console.log(err);
         });
@@ -207,7 +210,7 @@ export function ShortReviewFormInFeed(props) {
     }
 
     return (
-        !blocked &&
+        !blockedReview && !blockedUser &&
         <>
             <View>
                 <AlertForm modalVisible={modalVisible} setModalVisible={setModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>

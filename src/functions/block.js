@@ -60,7 +60,7 @@ export const clearBlockList = async () => { // for debugging
 
 export const ifReviewBlocked = async (reviewId) => {
     try {
-        const blockList = await AsyncStorage.getItem('userblockList');
+        const blockList = await AsyncStorage.getItem('blockList');
         if (blockList !== null) {
             const newBlockList = JSON.parse(blockList);
             if (newBlockList.includes(reviewId)) {
