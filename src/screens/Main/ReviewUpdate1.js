@@ -157,7 +157,7 @@ export default function ReviewUpdate1({ isCookie, reviewInfo, reviewInfo2, setGo
             setAlertText('리뷰가 수정되었습니다');
             setTimeout(() => {
                 setModalVisible(modalVisible);
-                nav.navigate('Feed1');
+                nav.goBack();
             }, 1000);
 
         } catch (err) {
