@@ -466,10 +466,10 @@ export function MusicalInfoFormInReviewDetail(props) {
                     <Text style={tw`text-gray-900 text-sm leading-6 mr-[7.5%]`}>긴줄평</Text>
                     <ScrollView style={tw`h-[100px]`} showsVerticalScrollIndicator={false} onTouchEnd={() => setLongReviewModalVisible(true)} onMomentumScrollBegin={() => setLongReviewModalVisible(true)}>
                         {(props.reviewInfo.longReview === '') ? (
-                            <Text style={tw`text-[#B6B6B6] text-sm text-center font-normal leading-6`}>작성된 긴줄평이 없습니다.</Text>
+                            <Text style={tw`text-[#B6B6B6] text-sm text-center font-normal leading-6 ml-7.5`}>작성된 긴줄평이 없습니다.</Text>
                         ) : (
                             seeLongSpoiler ?
-                                <Text style={tw`text-gray-900 text-sm text-center font-normal leading-6`}>{props.reviewInfo.longReview}</Text>
+                                <Text style={tw`text-gray-900 text-sm text-center font-normal leading-6 ml-7.5`}>{props.reviewInfo.longReview}</Text>
                                 :
                                 <Pressable onTouchEnd={(e)=> { e.stopPropagation(); setSeeLongSpoiler(true)}} style={tw`w-[200px] h-auto ml-[7.5%] self-center justify-center`}>
                                     <Text style={[tw`text-[#B6B6B6] font-medium text-center leading-[22px] underline`, {fontSize: getFontSize(14)}]}>스포일러 포함</Text>
