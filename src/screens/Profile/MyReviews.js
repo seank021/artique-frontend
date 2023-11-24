@@ -68,7 +68,7 @@ export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId
   const goToMusicalDetail1 = (musicalId) => {
     setMusicalId(musicalId);
     nav.navigate('MusicalDetail1');
-};
+  };
 
   const goToReviewDetail1 = (reviewId) => {
       setReviewId(reviewId);
@@ -80,7 +80,7 @@ export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId
     await Cookies.removeCookie(currentLogin);
     await removeAutoLogin();
     setGoToFeed(false);
-}
+  }
 
   const route = useRoute();
   const otherMemberId = route.params?.otherMemberId;
@@ -99,7 +99,7 @@ export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId
         console.log(err);
       });
     }
-    }, []);
+  }, []);
 
   useEffect(() => {
     if (updatePage && page === 0) {
@@ -117,33 +117,33 @@ export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId
         });
       }
     }
-    }, [page, updatePage, orderBy, otherMemberId]);
+  }, [page, updatePage, orderBy, otherMemberId]);
 
-    const onRefresh = React.useCallback(() => {
-      if (refreshing) {
-          return;
-      }
+  const onRefresh = React.useCallback(() => {
+    if (refreshing) {
+        return;
+    }
 
-      setRefreshing(true);
+    setRefreshing(true);
 
-      setReviews([]);
-      setPage(0);
-      setUpdatePage(true);
+    setReviews([]);
+    setPage(0);
+    setUpdatePage(true);
 
-      if (updatePage && page === 0) {
-        if (otherMemberId) {
-          myReviewsAll(otherMemberId, page, orderBy).then((newReviews) => {
-            setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
+    if (updatePage && page === 0) {
+      if (otherMemberId) {
+        myReviewsAll(otherMemberId, page, orderBy).then((newReviews) => {
+          setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
         }).catch((err) => {
-            console.log(err);
+          console.log(err);
         }).finally(() => {
           setRefreshing(false);
         });
-        } else {
-          myReviewsAll(memberId, page, orderBy).then((newReviews) => {
-            setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
+      } else {
+        myReviewsAll(memberId, page, orderBy).then((newReviews) => {
+          setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
         }).catch((err) => {
-            console.log(err);
+          console.log(err);
         }).finally(() => {
           setRefreshing(false);
         });
