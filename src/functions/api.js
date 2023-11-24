@@ -175,6 +175,23 @@ const reviewReport = async (reviewId, reportReason) => {
     }
 }
 
+// TODO: 일단 만들어놓음, 백 구현 아직 X
+const userReport = async (reportedMemberId, reportReason) => {
+  // reportedMemberId : 신고당한 사람의 memberId (ex. kakao@2981221625)
+  try {
+      const myHeaders = await getHeaders();
+      const response = await axios.post(`http://3.39.145.210/user-report?reported-member-id=${reportedMemberId}&type=${reportReason}`, {}, {
+          headers: myHeaders.map, // 신고하는 사람의 memberId는 헤더에 있음
+      });
+      console.log(response.data);
+  } catch (err) {
+      if (err.response.data.message === "banned member") {
+        return "banned member";
+      }
+      console.log(err.response.data);
+  }
+}
+
 const reviewDetail = async (reviewId) => {
     try {
         const myHeaders = await getHeaders();
@@ -199,6 +216,9 @@ const searchMusicals = async (keyword, orderBy) => {
 const memberIdInMypage = async () => {
   try {
     const myHeaders = await getHeaders();
+    if (myHeaders.map.authorization === "") {
+      return null
+    }
     const response = await axios.get(`http://3.39.145.210/member/id`, {
       headers: myHeaders.map,
     });
@@ -427,4 +447,4 @@ const exit = async () => {
   }
 }
 
-export { feedReviews, musicalReviews, musicalDetails, musicalRateStatistics, musicalReviewsAll, thumbsUp, reviewWrite, reviewUpdate, reviewDelete, reviewReport, reviewDetail, searchMusicals, memberSummary, memberStatistics, memberShortThumbReviews, memberIdInMypage, myReviewsAll, searchCreatedReviews, myThumbsAll, searchThumbReviews, profileUpload, updateMember, updatePW, duplicateNickname, announcementList, currentPWCheck, exit };
+export { feedReviews, musicalReviews, musicalDetails, musicalRateStatistics, musicalReviewsAll, thumbsUp, reviewWrite, reviewUpdate, reviewDelete, reviewReport, userReport, reviewDetail, searchMusicals, memberSummary, memberStatistics, memberShortThumbReviews, memberIdInMypage, myReviewsAll, searchCreatedReviews, myThumbsAll, searchThumbReviews, profileUpload, updateMember, updatePW, duplicateNickname, announcementList, currentPWCheck, exit };
