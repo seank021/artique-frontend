@@ -10,7 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { Contract1, Contract2 } from '@forms/ContractContents';
 
-import { reviewDetail, reviewDelete, reviewReport, profileUpload } from '@functions/api';
+import { reviewDetail, reviewDelete, reviewReport, userReport, profileUpload } from '@functions/api';
 
 import { launchImageLibrary } from 'react-native-image-picker';
 
@@ -149,13 +149,13 @@ export function LongReviewForm(props) {
                 <Text style={tw`text-base text-[#191919] font-medium my-6`}>긴줄평</Text>
                 <ScrollView style={tw`mx-8 mb-14`} showsVerticalScrollIndicator={false}>
                     {(props.longReview === '') ? (
-                        <Text style={tw`text-sm font-normal text-justify text-[#B6B6B6] leading-6`}>리뷰가 없습니다.</Text>
+                        <Text style={tw`text-sm font-normal text-justify text-[#B6B6B6] leading-6`}>작성된 긴줄평이 없습니다.</Text>
                     ) : (
                         props.seeLongSpoiler ? (
                             <Text style={tw`text-sm font-normal text-justify text-[#191919] leading-6`}>{props.longReview}</Text>
                         ) : (
                             <Pressable onTouchEnd={(e)=> { e.stopPropagation(); props.setSeeLongSpoiler(true)}} style={tw`w-[200px] h-auto self-center justify-center`}>
-                                <Text style={[tw`text-[#B6B6B6] font-medium text-center leading-[22px] border-b-[1px] border-[#B6B6B6] underline`, {fontSize: getFontSize(14)}]}>스포일러 포함</Text>
+                                <Text style={[tw`text-[#B6B6B6] font-medium text-center leading-[22px] underline`, {fontSize: getFontSize(14)}]}>스포일러 포함</Text>
                             </Pressable>
                         )
                     )}
@@ -180,12 +180,11 @@ export function ProfileChangeForm(props) {
                 console.log('ImagePicker Error: ', res.errorMessage);
             } else {        
                 let imageSource = res.assets[0].uri;
-                imageSource = imageSource.replace('file://', '');
-
+                console.log("imageSource", imageSource)
                 const formdata = new FormData();
                 formdata.append('file', {
-                    uri: imageSource,
-                    type: 'image/jpeg',
+                    uri: Platform.OS === 'android' ? imageSource : imageSource.replace('file://', ''),
+                    type: res.assets[0].type,
                     name: res.assets[0].fileName,
                 });
 
@@ -380,6 +379,124 @@ export const AlertFormForReport = (props) => {
         setTimeout(() => {
             props.setModalVisible(false);
         }, 1000);
+    }
+
+    return (
+        <>
+            <AlertForm modalVisible={alertModalVisible} setModalVisible={setAlertModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
+            <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={onBackdropPress}>
+                {isStep1 && !isStep2 && !isStep3 ? 
+                    <View style={tw`flex flex-col w-[230px] h-[52px] bg-white rounded-[15px] justify-around self-center`}>
+                        <Pressable onPress={onPressReport}><Text style={tw`text-center text-sm text-[#E94A4B]`}>신고하기</Text></Pressable>
+                    </View>
+
+                : isStep2 && !isStep1 && !isStep3 ?
+                    <View style={tw`flex flex-col w-[230px] h-[318px] bg-white rounded-[15px] justify-around self-center`}>
+                        <Text style={tw`text-center text-base font-medium text-[#191919] mt-[24px] mb-[24px]`}>신고 사유</Text>
+                        <Pressable style={tw`flex flex-row justify-between items-center`} onPress={() => setReportReason('SPOILER')}>
+                            <Text style={tw`text-sm text-left text-[#191919] ml-[24px]`}>스포일러 포함</Text>
+                            {reportReason === 'SPOILER' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px] mr-[24px]`}></Image>)}
+                        </Pressable>
+                        <Pressable style={tw`flex flex-row justify-between items-center`} onPress={() => setReportReason('INAPPROPRIATE')}>
+                            <Text style={tw`text-sm text-left text-[#191919] ml-[24px]`}>부적절한 언어 표현</Text>
+                            {reportReason === 'INAPPROPRIATE' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px] mr-[24px]`}></Image>)}
+                        </Pressable>
+                        <Pressable style={tw`flex flex-row justify-between items-center`} onPress={() => setReportReason('PROMOTION')}>
+                            <Text style={tw`text-sm text-left text-[#191919] ml-[24px]`}>스팸 및 홍보글</Text>
+                            {reportReason === 'PROMOTION' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px] mr-[24px]`}></Image>)}
+                        </Pressable>
+                        <Pressable style={tw`flex flex-row justify-between items-center`} onPress={() => setReportReason('SPAM')}>
+                            <Text style={tw`text-sm text-left text-[#191919] ml-[24px]`}>도배글</Text>
+                            {reportReason === 'SPAM' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px] mr-[24px]`}></Image>)}
+                        </Pressable>
+                        <View style={tw`border-b border-solid border-[#D3D4D3]`}></View>
+                        <Pressable onPress={onPressSubmit} style={tw`self-center`}>
+                            <Text style={tw`text-sm text-center font-medium text-[#191919] mb-[14px]`}>제출</Text>
+                        </Pressable>
+                    </View>
+
+                : isStep3 && !isStep1 && !isStep2 ?
+                    <View style={tw`flex flex-col w-[65%] h-[110px] border-solid border-2 rounded-[15px] self-center justify-center items-center bg-[#FAFAFA] border-[#FAFAFA]`}>
+                        <Image source={require("@images/check.png")} style={tw`w-[24px] h-[17.63637px] self-center`}></Image> 
+                        <Text style={tw`text-sm font-medium mt-[20px] text-[#191919]`}>제출되었습니다</Text>
+                    </View>
+                    
+                : <View></View>}
+            </Modal>
+        </>
+    )
+}
+
+// TODO: 신고 목록 바꾸기, 사용자 신고 백 구현되면 주석 해제
+// props: reporter, reported / modalVisible, setModalVisible / setGoToFeed
+export const AlertFormForReportUser = (props) => {
+    const [isStep1, setIsStep1] = useState(true);
+    const [isStep2, setIsStep2] = useState(false);
+    const [isStep3, setIsStep3] = useState(false);
+
+    const [alertModalVisible, setAlertModalVisible] = useState(false);
+    const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
+    const [alertText, setAlertText] = useState('신고 누적으로 사용이 정지된 회원입니다.');
+
+    const nav = useNavigation();
+
+    useEffect(() => {
+        setIsStep1(true);
+        setIsStep2(false);
+        setIsStep3(false);
+    }, [props.modalVisible]);
+
+    const logout = async () => {
+        const currentLogin = await Cookies.getCurrentLogin();
+        await Cookies.removeCookie(currentLogin);
+        await removeAutoLogin();
+        props.setGoToFeed(false);
+    }
+
+    const [reportReason, setReportReason] = useState('SPOILER');
+
+    const onBackdropPress = () => {
+        props.setModalVisible(false);
+        setIsStep1(true);
+        setIsStep2(false);
+        setIsStep3(false);
+    }
+
+    const onPressReport = () => {
+        setIsStep1(false);
+        setIsStep2(true);
+    }
+
+    const onPressSubmit = async () => {
+        console.log("신고자: ", props.reporter)
+        console.log("신고당함: ", props.reported)
+        console.log("신고사유: ", reportReason)
+
+        // const res = await userReport(props.reported, reportReason); // TODO: user report 백 구현되면 주석 해제
+        // if (res === "banned member") {
+        //     props.setModalVisible(false);
+
+        //     setAlertModalVisible(!alertModalVisible);
+        //     setAlertImage(require('@images/x_red.png'));
+        //     setAlertText('신고 누적으로 사용이 정지된 회원입니다.');
+        //     setTimeout(() => {
+        //         setAlertModalVisible(alertModalVisible);
+        //     }, 1000);
+        //     setTimeout(() => {
+        //         logout();
+        //     }, 2000);
+        //     return;
+        // }
+
+        setIsStep2(false);
+        setIsStep3(true);
+        setReportReason('SPOILER');
+
+        setTimeout(() => {
+            props.setModalVisible(false);
+        }, 1000);
+
+        nav.navigate('Feed1');
     }
 
     return (

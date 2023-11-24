@@ -13,7 +13,6 @@ import * as Cookies from "@functions/cookie";
 import { removeAutoLogin } from "@functions/autoLogin";
 
 export default function MusicalDetail2({isCookie, musicalId, setMusicalId, setMusicalPoster, setMusicalTitle, setReviewId, setGoToFeed}) {
-    const [modalVisible, setModalVisible] = useState(false);
     const [sortModalVisible, setSortModalVisible] = useState(false);
     const [sortCriteria, setSortCriteria] = useState("공감순");
     const orderBy = sortCriteria === "공감순" ? "THUMBS" : sortCriteria === "관람일순" ? "VIEW" : "CREATE";
@@ -113,11 +112,11 @@ export default function MusicalDetail2({isCookie, musicalId, setMusicalId, setMu
 
     const onPressWrite = () => {
         if (!isCookie) {
-            setModalVisible(!modalVisible);
+            setAlertModalVisible(!alertModalVisible);
             setAlertImage(require('@images/x_red.png'));
             setAlertText('로그인이 필요한 서비스입니다.');
             setTimeout(() => {
-                setModalVisible(modalVisible);
+                setAlertModalVisible(alertModalVisible);
             }, 1000);
             return;
         }

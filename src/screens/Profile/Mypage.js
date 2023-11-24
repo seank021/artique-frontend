@@ -6,12 +6,13 @@ import tw from "twrnc";
 import { ShortReviewFormInMypage } from "@forms/ReviewForm";
 import makeBarChart from "@functions/makeBarChart";
 import UserTendency from "@forms/UserTendency";
+import AlertForm, { AlertFormForReportUser } from "@forms/AlertForm";
 
 import { memberSummary, memberStatistics, memberShortThumbReviews } from "@functions/api";
 
 import { useNavigation, useRoute, useIsFocused } from "@react-navigation/native";
 
-export default function Mypage ({ isCookie, memberId, setReviewId }) {
+export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }) {
   const nav = useNavigation();
 
   const [refreshing, setRefreshing] = useState(false);
@@ -139,6 +140,11 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
 
   const [shortReviewInfo, setShortReviewInfo] = useState([]);
 
+  const [modalVisible, setModalVisible] = useState(false);
+  const [alertImage, setAlertImage] = useState("@images/x_red.png");
+  const [alertText, setAlertText] = useState("로그인이 필요한 서비스입니다.");
+  const [reportModalVisible, setReportModalVisible] = useState(false);
+
   const route = useRoute();
   const otherMemberId = route.params?.otherMemberId;
 
@@ -197,18 +203,35 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
   }
   }, [otherMemberId]);
 
+  const onPressReport = () => {
+    if (!isCookie) {
+        setModalVisible(!modalVisible);
+        setAlertImage(require('@images/x_red.png'));
+        setAlertText('로그인이 필요한 서비스입니다.');
+        setTimeout(() => {
+            setModalVisible(modalVisible);
+        }, 1000);
+        return;
+    }
+    setReportModalVisible(!reportModalVisible);
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       {/* 상단 바 */}
       {otherMemberId && (otherMemberId !== memberId) ? (
         <>
           <View style={tw`flex-row justify-between items-center mt-5 mb-[14px]`}>
-              <Pressable onPress={goBack} style={tw`flex-row`}>
-                  <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] w-[10px] h-[18px] tint-[#191919]`}></Image>
+              <Pressable onPress={goBack}>
+                  <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] mr-[20px] w-[10px] h-[18px] tint-[#191919]`}></Image>
               </Pressable>
-              <Text style={tw`text-[#191919] text-base font-medium`}>{memberInfo.nickname} 님의 프로필</Text>
-              <View style={tw`mr-[20px]`}></View>
+              <Text style={tw`text-[#191919] text-base font-medium text-center`}>{memberInfo.nickname} 님의 프로필</Text>
+              <Pressable onPress={onPressReport}>
+                  <Image source={require('@images/dots_more.png')} style={tw`mr-[20px] w-[30px] h-[20px]`}></Image>
+              </Pressable>
           </View>
+          <AlertForm modalVisible={modalVisible} setModalVisible={setModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
+          <AlertFormForReportUser reporter={memberId} reported={otherMemberId} modalVisible={reportModalVisible} setModalVisible={setReportModalVisible} setGoToFeed={setGoToFeed}></AlertFormForReportUser>
         </>
       ) : (
         <View style={tw`flex-row justify-between items-center mx-5 my-5`}>
@@ -231,7 +254,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
           <Image source={memberInfo.imageUrl ? { uri: memberInfo.imageUrl } : require('@images/newprofile.png')} style={tw`w-[100px] h-[100px] rounded-full mr-5`}></Image>
           <View style={tw`flex-col justify-between`}>
             <Text style={tw`text-base text-[#191919] font-medium mb-5`}>{memberInfo.nickname}</Text>
-            <Text style={tw`text-xs text-[#191919] font-normal w-57.5 leading-5`}>{memberInfo.introduce}</Text>
+            <Text style={tw`text-xs text-[#191919] font-normal w-55 leading-5`}>{memberInfo.introduce}</Text>
           </View>
         </View>
         <Pressable onPress={goToMyReviews} style={tw`self-center w-9/10 h-[33px] mt-[25px] rounded-3xl bg-[#FFF] shadow`}>
