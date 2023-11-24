@@ -10,10 +10,15 @@ import { myThumbsAll, thumbsUp } from "@functions/api";
 import * as Cookies from "@functions/cookie";
 import { removeAutoLogin } from "@functions/autoLogin";
 
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute, useIsFocused } from "@react-navigation/native";
 
 export default function MyThumbs({ isCookie, memberId, setMusicalId, setReviewId, setReviewInfo, setReviewInfo2, setGoToFeed }) {
   const nav = useNavigation();
+
+  const [refreshing, setRefreshing] = useState(false);
+  const isFocused = useIsFocused();
+  const [firstFocus, setFirstFocus] = useState(true);
+  const [onRefreshWhenDelete, setOnRefreshWhenDelete] = useState(false);
 
   const [page, setPage] = useState(0);
   const [updatePage, setUpdatePage] = useState(true);
@@ -22,6 +27,24 @@ export default function MyThumbs({ isCookie, memberId, setMusicalId, setReviewId
   const [alertModalVisible, setAlertModalVisible] = useState(false);
   const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
   const [alertText, setAlertText] = useState('신고 누적으로 사용이 정지된 회원입니다.');
+
+  useEffect(() => {
+    if (firstFocus) {
+      setFirstFocus(false);
+      return;
+    }
+    if (!isFocused) {
+        return;
+    }
+    onRefresh();
+  }, [isFocused]);
+
+  useEffect(() => {
+    if (onRefreshWhenDelete) {
+        onRefresh();
+        setOnRefreshWhenDelete(false);
+    }
+  }, [onRefreshWhenDelete]);
 
   const goBack = () => {
     nav.goBack();
@@ -72,6 +95,42 @@ export default function MyThumbs({ isCookie, memberId, setMusicalId, setReviewId
     }
     }
   }, [page, updatePage, otherMemberId]);
+
+  const onRefresh = React.useCallback(() => {
+    if (refreshing) {
+        return;
+    }
+
+    setRefreshing(true);
+
+    setReviews([]);
+    setPage(0);
+    setUpdatePage(true);
+
+    if (updatePage && page === 0) {
+      if (otherMemberId) {
+        myThumbsAll(otherMemberId, page).then((newReviews) => {
+          setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
+        }).catch((err) => {
+          console.log(err);
+        }).finally(() => {
+          setRefreshing(false);
+        });
+      } else {
+        myThumbsAll(memberId, page).then((newReviews) => {
+          setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
+        }).catch((err) => {
+          console.log(err);
+        }).finally(() => {
+          setRefreshing(false);
+        });
+      }
+    }
+
+    setTimeout(() => {
+        setRefreshing(false);
+    }, 1000);
+  }, [refreshing, page, updatePage, otherMemberId]);
 
   const onPressThumbsUp = (reviewId, isThumbsUp) => {
         thumbsUp(reviewId, !isThumbsUp).then((res) => {
@@ -165,6 +224,7 @@ export default function MyThumbs({ isCookie, memberId, setMusicalId, setReviewId
               setReviewInfo={setReviewInfo}
               setReviewInfo2={setReviewInfo2}
               isShortReviewSpoiler={review.reviewSpoiler}
+              setOnRefreshWhenDelete={setOnRefreshWhenDelete}
               setGoToFeed={setGoToFeed}
             />
             {index < reviews.length - 1 && 
