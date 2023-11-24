@@ -62,6 +62,8 @@ export default function Login1({setGoToFeed}) {
     GoogleSignin.configure({
       webClientId:
         '1001943377543-q3ed3vrdtg2hhmc8edp88c6eggh48bcs.apps.googleusercontent.com',
+      iosClientId:
+        '1001943377543-qs201dq0br81qia9j80b2bdi2b1q0rfj.apps.googleusercontent.com',
       offlineAccess: true,
     });
 
