@@ -34,7 +34,7 @@ export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId
         return;
     }
     onRefresh();
-}, [isFocused]);
+  }, [isFocused]);
 
   useEffect(() => {
       if (onRefreshWhenDelete) {

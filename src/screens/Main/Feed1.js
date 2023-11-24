@@ -12,6 +12,7 @@ import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { feedReviews, thumbsUp } from "@functions/api";
 import * as Cookies from "@functions/cookie";
 import { removeAutoLogin } from "@functions/autoLogin";
+import { ifReviewBlocked } from "@functions/block";
 
 export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, setReviewInfo, setReviewInfo2, setGoToFeed }) {
     const [refreshing, setRefreshing] = useState(false);
@@ -166,6 +167,10 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
         setGoToFeed(false);
     }
 
+    const ifReviewBlocked = async (reviewId) => {
+        await ifReviewBlocked(reviewId);
+    }
+
     return (        
         <SafeAreaView style={styles.container}>
             <AlertForm modalVisible={alertModalVisible} setModalVisible={setAlertModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
@@ -194,9 +199,6 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
                             isShortReviewSpoiler={feed.reviewSpoiler}
                             setGoToFeed={setGoToFeed}
                         />
-                        {index < feeds.length - 1 && (
-                            <View style={tw`border-4 border-[#F0F0F0]`}></View>
-                        )}
                     </Fragment>
                 ))}
             </ScrollView>

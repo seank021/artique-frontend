@@ -11,6 +11,8 @@ import { useNavigation } from '@react-navigation/native';
 import { Contract1, Contract2 } from '@forms/ContractContents';
 
 import { reviewDetail, reviewDelete, reviewReport, userReport, profileUpload } from '@functions/api';
+import { addReviewBlock, addUserBlock } from '@functions/block';
+import * as Cookies from '@functions/cookie';
 
 import { launchImageLibrary } from 'react-native-image-picker';
 
@@ -318,7 +320,7 @@ export const AlertFormForModifyAndDelete = (props) => {
     )
 }
 
-// props: modalVisible, setModalVisible, reviewInfo / setGoToFeed
+// props: modalVisible, setModalVisible, reviewInfo, setOnRefreshWhenDelete(차단 때도 refresh 용으로 사용) / setGoToFeed
 export const AlertFormForReport = (props) => {
     const [isStep1, setIsStep1] = useState(true);
     const [isStep2, setIsStep2] = useState(false);
@@ -381,13 +383,29 @@ export const AlertFormForReport = (props) => {
         }, 1000);
     }
 
+    const onPressBlock = async () => {
+        await addReviewBlock(props.reviewInfo.reviewId);
+        props.setModalVisible(false);
+
+        setAlertModalVisible(!alertModalVisible);
+        setAlertImage(require('@images/check.png'));
+        setAlertText('차단되었습니다.');
+        setTimeout(() => {
+            setAlertModalVisible(alertModalVisible);
+        }, 1000);
+        setTimeout(() => {
+            props.setOnRefreshWhenDelete(true);
+        }, 1000);
+    }
+
     return (
         <>
             <AlertForm modalVisible={alertModalVisible} setModalVisible={setAlertModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
             <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={onBackdropPress}>
                 {isStep1 && !isStep2 && !isStep3 ? 
-                    <View style={tw`flex flex-col w-[230px] h-[52px] bg-white rounded-[15px] justify-around self-center`}>
-                        <Pressable onPress={onPressReport}><Text style={tw`text-center text-sm text-[#E94A4B]`}>신고하기</Text></Pressable>
+                    <View style={tw`flex flex-col w-[230px] h-[104px] bg-white rounded-[15px] justify-around self-center`}>
+                        <Pressable onPress={onPressReport}><Text style={tw`text-center text-sm text-[#E94A4B]`}>게시글 신고하기</Text></Pressable>
+                        <Pressable onPress={onPressBlock}><Text style={tw`text-center text-sm text-[#E94A4B]`}>게시글 차단하기</Text></Pressable>
                     </View>
 
                 : isStep2 && !isStep1 && !isStep3 ?
@@ -495,8 +513,24 @@ export const AlertFormForReportUser = (props) => {
         setTimeout(() => {
             props.setModalVisible(false);
         }, 1000);
+        setTimeout(() => {
+            nav.navigate('Feed1');
+        }, 1000);
+    }
 
-        nav.navigate('Feed1');
+    const onPressBlock = async () => {
+        await addUserBlock(props.reported);
+        props.setModalVisible(false);
+
+        setAlertModalVisible(!alertModalVisible);
+        setAlertImage(require('@images/check.png'));
+        setAlertText('차단되었습니다.');
+        setTimeout(() => {
+            setAlertModalVisible(alertModalVisible);
+        }, 1000);
+        setTimeout(() => {
+            nav.navigate('Feed1');
+        }, 1000);
     }
 
     return (
@@ -504,8 +538,9 @@ export const AlertFormForReportUser = (props) => {
             <AlertForm modalVisible={alertModalVisible} setModalVisible={setAlertModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
             <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={onBackdropPress}>
                 {isStep1 && !isStep2 && !isStep3 ? 
-                    <View style={tw`flex flex-col w-[230px] h-[52px] bg-white rounded-[15px] justify-around self-center`}>
-                        <Pressable onPress={onPressReport}><Text style={tw`text-center text-sm text-[#E94A4B]`}>신고하기</Text></Pressable>
+                    <View style={tw`flex flex-col w-[230px] h-[104px] bg-white rounded-[15px] justify-around self-center`}>
+                        <Pressable onPress={onPressReport}><Text style={tw`text-center text-sm text-[#E94A4B]`}>사용자 신고하기</Text></Pressable>
+                        <Pressable onPress={onPressBlock}><Text style={tw`text-center text-sm text-[#E94A4B]`}>사용자 차단하기</Text></Pressable>
                     </View>
 
                 : isStep2 && !isStep1 && !isStep3 ?

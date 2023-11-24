@@ -5,6 +5,7 @@ import tw from 'twrnc';
 import AlertForm, { LongReviewForm } from '@forms/AlertForm';
 
 import { makeStars, makeStarsForEachReview } from '@functions/makeStars';
+import { ifReviewBlocked, ifUserBlocked } from '@functions/block';
 
 import { useNavigation } from "@react-navigation/native";
 
@@ -139,6 +140,8 @@ export function ShortReviewFormInFeed(props) {
 
     const [seeSpoiler, setSeeSpoiler] = useState(!props.isShortReviewSpoiler);
 
+    const [blocked, setBlocked] = useState(false);
+
     useEffect(() => {
         setIsCookie(props.isCookie);
     }, [props.isCookie]);
@@ -150,6 +153,20 @@ export function ShortReviewFormInFeed(props) {
             setThumbsUpImg(require('@images/like_gray_small.png'));
         }
     }, [isThumbsUp, isCookie]);
+
+    useEffect(() => {
+        ifReviewBlocked(props.reviewInfo.reviewId).then((result) => {
+            setBlocked(result);
+        }).catch((err) => {
+            console.log(err);
+        });
+
+        ifUserBlocked(props.reviewInfo.memberId).then((result) => {
+            setBlocked(result);
+        }).catch((err) => {
+            console.log(err);
+        });
+    }, []);
 
     const onPressThumbsUp = () => {
         if (!props.isCookie) {
@@ -190,6 +207,7 @@ export function ShortReviewFormInFeed(props) {
     }
 
     return (
+        !blocked &&
         <>
             <View>
                 <AlertForm modalVisible={modalVisible} setModalVisible={setModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
@@ -210,7 +228,7 @@ export function ShortReviewFormInFeed(props) {
                 </View>
                 {props.isMine ?
                     <AlertFormForModifyAndDelete modalVisible={modifynDeleteModalVisible} setModalVisible={setModifynDeleteModalVisible} reviewInfo={props.reviewInfo} setReviewInfo={props.setReviewInfo} setReviewInfo2={props.setReviewInfo2} setOnRefreshWhenDelete={props.setOnRefreshWhenDelete} setGoToFeed={props.setGoToFeed}></AlertFormForModifyAndDelete>
-                    : <AlertFormForReport modalVisible={reportModalVisible} setModalVisible={setReportModalVisible} reviewInfo={props.reviewInfo} setGoToFeed={props.setGoToFeed}></AlertFormForReport>
+                    : <AlertFormForReport modalVisible={reportModalVisible} setModalVisible={setReportModalVisible} reviewInfo={props.reviewInfo} setGoToFeed={props.setGoToFeed} setOnRefreshWhenDelete={props.setOnRefreshWhenDelete}></AlertFormForReport>
                 }
 
                 <View style={[tw`flex flex-row mb-[12px] bg-[#FFFFFF] h-[162px] rounded-4 shadow`]}>
@@ -260,6 +278,8 @@ export function ShortReviewFormInFeed(props) {
                     <Text style={tw`text-[10px] text-[#191919]`}>공감 {thumbsCount}회</Text>
                 </View>
             </View>
+
+            <View style={tw`border-4 border-[#F0F0F0]`}></View>
         </>
     );
 }
