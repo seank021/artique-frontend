@@ -231,7 +231,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId }) {
           <Image source={memberInfo.imageUrl ? { uri: memberInfo.imageUrl } : require('@images/newprofile.png')} style={tw`w-[100px] h-[100px] rounded-full mr-5`}></Image>
           <View style={tw`flex-col justify-between`}>
             <Text style={tw`text-base text-[#191919] font-medium mb-5`}>{memberInfo.nickname}</Text>
-            <Text style={tw`text-xs text-[#191919] font-normal w-57.5 leading-5`}>{memberInfo.introduce}</Text>
+            <Text style={tw`text-xs text-[#191919] font-normal w-55 leading-5`}>{memberInfo.introduce}</Text>
           </View>
         </View>
         <Pressable onPress={goToMyReviews} style={tw`self-center w-9/10 h-[33px] mt-[25px] rounded-3xl bg-[#FFF] shadow`}>
