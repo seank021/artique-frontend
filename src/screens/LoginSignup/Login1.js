@@ -1,11 +1,11 @@
 import React, {useEffect} from 'react';
-import {View, Text, Image, Pressable, StyleSheet, Alert} from 'react-native';
+import {View, Text, Image, Pressable, StyleSheet, Platform} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import * as KakaoLogin from '@react-native-seoul/kakao-login';
 import {GoogleSignin} from 'react-native-google-signin';
-// import appleAuth from '@invertase/react-native-apple-authentication';
+import appleAuth from '@invertase/react-native-apple-authentication';
 
 import axios from 'axios';
 
@@ -18,11 +18,13 @@ import ButtonForm from '@forms/ButtonForm';
 export default function Login1({setGoToFeed}) {
   const nav = useNavigation();
 
-  // useEffect(() => {
-  //     return appleAuth.onCredentialRevoked(async () => {
-  //         console.warn('If this function executes, User Credentials have been Revoked',);
-  //     });
-  // }, []);
+  useEffect(() => {
+    if (Platform.OS === 'ios') {
+      return appleAuth.onCredentialRevoked(async () => {
+          console.warn('If this function executes, User Credentials have been Revoked',);
+      });
+    }
+  }, []);
 
   onPressLookAround = () => {
     Cookies.clearCookie();
@@ -89,29 +91,29 @@ export default function Login1({setGoToFeed}) {
   };
 
   onPressApple = async () => {
-    // Cookies.removeCookie('currentLogin');
-    // try {
-    //     const appleAuthRequestResponse = await appleAuth.performRequest({
-    //         requestedOperation: appleAuth.Operation.LOGIN,
-    //         requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
-    //     });
-    //     console.log('appleAuthRequestResponse: ', appleAuthRequestResponse);
-    //     const response = await axios.post('http://3.39.145.210/member/oauth', {
-    //         thirdPartyName: 'apple',
-    //         token: appleAuthRequestResponse.identityToken,
-    //     });
-    //     console.log(response.data.userId);
-    //     console.log(response.headers['authorization']);
-    //     try {
-    //         Cookies.setCookie("apple", response.headers["authorization"]);
-    //         Cookies.setCookie("currentLogin", "apple");
-    //         setGoToFeed(true);
-    //     } catch (err) {
-    //         console.log(err);
-    //     }
-    // } catch (err) {
-    //     console.log(err);
-    // }
+    Cookies.removeCookie('currentLogin');
+    try {
+        const appleAuthRequestResponse = await appleAuth.performRequest({
+            requestedOperation: appleAuth.Operation.LOGIN,
+            requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
+        });
+        console.log('appleAuthRequestResponse: ', appleAuthRequestResponse);
+        const response = await axios.post('http://3.39.145.210/member/oauth', {
+            thirdPartyName: 'apple',
+            token: appleAuthRequestResponse.identityToken,
+        });
+        console.log(response.data.userId);
+        console.log(response.headers['authorization']);
+        try {
+            Cookies.setCookie("apple", response.headers["authorization"]);
+            Cookies.setCookie("currentLogin", "apple");
+            setGoToFeed(true);
+        } catch (err) {
+            console.log(err);
+        }
+    } catch (err) {
+        console.log(err);
+    }
   };
 
   return (
