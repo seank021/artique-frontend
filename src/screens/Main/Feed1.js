@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { View, Image, StyleSheet, ScrollView, RefreshControl } from "react-native";
+import { View, Image, StyleSheet, ScrollView, RefreshControl, Text, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
 
@@ -162,13 +162,18 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
         }
     };
 
+    const onPressExit = () => {
+        setGoToFeed(false);
+    }
+
     return (        
         <SafeAreaView style={styles.container}>
             <AlertForm modalVisible={alertModalVisible} setModalVisible={setAlertModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
             <TutorialModal1 modalVisible={tutorialModalVisible} setModalVisible={setTutorialModalVisible}/>
 
-            <View style={tw`ml-[5%] mt-[18px] mb-[12px] flex-col`}>
+            <View style={tw`ml-[5%] mt-[18px] mb-[12px] flex-row items-center justify-between`}>
                 <Image source={require("@images/logo_small_black.png")} style={tw`w-[110px] h-[37.64781px]`}></Image>
+                {!isCookie && <Pressable onPress={onPressExit}><Text style={tw`mr-[5%] text-sm text-[#191919]`}>로그인</Text></Pressable>}
             </View>
             <View style={tw`border-[0.5px] border-[#D3D4D3]`}></View>
 
