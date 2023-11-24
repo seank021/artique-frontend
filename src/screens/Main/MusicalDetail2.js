@@ -236,9 +236,6 @@ export default function MusicalDetail2({isCookie, musicalId, setMusicalId, setMu
                             isCookie={isCookie}
                             isShortReviewSpoiler={review.reviewSpoiler}
                         />
-                        {index < reviews.length - 1 && (
-                            <View style={tw`border-4 border-[#F0F0F0]`}></View>
-                        )}
                     </Fragment>
                 ))}
             </ScrollView>

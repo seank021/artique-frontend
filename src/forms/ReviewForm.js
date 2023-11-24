@@ -117,6 +117,8 @@ export function ShortReviewForm(props) {
                     </Pressable>
                 </View>
             </View>
+
+            <View style={tw`border-4 border-[#F0F0F0]`}></View>
         </>
     );
 }
