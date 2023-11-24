@@ -363,7 +363,7 @@ export function ShortReviewFormInMyReviews(props) {
                 </View>
                 {props.isMine ?
                     <AlertFormForModifyAndDelete modalVisible={modifynDeleteModalVisible} setModalVisible={setModifynDeleteModalVisible} reviewInfo={props.reviewInfo} setReviewInfo={props.setReviewInfo} setReviewInfo2={props.setReviewInfo2} setOnRefreshWhenDelete={props.setOnRefreshWhenDelete} setGoToFeed={props.setGoToFeed}></AlertFormForModifyAndDelete>
-                    : <AlertFormForReport modalVisible={reportModalVisible} setModalVisible={setReportModalVisible} reviewInfo={props.reviewInfo} setGoToFeed={props.setGoToFeed}></AlertFormForReport>
+                    : <AlertFormForReport modalVisible={reportModalVisible} setModalVisible={setReportModalVisible} reviewInfo={props.reviewInfo} setGoToFeed={props.setGoToFeed} setOnRefreshWhenDelete={props.setOnRefreshWhenDelete}></AlertFormForReport>
                 }
 
                 <View style={tw`flex flex-row mb-[12px] bg-[#FFFFFF] h-[162px] rounded-4 shadow-sm`}>
