@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Contract1, Contract2 } from '@forms/ContractContents';
 
 import { reviewDetail, reviewDelete, reviewReport, userReport, profileUpload } from '@functions/api';
-import { addReviewBlock, addUserBlock } from '@functions/block';
+import { addReviewBlock, addUserBlock, clearWholeBlockList } from '@functions/block';
 import * as Cookies from '@functions/cookie';
 
 import { launchImageLibrary } from 'react-native-image-picker';
@@ -330,6 +330,8 @@ export const AlertFormForReport = (props) => {
     const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
     const [alertText, setAlertText] = useState('신고 누적으로 사용이 정지된 회원입니다.');
 
+    const [blockConfirmModalVisible, setBlockConfirmModalVisible] = useState(false);
+
     useEffect(() => {
         setIsStep1(true);
         setIsStep2(false);
@@ -384,9 +386,15 @@ export const AlertFormForReport = (props) => {
     }
 
     const onPressBlock = async () => {
-        await addReviewBlock(props.reviewInfo.reviewId);
         props.setModalVisible(false);
+        setBlockConfirmModalVisible(true);
+    }
 
+    const onPressBlockConfirm = async () => {
+        setBlockConfirmModalVisible(false);
+
+        await addReviewBlock(props.reviewInfo.reviewId);
+    
         setAlertModalVisible(!alertModalVisible);
         setAlertImage(require('@images/check.png'));
         setAlertText('차단되었습니다.');
@@ -401,11 +409,13 @@ export const AlertFormForReport = (props) => {
     return (
         <>
             <AlertForm modalVisible={alertModalVisible} setModalVisible={setAlertModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
+            <AlertFormForConfirm modalVisible={blockConfirmModalVisible} setModalVisible={setBlockConfirmModalVisible} question="리뷰를 차단하시겠습니까?" text='차단하기' onPress={onPressBlockConfirm} />
             <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={onBackdropPress}>
                 {isStep1 && !isStep2 && !isStep3 ? 
-                    <View style={tw`flex flex-col w-[230px] h-[104px] bg-white rounded-[15px] justify-around self-center`}>
-                        <Pressable onPress={onPressReport}><Text style={tw`text-center text-sm text-[#E94A4B]`}>게시글 신고하기</Text></Pressable>
-                        <Pressable onPress={onPressBlock}><Text style={tw`text-center text-sm text-[#E94A4B]`}>게시글 차단하기</Text></Pressable>
+                    <View style={tw`flex flex-col w-[230px] h-[114px] bg-white rounded-[15px] justify-around self-center`}>
+                        <Pressable onPress={onPressReport}><Text style={tw`text-center text-sm text-[#E94A4B] my-[20px]`}>리뷰 신고하기</Text></Pressable>
+                        <View style={tw`border-b border-solid border-[#D3D4D3]`}></View>
+                        <Pressable onPress={onPressBlock}><Text style={tw`text-center text-sm text-[#E94A4B] my-[20px]`}>리뷰 차단하기</Text></Pressable>
                     </View>
 
                 : isStep2 && !isStep1 && !isStep3 ?
@@ -455,6 +465,8 @@ export const AlertFormForReportUser = (props) => {
     const [alertModalVisible, setAlertModalVisible] = useState(false);
     const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
     const [alertText, setAlertText] = useState('신고 누적으로 사용이 정지된 회원입니다.');
+
+    const [blockConfirmModalVisible, setBlockConfirmModalVisible] = useState(false);
 
     const nav = useNavigation();
 
@@ -519,9 +531,15 @@ export const AlertFormForReportUser = (props) => {
     }
 
     const onPressBlock = async () => {
-        await addUserBlock(props.reported);
         props.setModalVisible(false);
+        setBlockConfirmModalVisible(true);
+    }
 
+    const onPressBlockConfirm = async () => {
+        setBlockConfirmModalVisible(false);
+
+        await addUserBlock(props.reported);
+    
         setAlertModalVisible(!alertModalVisible);
         setAlertImage(require('@images/check.png'));
         setAlertText('차단되었습니다.');
@@ -536,11 +554,13 @@ export const AlertFormForReportUser = (props) => {
     return (
         <>
             <AlertForm modalVisible={alertModalVisible} setModalVisible={setAlertModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
+            <AlertFormForConfirm modalVisible={blockConfirmModalVisible} setModalVisible={setBlockConfirmModalVisible} question="사용자를 차단하시겠습니까?" text='차단하기' onPress={onPressBlockConfirm} />
             <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={onBackdropPress}>
                 {isStep1 && !isStep2 && !isStep3 ? 
-                    <View style={tw`flex flex-col w-[230px] h-[104px] bg-white rounded-[15px] justify-around self-center`}>
-                        <Pressable onPress={onPressReport}><Text style={tw`text-center text-sm text-[#E94A4B]`}>사용자 신고하기</Text></Pressable>
-                        <Pressable onPress={onPressBlock}><Text style={tw`text-center text-sm text-[#E94A4B]`}>사용자 차단하기</Text></Pressable>
+                    <View style={tw`flex flex-col w-[230px] h-[114px] bg-white rounded-[15px] justify-around self-center`}>
+                        <Pressable onPress={onPressReport}><Text style={tw`text-center text-sm text-[#E94A4B] my-[20px]`}>사용자 신고하기</Text></Pressable>
+                        <View style={tw`border-b border-solid border-[#D3D4D3]`}></View>
+                        <Pressable onPress={onPressBlock}><Text style={tw`text-center text-sm text-[#E94A4B] my-[20px]`}>사용자 차단하기</Text></Pressable>
                     </View>
 
                 : isStep2 && !isStep1 && !isStep3 ?
