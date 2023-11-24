@@ -180,12 +180,11 @@ export function ProfileChangeForm(props) {
                 console.log('ImagePicker Error: ', res.errorMessage);
             } else {        
                 let imageSource = res.assets[0].uri;
-                imageSource = imageSource.replace('file://', '');
-
+                console.log("imageSource", imageSource)
                 const formdata = new FormData();
                 formdata.append('file', {
-                    uri: imageSource,
-                    type: 'image/jpeg',
+                    uri: Platform.OS === 'android' ? imageSource : imageSource.replace('file://', ''),
+                    type: res.assets[0].type,
                     name: res.assets[0].fileName,
                 });
 
