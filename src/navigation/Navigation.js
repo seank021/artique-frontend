@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Image } from "react-native";
+import { Image, TouchableOpacity } from "react-native";
 
 import tw from 'twrnc'
 
 import * as Cookies from "@functions/cookie";
 import { memberIdInMypage } from "@functions/api";
 import { getAutoLogin } from "@functions/autoLogin";
+
+import AlertForm from "@forms/AlertForm";
 
 import Login1 from "@screens/LoginSignup/Login1";
 import Login2 from "@screens/LoginSignup/Login2";
@@ -39,7 +41,7 @@ import ArtiqueInfo from "@screens/Setting/ArtiqueInfo/ArtiqueInfo";
 import Terms from "@screens/Setting/ArtiqueInfo/Terms";
 import Privacy from "@screens/Setting/ArtiqueInfo/Privacy";
 
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
@@ -191,13 +193,50 @@ const Navigation = () => {
                 <Stack.Screen name="Terms" children={() => <Terms isCookie={isCookie} />} />
                 <Stack.Screen name="Privacy" children={() => <Privacy isCookie={isCookie} />} />
 
+                <Stack.Screen name="Feed1" children={() => <Feed1 isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId} setReviewInfo={setReviewInfo} setReviewInfo2={setReviewInfo2} setGoToFeed={setGoToFeed}/>} />
                 <Stack.Screen name="Login2" children={() => <Login2 setGoToFeed={setGoToFeed} />} />
             </Stack.Navigator>
         )
     };
 
     const Tabs = () => {
+        const nav = useNavigation();
+
+        const [isCookie, setIsCookie] = useState(true);
+        const [alertModalVisible, setAlertModalVisible] = useState(false);
+        const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
+        const [alertText, setAlertText] = useState('로그인이 필요한 서비스입니다.');
+
+        useEffect(() => {
+            const checkCookie = async () => {
+                const cookieExists = await Cookies.ifLoginCookieExists();
+                setIsCookie(cookieExists);
+            };
+            checkCookie();
+        }, []);
+
+        const handleAlert = () => {
+            setAlertModalVisible(true);
+            setTimeout(() => {
+                setAlertModalVisible(false);
+            }, 1000);
+            setTimeout(() => {
+                nav.navigate('Feed1');
+            }, 1500);        
+        }
+
         return (
+            <>
+            <AlertForm
+                modalVisible={alertModalVisible}
+                setModalVisible={setAlertModalVisible}
+                borderColor="#F5F8F5"
+                bgColor="#F5F8F5"
+                image={alertImage}
+                textColor="#191919"
+                text={alertText}
+            />
+
             <Tab.Navigator
                 initialRouteName="MainTab"
                 screenOptions={{
@@ -238,9 +277,17 @@ const Navigation = () => {
                         tabBarIcon: ({focused}) => (
                             focused ? <Image source={require("@images/profile_focused.png")} style={tw`w-[58px] h-[70px]`} /> : <Image source={require("@images/profile.png")} style={tw`w-[23.11px] h-[24px]`} />
                         ),
+                        tabBarButton: (props) => {
+                            if (!isCookie) {
+                                return <TouchableOpacity {...props} onPress={() => {{handleAlert()}}} />;
+                            } else {
+                            return <TouchableOpacity {...props} />;
+                            }
+                        }
                     }}
                 />
             </Tab.Navigator>
+            </>
         )
     };
 
