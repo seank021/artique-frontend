@@ -252,7 +252,7 @@ export function ShortReviewFormInFeed(props) {
                         <View style={tw`w-[18px] h-[18px] rounded-full border-[#EFEFEF] bg-[#F8F8F8] mt-[10px]`}></View>
                     </View>
                     <Pressable onPress={props.goToReviewDetail1} style={{ flex: 1 }}>
-                        <View style={[tw`flex-col justify-between ml-[5px]`, { flex: 1 }]}>
+                        <View style={[tw`flex-col justify-between ml-[5px] mr-[5px]`, { flex: 1 }]}>
                             <Text style={tw`text-[#191919] text-base font-medium mt-[14px] mb-[4px]`}>{props.reviewInfo.musicalName}</Text>
                             <Text numberOfLines={1} style={tw`text-[#191919] text-xs mb-[14px] w-[90%]`}>
                                 {props.reviewInfo.casting.split(',').map((item, index) => {
@@ -384,7 +384,7 @@ export function ShortReviewFormInMyReviews(props) {
                         <View style={tw`w-[18px] h-[18px] rounded-full bg-[#F8F8F8] mt-[10px]`}></View>
                     </View>
                     <Pressable onPress={props.goToReviewDetail1} style={{ flex: 1 }}>
-                        <View style={[tw`flex-col justify-between`, { flex: 1 }]}>
+                        <View style={[tw`flex-col justify-between mr-[5px]`, { flex: 1 }]}>
                             <Text style={tw`text-[#191919] text-base font-medium mt-[14px] mb-[4px]`}>{props.reviewInfo.musicalName}</Text>
                             <Text numberOfLines={1} style={tw`text-[#191919] text-xs mb-[14px] w-[90%]`}>
                                 {props.reviewInfo.casting.split(',').map((item, index) => {
