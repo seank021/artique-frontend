@@ -368,7 +368,7 @@ export function ShortReviewFormInMyReviews(props) {
                     : <AlertFormForReport modalVisible={reportModalVisible} setModalVisible={setReportModalVisible} reviewInfo={props.reviewInfo} setGoToFeed={props.setGoToFeed} setOnRefreshWhenDelete={props.setOnRefreshWhenDelete}></AlertFormForReport>
                 }
 
-                <View style={tw`flex flex-row mb-[12px] bg-[#FFFFFF] h-[162px] rounded-4 shadow-sm`}>
+                <View style={tw`flex flex-row mb-[12px] bg-[#FFFFFF] h-[162px] rounded-4 shadow`}>
                     <Pressable onPress={props.goToMusicalDetail1}>
                         <Image source={{uri: props.reviewInfo.posterUrl}} style={tw`w-[122px] h-[100%] rounded-l-4 mr-[20px]`} />
                     </Pressable>
