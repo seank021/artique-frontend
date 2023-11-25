@@ -93,7 +93,7 @@ export default function UserTendency(props) {
         setDescription('이런저런 작품을 평가하는');
       }
     }
-  }, [upper, middle, lower, maxUpper, maxMiddle, maxLower, props.totalReviewCount]);
+  }, [name, description, props.totalReviewCount]);
 
   return (
     <View style={tw`mt-7.5 ml-5 mb-[33px]`}>
