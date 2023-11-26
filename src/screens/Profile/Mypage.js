@@ -250,7 +250,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }
 
       {/* 프로필 */}
       <ScrollView showsVerticalScrollIndicator={false} refreshcontrol={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
-        <View style={tw`flex-row items-center w-[90%] mt-5 justify-center ml-[5%]`}>
+        <View style={tw`flex-row items-center w-[90%] mt-5 mx-[5%]`}>
           <Image source={memberInfo.imageUrl ? { uri: memberInfo.imageUrl } : require('@images/newprofile.png')} style={tw`w-[100px] h-[100px] rounded-full mr-5`}></Image>
           <View style={tw`flex-col justify-between`}>
             <Text style={tw`text-base text-[#191919] font-medium mb-5`}>{memberInfo.nickname}</Text>
