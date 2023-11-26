@@ -163,7 +163,7 @@ const reviewDelete = async (reviewId) => {
 const reviewReport = async (reviewId, reportReason) => {
     try {
         const myHeaders = await getHeaders();
-        const response = await axios.post(`http://3.39.145.210/report?review-id=${reviewId}&type=${reportReason}`, {}, {
+        const response = await axios.post(`http://3.39.145.210/report/review?review-id=${reviewId}&type=${reportReason}`, {}, {
             headers: myHeaders.map,
         });
         console.log(response.data);
@@ -175,13 +175,11 @@ const reviewReport = async (reviewId, reportReason) => {
     }
 }
 
-// TODO: 일단 만들어놓음, 백 구현 아직 X
 const userReport = async (reportedMemberId, reportReason) => {
-  // reportedMemberId : 신고당한 사람의 memberId (ex. kakao@2981221625)
   try {
       const myHeaders = await getHeaders();
-      const response = await axios.post(`http://3.39.145.210/user-report?reported-member-id=${reportedMemberId}&type=${reportReason}`, {}, {
-          headers: myHeaders.map, // 신고하는 사람의 memberId는 헤더에 있음
+      const response = await axios.post(`http://3.39.145.210/report/member?member-id=${reportedMemberId}&type=${reportReason}`, {}, {
+          headers: myHeaders.map,
       });
       console.log(response.data);
   } catch (err) {

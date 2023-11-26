@@ -478,7 +478,6 @@ export const AlertFormForReport = (props) => {
     )
 }
 
-// TODO: 신고 목록 바꾸기, 사용자 신고 백 구현되면 주석 해제
 // props: reporter, reported / modalVisible, setModalVisible / setGoToFeed
 export const AlertFormForReportUser = (props) => {
     const [isStep1, setIsStep1] = useState(true);
@@ -506,7 +505,7 @@ export const AlertFormForReportUser = (props) => {
         props.setGoToFeed(false);
     }
 
-    const [reportReason, setReportReason] = useState('SPOILER');
+    const [reportReason, setReportReason] = useState('INAPPROPRIATE');
 
     const onBackdropPress = () => {
         props.setModalVisible(false);
@@ -521,29 +520,25 @@ export const AlertFormForReportUser = (props) => {
     }
 
     const onPressSubmit = async () => {
-        console.log("신고자: ", props.reporter)
-        console.log("신고당함: ", props.reported)
-        console.log("신고사유: ", reportReason)
+        const res = await userReport(props.reported, reportReason);
+        if (res === "banned member") {
+            props.setModalVisible(false);
 
-        // const res = await userReport(props.reported, reportReason); // TODO: user report 백 구현되면 주석 해제
-        // if (res === "banned member") {
-        //     props.setModalVisible(false);
-
-        //     setAlertModalVisible(!alertModalVisible);
-        //     setAlertImage(require('@images/x_red.png'));
-        //     setAlertText('신고 누적으로 사용이 정지된 회원입니다.');
-        //     setTimeout(() => {
-        //         setAlertModalVisible(alertModalVisible);
-        //     }, 1000);
-        //     setTimeout(() => {
-        //         logout();
-        //     }, 2000);
-        //     return;
-        // }
+            setAlertModalVisible(!alertModalVisible);
+            setAlertImage(require('@images/x_red.png'));
+            setAlertText('신고 누적으로 사용이 정지된 회원입니다.');
+            setTimeout(() => {
+                setAlertModalVisible(alertModalVisible);
+            }, 1000);
+            setTimeout(() => {
+                logout();
+            }, 2000);
+            return;
+        }
 
         setIsStep2(false);
         setIsStep3(true);
-        setReportReason('SPOILER');
+        setReportReason('INAPPROPRIATE');
 
         setTimeout(() => {
             props.setModalVisible(false);
@@ -614,21 +609,21 @@ export const AlertFormForReportUser = (props) => {
                 : isStep2 && !isStep1 && !isStep3 ?
                     <View style={tw`flex flex-col w-[230px] h-[318px] bg-white rounded-[15px] justify-around self-center`}>
                         <Text style={tw`text-center text-base font-medium text-[#191919] mt-[24px] mb-[24px]`}>신고 사유</Text>
-                        <Pressable style={tw`flex flex-row justify-between items-center`} onPress={() => setReportReason('SPOILER')}>
-                            <Text style={tw`text-sm text-left text-[#191919] ml-[24px]`}>스포일러 포함</Text>
-                            {reportReason === 'SPOILER' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px] mr-[24px]`}></Image>)}
-                        </Pressable>
                         <Pressable style={tw`flex flex-row justify-between items-center`} onPress={() => setReportReason('INAPPROPRIATE')}>
-                            <Text style={tw`text-sm text-left text-[#191919] ml-[24px]`}>부적절한 언어 표현</Text>
+                            <Text style={tw`text-sm text-left text-[#191919] ml-[24px]`}>부적절한 프로필</Text>
                             {reportReason === 'INAPPROPRIATE' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px] mr-[24px]`}></Image>)}
                         </Pressable>
-                        <Pressable style={tw`flex flex-row justify-between items-center`} onPress={() => setReportReason('PROMOTION')}>
-                            <Text style={tw`text-sm text-left text-[#191919] ml-[24px]`}>스팸 및 홍보글</Text>
-                            {reportReason === 'PROMOTION' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px] mr-[24px]`}></Image>)}
+                        <Pressable style={tw`flex flex-row justify-between items-center`} onPress={() => setReportReason('HATE')}>
+                            <Text style={tw`text-sm text-left text-[#191919] ml-[24px]`}>혐오 발언 및 상징</Text>
+                            {reportReason === 'HATE' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px] mr-[24px]`}></Image>)}
                         </Pressable>
-                        <Pressable style={tw`flex flex-row justify-between items-center`} onPress={() => setReportReason('SPAM')}>
-                            <Text style={tw`text-sm text-left text-[#191919] ml-[24px]`}>도배글</Text>
-                            {reportReason === 'SPAM' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px] mr-[24px]`}></Image>)}
+                        <Pressable style={tw`flex flex-row justify-between items-center`} onPress={() => setReportReason('PRETEND')}>
+                            <Text style={tw`text-sm text-left text-[#191919] ml-[24px]`}>타인 사칭</Text>
+                            {reportReason === 'PRETEND' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px] mr-[24px]`}></Image>)}
+                        </Pressable>
+                        <Pressable style={tw`flex flex-row justify-between items-center`} onPress={() => setReportReason('ETC')}>
+                            <Text style={tw`text-sm text-left text-[#191919] ml-[24px]`}>기타</Text>
+                            {reportReason === 'ETC' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px] mr-[24px]`}></Image>)}
                         </Pressable>
                         <View style={tw`border-b border-solid border-[#D3D4D3]`}></View>
                         <Pressable onPress={onPressSubmit} style={tw`self-center`}>
