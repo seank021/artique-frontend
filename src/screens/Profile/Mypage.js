@@ -250,14 +250,14 @@ export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }
 
       {/* 프로필 */}
       <ScrollView showsVerticalScrollIndicator={false} refreshcontrol={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
-        <View style={tw`flex-row items-center w-9/10 mt-5 mx-5`}>
+        <View style={tw`flex-row items-center w-[90%] mt-5 justify-center ml-[5%]`}>
           <Image source={memberInfo.imageUrl ? { uri: memberInfo.imageUrl } : require('@images/newprofile.png')} style={tw`w-[100px] h-[100px] rounded-full mr-5`}></Image>
           <View style={tw`flex-col justify-between`}>
             <Text style={tw`text-base text-[#191919] font-medium mb-5`}>{memberInfo.nickname}</Text>
             <Text style={tw`text-xs text-[#191919] font-normal w-55 leading-5`}>{memberInfo.introduce}</Text>
           </View>
         </View>
-        <Pressable onPress={goToMyReviews} style={tw`self-center w-9/10 h-[33px] mt-[25px] rounded-3xl bg-[#FFF] shadow`}>
+        <Pressable onPress={goToMyReviews} style={tw`self-center w-[90%] h-[33px] mt-[25px] rounded-3xl bg-[#FFF] shadow`}>
           <Text style={tw`text-xs text-[#191919] font-normal text-center leading-[33px]`}>작성한 리뷰 모아보기</Text>
         </Pressable>
           
@@ -268,7 +268,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }
           totalReviewCount={totalReviewCount} 
           />
 
-        <View style={tw`w-9/10 self-center mb-8`}>
+        <View style={tw`w-[90%] self-center mb-8`}>
           {memberStat.statistic && makeBarChart(memberStat.statistic)}
         </View>
         <View style={tw`flex-row justify-between mx-5`}>
