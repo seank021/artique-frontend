@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Contract1, Contract2 } from '@forms/ContractContents';
 
 import { reviewDetail, reviewDelete, reviewReport, userReport, profileUpload } from '@functions/api';
-import { addReviewBlock, addUserBlock } from '@functions/block';
+import { addReviewBlock, addUserBlock, clearWholeBlockList } from '@functions/block';
 import * as Cookies from '@functions/cookie';
 
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
@@ -120,6 +120,7 @@ export function AlertFormForSortInMyReviews(props) {
         setSortCriteria(criteria);
         props.setSortCriteria(criteria);
         props.setSortModalVisible(false);
+        props.setOnRefreshWhenSort(true);
     };
 
     return (

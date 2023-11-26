@@ -97,7 +97,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }
     setTimeout(() => {
       setRefreshing(false);
     }, 1000);
-  }, [refreshing]);
+  }, [refreshing, otherMemberId, memberInfo, memberStat, shortReviewInfo]);
 
   const goBack = () => {
     nav.goBack();

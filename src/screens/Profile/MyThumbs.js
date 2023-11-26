@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { View, Text, Image, Pressable, ScrollView, StyleSheet } from "react-native";
+import { View, Text, Image, Pressable, ScrollView, StyleSheet, RefreshControl } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
 
@@ -9,16 +9,18 @@ import { ShortReviewFormInFeed } from "@forms/ReviewForm";
 import { myThumbsAll, thumbsUp } from "@functions/api";
 import * as Cookies from "@functions/cookie";
 import { removeAutoLogin } from "@functions/autoLogin";
+import { ifReviewBlocked } from "@functions/block";
 
 import { useNavigation, useRoute, useIsFocused } from "@react-navigation/native";
 
 export default function MyThumbs({ isCookie, memberId, setMusicalId, setReviewId, setReviewInfo, setReviewInfo2, setGoToFeed }) {
   const nav = useNavigation();
-
+  
   const [refreshing, setRefreshing] = useState(false);
   const isFocused = useIsFocused();
   const [firstFocus, setFirstFocus] = useState(true);
   const [onRefreshWhenDelete, setOnRefreshWhenDelete] = useState(false);
+  const [onRefreshWhenThumb, setOnRefreshWhenThumb] = useState(false);
 
   const [page, setPage] = useState(0);
   const [updatePage, setUpdatePage] = useState(true);
@@ -30,8 +32,8 @@ export default function MyThumbs({ isCookie, memberId, setMusicalId, setReviewId
 
   useEffect(() => {
     if (firstFocus) {
-      setFirstFocus(false);
-      return;
+        setFirstFocus(false);
+        return;
     }
     if (!isFocused) {
         return;
@@ -40,11 +42,36 @@ export default function MyThumbs({ isCookie, memberId, setMusicalId, setReviewId
   }, [isFocused]);
 
   useEffect(() => {
+    if (onRefreshWhenThumb) {
+        onRefresh();
+        setOnRefreshWhenThumb(false);
+    }
+  }, [onRefreshWhenThumb]);
+
+  useEffect(() => {
     if (onRefreshWhenDelete) {
         onRefresh();
         setOnRefreshWhenDelete(false);
     }
   }, [onRefreshWhenDelete]);
+
+  useEffect(() => {
+    if (updatePage && page === 0) {
+      if (otherMemberId) {
+        myThumbsAll(otherMemberId, page).then((newReviews) => {
+          setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
+        }).catch((err) => {
+          console.log(err);
+        });
+      } else {
+      myThumbsAll(memberId, page).then((newReviews) => {
+        setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
+      }).catch((err) => {
+        console.log(err);
+      });
+    }
+    }
+  }, [page, updatePage, otherMemberId]);
 
   const goBack = () => {
     nav.goBack();
@@ -78,60 +105,6 @@ export default function MyThumbs({ isCookie, memberId, setMusicalId, setReviewId
   const route = useRoute();
   const otherMemberId= route.params?.otherMemberId;
 
-  useEffect(() => {
-    if (updatePage && page === 0) {
-      if (otherMemberId) {
-        myThumbsAll(otherMemberId, page).then((newReviews) => {
-          setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
-        }).catch((err) => {
-          console.log(err);
-        });
-      } else {
-      myThumbsAll(memberId, page).then((newReviews) => {
-        setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
-      }).catch((err) => {
-        console.log(err);
-      });
-    }
-    }
-  }, [page, updatePage, otherMemberId]);
-
-  const onRefresh = React.useCallback(() => {
-    if (refreshing) {
-        return;
-    }
-
-    setRefreshing(true);
-
-    setReviews([]);
-    setPage(0);
-    setUpdatePage(true);
-
-    if (updatePage && page === 0) {
-      if (otherMemberId) {
-        myThumbsAll(otherMemberId, page).then((newReviews) => {
-          setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
-        }).catch((err) => {
-          console.log(err);
-        }).finally(() => {
-          setRefreshing(false);
-        });
-      } else {
-        myThumbsAll(memberId, page).then((newReviews) => {
-          setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
-        }).catch((err) => {
-          console.log(err);
-        }).finally(() => {
-          setRefreshing(false);
-        });
-      }
-    }
-
-    setTimeout(() => {
-        setRefreshing(false);
-    }, 1000);
-  }, [refreshing, page, updatePage, otherMemberId]);
-
   const onPressThumbsUp = (reviewId, isThumbsUp) => {
         thumbsUp(reviewId, !isThumbsUp).then((res) => {
           if (res === "banned member") {
@@ -146,6 +119,7 @@ export default function MyThumbs({ isCookie, memberId, setMusicalId, setReviewId
             }, 2000);
             return;
         }
+        setOnRefreshWhenThumb(true);
         setReviews((prevReviews) => {
             const newReviews = [...prevReviews];
             const reviewIndex = newReviews.findIndex((review) => review.reviewId === reviewId);
@@ -196,6 +170,46 @@ export default function MyThumbs({ isCookie, memberId, setMusicalId, setReviewId
       }
     }
   }
+
+  const onRefresh = React.useCallback(() => {
+    if (refreshing) {
+        return;
+    }
+
+    setRefreshing(true);
+
+    setReviews([]);
+    setPage(0);
+    setUpdatePage(true);
+
+    if (updatePage && page === 0) {
+      if (otherMemberId) {
+        myThumbsAll(otherMemberId, page).then((newReviews) => {
+          setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
+        }).catch((err) => {
+          console.log(err);
+        }).finally(() => {
+          setRefreshing(false);
+        });
+      } else {
+        myThumbsAll(memberId, page).then((newReviews) => {
+          setReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
+        }).catch((err) => {
+          console.log(err);
+        }).finally(() => {
+          setRefreshing(false);
+        });
+      }
+    }
+
+    setTimeout(() => {
+        setRefreshing(false);
+    }, 1000);
+  }, [refreshing, updatePage, page, otherMemberId]);
+
+  const ifReviewBlocked = async (reviewId) => {
+    await ifReviewBlocked(reviewId);
+  }
   
   return (
     <SafeAreaView style={styles.container}>
@@ -211,7 +225,7 @@ export default function MyThumbs({ isCookie, memberId, setMusicalId, setReviewId
       </View>
       <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
 
-      <ScrollView showsVerticalScrollIndicator={false} onScroll={detectScroll}>
+      <ScrollView showsVerticalScrollIndicator={false} onScroll={detectScroll} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
         {reviews?.map((review, index) => (
           <Fragment key={index}>
             <ShortReviewFormInFeed 
