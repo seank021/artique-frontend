@@ -385,24 +385,45 @@ export const AlertFormForReport = (props) => {
     }
 
     const onPressBlock = async () => {
-        props.setModalVisible(false);
-        setBlockConfirmModalVisible(true);
+        if (Platform.OS === 'ios') {
+            await addReviewBlock(props.reviewInfo.reviewId);
+        
+            setAlertModalVisible(!alertModalVisible);
+            setAlertImage(require('@images/check.png'));
+            setAlertText('차단되었습니다.');
+            setTimeout(() => {
+                props.setModalVisible(false);
+            }, 1000);
+            setTimeout(() => {
+                setAlertModalVisible(alertModalVisible);
+            }, 1000);
+            setTimeout(() => {
+                props.setOnRefreshWhenDelete(true);
+            }, 1000);
+        }
+        else {
+            props.setModalVisible(false);
+            setBlockConfirmModalVisible(true);
+        }
     }
 
     const onPressBlockConfirm = async () => {
-        setBlockConfirmModalVisible(false);
-
-        await addReviewBlock(props.reviewInfo.reviewId);
-    
-        setAlertModalVisible(!alertModalVisible);
-        setAlertImage(require('@images/check.png'));
-        setAlertText('차단되었습니다.');
-        setTimeout(() => {
-            setAlertModalVisible(alertModalVisible);
-        }, 1000);
-        setTimeout(() => {
-            props.setOnRefreshWhenDelete(true);
-        }, 1000);
+        if (Platform.OS === 'android') {
+            await addReviewBlock(props.reviewInfo.reviewId);
+        
+            setAlertModalVisible(!alertModalVisible);
+            setAlertImage(require('@images/check.png'));
+            setAlertText('차단되었습니다.');
+            setTimeout(() => {
+                setBlockConfirmModalVisible(false);
+            }, 1000);
+            setTimeout(() => {
+                setAlertModalVisible(alertModalVisible);
+            }, 1000);
+            setTimeout(() => {
+                props.setOnRefreshWhenDelete(true);
+            }, 1000);
+        }
     }
 
     return (
@@ -411,11 +432,14 @@ export const AlertFormForReport = (props) => {
             <AlertFormForConfirm modalVisible={blockConfirmModalVisible} setModalVisible={setBlockConfirmModalVisible} question="리뷰를 차단하시겠습니까?" text='차단하기' onPress={onPressBlockConfirm} />
             <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={onBackdropPress}>
                 {isStep1 && !isStep2 && !isStep3 ? 
-                    <View style={tw`flex flex-col w-[230px] h-[114px] bg-white rounded-[15px] justify-around self-center`}>
-                        <Pressable onPress={onPressReport}><Text style={tw`text-center text-sm text-[#E94A4B] my-[20px]`}>리뷰 신고하기</Text></Pressable>
-                        <View style={tw`border-b border-solid border-[#D3D4D3]`}></View>
-                        <Pressable onPress={onPressBlock}><Text style={tw`text-center text-sm text-[#E94A4B] my-[20px]`}>리뷰 차단하기</Text></Pressable>
-                    </View>
+                    <>
+                        <View style={tw`flex flex-col w-[230px] h-[114px] bg-white rounded-[15px] justify-around self-center`}>
+                            <Pressable onPress={onPressReport}><Text style={tw`text-center text-sm text-[#E94A4B] my-[20px]`}>리뷰 신고하기</Text></Pressable>
+                            <View style={tw`border-b border-solid border-[#D3D4D3]`}></View>
+                            <Pressable onPress={onPressBlock}><Text style={tw`text-center text-sm text-[#E94A4B] my-[20px]`}>리뷰 차단하기</Text></Pressable>
+                        </View>
+                        <AlertForm modalVisible={alertModalVisible} setModalVisible={setAlertModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
+                    </>
 
                 : isStep2 && !isStep1 && !isStep3 ?
                     <View style={tw`flex flex-col w-[230px] h-[318px] bg-white rounded-[15px] justify-around self-center`}>
@@ -530,24 +554,46 @@ export const AlertFormForReportUser = (props) => {
     }
 
     const onPressBlock = async () => {
-        props.setModalVisible(false);
-        setBlockConfirmModalVisible(true);
+        if (Platform.OS === 'ios') {
+            await addUserBlock(props.reported);
+
+            setAlertModalVisible(!alertModalVisible);
+            setAlertImage(require('@images/check.png'));
+            setAlertText('차단되었습니다.');
+            setTimeout(() => {
+                props.setModalVisible(false);
+            }, 1000);
+            setTimeout(() => {
+                setAlertModalVisible(alertModalVisible);
+            }, 1000);
+            setTimeout(() => {
+                nav.navigate('Feed1');
+            }, 1000);
+        }
+        else {
+            props.setModalVisible(false);
+            setBlockConfirmModalVisible(true);
+        }
     }
 
     const onPressBlockConfirm = async () => {
-        setBlockConfirmModalVisible(false);
-
-        await addUserBlock(props.reported);
-    
-        setAlertModalVisible(!alertModalVisible);
-        setAlertImage(require('@images/check.png'));
-        setAlertText('차단되었습니다.');
-        setTimeout(() => {
-            setAlertModalVisible(alertModalVisible);
-        }, 1000);
-        setTimeout(() => {
-            nav.navigate('Feed1');
-        }, 1000);
+        if (Platform.OS === 'android') {
+            
+            await addUserBlock(props.reported);
+            
+            setAlertModalVisible(!alertModalVisible);
+            setAlertImage(require('@images/check.png'));
+            setAlertText('차단되었습니다.');
+            setTimeout(() => {
+                setBlockConfirmModalVisible(false);
+            }, 1000);
+            setTimeout(() => {
+                setAlertModalVisible(alertModalVisible);
+            }, 1000);
+            setTimeout(() => {
+                nav.navigate('Feed1');
+            }, 1000);
+        }
     }
 
     return (
@@ -556,11 +602,14 @@ export const AlertFormForReportUser = (props) => {
             <AlertFormForConfirm modalVisible={blockConfirmModalVisible} setModalVisible={setBlockConfirmModalVisible} question="사용자를 차단하시겠습니까?" text='차단하기' onPress={onPressBlockConfirm} />
             <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={onBackdropPress}>
                 {isStep1 && !isStep2 && !isStep3 ? 
-                    <View style={tw`flex flex-col w-[230px] h-[114px] bg-white rounded-[15px] justify-around self-center`}>
-                        <Pressable onPress={onPressReport}><Text style={tw`text-center text-sm text-[#E94A4B] my-[20px]`}>사용자 신고하기</Text></Pressable>
-                        <View style={tw`border-b border-solid border-[#D3D4D3]`}></View>
-                        <Pressable onPress={onPressBlock}><Text style={tw`text-center text-sm text-[#E94A4B] my-[20px]`}>사용자 차단하기</Text></Pressable>
-                    </View>
+                    <>
+                        <View style={tw`flex flex-col w-[230px] h-[114px] bg-white rounded-[15px] justify-around self-center`}>
+                            <Pressable onPress={onPressReport}><Text style={tw`text-center text-sm text-[#E94A4B] my-[20px]`}>사용자 신고하기</Text></Pressable>
+                            <View style={tw`border-b border-solid border-[#D3D4D3]`}></View>
+                            <Pressable onPress={onPressBlock}><Text style={tw`text-center text-sm text-[#E94A4B] my-[20px]`}>사용자 차단하기</Text></Pressable>
+                        </View>
+                        <AlertForm modalVisible={alertModalVisible} setModalVisible={setAlertModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
+                    </>
 
                 : isStep2 && !isStep1 && !isStep3 ?
                     <View style={tw`flex flex-col w-[230px] h-[318px] bg-white rounded-[15px] justify-around self-center`}>
