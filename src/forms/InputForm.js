@@ -83,8 +83,8 @@ export function NicknameInputForm(props) {
 // props: image, placeholder, setValue, inputCount, value, inputSize / ifWriting / inputSizeColor
 export function IntroduceInputForm(props) {
     return (
-        <View style={tw`flex flex-row justify-between items-end border-solid border-b border-[#CCCCCC] w-[90%]`}>
-            <View style={tw`flex flex-row items-center ml-[5%] w-[83%]`}>
+        <View style={tw`flex flex-row justify-between items-center border-solid border-b border-[#CCCCCC] w-[90%]`}>
+            <View style={tw`flex flex-row items-center ml-[5%] w-[80%]`}>
                 <Image source={props.image} style={tw`mr-[20px] w-[18px] h-[18px]`}></Image>
                 <TextInput
                     maxLength={50}
