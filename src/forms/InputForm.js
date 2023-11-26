@@ -48,7 +48,7 @@ export function InputFormInPWChange(props) {
 // props: image, placeholder, setValue, reappearButton, inputCount, value, inputSize / ifWriting / ifButton, borderColor, buttonColor, buttonTextColor, buttonText, onPressButton / ifCheck / inputSizeColor
 export function NicknameInputForm(props) {
     return (
-        <View style={tw`flex flex-row justify-between items-center border-solid border-b border-[#CCCCCC] w-[90%] mb-2`}>
+        <View style={tw`flex flex-row justify-between items-center border-solid border-b border-[#CCCCCC] w-[90%]`}>
             <View style={tw`flex flex-row items-center ml-[5%]`}>
                 <Image source={props.image} style={tw`tint-[#B6B6B6] mr-[20px] w-[18px] h-[18px]`}></Image>
                 <TextInput 
@@ -92,7 +92,7 @@ export function IntroduceInputForm(props) {
                     onChangeText={(text) => { props.setValue(text); props.inputCount(text, 'introduce'); }}
                     placeholderTextColor={"#B6B6B6"}
                     color={"#191919"}
-                    style={[tw`shrink leading-[22px] text-[#191919] text-sm font-normal`]}
+                    style={[tw`shrink text-[#191919] leading-[22px] text-sm font-normal mb-[5px]`]}
                     multiline={true}
                     value={props.value}
                     >
