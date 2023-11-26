@@ -122,7 +122,7 @@ export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId
         });
       }
     }
-  }, [page, updatePage, orderBy, otherMemberId]);
+  }, [page, updatePage, otherMemberId]);
 
   const onRefresh = React.useCallback(() => {
     if (refreshing) {
