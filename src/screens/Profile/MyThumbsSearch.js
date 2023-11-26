@@ -319,7 +319,7 @@ export default function MyThumbsSearch({ isCookie, memberId, setMusicalId, setRe
                                 return (
                                     <View key={index} style={tw`flex-row items-center`}>
                                         <Pressable onPress={() => onPressSearch(keyword)}>
-                                            <Text style={tw`text-xs text-[#ABABAB] text-sm`}>{keyword}</Text>
+                                            <Text style={tw`text-[#ABABAB] text-sm`}>{keyword}</Text>
                                         </Pressable>
                                         <Pressable onPress={() => deleteKeyword(keyword)}>
                                             <Image source={require('@images/x.png')} style={tw`ml-[5px]  mr-[13px] w-[14px] h-[14px] tint-[#ABABAB]`} />
