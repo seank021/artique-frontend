@@ -341,7 +341,7 @@ export default function MyThumbsSearch({ isCookie, memberId, setMusicalId, setRe
                 <AlertForm modalVisible={alertModalVisible} setModalVisible={setAlertModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
                 {/* 검색 완료 상단바 */} 
                 <View style={tw`flex-row items-center mx-[5%] mt-[17px] mb-[11px]`}>
-                    <Pressable onPress={()=> {setIsBeforeSearch(true); setIfX(false);}}>
+                    <Pressable onPress={()=> {setIsBeforeSearch(true); setIfX(false); setValue(''); setSearchValue('');}}>
                         <Image source={require('@images/chevron_left.png')} style={tw`w-[10px] h-[18px] mr-[22.5px] tint-[#191919]`} />
                     </Pressable>
                     <View style={tw`flex-row w-[90%] h-[100%] justify-between min-h-[34px] bg-[#E6E6E6] rounded-[19.5px]`}>
@@ -358,7 +358,7 @@ export default function MyThumbsSearch({ isCookie, memberId, setMusicalId, setRe
                                 />
                         </View>
                         <View style={tw`self-center`}>
-                            <Pressable onPress={()=> {setIsBeforeSearch(true);}}><Image source={require('@images/x.png')} style={tw`mr-[12px] w-[16px] h-[16px] tint-[#ABABAB]`} /></Pressable>
+                            <Pressable onPress={()=> {setIsBeforeSearch(true); setValue(''); setSearchValue('');}}><Image source={require('@images/x.png')} style={tw`mr-[12px] w-[16px] h-[16px] tint-[#ABABAB]`} /></Pressable>
                         </View>
                     </View>
                 </View>
