@@ -307,6 +307,9 @@ export function ShortReviewFormInMyReviews(props) {
 
     const [seeSpoiler, setSeeSpoiler] = useState(!props.isShortReviewSpoiler);
 
+    const [blockedReview, setBlockedReview] = useState(false);
+    const [blockedUser, setBlockedUser] = useState(false);
+
     useEffect(() => {
         setIsCookie(props.isCookie);
     }, [props.isCookie]);
@@ -318,6 +321,22 @@ export function ShortReviewFormInMyReviews(props) {
             setThumbsUpImg(require('@images/like_gray_small.png'));
         }
     }, [isThumbsUp, isCookie]);
+
+    useEffect(() => {
+        ifReviewBlocked(props.reviewInfo.reviewId).then((result) => {
+            setBlockedReview(result);
+        }).catch((err) => {
+            console.log(err);
+        });
+    }, []);
+
+    useEffect(() => {
+        ifUserBlocked(props.reviewInfo.memberId).then((result) => {
+            setBlockedUser(result);
+        }).catch((err) => {
+            console.log(err);
+        });
+    }, []);
 
     const onPressThumbsUp = () => {
         if (!props.isCookie) {
@@ -353,6 +372,7 @@ export function ShortReviewFormInMyReviews(props) {
     }
 
     return (
+        !blockedReview && !blockedUser &&
         <>
             <View>
                 <AlertForm modalVisible={modalVisible} setModalVisible={setModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
@@ -516,7 +536,18 @@ export function MusicalInfoFormInReviewDetail(props) {
 export function ShortReviewFormInMypage(props) {
     const [seeSpoiler, setSeeSpoiler] = useState(!props.isShortReviewSpoiler);
 
+    const [blockedReview, setBlockedReview] = useState(false);
+
+    useEffect(() => {
+        ifReviewBlocked(props.shortReview.reviewId).then((result) => {
+            setBlockedReview(result);
+        }).catch((err) => {
+            console.log(err);
+        });
+    }, []);
+
     return (
+        !blockedReview &&
         <Pressable onPress={props.onPressShortReview}>
             <View style={tw`w-[254px] h-[121px] bg-[#FFF] rounded-[10px] shadow mr-2 mb-5`}>
                 <View style={tw`flex flex-col w-full h-full items-start justify-between px-3 py-3`}>

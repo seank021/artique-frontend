@@ -1,10 +1,9 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { View, StyleSheet, Image, TextInput, ScrollView, Text, Pressable } from "react-native";
+import { View, StyleSheet, Image, TextInput, ScrollView, Text, Pressable, RefreshControl } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from 'twrnc'
 
 import AlertForm from "@forms/AlertForm"; 
-import { AlertFormForSort2 } from "@forms/AlertForm";
 import { ShortReviewFormInMyReviews } from "@forms/ReviewForm";
 
 import * as Keywords from "@functions/keywords";
@@ -12,15 +11,79 @@ import { searchCreatedReviews, thumbsUp } from "@functions/api";
 import * as Cookies from "@functions/cookie";
 import { removeAutoLogin } from "@functions/autoLogin";
 
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute, useIsFocused } from "@react-navigation/native";
 
 export default function MyReviewSearch({ isCookie, memberId, setMusicalId, setReviewId, setReviewInfo, setReviewInfo2, setGoToFeed }) {
+    const [refreshing, setRefreshing] = useState(false);
+    const isFocused = useIsFocused();
+    const [firstFocus, setFirstFocus] = useState(true);
+    const [onRefreshWhenDelete, setOnRefreshWhenDelete] = useState(false);
+
+    useEffect(() => {
+        if (firstFocus) {
+            setFirstFocus(false);
+            return;
+        }
+        if (!isFocused) {
+            return;
+        }
+        onRefresh();
+    }, [isFocused]);
+
+    useEffect(() => {
+        if (onRefreshWhenDelete) {
+            onRefresh();
+            setOnRefreshWhenDelete(false);
+        }
+    }, [onRefreshWhenDelete]);
+
+    const onRefresh = React.useCallback(() => {
+        if (refreshing) {
+            return;
+        }
+
+        setRefreshing(true);
+        
+        setPage(0);
+        setUpdatePage(true);
+        setSearchedReviews([]);
+
+        if (updatePage && page === 0 ) {
+            if (searchValue !== '') {
+                if (otherMemberId) {
+                    searchCreatedReviews(otherMemberId, page, searchValue, orderBy).then((newReviews) => {
+                        setSearchedReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
+                    }).catch((err) => {
+                        console.log(err);
+                    }).finally(() => {
+                        setRefreshing(false);
+                    });
+                } else {
+                    searchCreatedReviews(memberId, page, searchValue, orderBy).then((newReviews) => {
+                        setSearchedReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
+                    }).catch((err) => {
+                        console.log(err);
+                    }).finally(() => {
+                        setRefreshing(false);
+                    });
+                }
+            }
+        }
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 1000);
+    }, [refreshing, page, updatePage, searchValue, otherMemberId]);
+
     {/*페이지 이동*/}
     const nav = useNavigation();
 
     const [alertModalVisible, setAlertModalVisible] = useState(false);
     const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
     const [alertText, setAlertText] = useState('신고 누적으로 사용이 정지된 회원입니다.');
+
+    const goBack = () => {
+        nav.goBack();
+    };
 
     const goToMusicalDetail1 = (musicalId) => {
         setMusicalId(musicalId);
@@ -71,26 +134,6 @@ export default function MyReviewSearch({ isCookie, memberId, setMusicalId, setRe
     {/*스크롤 관련 관련*/}
     const [page, setPage] = useState(0);
     const [updatePage, setUpdatePage] = useState(true);
-    
-    useEffect(() => {
-        if (updatePage && page === 0 ) {
-            if (searchValue !== '') {
-                if (otherMemberId) {
-                    searchCreatedReviews(otherMemberId, page, searchValue, orderBy).then((newReviews) => {
-                        setSearchedReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
-                    }).catch((err) => {
-                        console.log(err);
-                    });
-                } else {
-                    searchCreatedReviews(memberId, page, searchValue, orderBy).then((newReviews) => {
-                        setSearchedReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
-                    }).catch((err) => {
-                        console.log(err);
-                    })
-                }
-            }
-        }
-    }, [page, updatePage, orderBy, searchValue]);
 
     const detectScroll = async (e) => {
         if (!updatePage) {
@@ -132,6 +175,34 @@ export default function MyReviewSearch({ isCookie, memberId, setMusicalId, setRe
         }
     }
 
+    const [searchedReviews, setSearchedReviews] = useState([]);
+    const [searchValue, setSearchValue] = useState('');
+    
+    useEffect(() => {
+        if (updatePage && page === 0) {
+            if (searchValue !== '') {
+                if (otherMemberId) {
+                    searchCreatedReviews(otherMemberId, page, searchValue, orderBy)
+                        .then((res) => {
+                            setSearchedReviews((prevReviews) => [...prevReviews, ...res.reviews]);
+                        }).catch((err) => {
+                            console.log(err);
+                        });
+                } 
+                else {
+                    searchCreatedReviews(memberId, page, searchValue, orderBy)
+                        .then((res) => {
+                            setSearchedReviews((prevReviews) => [...prevReviews, ...res.reviews]);
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+                }
+            }
+        }
+    }
+    , [page, updatePage, searchValue, otherMemberId]);
+
     {/*검색 관련*/}
     const [isBeforeSearch, setIsBeforeSearch] = useState(true);
 
@@ -143,40 +214,13 @@ export default function MyReviewSearch({ isCookie, memberId, setMusicalId, setRe
 
     useEffect(() => {
         const getSearchHistory = async () => {
-            const searchHistory = await Keywords.getAllSearchKeywords();
+            const searchHistory = await Keywords.getAllSearchKeywordsMyPage();
             setSearchHistory(searchHistory);
         }
         getSearchHistory();
     }, []);
 
-    const [sortModalVisible, setSortModalVisible] = useState(false);
-    const [sortCriteria, setSortCriteria] = useState("최신순");
-    const orderBy = sortCriteria === '최신순' ? 'DATE' : 'THUMBS';
-
-    const [searchedReviews, setSearchedReviews] = useState([]);
-    const [searchValue, setSearchValue] = useState('');
-    
-    useEffect(() => {
-        if (searchValue !== '') {
-            if (otherMemberId) {
-                searchCreatedReviews(otherMemberId, page, searchValue, orderBy)
-                    .then((res) => {
-                        setSearchedReviews(res.reviews);
-                    }).catch((err) => {
-                        console.log(err);
-                    });
-            } else {
-            searchCreatedReviews(memberId, page, searchValue, orderBy)
-                .then((res) => {
-                    setSearchedReviews(res.reviews);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-            }
-        }
-    }
-    , [page, searchValue, orderBy]);
+    const [orderBy, setOrderBy] = useState('CREATE');
 
     const onChangeText = (text) => {
         setValue(text);
@@ -191,7 +235,6 @@ export default function MyReviewSearch({ isCookie, memberId, setMusicalId, setRe
         setValue('');
         this.textInput.clear();
         setIfX(false);
-        setSortCriteria("최신순");
         setIsBeforeSearch(true);
     }
 
@@ -199,21 +242,22 @@ export default function MyReviewSearch({ isCookie, memberId, setMusicalId, setRe
         if (keyword === '') {
             return;
         }
-        Keywords.storeSearchKeyword(keyword);
+        Keywords.storeSearchKeywordMyPage(keyword);
         setIsBeforeSearch(false);
         setPlaceholderValue(keyword);
-        setValue('');
+        setSearchedReviews([]);
+        setUpdatePage(true);
+        setPage(0);
         if (!searchHistory.includes(keyword)) {
             setSearchHistory([keyword, ...searchHistory]);
         } else { 
             setSearchHistory([keyword, ...searchHistory.filter((item) => item !== keyword)]);
         }
-        setSortCriteria("최신순");
         setSearchValue(keyword);
     }
 
     const deleteKeyword = (keyword) => {
-        Keywords.removeParticularKeyword(keyword);
+        Keywords.removeParticularKeywordMyPage(keyword);
         if (searchHistory.includes(keyword)) {
             setSearchHistory(searchHistory.filter((item) => item !== keyword));
         } else {
@@ -222,7 +266,7 @@ export default function MyReviewSearch({ isCookie, memberId, setMusicalId, setRe
     }
 
     const deleteAllKeywords = () => {
-        Keywords.removeAllKeywords();
+        Keywords.removeAllKeywordsMyPage();
         setSearchHistory([]);
     }
 
@@ -236,11 +280,21 @@ export default function MyReviewSearch({ isCookie, memberId, setMusicalId, setRe
             {isBeforeSearch ?
             <>
                 {/* 검색 전 상단바 */}
-                <View style={tw`mx-[5%] mt-[23px] mb-[11px]`}>
-                    <View style={tw`flex-row justify-between min-h-[34px] bg-[#E6E6E6] rounded-[19.5px]`}>
-                        <View style={tw`flex-row w-[90%] h-[100%] items-center`}>
+                <View style={tw`flex flex-row items-center mx-[5%] mt-[17px] mb-[11px]`}>
+                    <Pressable onPress={goBack}>
+                        <Image source={require('@images/chevron_left.png')} style={tw`w-[10px] h-[18px] mr-[22.5px] tint-[#191919]`} />
+                    </Pressable>
+                    <View style={tw`flex-row w-[90%] h-[100%] justify-between min-h-[34px] bg-[#E6E6E6] rounded-[19.5px]`}>
+                        <View style={tw`flex-row items-center`}>
                             <Image source={require('@images/search.png')} style={tw`ml-[18px] w-[18px] h-[18px] tint-[#ABABAB]`} />
-                            <TextInput ref={(text) => this.textInput = text} onChangeText={(text) => onChangeText(text)} onSubmitEditing={() => onPressSearch(value)} returnKeyType="done" placeholder='키워드를 검색해보세요' style={tw`ml-[14px]`}  />
+                            <TextInput 
+                                ref={(text) => this.textInput = text} 
+                                onChangeText={(text) => onChangeText(text)} 
+                                onSubmitEditing={() => onPressSearch(value)} 
+                                returnKeyType="done" 
+                                placeholder='키워드를 검색해보세요' 
+                                style={tw`ml-[14px]`}  
+                                />
                         </View>
                         <View style={tw`self-center`}>
                             {ifX ? <Pressable onPress={deleteTextInput}><Image source={require('@images/x.png')} style={tw`mr-[12px] w-[16px] h-[16px] tint-[#ABABAB]`} /></Pressable> : null}
@@ -280,33 +334,35 @@ export default function MyReviewSearch({ isCookie, memberId, setMusicalId, setRe
                 <AlertForm modalVisible={alertModalVisible} setModalVisible={setAlertModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
                 {/* 검색 완료 상단바 */} 
                 <View style={tw`flex-row items-center mx-[5%] mt-[17px] mb-[11px]`}>
-                    <Pressable onPress={()=> {setIsBeforeSearch(true); setSortCriteria('최신순'); setIfX(false);}}>
+                    <Pressable onPress={()=> {setIsBeforeSearch(true); setIfX(false); setValue(''); setSearchValue('');}}>
                         <Image source={require('@images/chevron_left.png')} style={tw`w-[10px] h-[18px] mr-[22.5px] tint-[#191919]`} />
                     </Pressable>
-                    <View style={tw`flex-row justify-between min-h-[34px] bg-[#E6E6E6] rounded-[19.5px]`}>
+                    <View style={tw`flex-row w-[90%] h-[100%] justify-between min-h-[34px] bg-[#E6E6E6] rounded-[19.5px]`}>
                         <View style={tw`flex-row items-center`}>
-                            <TextInput style={tw`ml-[14px] font-medium`} defaultValue={placeholderValue} width="80%" onFocus={searchAgain} ref={(text) => this.textInput = text} onChangeText={(text) => onChangeText(text)} onSubmitEditing={() => onPressSearch(value)} returnKeyType="done" />
+                            <TextInput 
+                                style={tw`ml-[14px] font-medium`} 
+                                defaultValue={placeholderValue} 
+                                width="80%" onFocus={searchAgain} 
+                                ref={(text) => this.textInput = text} 
+                                onChangeText={(text) => onChangeText(text)} 
+                                onSubmitEditing={() => onPressSearch(value)} 
+                                returnKeyType="done"   
+                                />
                         </View>
                         <View style={tw`self-center`}>
-                            <Pressable onPress={()=> {setIsBeforeSearch(true); setSortCriteria('최신순');}}><Image source={require('@images/x.png')} style={tw`mr-[12px] w-[16px] h-[16px] tint-[#ABABAB]`} /></Pressable>
+                            <Pressable onPress={()=> {setIsBeforeSearch(true); setValue(''); setSearchValue('');}}><Image source={require('@images/x.png')} style={tw`mr-[12px] w-[16px] h-[16px] tint-[#ABABAB]`} /></Pressable>
                         </View>
                     </View>
                 </View>
                 <View style={tw`border-[0.5px] border-[#D3D4D3]`}></View>
 
                 {/* 검색 결과 */}
-                <AlertFormForSort2 sortModalVisible={sortModalVisible} setSortModalVisible={setSortModalVisible} sortCriteria={sortCriteria} setSortCriteria={setSortCriteria}></AlertFormForSort2>
-
                 <View style={tw`flex-row justify-between items-center mx-[5%] mt-4 mb-3.5`}>
                     <Text style={tw`text-sm text-[#191919] font-medium`}>검색 결과 ({searchedReviews.length})</Text>
-                    <Pressable style={tw`flex flex-row items-center justify-end`} onPress={() => setSortModalVisible(true)}>
-                        <Text style={tw`text-[#191919] text-xs font-medium mr-[7px]`}>{sortCriteria}</Text>
-                        <Image source={require('@images/chevron_down.png')} style={tw`w-[14.4px] h-[8px]`}></Image>
-                    </Pressable>
                 </View>
 
                     {searchedReviews.length !== 0 ?
-                        <ScrollView onScroll={detectScroll}>
+                        <ScrollView onScroll={detectScroll} showsVerticalScrollIndicator={false} onRefresh={onRefresh} >
                             {searchedReviews.map((review, index) => {
                                 return (
                                     <Fragment key={index}>
@@ -319,12 +375,10 @@ export default function MyReviewSearch({ isCookie, memberId, setMusicalId, setRe
                                             isMine={review.memberId === memberId}
                                             setReviewInfo={setReviewInfo}
                                             setReviewInfo2={setReviewInfo2}
-                                            isShortReviewSpoiler={review.isShortReviewSpoiler}
+                                            isShortReviewSpoiler={review.reviewSpoiler}
                                             setGoToFeed={setGoToFeed}
+                                            setOnRefreshWhenDelete={setOnRefreshWhenDelete}
                                         />
-                                        {index < searchedReviews.length - 1 && (
-                                            <View style={tw`border-4 border-[#F0F0F0]`}></View>
-                                        )}
                                     </Fragment>
                                 );
                             })}

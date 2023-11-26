@@ -219,7 +219,7 @@ export default function MyThumbsSearch({ isCookie, memberId, setMusicalId, setRe
 
     useEffect(() => {
         const getSearchHistory = async () => {
-            const searchHistory = await Keywords.getAllSearchKeywords();
+            const searchHistory = await Keywords.getAllSearchKeywordsMyPage();
             setSearchHistory(searchHistory);
         }
         getSearchHistory();
@@ -245,7 +245,7 @@ export default function MyThumbsSearch({ isCookie, memberId, setMusicalId, setRe
         if (keyword === '') {
             return;
         }
-        Keywords.storeSearchKeyword(keyword);
+        Keywords.storeSearchKeywordMyPage(keyword);
         setIsBeforeSearch(false);
         setPlaceholderValue(keyword);
         setSearchedReviews([]);
@@ -260,7 +260,7 @@ export default function MyThumbsSearch({ isCookie, memberId, setMusicalId, setRe
     }
 
     const deleteKeyword = (keyword) => {
-        Keywords.removeParticularKeyword(keyword);
+        Keywords.removeParticularKeywordMyPage(keyword);
         if (searchHistory.includes(keyword)) {
             setSearchHistory(searchHistory.filter((item) => item !== keyword));
         } else {
@@ -269,7 +269,7 @@ export default function MyThumbsSearch({ isCookie, memberId, setMusicalId, setRe
     }
 
     const deleteAllKeywords = () => {
-        Keywords.removeAllKeywords();
+        Keywords.removeAllKeywordsMyPage();
         setSearchHistory([]);
     }
 
