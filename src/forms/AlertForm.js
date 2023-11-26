@@ -14,7 +14,7 @@ import { reviewDetail, reviewDelete, reviewReport, userReport, profileUpload } f
 import { addReviewBlock, addUserBlock } from '@functions/block';
 import * as Cookies from '@functions/cookie';
 
-import { launchImageLibrary } from 'react-native-image-picker';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 
 const fontScale = PixelRatio.getFontScale();
 const getFontSize = size => size / fontScale;
@@ -175,29 +175,37 @@ export function ProfileChangeForm(props) {
             includeBase64: true,
         }
 
-        await launchImageLibrary(options, async (res) => {          
+        const image = {
+            uri: '',
+            type: '',
+            name: '',
+        }
+
+        await launchImageLibrary({options}, (res) => {          
             if (res.didCancel) {
                 console.log('User cancelled image picker');
-            } else if (res.errorCode) {
+            } 
+            else if (res.errorCode) {
                 console.log('ImagePicker Error: ', res.errorMessage);
-            } else {        
-                let imageSource = res.assets[0]?.uri;
-                const formdata = new FormData();
-                formdata.append('file', {
-                    uri: Platform.OS === 'android' ? imageSource : imageSource.replace('file://', ''),
-                    type: res.assets[0].type,
-                    name: res.assets[0].fileName,
-                });
-
-                try {
-                    const response = await profileUpload(formdata);
-                    props.setProfileImage(response);
-                    props.setModalVisible(false);
-                } catch (error) {
-                    console.log(error.response.data);
-                }
+            }
+            else if (res.assets) {
+                image.uri = Platform.OS === 'android' ? res.assets[0].uri : res.assets[0].uri.replace('file://', '');
+                image.type = res.assets[0].type;
+                image.name = res.assets[0].fileName;
             }
         });
+
+        const formdata = new FormData();
+        formdata.append('file', image);
+
+        try {
+            console.log("formdata:", formdata);
+            const res = await profileUpload(formdata);
+            props.setProfileImage(res);
+            props.setModalVisible(false);
+        } catch (err) {
+            console.log(err.response.data);
+        }
     }
 
     const onPressDelete = () => {

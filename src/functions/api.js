@@ -333,15 +333,22 @@ const profileUpload = async (formdata) => {
     const myHeaders = await getHeaders();
     const requestOptions = {
       method: 'POST',
-      headers: myHeaders.map,
       body: formdata,
+      headers: {
+        'Authorization': myHeaders.map.authorization,
+        'Content-Type': 'multipart/form-data',
+      },
       redirect: 'follow'
     };
 
-    const response = await fetch(`http://3.39.145.210/image`, requestOptions)
+    const response = await fetch("http://3.39.145.210/image", requestOptions)
+      .catch(error => console.log('error', error));
+    console.log("response:", response)
     const result = await response.json();
+    console.log("result:", result)
     return result.url;
   } catch (err) {
+    console.log("ERROR:", err)
     console.log(err.response.data);
   }
 };
