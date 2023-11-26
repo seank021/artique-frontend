@@ -20,6 +20,7 @@ export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId
   const isFocused = useIsFocused();
   const [firstFocus, setFirstFocus] = useState(true);
   const [onRefreshWhenDelete, setOnRefreshWhenDelete] = useState(false);
+  const [onRefreshWhenSort, setOnRefreshWhenSort] = useState(false);
 
   const [alertModalVisible, setAlertModalVisible] = useState(false);
   const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
@@ -37,11 +38,15 @@ export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId
   }, [isFocused]);
 
   useEffect(() => {
-      if (onRefreshWhenDelete) {
-          onRefresh();
-          setOnRefreshWhenDelete(false);
-      }
-  }, [onRefreshWhenDelete]);
+    if (onRefreshWhenDelete) {
+        onRefresh();
+        setOnRefreshWhenDelete(false);
+    }
+    if (onRefreshWhenSort) {
+      onRefresh();
+      setOnRefreshWhenSort(false);
+    }
+  }, [onRefreshWhenDelete, onRefreshWhenSort]);
 
   const [sortModalVisible, setSortModalVisible] = useState(false);
   const [sortCriteria, setSortCriteria] = useState("공감순");
@@ -155,12 +160,16 @@ export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId
         setTotalReviewCount(newMemberStat.totalReviewCount);
       }).catch((err) => {
         console.log(err);
+      }).finally(() => {
+        setRefreshing(false);
       });
     } else {
       memberStatistics().then((newMemberStat) => {
         setTotalReviewCount(newMemberStat.totalReviewCount);
       }).catch((err) => {
         console.log(err);
+      }).finally(() => {
+        setRefreshing(false);
       });
     }
 
@@ -241,7 +250,7 @@ export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId
   return (
     <SafeAreaView style={styles.container}>
       <AlertForm modalVisible={alertModalVisible} setModalVisible={setAlertModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
-      <AlertFormForSortInMyReviews sortModalVisible={sortModalVisible} setSortModalVisible={setSortModalVisible} sortCriteria={sortCriteria} setSortCriteria={setSortCriteria}></AlertFormForSortInMyReviews>
+      <AlertFormForSortInMyReviews sortModalVisible={sortModalVisible} setSortModalVisible={setSortModalVisible} sortCriteria={sortCriteria} setSortCriteria={setSortCriteria} setOnRefreshWhenSort={setOnRefreshWhenSort}></AlertFormForSortInMyReviews>
       {/* 상단 바 */}
       <View style={tw`flex-row items-center justify-between mt-5 mb-[14px]`}>
                 <Pressable onPress={goBack} style={tw`flex-row`}>
