@@ -173,7 +173,7 @@ export function ProfileChangeForm(props) {
     const onPressSelect = async () => {
         const options = {
             mediaType: 'photo',
-            includeBase64: true,
+            // includeBase64: true,
         }
 
         const image = {
@@ -182,7 +182,7 @@ export function ProfileChangeForm(props) {
             name: '',
         }
 
-        await launchImageLibrary({options}, (res) => {          
+        await launchImageLibrary(options, (res) => {          
             if (res.didCancel) {
                 console.log('User cancelled image picker');
             } 
