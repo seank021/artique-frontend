@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, Pressable, ScrollView, TextInput, PixelRatio, Platform } from 'react-native';
+import { View, Text, Image, Pressable, ScrollView, TextInput, PixelRatio, Platform, TouchableWithoutFeedback } from 'react-native';
 import Modal from 'react-native-modal';
 
 import tw from 'twrnc';
@@ -461,9 +461,9 @@ export const AlertFormForReport = (props) => {
                             {reportReason === 'SPAM' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px] mr-[24px]`}></Image>)}
                         </Pressable>
                         <View style={tw`border-b border-solid border-[#D3D4D3]`}></View>
-                        <Pressable onPress={onPressSubmit} style={tw`self-center`}>
+                        <TouchableWithoutFeedback onPress={onPressSubmit} style={tw`self-center`}>
                             <Text style={tw`text-sm text-center font-medium text-[#191919] mb-[14px]`}>제출</Text>
-                        </Pressable>
+                        </TouchableWithoutFeedback>
                     </View>
 
                 : isStep3 && !isStep1 && !isStep2 ?
@@ -626,9 +626,9 @@ export const AlertFormForReportUser = (props) => {
                             {reportReason === 'ETC' && (<Image source={require('@images/check.png')} style={tw`w-[16px] h-[11.75758px] mr-[24px]`}></Image>)}
                         </Pressable>
                         <View style={tw`border-b border-solid border-[#D3D4D3]`}></View>
-                        <Pressable onPress={onPressSubmit} style={tw`self-center`}>
+                        <TouchableWithoutFeedback onPress={onPressSubmit} style={tw`self-center`}>
                             <Text style={tw`text-sm text-center font-medium text-[#191919] mb-[14px]`}>제출</Text>
-                        </Pressable>
+                        </TouchableWithoutFeedback>
                     </View>
 
                 : isStep3 && !isStep1 && !isStep2 ?
