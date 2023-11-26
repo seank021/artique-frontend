@@ -48,7 +48,7 @@ export function InputFormInPWChange(props) {
 // props: image, placeholder, setValue, reappearButton, inputCount, value, inputSize / ifWriting / ifButton, borderColor, buttonColor, buttonTextColor, buttonText, onPressButton / ifCheck / inputSizeColor
 export function NicknameInputForm(props) {
     return (
-        <View style={tw`flex flex-row justify-between items-center border-solid border-b border-[#CCCCCC] w-[90%]`}>
+        <View style={tw`flex flex-row justify-between items-center border-solid border-b border-[#CCCCCC] w-[90%] mb-2`}>
             <View style={tw`flex flex-row items-center ml-[5%]`}>
                 <Image source={props.image} style={tw`tint-[#B6B6B6] mr-[20px] w-[18px] h-[18px]`}></Image>
                 <TextInput 
