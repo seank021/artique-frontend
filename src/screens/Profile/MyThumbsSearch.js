@@ -10,17 +10,88 @@ import * as Keywords from "@functions/keywords";
 import { searchThumbReviews, thumbsUp } from "@functions/api";
 import * as Cookies from "@functions/cookie";
 import { removeAutoLogin } from "@functions/autoLogin";
+import { ifReviewBlocked } from "@functions/block";
 
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute, useIsFocused } from "@react-navigation/native";
 
 
 export default function MyThumbsSearch({ isCookie, memberId, setMusicalId, setReviewId, setReviewInfo, setReviewInfo2, setGoToFeed }) {
+    const [refreshing, setRefreshing] = useState(false);
+    const isFocused = useIsFocused();
+    const [firstFocus, setFirstFocus] = useState(true);
+    const [onRefreshWhenDelete, setOnRefreshWhenDelete] = useState(false);
+    const [onRefreshWhenThumb, setOnRefreshWhenThumb] = useState(false);
+
+    useEffect(() => {
+        if (firstFocus) {
+            setFirstFocus(false);
+            return;
+        }
+        if (!isFocused) {
+            return;
+        }
+        onRefresh();
+    }, [isFocused]);
+
+    useEffect(() => {
+        if (onRefreshWhenThumb) {
+            onRefresh();
+            setOnRefreshWhenThumb(false);
+        }
+    }, [onRefreshWhenThumb]);
+
+    useEffect(() => {
+        if (onRefreshWhenDelete) {
+            onRefresh();
+            setOnRefreshWhenDelete(false);
+        }
+    }, [onRefreshWhenDelete]);
+
+    const onRefresh = React.useCallback(() => {
+        if (refreshing) {
+            return;
+        }
+        setRefreshing(true);
+        setPage(0);
+        setUpdatePage(true);
+        setSearchedReviews([]);
+
+        if (updatePage && page === 0) {
+            if (searchValue !== '') {
+                if (otherMemberId) {
+                    searchThumbReviews(otherMemberId, page, searchValue).then((newReviews) => {
+                        setSearchedReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
+                    }).catch((err) => {
+                        console.log(err);
+                    }).finally(() => {
+                        setRefreshing(false);
+                    });
+                } else {
+                    searchThumbReviews(memberId, page, searchValue).then((newReviews) => {
+                        setSearchedReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
+                    }).catch((err) => {
+                        console.log(err);
+                    }).finally(() => {
+                        setRefreshing(false);
+                    });
+                }
+            }
+        }
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 1000);
+    }, [refreshing, page, updatePage, searchValue, otherMemberId]);
+    
     {/*페이지 이동*/}
     const nav = useNavigation();
 
     const [alertModalVisible, setAlertModalVisible] = useState(false);
     const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
     const [alertText, setAlertText] = useState('신고 누적으로 사용이 정지된 회원입니다.');
+
+    const goBack = () => {
+        nav.goBack();
+    };
 
     const goToMusicalDetail1 = musicalId => {
         setMusicalId(musicalId);
@@ -57,6 +128,7 @@ export default function MyThumbsSearch({ isCookie, memberId, setMusicalId, setRe
                 }, 2000);
                 return;
             }
+            setOnRefreshWhenThumb(true);
             setSearchedReviews((prevReviews) => {
                 const newReviews = [...prevReviews];
                 const reviewIndex = newReviews.findIndex((review) => review.reviewId === reviewId);
@@ -71,25 +143,6 @@ export default function MyThumbsSearch({ isCookie, memberId, setMusicalId, setRe
     {/*스크롤 관련 관련*/}
     const [page, setPage] = useState(0);
     const [updatePage, setUpdatePage] = useState(true);
-    
-    useEffect(() => {
-        if (updatePage && page === 0) {
-            if (otherMemberId) {
-                searchThumbReviews(otherMemberId, page, searchValue).then((newReviews) => {
-                    setSearchedReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
-                }).catch((err) => {
-                    console.log(err);
-                });
-            } else {
-            searchThumbReviews(memberId, page, searchValue).then((newReviews) => {
-                setSearchedReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
-            }
-            ).catch((err) => {
-                console.log(err);
-            });
-        }
-        }
-    }, [page, updatePage, searchValue]);
 
     const detectScroll = async (e) => {
         if (!updatePage) {
@@ -112,27 +165,48 @@ export default function MyThumbsSearch({ isCookie, memberId, setMusicalId, setRe
             setUpdatePage(false);
             const nextPage = page + 1;
             setPage(nextPage);
-
+            
             if (otherMemberId) {
-                searchThumbReviews(otherMemberId, nextPage, searchValue)
-                .then((newReviews) => {
+                searchThumbReviews(otherMemberId, nextPage, searchValue).then((newReviews) => {
                     setSearchedReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
                     setUpdatePage(true);
                 }).catch((err) => {
                     console.log(err);
                 });
             } else {
-            searchThumbReviews(memberId, nextPage, searchValue)
-                .then((newReviews) => {
+                searchThumbReviews(memberId, nextPage, searchValue).then((newReviews) => {
                     setSearchedReviews((prevReviews) => [...prevReviews, ...newReviews.reviews]);
                     setUpdatePage(true);
-                })
-                .catch((err) => {
+                }).catch((err) => {
                     console.log(err);
                 });
             }
         }
     }
+
+    const [searchedReviews, setSearchedReviews] = useState([]);
+    const [searchValue, setSearchValue] = useState('');
+    
+    useEffect(() => {
+        if (searchValue !== '') {
+            if (otherMemberId) {
+                searchThumbReviews(otherMemberId, page, searchValue)
+                .then((res) => {
+                    setSearchedReviews((prevReviews) => [...prevReviews, ...res.reviews]);
+                }).catch((err) => {
+                    console.log(err);
+                });
+            } else {
+            searchThumbReviews(memberId, page, searchValue)
+                .then((res) => {
+                    setSearchedReviews((prevReviews) => [...prevReviews, ...res.reviews]);
+                }).catch((err) => {
+                    console.log(err);
+                });
+            }
+        }
+    }
+    , [page, updatePage, searchValue, otherMemberId]);
 
     {/*검색 관련*/}
     const [isBeforeSearch, setIsBeforeSearch] = useState(true);
@@ -150,31 +224,6 @@ export default function MyThumbsSearch({ isCookie, memberId, setMusicalId, setRe
         }
         getSearchHistory();
     }, []);
-
-    const [searchedReviews, setSearchedReviews] = useState([]);
-    const [searchValue, setSearchValue] = useState('');
-    
-    useEffect(() => {
-        if (searchValue !== '') {
-            if (otherMemberId) {
-                searchThumbReviews(otherMemberId, page, searchValue)
-                .then((res) => {
-                    setSearchedReviews(res.reviews);
-                }).catch((err) => {
-                    console.log(err);
-                });
-            } else {
-            searchThumbReviews(memberId, page, searchValue)
-                .then((res) => {
-                    setSearchedReviews(res.reviews);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-            }
-        }
-    }
-    , [searchValue, page]);
 
     const onChangeText = (text) => {
         setValue(text);
@@ -199,7 +248,9 @@ export default function MyThumbsSearch({ isCookie, memberId, setMusicalId, setRe
         Keywords.storeSearchKeyword(keyword);
         setIsBeforeSearch(false);
         setPlaceholderValue(keyword);
-        setValue('');
+        setSearchedReviews([]);
+        setUpdatePage(true);
+        setPage(0);
         if (!searchHistory.includes(keyword)) {
             setSearchHistory([keyword, ...searchHistory])
         } else { 
@@ -227,16 +278,30 @@ export default function MyThumbsSearch({ isCookie, memberId, setMusicalId, setRe
         setValue('');
     }
 
+    const ifReviewBlocked = async (reviewId) => {
+        await ifReviewBlocked(reviewId);
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             {isBeforeSearch ?
             <>
                 {/* 검색 전 상단바 */}
-                <View style={tw`mx-[5%] mt-[23px] mb-[11px]`}>
-                    <View style={tw`flex-row justify-between min-h-[34px] bg-[#E6E6E6] rounded-[19.5px]`}>
-                        <View style={tw`flex-row w-[90%] h-[100%] items-center`}>
+                <View style={tw`flex flex-row items-center mx-[5%] mt-[17px] mb-[11px]`}>
+                    <Pressable onPress={goBack}>
+                        <Image source={require('@images/chevron_left.png')} style={tw`w-[10px] h-[18px] mr-[22.5px] tint-[#191919]`} />
+                    </Pressable>
+                    <View style={tw`flex-row w-[90%] h-[100%] justify-between min-h-[34px] bg-[#E6E6E6] rounded-[19.5px]`}>
+                        <View style={tw`flex-row items-center`}>
                             <Image source={require('@images/search.png')} style={tw`ml-[18px] w-[18px] h-[18px] tint-[#ABABAB]`} />
-                            <TextInput ref={(text) => this.textInput = text} onChangeText={(text) => onChangeText(text)} onSubmitEditing={() => onPressSearch(value)} returnKeyType="done" placeholder='키워드를 검색해보세요' style={tw`ml-[14px]`}  />
+                            <TextInput 
+                                ref={(text) => this.textInput = text} 
+                                onChangeText={(text) => onChangeText(text)} 
+                                onSubmitEditing={() => onPressSearch(value)}
+                                returnKeyType="done" 
+                                placeholder='키워드를 검색해보세요' 
+                                style={tw`ml-[14px]`}
+                                />
                         </View>
                         <View style={tw`self-center`}>
                             {ifX ? <Pressable onPress={deleteTextInput}><Image source={require('@images/x.png')} style={tw`mr-[12px] w-[16px] h-[16px] tint-[#ABABAB]`} /></Pressable> : null}
@@ -279,9 +344,18 @@ export default function MyThumbsSearch({ isCookie, memberId, setMusicalId, setRe
                     <Pressable onPress={()=> {setIsBeforeSearch(true); setIfX(false);}}>
                         <Image source={require('@images/chevron_left.png')} style={tw`w-[10px] h-[18px] mr-[22.5px] tint-[#191919]`} />
                     </Pressable>
-                    <View style={tw`flex-row justify-between min-h-[34px] bg-[#E6E6E6] rounded-[19.5px]`}>
+                    <View style={tw`flex-row w-[90%] h-[100%] justify-between min-h-[34px] bg-[#E6E6E6] rounded-[19.5px]`}>
                         <View style={tw`flex-row items-center`}>
-                            <TextInput style={tw`mx-[14px] font-medium`} defaultValue={placeholderValue} width="80%" onFocus={searchAgain} ref={(text) => this.textInput = text} onChangeText={(text) => onChangeText(text)} onSubmitEditing={() => onPressSearch(value)} returnKeyType="done" />
+                            <TextInput 
+                                style={tw`mx-[14px] font-medium`} 
+                                defaultValue={placeholderValue} 
+                                width="80%" 
+                                onFocus={searchAgain} 
+                                ref={(text) => this.textInput = text} 
+                                onChangeText={(text) => onChangeText(text)} 
+                                onSubmitEditing={() => onPressSearch(value)} 
+                                returnKeyType="done" 
+                                />
                         </View>
                         <View style={tw`self-center`}>
                             <Pressable onPress={()=> {setIsBeforeSearch(true);}}><Image source={require('@images/x.png')} style={tw`mr-[12px] w-[16px] h-[16px] tint-[#ABABAB]`} /></Pressable>
@@ -305,12 +379,10 @@ export default function MyThumbsSearch({ isCookie, memberId, setMusicalId, setRe
                                         isMine={review.memberId === memberId}
                                         setReviewInfo={setReviewInfo}
                                         setReviewInfo2={setReviewInfo2}
-                                        isShortReviewSpoiler={review.isShortReviewSpoiler}
+                                        isShortReviewSpoiler={review.reviewSpoiler}
                                         setGoToFeed={setGoToFeed}
+                                        setOnRefreshWhenDelete={setOnRefreshWhenDelete}
                                     />
-                                    {index < searchedReviews.length - 1 && (
-                                        <View style={tw`border-4 border-[#F0F0F0]`}></View>
-                                    )}
                                 </Fragment>
                             );
                         })}
