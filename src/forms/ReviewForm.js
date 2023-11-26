@@ -557,7 +557,7 @@ export function ShortReviewFormInMypage(props) {
                             <View style={tw`flex-row items-center bg-[#F5F5F5] rounded-[5px] w-[230px] min-h-[30px] mt-[5px]`}>
                                 {seeSpoiler ?
                                     <View style={tw`flex-row justify-between mx-1.5 my-1.5`}>
-                                        <Text numberOfLines={1} style={tw`w-full text-xs text-[#191919] font-medium mr-1.5`}>
+                                        <Text numberOfLines={1} style={tw`w-full text-xs text-[#191919] font-medium mr-1.5 w-[98%]`}>
                                             "{props.shortReview}"
                                         </Text>
                                     </View>
