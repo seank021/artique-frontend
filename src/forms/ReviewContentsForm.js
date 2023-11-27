@@ -52,7 +52,7 @@ export const CastingForm = (props) => {
                 <Text style={tw`text-[#191919] text-base font-medium mt-[24px] mb-[12px]`}>캐스팅 입력하기</Text>
                 {castings.map((cast, index) => (
                     <View key={index} style={tw`flex-row items-center`}>
-                        <Text style={tw`text-[#191919] text-sm my-[7.5px] mr-[10px]`}>{cast}</Text>
+                        <Text style={tw`text-[#191919] text-sm my-[5px] mr-[10px]`}>{cast}</Text>
                         <Pressable onPress={() => removeCasting(index)}><Image source={require('@images/x.png')} style={tw`w-[14px] h-[14px] tint-[#ABABAB]`}></Image></Pressable>
                     </View>
                 ))}
