@@ -48,7 +48,7 @@ export const CastingForm = (props) => {
 
     return (
         <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={() => props.setModalVisible(false)}>
-            <View style={tw`flex flex-col justify-around items-center self-center w-[230px] bg-[#FAFAFA] rounded-[15px] ${Platform.OS==='android' ? "mb-0" : "mb-[150px]"}`}>
+            <View style={tw`flex flex-col justify-around items-center self-center w-[230px] bg-[#FAFAFA] rounded-[15px] ${Platform.OS === 'android' ? "mb-0" : "mb-[150px]"}`}>
                 <Text style={tw`text-[#191919] text-base font-medium mt-[24px] mb-[12px]`}>캐스팅 입력하기</Text>
                 {castings.map((cast, index) => (
                     <View key={index} style={tw`flex-row items-center`}>
@@ -57,7 +57,7 @@ export const CastingForm = (props) => {
                     </View>
                 ))}
                 <TextInput style={tw`text-sm text-center`} placeholder={placeholder} editable={editable} placeholderTextColor="#B6B6B6" onChangeText={(text) => setCasting(text)} value={casting}></TextInput>
-                <Pressable onPress={addCasting}><Image source={require('@images/add_button.png')} style={tw`w-[20px] h-[20px] mb-[20px] mt-[10px]`}></Image></Pressable>
+                <Pressable onPress={addCasting}><Image source={require('@images/add_button.png')} style={tw`w-[20px] h-[20px] mb-[20px] mt-[15px]`}></Image></Pressable>
                 <View style={tw`w-[100%] border-[0.5px] border-[#D3D4D3]`}></View>
                 <Pressable onPress={onPressSave}><Text style={tw`text-[#191919] text-sm my-[15px]`}>저장</Text></Pressable>
             </View>
@@ -79,7 +79,7 @@ export const SeatForm = (props) => {
 
     return (
         <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={() => props.setModalVisible(false)}>
-            <View style={tw`flex flex-col justify-around items-center self-center w-[230px] bg-[#FAFAFA] rounded-[15px] ${Platform.OS==='android' ? "mb-0" : "mb-[150px]"}`}>
+            <View style={tw`flex flex-col justify-around items-center self-center w-[230px] bg-[#FAFAFA] rounded-[15px] ${Platform.OS === 'android' ? "mb-0" : "mb-[150px]"}`}>
                 <Text style={tw`text-[#191919] text-base font-medium mt-[24px] mb-[12px]`}>좌석 입력하기</Text>
                 <TextInput style={tw`text-sm mb-[15px] text-center`} value={seat} defaultValue={seat} placeholder="좌석 위치를 입력해주세요" placeholderTextColor="#B6B6B6" onChangeText={(text) => setSeat(text)}></TextInput>
                 <View style={tw`w-[100%] border-[0.5px] border-[#D3D4D3]`}></View>
@@ -178,7 +178,7 @@ export const LongReviewForm = (props) => {
                     </View>
                     <Text style={tw`text-[#B6B6B6] text-xs mb-[21px] self-end mr-[5%]`}>{charCount} / 2500</Text>
                 </View>
-                
+
                 <View style={tw`flex-1 flex-row justify-between bg-[#F5F5F5] w-[90%] h-[80%] self-center rounded-[5px] mb-[10px]`}>
                     <TextInput style={tw`flex flex-wrap text-sm self-start px-[10px] my-[10px]`} defaultValue={longReview} placeholder="긴줄평을 입력해주세요" placeholderTextColor="#B6B6B6" onChangeText={onLongReviewChange} maxLength={2500} multiline={true} value={longReview}></TextInput>
                 </View>
