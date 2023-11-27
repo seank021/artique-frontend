@@ -35,22 +35,28 @@ export default function Announcement ({isCookie}) {
               <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] w-[10px] h-[18px] tint-[#191919]`}></Image>
           </Pressable>
           <Text style={tw`text-[#191919] text-base font-medium`}>공지사항</Text>
-          <View style={tw`mr-[20px]`}></View>
+          <View style={tw`mr-[30px]`}></View>
         </View>
         <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
 
         {/* 공지사항 -> 현재 공지사항이 빈 배열이라 에러남*/}
-        {/* <ScrollView style={tw`flex-col`}>
-          {notice?.map((item, index) => (
-            <>
-              <Pressable key={index} onPress={goToDocument} style={tw`flex-row justify-between items-center h-[57px] mx-5`}>
-                <Text style={tw`text-sm text-[#191919] font-normal`}>{item.title}</Text>
-                <Image source={require('@images/chevron_right.png')} style={tw`w-[10px] h-[18px] tint-[#CBCDCB]`}></Image>
-              </Pressable>
-              <View style={tw`border-solid border-b border-[#E5E6E5]`}></View>
-            </>
-          ))}
-        </ScrollView> */}
+        <ScrollView style={tw`flex-col`}>
+          {notice.length > 0 ? (
+            notice.map((item, index) => (
+              <>
+                <Pressable key={index} onPress={goToDocument} style={tw`flex-row justify-between items-center h-[57px] mx-5`}>
+                  <Text style={tw`text-sm text-[#191919] font-normal`}>{item.title}</Text>
+                  <Image source={require('@images/chevron_right.png')} style={tw`w-[10px] h-[18px] tint-[#CBCDCB]`}></Image>
+                </Pressable>
+                <View style={tw`border-solid border-b border-[#E5E6E5]`}></View>
+              </>
+            ))
+          ) : (
+              <View style={tw`flex-col justify-center items-center h-[100px]`}>
+                <Text style={tw`text-sm text-[#191919] font-normal my-0`}>공지사항이 없습니다.</Text>
+              </View>
+          )}
+        </ScrollView>
     </SafeAreaView>
   )
 }
