@@ -182,8 +182,9 @@ export default function Login1({setGoToFeed, setIsCookie}) {
         </View>
 
         <ButtonForm
-          borderColor="#ABABAB"
-          textColor="#ABABAB"
+          borderColor="#F5F8F5"
+          bgColor="#F5F8F5"
+          textColor="#191919"
           text={'로그인'}
           onPress={onPressLogin}
           ifOpacity={true}></ButtonForm>

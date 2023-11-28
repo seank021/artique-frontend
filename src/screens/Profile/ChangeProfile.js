@@ -107,9 +107,6 @@ export default function ChangeProfile({isCookie, setGoToFeed}) {
     const [modalVisible, setModalVisible] = useState(false);
     const [imageChangeModalVisible, setImageChangeModalVisible] = useState(false);
 
-    const [borderColor, setBorderColor] = useState('#B6B6B6');
-    const [buttonColor, setButtonColor] = useState('#FFF');
-    const [buttonTextColor, setButtonTextColor] = useState('#B6B6B6');
     const [buttonText, setButtonText] = useState('중복확인');
     const [ifButtonID, setIfButtonID] = useState(false);
 
@@ -170,7 +167,6 @@ export default function ChangeProfile({isCookie, setGoToFeed}) {
     }
 
     const reappearButton = () => {
-        setBorderColor('#ABABAB');
         setIfButtonID(true);
     };
 
@@ -204,10 +200,6 @@ export default function ChangeProfile({isCookie, setGoToFeed}) {
                 ...prevIfWriting,
                 nickname: true,
             }));
-
-            setBorderColor('#B6B6B6');
-            setButtonColor('#FFF');
-            setButtonTextColor('#191919');
         }
     };
 
@@ -262,9 +254,9 @@ export default function ChangeProfile({isCookie, setGoToFeed}) {
                     inputSizeColor={inputSizeColor.nickname}
                     ifWriting={ifWriting.nickname}
                     ifButton={ifButtonID}
-                    borderColor={borderColor}
-                    buttonColor={buttonColor}
-                    buttonTextColor={buttonTextColor}
+                    borderColor="#D3D4D3"
+                    buttonColor="#FFFFFF"
+                    buttonTextColor="D3D4D3"
                     buttonText={buttonText}
                     onPressButton={checkDuplicate}
                     ifCheck={ifCheckNickname}

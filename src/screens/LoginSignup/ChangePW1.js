@@ -87,8 +87,9 @@ export default function Login1() {
         </View>
 
         <ButtonForm
-          borderColor="#ABABAB"
-          textColor="#ABABAB"
+          borderColor="#F5F8F5"
+          bgColor="#F5F8F5"
+          textColor="#191919"
           text={'요청하기'}
           onPress={onPressRequest}
           ifOpacity={true}>

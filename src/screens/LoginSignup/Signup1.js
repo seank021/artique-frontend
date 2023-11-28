@@ -41,9 +41,6 @@ export default function Login1() {
   const [ifCheckPW, setIfCheckPW] = useState(false);
   const [ifXPW, setIfXPW] = useState(false);
 
-  const [opacityBorder, setOpacityBorder] = useState('#ABABAB');
-  const [opacityBg, setOpacityBg] = useState('#3A3D52');
-  const [textColor, setTextColor] = useState('#ABABAB');
   const [verifyEmailModalVisible, setVerifyEmailModalVisible] = useState(false);  
   const [ifClearedVerificationStage, setIfClearedVerificationStage] = useState(false);
 
@@ -327,9 +324,9 @@ export default function Login1() {
           compareValue={nullFunc}
           reappearButton={reappearButton}
           ifButton={ifButtonID}
-          borderColor={borderColor}
-          buttonColor={buttonColor}
-          buttonTextColor={buttonTextColor}
+          borderColor="#F5F8F5"
+          buttonColor="#F5F8F5"
+          buttonTextColor="#191919"
           buttonText={buttonText}
           onPressButton={checkDuplicate}
           ifCheck={ifCheckID}
@@ -374,8 +371,8 @@ export default function Login1() {
           <ContractForm modalVisible={contractModal2Visible} setModalVisible={setContractModal2Visible} contractNum={2}></ContractForm>
         </View>
 
-        <Pressable onPress={onPressEmailVerify} style={tw`w-[90%] h-[46px] border-solid border-2 rounded-3xl self-center justify-center items-center border-[${opacityBorder}] bg-[${opacityBg}]`} ifOpacity={true} onPressIn={() => { setOpacityBorder("#F5F8F5"); setOpacityBg("#F5F8F5"); setTextColor("#191919"); }} onPressOut={() => { setOpacityBorder("#ABABAB"); setOpacityBg("#3A3D52"); setTextColor("#ABABAB"); }}>
-            <Text style={tw`font-semibold text-lg text-[${textColor}]`}>본인인증 후 가입하기</Text>
+        <Pressable onPress={onPressEmailVerify} style={tw`w-[90%] h-[46px] border-solid border-2 rounded-3xl self-center justify-center items-center border-[#F5F8F5] bg-[#F5F8F5]`}>
+            <Text style={tw`font-semibold text-lg text-[#191919]`}>본인인증 후 가입하기</Text>
         </Pressable>
         <EmailVerityForm modalVisible={verifyEmailModalVisible} setModalVisible={setVerifyEmailModalVisible} setIfClearedVerificationStage={setIfClearedVerificationStage} email={id}></EmailVerityForm>
       </ScrollView>
