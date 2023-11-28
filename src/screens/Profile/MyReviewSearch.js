@@ -357,12 +357,12 @@ export default function MyReviewSearch({ isCookie, memberId, setMusicalId, setRe
                 <View style={tw`border-[0.5px] border-[#D3D4D3]`}></View>
 
                 {/* 검색 결과 */}
-                <View style={tw`flex-row justify-between items-center mx-[5%] mt-4 mb-3.5`}>
-                    <Text style={tw`text-sm text-[#191919] font-medium`}>검색 결과 ({searchedReviews.length})</Text>
-                </View>
-
                     {searchedReviews.length !== 0 ?
                         <ScrollView onScroll={detectScroll} showsVerticalScrollIndicator={false} onRefresh={onRefresh} >
+                            <View style={tw`flex-row justify-between items-center mx-[5%] mt-4 mb-3.5`}>
+                                <Text style={tw`text-sm text-[#191919] font-medium`}>검색 결과 ({searchedReviews.length})</Text>
+                            </View>
+
                             {searchedReviews.map((review, index) => {
                                 return (
                                     <Fragment key={index}>
