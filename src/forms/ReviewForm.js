@@ -34,6 +34,9 @@ export function ShortReviewForm(props) {
     const [seeSpoiler, setSeeSpoiler] = useState(!props.isShortReviewSpoiler);
     const [wasSpoiler, setWasSpoiler] = useState(props.isShortReviewSpoiler);
 
+    const [blockedReview, setBlockedReview] = useState(false);
+    const [blockedUser, setBlockedUser] = useState(false);
+
     useEffect(() => {
         setIsCookie(props.isCookie);
     }, [props.isCookie]);
@@ -45,6 +48,22 @@ export function ShortReviewForm(props) {
             setThumbsUpImg(require('@images/like_gray_small.png'));
         }
     }, [isThumbsUp, isCookie]);
+
+    useEffect(() => {
+        ifReviewBlocked(props.reviewInfo.reviewId).then((result) => {
+            setBlockedReview(result);
+        }).catch((err) => {
+            console.log(err);
+        });
+    }, []);
+
+    useEffect(() => {
+        ifUserBlocked(props.reviewInfo.memberId).then((result) => {
+            setBlockedUser(result);
+        }).catch((err) => {
+            console.log(err);
+        });
+    }, []);
 
     const onPressThumbsUp = () => {
         if (!props.isCookie) {
@@ -74,6 +93,7 @@ export function ShortReviewForm(props) {
     };
 
     return (
+        !blockedReview && !blockedUser &&
         <>
             <View>
                 <AlertForm modalVisible={modalVisible} setModalVisible={setModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
