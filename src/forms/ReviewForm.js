@@ -265,7 +265,7 @@ export function ShortReviewFormInFeed(props) {
                                 <View style={tw`flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mt-[5px] mb-[14px] p-[6px] rounded-2 w-[95%]`}>
                                     {seeSpoiler ?
                                         <>
-                                            <Text numberOfLines={1} style={[tw`text-[#191919] font-medium leading-[22px] w-full`, {fontSize: getFontSize(14)}]}>"{props.reviewInfo.shortReview}"</Text>
+                                            <Text numberOfLines={2} style={[tw`text-[#191919] font-medium leading-[22px] w-full`, {fontSize: getFontSize(14)}]}>"{props.reviewInfo.shortReview}"</Text>
                                         </>
                                         :
                                         <Text style={[tw`text-[#B6B6B6] font-medium leading-[22px] underline`, {fontSize: getFontSize(14)}]}>스포일러 포함</Text>
