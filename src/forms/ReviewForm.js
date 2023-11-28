@@ -32,6 +32,7 @@ export function ShortReviewForm(props) {
     const [alertText, setAlertText] = useState('로그인이 필요한 서비스입니다.');
 
     const [seeSpoiler, setSeeSpoiler] = useState(!props.isShortReviewSpoiler);
+    const [wasSpoiler, setWasSpoiler] = useState(props.isShortReviewSpoiler);
 
     useEffect(() => {
         setIsCookie(props.isCookie);
@@ -93,14 +94,14 @@ export function ShortReviewForm(props) {
                         <Text style={tw`text-[#191919] text-sm`}>{props.reviewInfo.starRating.toFixed(1)}</Text>
                     </View>
                 </View>
-                <View onTouchEnd={()=>setSeeSpoiler(true)} style={tw`flex flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mb-[15px] items-center p-[6px] rounded-2`}>
+                <View style={tw`flex flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mb-[15px] items-center p-[6px] rounded-2`}>
                     {seeSpoiler ?
-                        <>
-                        <Text style={tw`self-start text-[#191919] text-sm font-medium leading-[24px]`}>"</Text>
-                        <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>{props.reviewInfo.shortReview}"</Text>
-                        </>
+                        wasSpoiler ?
+                            <Text onPress={(e)=> { e.stopPropagation(); setSeeSpoiler(!seeSpoiler)}} numberOfLines={2} style={tw`text-[#191919] text-sm font-medium leading-[24px] w-full`}>"{props.reviewInfo.shortReview}"</Text>
+                            :
+                            <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>"{props.reviewInfo.shortReview}"</Text>
                         :
-                        <Text style={tw`text-[#B6B6B6] text-sm font-medium leading-[24px] underline`}>스포일러 포함</Text>
+                        <Text onPress={(e)=> { e.stopPropagation(); setSeeSpoiler(!seeSpoiler)}} style={tw`text-[#B6B6B6] text-sm font-medium leading-[24px] underline`}>스포일러 포함</Text>
                     }
                 </View>
                 <View style={tw`flex-row justify-between items-center`}>
@@ -141,6 +142,7 @@ export function ShortReviewFormInFeed(props) {
     const [reportModalVisible, setReportModalVisible] = useState(false);
 
     const [seeSpoiler, setSeeSpoiler] = useState(!props.isShortReviewSpoiler);
+    const [wasSpoiler, setWasSpoiler] = useState(props.isShortReviewSpoiler);
 
     const [blockedReview, setBlockedReview] = useState(false);
     const [blockedUser, setBlockedUser] = useState(false);
@@ -261,17 +263,16 @@ export function ShortReviewFormInFeed(props) {
                                 })}
                             </Text>
                             {makeStars(props.reviewInfo.starRating)}
-                            <Pressable onTouchEnd={(e)=> { e.stopPropagation(); setSeeSpoiler(true)}}>
-                                <View style={tw`flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mt-[5px] mb-[14px] p-[6px] rounded-2 w-[95%]`}>
-                                    {seeSpoiler ?
-                                        <>
-                                            <Text numberOfLines={2} style={[tw`text-[#191919] font-medium leading-[22px] w-full`, {fontSize: getFontSize(14)}]}>"{props.reviewInfo.shortReview}"</Text>
-                                        </>
+                            <View style={tw`flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mt-[5px] mb-[14px] p-[6px] rounded-2 w-[95%]`}>
+                                {seeSpoiler ?
+                                    wasSpoiler ?
+                                        <Text onPress={(e)=> { e.stopPropagation(); setSeeSpoiler(!seeSpoiler)}} numberOfLines={2} style={[tw`text-[#191919] font-medium leading-[22px] w-full`, {fontSize: getFontSize(14)}]}>"{props.reviewInfo.shortReview}"</Text>
                                         :
-                                        <Text style={[tw`text-[#B6B6B6] font-medium leading-[22px] underline`, {fontSize: getFontSize(14)}]}>스포일러 포함</Text>
-                                    }
-                                </View>
-                            </Pressable>
+                                        <Text numberOfLines={2} style={[tw`text-[#191919] font-medium leading-[22px] w-full`, {fontSize: getFontSize(14)}]}>"{props.reviewInfo.shortReview}"</Text>
+                                    :
+                                    <Text onPress={(e)=> { e.stopPropagation(); setSeeSpoiler(!seeSpoiler)}} style={[tw`text-[#B6B6B6] font-medium leading-[22px] underline`, {fontSize: getFontSize(14)}]}>스포일러 포함</Text>
+                                }
+                            </View>
                         </View>
                     </Pressable>
                 </View>
@@ -306,6 +307,7 @@ export function ShortReviewFormInMyReviews(props) {
     const [reportModalVisible, setReportModalVisible] = useState(false);
 
     const [seeSpoiler, setSeeSpoiler] = useState(!props.isShortReviewSpoiler);
+    const [wasSpoiler, setWasSpoiler] = useState(props.isShortReviewSpoiler);
 
     const [blockedReview, setBlockedReview] = useState(false);
     const [blockedUser, setBlockedUser] = useState(false);
@@ -413,18 +415,16 @@ export function ShortReviewFormInMyReviews(props) {
                                 })}
                             </Text>
                             {makeStars(props.reviewInfo.starRating)}
-                            <Pressable onTouchEnd={(e)=> { e.stopPropagation(); setSeeSpoiler(true)}}>
-                                <View style={tw`flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mt-[5px] mb-[14px] p-[6px] rounded-2 w-[95%]`}>
-                                    {seeSpoiler ?
-                                        <>
-                                            <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>"</Text>
-                                            <Text numberOfLines={1} style={tw`text-[#191919] text-sm font-medium leading-[24px] w-full`}>{props.reviewInfo.shortReview}"</Text>
-                                        </>
+                            <View style={tw`flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mt-[5px] mb-[14px] p-[6px] rounded-2 w-[95%]`}>
+                                {seeSpoiler ?
+                                    wasSpoiler ?
+                                        <Text onPress={(e)=> { e.stopPropagation(); setSeeSpoiler(!seeSpoiler)}} numberOfLines={1} style={tw`text-[#191919] text-sm font-medium leading-[24px] w-full`}>"{props.reviewInfo.shortReview}"</Text>
                                         :
-                                        <Text style={[tw`text-[#B6B6B6] font-medium leading-[22px] underline`, {fontSize: getFontSize(14)}]}>스포일러 포함</Text>
-                                    }
-                                </View>
-                            </Pressable>
+                                        <Text numberOfLines={1} style={tw`text-[#191919] text-sm font-medium leading-[24px] w-full`}>"{props.reviewInfo.shortReview}"</Text>
+                                    :
+                                    <Text onPress={(e)=> { e.stopPropagation(); setSeeSpoiler(!seeSpoiler)}} style={[tw`text-[#B6B6B6] font-medium leading-[22px] underline`, {fontSize: getFontSize(14)}]}>스포일러 포함</Text>
+                                }
+                            </View>
                         </View>
                     </Pressable>
                 </View>
@@ -535,6 +535,7 @@ export function MusicalInfoFormInReviewDetail(props) {
 {/* props: reviewId, musicalName, starRating, shortReview*/}
 export function ShortReviewFormInMypage(props) {
     const [seeSpoiler, setSeeSpoiler] = useState(!props.isShortReviewSpoiler);
+    const [wasSpoiler, setWasSpoiler] = useState(props.isShortReviewSpoiler);
 
     const [blockedReview, setBlockedReview] = useState(false);
 
@@ -556,13 +557,20 @@ export function ShortReviewFormInMypage(props) {
                         {makeStars(props.starRating)}
                             <View style={tw`flex-row items-center bg-[#F5F5F5] rounded-[5px] w-[230px] min-h-[30px] mt-[5px]`}>
                                 {seeSpoiler ?
-                                    <View style={tw`flex-row justify-between mx-1.5 my-1.5`}>
-                                        <Text numberOfLines={1} style={tw`w-full text-xs text-[#191919] font-medium mr-1.5 w-[98%]`}>
-                                            "{props.shortReview}"
-                                        </Text>
-                                    </View>
+                                    wasSpoiler ?
+                                        <View style={tw`flex-row justify-between mx-1.5 my-1.5`}>
+                                            <Text onPress={(e)=> { e.stopPropagation(); setSeeSpoiler(!seeSpoiler)}} numberOfLines={1} style={tw`w-full text-xs text-[#191919] font-medium mr-1.5 w-[98%]`}>
+                                                "{props.shortReview}"
+                                            </Text>
+                                        </View>
+                                        :
+                                        <View style={tw`flex-row justify-between mx-1.5 my-1.5`}>
+                                            <Text numberOfLines={1} style={tw`w-full text-xs text-[#191919] font-medium mr-1.5 w-[98%]`}>
+                                                "{props.shortReview}"
+                                            </Text>
+                                        </View>
                                     :
-                                    <Pressable onTouchEnd={(e)=> { e.stopPropagation(); setSeeSpoiler(true)}} style={tw`mx-2 my-1.5`}>
+                                    <Pressable onPress={(e)=> { e.stopPropagation(); setSeeSpoiler(!seeSpoiler)}} style={tw`mx-2 my-1.5`}>
                                         <Text style={[tw`text-[#B6B6B6] font-medium underline`, {fontSize: getFontSize(12)}]}>스포일러 포함</Text>
                                     </Pressable>
                                 }
