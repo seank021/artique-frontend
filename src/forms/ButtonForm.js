@@ -26,7 +26,7 @@ export default function ButtonForm(props) {
 export function VerifyButtonForm(props) {
     const buttonStyles = {
         ...tw`w-[81px] h-[26px] rounded-3xl self-center justify-center items-center`,
-        borderWidth: 1.5,
+        borderWidth: 1,
         borderColor: props.borderColor,
         backgroundColor: props.buttonColor,
     }

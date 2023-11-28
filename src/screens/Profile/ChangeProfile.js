@@ -256,7 +256,7 @@ export default function ChangeProfile({isCookie, setGoToFeed}) {
                     ifButton={ifButtonID}
                     borderColor="#D3D4D3"
                     buttonColor="#FFFFFF"
-                    buttonTextColor="D3D4D3"
+                    buttonTextColor="#191919"
                     buttonText={buttonText}
                     onPressButton={checkDuplicate}
                     ifCheck={ifCheckNickname}
