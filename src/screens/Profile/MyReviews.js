@@ -263,16 +263,16 @@ export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId
             </View>
             <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
 
-      {/* 리뷰 목록*/}
-        <View style={tw`flex-row w-9/10 items-center justify-between mt-4 mb-2 mx-5`}>
-            <Text style={tw`text-sm text-[#191919] font-medium`}>모든 리뷰 ({totalReviewCount})</Text>
-            <Pressable style={tw`flex flex-row items-center`} onPress={onPressSort}>
-                <Text style={tw`text-[#191919] text-xs font-medium mr-[7px]`}>{sortCriteria}</Text>
-                <Image source={require('@images/chevron_down.png')} style={tw`w-[14.4px] h-[8px]`}></Image>
-            </Pressable>
-        </View>
-
         <ScrollView onScroll={detectScroll} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
+          {/* 리뷰 목록*/}
+          <View style={tw`flex-row w-9/10 items-center justify-between mt-4 mb-2 mx-5`}>
+              <Text style={tw`text-sm text-[#191919] font-medium`}>모든 리뷰 ({totalReviewCount})</Text>
+              <Pressable style={tw`flex flex-row items-center`} onPress={onPressSort}>
+                  <Text style={tw`text-[#191919] text-xs font-medium mr-[7px]`}>{sortCriteria}</Text>
+                  <Image source={require('@images/chevron_down.png')} style={tw`w-[14.4px] h-[8px]`}></Image>
+              </Pressable>
+          </View>
+          
           {reviews.map((review, index) => (
               <Fragment key={index}>
                   <ShortReviewFormInMyReviews
