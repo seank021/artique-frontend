@@ -295,7 +295,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }
         </View>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={tw`mt-3 ml-5`}>
           {shortReviewInfo.reviews?.map((review, index) => {
-            if (index < 3) {
+            if (index < 5) {
               return (
                 <ShortReviewFormInMypage 
                   key={index}
