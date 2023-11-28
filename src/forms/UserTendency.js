@@ -25,7 +25,7 @@ export default function UserTendency(props) {
     setMaxUpper(Math.max(memberStat['5.0'] ?? 0, memberStat['4.5'] ?? 0, memberStat['4.0'] ?? 0));
     setMaxMiddle(Math.max(memberStat['2.0'] ?? 0, memberStat['2.5'] ?? 0, memberStat['3.0'] ?? 0, memberStat['3.5'] ?? 0));
     setMaxLower(Math.max(memberStat['0.5'] ?? 0, memberStat['1.0'] ?? 0, memberStat['1.5'] ?? 0));
-  }, []);
+  }, [props.memberStat]);
 
   useEffect(() => {
     if (props.totalReviewCount === 0) {
@@ -93,7 +93,7 @@ export default function UserTendency(props) {
         setDescription('이런저런 작품을 평가하는');
       }
     }
-  }, [name, description, props.totalReviewCount]);
+  }, [props.totalReviewCount]);
 
   return (
     <View style={tw`mt-7.5 ml-5 mb-[33px]`}>
