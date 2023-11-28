@@ -253,7 +253,7 @@ export function ShortReviewFormInFeed(props) {
                     </View>
                     <Pressable onPress={props.goToReviewDetail1} style={{ flex: 1 }}>
                         <View style={[tw`flex-col justify-between ml-[5px] mr-[5px]`, { flex: 1 }]}>
-                            <Text style={tw`text-[#191919] text-base font-medium mt-[14px] mb-[4px]`}>{props.reviewInfo.musicalName}</Text>
+                            <Text numberOfLines={1} style={tw`text-[#191919] text-base font-medium mt-[14px] mb-[4px] w-[90%]`}>{props.reviewInfo.musicalName}</Text>
                             <Text numberOfLines={1} style={tw`text-[#191919] text-xs mb-[14px] w-[90%]`}>
                                 {props.reviewInfo.casting.split(',').map((item, index) => {
                                     if (index === 0) return item;
