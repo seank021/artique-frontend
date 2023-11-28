@@ -10,6 +10,7 @@ import appleAuth from '@invertase/react-native-apple-authentication';
 import axios from 'axios';
 
 import * as Cookies from '@functions/cookie';
+import { setAutoLogin } from '@functions/autoLogin';
 
 import {useNavigation} from '@react-navigation/native';
 
@@ -50,6 +51,7 @@ export default function Login1({setGoToFeed}) {
       try {
         Cookies.setCookie('kakao', response.headers['authorization']);
         Cookies.setCookie('currentLogin', 'kakao');
+        setAutoLogin(true);
         setGoToFeed(true);
       } catch (err) {
         console.log(err);
@@ -83,6 +85,7 @@ export default function Login1({setGoToFeed}) {
       try {
         Cookies.setCookie('google', response.headers['authorization']);
         Cookies.setCookie('currentLogin', 'google');
+        setAutoLogin(true);
         setGoToFeed(true);
       } catch (err) {
         console.log(err);
@@ -109,6 +112,7 @@ export default function Login1({setGoToFeed}) {
         try {
             Cookies.setCookie("apple", response.headers["authorization"]);
             Cookies.setCookie("currentLogin", "apple");
+            setAutoLogin(true);
             setGoToFeed(true);
         } catch (err) {
             console.log(err);
