@@ -183,19 +183,28 @@ export default function ChangeProfile({isCookie, setGoToFeed}) {
             setModalVisible(modalVisible);
             }, 1000);
         } else {
-            setModalVisible(!modalVisible);
-            setAlertImage(require('@images/check.png'));
-            setAlertText('사용 가능한 닉네임입니다.');
-            setTimeout(() => {
-            setModalVisible(modalVisible);
-            }, 1000);
-            setIfCheckNickname(true);
-            setIfButtonID(false);
+            if (nickname.length === 0) {
+                setModalVisible(!modalVisible);
+                setAlertImage(require('@images/x_red.png'));
+                setAlertText('닉네임을 입력해주세요.');
+                setTimeout(() => {
+                setModalVisible(modalVisible);
+                }, 1000);
+            } else {
+                setModalVisible(!modalVisible);
+                setAlertImage(require('@images/check.png'));
+                setAlertText('사용 가능한 닉네임입니다.');
+                setTimeout(() => {
+                setModalVisible(modalVisible);
+                }, 1000);
+                setIfCheckNickname(true);
+                setIfButtonID(false);
 
-            setIfWriting(prevIfWriting => ({
-                ...prevIfWriting,
-                nickname: true,
-            }));
+                setIfWriting(prevIfWriting => ({
+                    ...prevIfWriting,
+                    nickname: true,
+                }));
+            }
         }
     };
 
