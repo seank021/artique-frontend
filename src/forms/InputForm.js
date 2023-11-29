@@ -28,9 +28,9 @@ export default function InputForm(props) {
 export function InputFormInPWChange(props) {
     return (
         <View style={tw`flex flex-row justify-between items-center border-solid border-b border-[#ABABAB] w-[90%] mb-2`}>
-            <View style={tw`flex-row items-center`}>
+            <View style={tw`flex-row items-center w-[90%]`}>
                 <Image source={props.image} style={tw`tint-[#ABABAB] ml-[10px] mr-[20px] w-[20px] h-[20px]`}></Image>
-                <TextInput placeholder={props.placeholder} onChangeText={(text) => { props.setValue(text); props.compareValue(text); }} placeholderTextColor={"#B6B6B6"} secureTextEntry={props.secureTextEntry} color={"#191919"} style={tw`h-40px`}></TextInput>
+                <TextInput placeholder={props.placeholder} onChangeText={(text) => { props.setValue(text); props.compareValue(text); }} placeholderTextColor={"#B6B6B6"} secureTextEntry={props.secureTextEntry} color={"#191919"} style={tw`shrink h-40px min-w-[50%]`}></TextInput>
             </View>
             <>
                 {props.ifButton ?

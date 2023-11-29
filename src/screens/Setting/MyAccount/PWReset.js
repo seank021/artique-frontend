@@ -82,10 +82,10 @@ export default function PWReset ({ isCookie }) {
       <View style={tw`mt-[25px] ml-[5%]`}>
         <Text>새 비밀번호를 받을 메일 주소를 입력해주세요</Text>
       </View>
-      <View style={tw`flex-row w-[90%] items-center justify-start ml-[5%] mt-[35px]`}>
+      <View style={tw`flex-row w-[90%] items-center ml-[5%] mt-[35px]`}>
         <Text style={tw`text-[#191919] text-sm w-[15%]`}>메일 : </Text>
-        <View style={tw`h-[40px] border-b border-[#ABABAB] w-[85%]`}>
-          <TextInput placeholder='새 비밀번호를 받을 메일을 입력해주세요' placeholderTextColor="#ABABAB" inputMode='email' value={email} onChangeText={setEmail} color="#191919" style={tw`text-sm`}></TextInput>
+        <View style={tw`border-b border-[#ABABAB] w-[80%]`}>
+          <TextInput placeholder='새 비밀번호를 받을 메일을 입력해주세요' placeholderTextColor="#ABABAB" inputMode='email' value={email} onChangeText={setEmail} color="#191919" style={tw`text-sm h-[40px]`}></TextInput>
         </View>
       </View>
       
