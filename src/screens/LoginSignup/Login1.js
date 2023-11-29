@@ -118,33 +118,35 @@ export default function Login1({setGoToFeed}) {
   };
 
   onPressApple = async () => {
-    Cookies.removeCookie('currentLogin');
-    setLoginMethod('apple');
-    setContractAlertFormVisible(!contractAlertFormVisible);
+    if (Platform.OS === 'ios') {
+      Cookies.removeCookie('currentLogin');
+      setLoginMethod('apple');
+      setContractAlertFormVisible(!contractAlertFormVisible);
 
-    if (ifChecked1 && ifChecked2) {
-      try {
-          const appleAuthRequestResponse = await appleAuth.performRequest({
-              requestedOperation: appleAuth.Operation.LOGIN,
-              requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
-          });
-          console.log('appleAuthRequestResponse: ', appleAuthRequestResponse);
-          const response = await axios.post('http://3.39.145.210/member/oauth', {
-              thirdPartyName: 'apple',
-              token: appleAuthRequestResponse.identityToken,
-          });
-          console.log(response.data.userId);
-          console.log(response.headers['authorization']);
-          try {
-              Cookies.setCookie("apple", response.headers["authorization"]);
-              Cookies.setCookie("currentLogin", "apple");
-              setAutoLogin(true);
-              setGoToFeed(true);
-          } catch (err) {
-              console.log(err);
-          }
-      } catch (err) {
-          console.log(err);
+      if (ifChecked1 && ifChecked2) {
+        try {
+            const appleAuthRequestResponse = await appleAuth.performRequest({
+                requestedOperation: appleAuth.Operation.LOGIN,
+                requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
+            });
+            console.log('appleAuthRequestResponse: ', appleAuthRequestResponse);
+            const response = await axios.post('http://3.39.145.210/member/oauth', {
+                thirdPartyName: 'apple',
+                token: appleAuthRequestResponse.identityToken,
+            });
+            console.log(response.data.userId);
+            console.log(response.headers['authorization']);
+            try {
+                Cookies.setCookie("apple", response.headers["authorization"]);
+                Cookies.setCookie("currentLogin", "apple");
+                setAutoLogin(true);
+                setGoToFeed(true);
+            } catch (err) {
+                console.log(err);
+            }
+        } catch (err) {
+            console.log(err);
+        }
       }
     }
   };
