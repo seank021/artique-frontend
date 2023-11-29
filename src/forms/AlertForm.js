@@ -488,7 +488,7 @@ export const AlertFormForReport = (props) => {
 }
 
 // due to different parameter name (id), this is a different function from AlertFormForModifyAndDelete
-// props: modalVisible, setModalVisible, reviewInfo, setOnRefreshWhenDelete / setGoToFeed
+// props: modalVisible, setModalVisible, reviewInfo, setReviewInfo, setReviewInfo2, setOnRefreshWhenDelete / setGoToFeed
 export const AlertFormForModifyAndDeleteInReviewDetail1 = (props) => {
     const nav = useNavigation();
 
@@ -519,7 +519,10 @@ export const AlertFormForModifyAndDeleteInReviewDetail1 = (props) => {
 
     const onPressModify = async () => {
         props.setModalVisible(false);
-        nav.navigate('ReviewUpdate1', {reviewInfo: props.reviewInfo, reviewInfo2: props.reviewInfo});
+        props.setReviewInfo(props.reviewInfo);
+        const reviewInfo2 = await reviewDetail(props.reviewInfo.id);
+        props.setReviewInfo2(reviewInfo2);
+        nav.navigate('ReviewUpdate1', {reviewInfo: props.reviewInfo, reviewInfo2: reviewInfo2});
     }
 
     const onPressDelete = () => {

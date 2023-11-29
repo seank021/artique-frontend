@@ -191,8 +191,8 @@ export default function ReviewUpdate1({ isCookie, reviewInfo, reviewInfo2, setGo
             <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
 
             <View style={tw`flex-row items-center my-[15px]`}>
-                <Image source={{uri: reviewInfo?.posterUrl}} style={tw`w-[50px] h-[72.018px] mx-[5%] mr-[10px] rounded-2`}></Image>
-                <Text style={tw`text-[#000] text-base font-medium leading-[25px] w-[75%]`} numberOfLines={2}>{reviewInfo?.musicalName}</Text>
+                <Image source={{uri: reviewInfo2?.musicalPosterUrl}} style={tw`w-[50px] h-[72.018px] mx-[5%] mr-[10px] rounded-2`}></Image>
+                <Text style={tw`text-[#000] text-base font-medium leading-[25px] w-[75%]`} numberOfLines={2}>{reviewInfo2?.musicalTitle}</Text>
             </View>
 
             <View style={tw`border-4 border-[#F0F0F0] mb-[15px]`}></View>

@@ -10,8 +10,8 @@ import { MusicalInfoFormInReviewDetail } from "@forms/ReviewForm";
 import { reviewDetail } from "@functions/api";
 import AlertForm, { AlertFormForModifyAndDeleteInReviewDetail1, AlertFormForReportInReviewDetail1 } from "@forms/AlertForm";
 
-export default function ReviewDetail1({isCookie, reviewId, memberId}) {
-    const [reviewInfo, setReviewInfo] = useState({});
+export default function ReviewDetail1({isCookie, reviewId, memberId, setReviewInfo, setReviewInfo2, setGoToFeed}) {
+    const [reviewInfo, setReviewInfo_] = useState({});
 
     const [isMine, setIsMine] = useState(false);
     const [reportModalVisible, setReportModalVisible] = useState(false);
@@ -34,7 +34,7 @@ export default function ReviewDetail1({isCookie, reviewId, memberId}) {
 
     useEffect(() => {
         reviewDetail(reviewId).then((newReviewDetail) => {
-            setReviewInfo(() => newReviewDetail);
+            setReviewInfo_(() => newReviewDetail);
             setIsMine(newReviewDetail.memberId === memberId);
         }).catch((err) => {
             console.log(err);
@@ -66,9 +66,9 @@ export default function ReviewDetail1({isCookie, reviewId, memberId}) {
 
         setRefreshing(true);
 
-        setReviewInfo({});
+        setReviewInfo_({});
         reviewDetail(reviewId).then((newReviewDetail) => {
-            setReviewInfo(() => newReviewDetail);
+            setReviewInfo_(() => newReviewDetail);
             setIsMine(newReviewDetail.memberId === memberId);
         }).catch((err) => {
             console.log(err);
@@ -94,11 +94,10 @@ export default function ReviewDetail1({isCookie, reviewId, memberId}) {
     }
 
     return (
-        console.log(reviewInfo),
         <SafeAreaView style={styles.container}>
             <AlertForm modalVisible={modalVisible} setModalVisible={setModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
-            <AlertFormForReportInReviewDetail1 modalVisible={reportModalVisible} setModalVisible={setReportModalVisible} reviewInfo={reviewInfo} setOnRefreshWhenDelete={setOnRefreshWhenDelete}></AlertFormForReportInReviewDetail1>
-            <AlertFormForModifyAndDeleteInReviewDetail1 modalVisible={modifynDeleteModalVisible} setModalVisible={setModifynDeleteModalVisible} reviewInfo={reviewInfo} setOnRefreshWhenDelete={setOnRefreshWhenDelete}></AlertFormForModifyAndDeleteInReviewDetail1>
+            <AlertFormForReportInReviewDetail1 modalVisible={reportModalVisible} setModalVisible={setReportModalVisible} reviewInfo={reviewInfo} setOnRefreshWhenDelete={setOnRefreshWhenDelete} setGoToFeed={setGoToFeed}></AlertFormForReportInReviewDetail1>
+            <AlertFormForModifyAndDeleteInReviewDetail1 modalVisible={modifynDeleteModalVisible} setModalVisible={setModifynDeleteModalVisible} reviewInfo={reviewInfo} setReviewInfo={setReviewInfo} setReviewInfo2={setReviewInfo2} setOnRefreshWhenDelete={setOnRefreshWhenDelete} setGoToFeed={setGoToFeed}></AlertFormForModifyAndDeleteInReviewDetail1>
 
             <View style={tw`flex-row items-center justify-between py-[5%] z-20 bg-[#FAFAFA]`}>
                 <Pressable onPress={goBack} style={tw`flex-row`}>
