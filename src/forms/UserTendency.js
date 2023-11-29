@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View } from 'react-native';
-
 import tw from 'twrnc';
 
 // props: nickname, memberStat, totalReviewCount
 export default function UserTendency(props) {
+
   const [upper, setUpper] = useState(0);
   const [middle, setMiddle] = useState(0);
   const [lower, setLower] = useState(0);
-
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-
   const [maxUpper, setMaxUpper] = useState(0);
   const [maxMiddle, setMaxMiddle] = useState(0);
   const [maxLower, setMaxLower] = useState(0);
@@ -32,7 +30,6 @@ export default function UserTendency(props) {
       setName('잠재력이 무한한 관객');
       setDescription('작품 평가를 입력해주세요');
     } 
-
     if (props.totalReviewCount > 0) {
       const upperPercentage = upper / props.totalReviewCount;
       const lowerPercentage = lower / props.totalReviewCount;
@@ -93,7 +90,7 @@ export default function UserTendency(props) {
         setDescription('이런저런 작품을 평가하는');
       }
     }
-  }, [props.totalReviewCount]);
+  }, [name, description, props.totalReviewCount]);
 
   return (
     <View style={tw`mt-7.5 ml-5 mb-[33px]`}>
