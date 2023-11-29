@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, Pressable, Image, StyleSheet, Platform } from "react-native";
+import { View, Text, TextInput, Pressable, Image, StyleSheet, Platform, KeyboardAvoidingView, NativeModules, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Modal from 'react-native-modal';
 
@@ -124,6 +124,16 @@ export const ShortReviewForm = (props) => {
 // 긴줄평 입력 모듈
 // props: modalVisible, setModalVisible, longReview, setFinalLongReview, isLongReviewSpoiler, setIsFinalLongReviewSpoiler
 export const LongReviewForm = (props) => {
+    const { StatusBarManager } = NativeModules
+
+    useEffect(()=>{
+        Platform.OS == 'ios' ? StatusBarManager.getHeight((statusBarFrameData) => {
+            setStatusBarHeight(statusBarFrameData.height)
+        }) : null
+    }, []);
+
+    const [statusBarHeight, setStatusBarHeight] = useState(0);
+
     const [isLongReviewSpoiler, setIsLongReviewSpoiler] = useState(props.isLongReviewSpoiler);
     const [longReviewCheckRectangle, setLongReviewCheckRectangle] = useState(isLongReviewSpoiler ? require('@images/rectangle_checked_with_border.png') : require('@images/rectangle.png'));
 
@@ -155,34 +165,38 @@ export const LongReviewForm = (props) => {
 
     return (
         <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={goBack}>
-            <SafeAreaView style={styles.container}>
-                <View style={tw`flex-row items-center justify-between mt-5 mb-[14px]`}>
-                    <Pressable onPress={goBack} style={tw`flex-row`}>
-                        <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] mr-[8px] w-[10px] h-[18px] tint-[#191919]`}></Image>
-                        <View style={tw`px-[20px]`}></View>
-                    </Pressable>
-                    <Text style={tw`text-[#191919] text-base font-medium`}>긴줄평 적기</Text>
-                    <View style={tw`flex-row`}>
-                        <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] mr-[8px] w-[10px] h-[18px] tint-[#FAFAFA]`}></Image>
-                        <View style={tw`px-[20px]`}></View>
-                    </View>
-                </View>
-                <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <SafeAreaView style={styles.container}>
+                    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? "padding" : "height"} style={tw`flex-1`} keyboardVerticalOffset={statusBarHeight+15}>  
+                        <View style={tw`flex-row items-center justify-between mt-5 mb-[14px]`}>
+                            <Pressable onPress={goBack} style={tw`flex-row`}>
+                                <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] mr-[8px] w-[10px] h-[18px] tint-[#191919]`}></Image>
+                                <View style={tw`px-[20px]`}></View>
+                            </Pressable>
+                            <Text style={tw`text-[#191919] text-base font-medium`}>긴줄평 적기</Text>
+                            <View style={tw`flex-row`}>
+                                <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] mr-[8px] w-[10px] h-[18px] tint-[#FAFAFA]`}></Image>
+                                <View style={tw`px-[20px]`}></View>
+                            </View>
+                        </View>
+                        <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
 
-                <View style={tw`flex-row items-center justify-between mt-[24px]`}>
-                    <View style={tw`flex-row items-center self-start ml-[5%]`}>
-                        <Pressable onPress={checkLongReviewSpoiler}>
-                            <Image source={longReviewCheckRectangle} style={tw`mr-2 w-[16px] h-[16px]`}></Image>
-                        </Pressable>
-                        <Text style={tw`text-[#B6B6B6] text-xs`}>스포일러 포함</Text>
-                    </View>
-                    <Text style={tw`text-[#B6B6B6] text-xs mb-[21px] self-end mr-[5%]`}>{charCount} / 2500</Text>
-                </View>
+                        <View style={tw`flex-row items-center justify-between mt-[24px]`}>
+                            <View style={tw`flex-row items-center self-start ml-[5%]`}>
+                                <Pressable onPress={checkLongReviewSpoiler}>
+                                    <Image source={longReviewCheckRectangle} style={tw`mr-2 w-[16px] h-[16px]`}></Image>
+                                </Pressable>
+                                <Text style={tw`text-[#B6B6B6] text-xs`}>스포일러 포함</Text>
+                            </View>
+                            <Text style={tw`text-[#B6B6B6] text-xs mb-[21px] self-end mr-[5%]`}>{charCount} / 2500</Text>
+                        </View>
 
-                <View style={tw`flex-1 flex-row justify-between bg-[#F5F5F5] w-[90%] h-[80%] self-center rounded-[5px] mb-[10px]`}>
-                    <TextInput style={tw`flex flex-wrap text-sm self-start px-[10px] my-[10px] w-[100%] h-[95%]`} defaultValue={longReview} placeholder="긴줄평을 입력해주세요" placeholderTextColor="#B6B6B6" onChangeText={onLongReviewChange} maxLength={2500} multiline={true} value={longReview}></TextInput>
-                </View>
-            </SafeAreaView>
+                        <View style={tw`flex-1 flex-row justify-between bg-[#F5F5F5] w-[90%] h-[80%] self-center rounded-[5px] mb-[20px]`}>
+                            <TextInput style={tw`flex flex-wrap text-sm self-start px-[10px] my-[10px] w-[100%] h-[95%]`} defaultValue={longReview} placeholder="긴줄평을 입력해주세요" placeholderTextColor="#B6B6B6" onChangeText={onLongReviewChange} maxLength={2500} multiline={true} value={longReview}></TextInput>
+                        </View>
+                    </KeyboardAvoidingView>
+                </SafeAreaView>
+            </TouchableWithoutFeedback>
         </Modal>
     )
 }
