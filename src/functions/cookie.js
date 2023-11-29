@@ -64,7 +64,7 @@ const removeCookie = async (key) => { // 특정 쿠키 삭제 코드
 const clearCookie = async () => { // 모든 쿠키 삭제 코드
     try {
         await AsyncStorage.clear();
-        console.log('쿠키 전체 삭제 완료', await AsyncStorage.getAllKeys());
+        // console.log('쿠키 전체 삭제 완료', await AsyncStorage.getAllKeys());
     } catch (err) {
         console.log(err);
     }
