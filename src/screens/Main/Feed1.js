@@ -12,7 +12,7 @@ import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { feedReviews, thumbsUp } from "@functions/api";
 import * as Cookies from "@functions/cookie";
 import { removeAutoLogin } from "@functions/autoLogin";
-import { ifReviewBlocked } from "@functions/block";
+import { getIfTutorialRead } from "@functions/tutorial";
 
 export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, setReviewInfo, setReviewInfo2, setGoToFeed }) {
     const [refreshing, setRefreshing] = useState(false);
@@ -25,8 +25,19 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
     const [page, setPage] = useState(0);
     const [updatePage, setUpdatePage] = useState(true);
     const [feeds, setFeeds] = useState([]);
-
-    const [tutorialModalVisible, setTutorialModalVisible] = useState(true);
+    
+    const [tutorialModalVisible, setTutorialModalVisible] = useState(false);
+    useEffect(() => {
+        const tutorialRead = async () => {
+            const ifTutorialRead = await getIfTutorialRead();
+            if (ifTutorialRead === "true") {
+                setTutorialModalVisible(false);
+            } else {
+                setTutorialModalVisible(true);
+            }
+        }
+        tutorialRead();
+    }, []);
 
     const [alertModalVisible, setAlertModalVisible] = useState(false);
     const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
@@ -171,7 +182,7 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
         await ifReviewBlocked(reviewId);
     }
 
-    return (        
+    return (
         <SafeAreaView style={styles.container}>
             <AlertForm modalVisible={alertModalVisible} setModalVisible={setAlertModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
             <TutorialModal1 modalVisible={tutorialModalVisible} setModalVisible={setTutorialModalVisible}/>
