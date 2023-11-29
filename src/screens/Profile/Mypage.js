@@ -299,6 +299,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }
               return (
                 <ShortReviewFormInMypage 
                   key={index}
+                  review={review}
                   musicalName={review.musicalName} 
                   starRating={review.starRating} 
                   shortReview={review.shortReview} 

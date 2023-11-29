@@ -552,23 +552,32 @@ export function MusicalInfoFormInReviewDetail(props) {
     )
 }
 
-{/* props: reviewId, musicalName, starRating, shortReview*/}
+{/* props: review, musicalName, starRating, shortReview*/}
 export function ShortReviewFormInMypage(props) {
     const [seeSpoiler, setSeeSpoiler] = useState(!props.isShortReviewSpoiler);
     const [wasSpoiler, setWasSpoiler] = useState(props.isShortReviewSpoiler);
 
     const [blockedReview, setBlockedReview] = useState(false);
+    const [blockedUser, setBlockedUser] = useState(false);
 
     useEffect(() => {
-        ifReviewBlocked(props.shortReview.reviewId).then((result) => {
+        ifReviewBlocked(props.review.reviewId).then((result) => {
             setBlockedReview(result);
         }).catch((err) => {
             console.log(err);
         });
     }, []);
 
+    useEffect(() => {
+        ifUserBlocked(props.review.reviewMemberId).then((result) => {
+            setBlockedUser(result);
+        }).catch((err) => {
+            console.log(err);
+        });
+    }, []);
+
     return (
-        !blockedReview &&
+        !blockedReview && !blockedUser &&
         <Pressable onPress={props.onPressShortReview}>
             <View style={tw`w-[254px] h-[121px] bg-[#FFF] rounded-[10px] shadow mr-2 mb-5`}>
                 <View style={tw`flex flex-col w-full h-full items-start justify-between px-3 py-3`}>

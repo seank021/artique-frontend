@@ -166,11 +166,11 @@ export default function Login1() {
   };
 
   const finalSignupFunction = async () => {
-    console.log(ifCheckID);
-    console.log(ifCheckPW);
-    console.log(rectangle1 === require('@images/rectangle_checked.png'));
-    console.log(rectangle2 === require('@images/rectangle_checked.png'));
-    console.log(ifClearedVerificationStage);
+    // console.log(ifCheckID);
+    // console.log(ifCheckPW);
+    // console.log(rectangle1 === require('@images/rectangle_checked.png'));
+    // console.log(rectangle2 === require('@images/rectangle_checked.png'));
+    // console.log(ifClearedVerificationStage);
     
     if (ifCheckID && ifCheckPW && rectangle1 === require('@images/rectangle_checked.png') && rectangle2 === require('@images/rectangle_checked.png') && ifClearedVerificationStage) {
       const hashedPW = hash(password);

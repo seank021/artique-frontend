@@ -36,28 +36,28 @@ export default function ReviewUpdate1({ isCookie, reviewInfo, reviewInfo2, setGo
             });
         }
     }, []);
-    const [seat, setSeat] = useState(reviewInfo2.seat); // 좌석
+    const [seat, setSeat] = useState(reviewInfo2?.seat); // 좌석
 
     // 관람일자
-    const [year, setYear] = useState(parseInt(reviewInfo2.viewDate.substring(0, 4)));
-    const [month, setMonth] = useState(parseInt(reviewInfo2.viewDate.substring(5, 7)));
-    const [day, setDay] = useState(parseInt(reviewInfo2.viewDate.substring(8, 10)));
+    const [year, setYear] = useState(parseInt(reviewInfo2?.viewDate.substring(0, 4)));
+    const [month, setMonth] = useState(parseInt(reviewInfo2?.viewDate.substring(5, 7)));
+    const [day, setDay] = useState(parseInt(reviewInfo2?.viewDate.substring(8, 10)));
 
     // 별점 평가
-    const [star, setStar] = useState(parseInt(reviewInfo2.rating));
+    const [star, setStar] = useState(parseInt(reviewInfo2?.rating));
 
     // console.log(reviewInfo2);
 
     // 한줄평
-    const [isShortReviewSpoiler, setIsShortReviewSpoiler] = useState(reviewInfo2.shortSpoiler);
-    const [shortReviewCheckRectangle, setShortReviewCheckRectangle] = reviewInfo2.shortSpoiler ? useState(require('@images/rectangle_checked_with_border.png')) : useState(require('@images/rectangle.png'));
+    const [isShortReviewSpoiler, setIsShortReviewSpoiler] = useState(reviewInfo2?.shortSpoiler);
+    const [shortReviewCheckRectangle, setShortReviewCheckRectangle] = reviewInfo2?.shortSpoiler ? useState(require('@images/rectangle_checked_with_border.png')) : useState(require('@images/rectangle.png'));
     const [shortReviewModalVisible, setShortReviewModalVisible] = useState(false); // 한줄평 모달
-    const [shortReview, setShortReview] = useState(reviewInfo2.shortReview);
+    const [shortReview, setShortReview] = useState(reviewInfo2?.shortReview);
 
     // 긴줄평
     const [longReviewModalVisible, setLongReviewModalVisible] = useState(false); // 긴줄평 모달
-    const [longReview, setLongReview] = useState(reviewInfo2.longReview);
-    const [isLongReviewSpoiler, setIsLongReviewSpoiler] = useState(reviewInfo2.longSpoiler);
+    const [longReview, setLongReview] = useState(reviewInfo2?.longReview);
+    const [isLongReviewSpoiler, setIsLongReviewSpoiler] = useState(reviewInfo2?.longSpoiler);
 
     const onPressCasting = () => {
         setCastingModalVisible(!castingModalVisible);
@@ -139,7 +139,7 @@ export default function ReviewUpdate1({ isCookie, reviewInfo, reviewInfo2, setGo
         const finalDay = dayString.padStart(2, '0');
 
         try {
-            const res = await reviewUpdate(reviewInfo2.id, star, shortReview, longReview, casting, `${finalYear}-${finalMonth}-${finalDay}`, seat, isShortReviewSpoiler, isLongReviewSpoiler);
+            const res = await reviewUpdate(reviewInfo2?.id, star, shortReview, longReview, casting, `${finalYear}-${finalMonth}-${finalDay}`, seat, isShortReviewSpoiler, isLongReviewSpoiler);
             if (res === "banned member") {
                 setModalVisible(!modalVisible);
                 setAlertImage(require('@images/x_red.png'));
@@ -191,8 +191,8 @@ export default function ReviewUpdate1({ isCookie, reviewInfo, reviewInfo2, setGo
             <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
 
             <View style={tw`flex-row items-center my-[15px]`}>
-                <Image source={{uri: reviewInfo.posterUrl}} style={tw`w-[50px] h-[72.018px] mx-[5%] mr-[10px] rounded-2`}></Image>
-                <Text style={tw`text-[#000] text-base font-medium leading-[25px] w-[75%]`} numberOfLines={2}>{reviewInfo.musicalName}</Text>
+                <Image source={{uri: reviewInfo2?.musicalPosterUrl}} style={tw`w-[50px] h-[72.018px] mx-[5%] mr-[10px] rounded-2`}></Image>
+                <Text style={tw`text-[#000] text-base font-medium leading-[25px] w-[75%]`} numberOfLines={2}>{reviewInfo2?.musicalTitle}</Text>
             </View>
 
             <View style={tw`border-4 border-[#F0F0F0] mb-[15px]`}></View>
