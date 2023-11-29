@@ -242,11 +242,8 @@ const Navigation = () => {
                 screenOptions={{
                     headerShown: false,
                     tabBarStyle: {
-                        width: "90%",
                         height: "10%",
-                        left: "5%",
-                        shadowColor: "rgba(0, 0, 0, 0)",
-                        borderBlockColor: "rgba(0, 0, 0, 0)",
+                        borderBlockColor: "#e5e5e5",
                         backgroundColor: "#FAFAFA",
                     },
                     tabBarShowLabel: false,

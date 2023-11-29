@@ -10,7 +10,7 @@ export default function InputForm(props) {
         <View style={tw`flex flex-row justify-between items-center border-solid border-b border-[#ABABAB] w-[90%] mb-2`}>
             <View style={[tw`flex-row items-center`, props.ifButton ? tw`w-[55%]` : tw`w-[80%]`]}>
                 <Image source={props.image} style={tw`tint-[#F5F8F5] ml-[10px] mr-[20px] w-[20px] h-[20px]`}></Image>
-                <TextInput placeholder={props.placeholder} onChangeText={(text) => { props.setValue(text); props.compareValue(text); props.reappearButton(text); }} placeholderTextColor={"#ABABAB"} secureTextEntry={props.secureTextEntry} color={"#ABABAB"} style={tw`h-40px min-w-[50%]`}></TextInput>
+                <TextInput placeholder={props.placeholder} onChangeText={(text) => { props.setValue(text); props.compareValue(text); props.reappearButton(text); }} placeholderTextColor={"#ABABAB"} secureTextEntry={props.secureTextEntry} color={"#F5F8F5"} style={tw`h-40px min-w-[50%]`}></TextInput>
             </View>
             <>
                 {props.ifButton ?

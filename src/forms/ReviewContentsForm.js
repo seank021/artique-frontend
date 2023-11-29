@@ -180,7 +180,7 @@ export const LongReviewForm = (props) => {
                 </View>
 
                 <View style={tw`flex-1 flex-row justify-between bg-[#F5F5F5] w-[90%] h-[80%] self-center rounded-[5px] mb-[10px]`}>
-                    <TextInput style={tw`flex flex-wrap text-sm self-start px-[10px] my-[10px]`} defaultValue={longReview} placeholder="긴줄평을 입력해주세요" placeholderTextColor="#B6B6B6" onChangeText={onLongReviewChange} maxLength={2500} multiline={true} value={longReview}></TextInput>
+                    <TextInput style={tw`flex flex-wrap text-sm self-start px-[10px] my-[10px] w-[100%] h-[95%]`} defaultValue={longReview} placeholder="긴줄평을 입력해주세요" placeholderTextColor="#B6B6B6" onChangeText={onLongReviewChange} maxLength={2500} multiline={true} value={longReview}></TextInput>
                 </View>
             </SafeAreaView>
         </Modal>

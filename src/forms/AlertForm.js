@@ -672,6 +672,95 @@ export const ContractForm = (props) => {
     )
 }
 
+// pros: modalVisible, setModalVisible, ifChecked1, setIfChecked1, ifChecked2, setIfChecked2, setIsAllChecked
+// @images/rectangle.png, @images/rectangle_checked.png
+// 이용약관 (필수), 개인정보 처리 방침 (필수)
+export const ContractAlertForm = (props) => {
+    const [img, setImg] = useState(require('@images/rectangle.png'));
+    const [img2, setImg2] = useState(require('@images/rectangle.png'));
+
+    const [check1, setCheck1] = useState(false);
+    const [check2, setCheck2] = useState(false);
+
+    const [alertModalVisible, setAlertModalVisible] = useState(false);
+
+    const [contractModal1Visible, setContractModal1Visible] = useState(false);
+    const [contractModal2Visible, setContractModal2Visible] = useState(false);
+
+    const onPressCheck1 = () => {
+        if (check1) {
+            setImg(require('@images/rectangle.png'));
+            setCheck1(false);
+            props.setIfChecked1(false);
+        }
+        else {
+            setImg(require('@images/rectangle_checked.png'));
+            setCheck1(true);
+            props.setIfChecked1(true);
+        }
+    }
+
+    const onPressCheck2 = () => {
+        if (check2) {
+            setImg2(require('@images/rectangle.png'));
+            setCheck2(false);
+            props.setIfChecked2(false);
+        }
+        else {
+            setImg2(require('@images/rectangle_checked.png'));
+            setCheck2(true);
+            props.setIfChecked2(true);
+        }
+    }
+
+    const onPressConfirm = () => {
+        if (check1 && check2) {
+            props.setIsAllChecked(true);
+            props.setModalVisible(false);
+        }
+        else {
+            setAlertModalVisible(!alertModalVisible);
+            setTimeout(() => {
+                setAlertModalVisible(alertModalVisible);
+            }, 1000);
+        }
+    }
+
+    const onPressContract1 = () => {
+        setContractModal1Visible(!contractModal1Visible);
+    }
+
+    const onPressContract2 = () => {
+        setContractModal2Visible(!contractModal2Visible);
+    }
+
+    return (
+        <>
+            <AlertForm modalVisible={alertModalVisible} setModalVisible={setAlertModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={require('@images/x_red.png')} textColor="#191919" text="약관에 동의해주세요" />
+            <ContractForm modalVisible={contractModal1Visible} setModalVisible={setContractModal1Visible} contractNum={1} />
+            <ContractForm modalVisible={contractModal2Visible} setModalVisible={setContractModal2Visible} contractNum={2} />
+            <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={() => props.setModalVisible(false)}>
+                <View style={tw`flex flex-col w-[90%] h-[220px] bg-white rounded-[15px] self-center items-center justify-center`}>
+                    <Text style={tw`text-base font-medium mt-[20px] mb-[20px] text-[#191919]`}>이용약관 및 개인정보 처리 방침에 동의해주세요.</Text>
+                    <View style={tw`flex flex-col justify-between w-[90%]`}>
+                        <View style={tw`flex-row`}>
+                            <Pressable onPress={onPressCheck1}><Image source={img} style={tw`w-[20px] h-[20px] mr-[10px]`} /></Pressable>
+                            <Text onPress={onPressContract1} style={tw`text-base font-normal text-[#191919] underline`}>이용약관 (필수)</Text>
+                        </View>
+                        <View style={tw`flex-row`}>
+                        <Pressable onPress={onPressCheck2}><Image source={img2} style={tw`w-[20px] h-[20px] mr-[10px]`} /></Pressable>
+                            <Text onPress={onPressContract2} style={tw`text-base font-normal text-[#191919] underline`}>개인정보 처리 방침 (필수)</Text>
+                        </View>
+                    </View>
+                    <Pressable onPress={onPressConfirm} style={tw`w-[90%] h-[40px] bg-[#E94A4B] rounded-[15px] justify-center items-center mt-[20px]`}>
+                        <Text style={tw`text-base font-medium text-white`}>확인</Text>
+                    </Pressable>
+                </View>
+            </Modal>
+        </>
+    )
+}
+
 // props: modalVisible, setModalVisible, setIfClearedVerificationStage, email
 export const EmailVerityForm = (props) => {
     const [verificationNumber, setVerificationNumber] = useState('');

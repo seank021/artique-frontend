@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, Image, Pressable, StyleSheet, Platform} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import tw from 'twrnc';
@@ -10,13 +10,22 @@ import appleAuth from '@invertase/react-native-apple-authentication';
 import axios from 'axios';
 
 import * as Cookies from '@functions/cookie';
+import { setAutoLogin } from '@functions/autoLogin';
 
 import {useNavigation} from '@react-navigation/native';
 
 import ButtonForm from '@forms/ButtonForm';
+import { ContractAlertForm } from '@forms/AlertForm';
 
 export default function Login1({setGoToFeed}) {
   const nav = useNavigation();
+
+  const [contractAlertFormVisible, setContractAlertFormVisible] = useState(false);
+
+  const [ifChecked1, setIfChecked1] = useState(false);
+  const [ifChecked2, setIfChecked2] = useState(false);
+  const [isAllChecked, setIsAllChecked] = useState(false);
+  const [loginMethod, setLoginMethod] = useState('');
 
   useEffect(() => {
     if (Platform.OS === 'ios') {
@@ -35,86 +44,108 @@ export default function Login1({setGoToFeed}) {
     nav.navigate('Login2');
   };
 
+  useEffect(() => {
+    if (isAllChecked) {
+      if (loginMethod === 'kakao') onPressKakao();
+      else if (loginMethod === 'google') onPressGoogle();
+      else if (loginMethod === 'apple') onPressApple();
+    }
+  }, [ifChecked1, ifChecked2, isAllChecked]);
+
   onPressKakao = async () => {
     Cookies.removeCookie('currentLogin');
-    try {
-      const result = await KakaoLogin.login();
-      // console.log(result);
-      // console.log(result.accessToken);
-      const response = await axios.post('http://3.39.145.210/member/oauth', {
-        thirdPartyName: 'kakao',
-        token: result.accessToken,
-      });
-      console.log(response.data.userId);
-      console.log(response.headers['authorization']);
+    setLoginMethod('kakao');
+    setContractAlertFormVisible(!contractAlertFormVisible);
+
+    if (ifChecked1 && ifChecked2) {
       try {
-        Cookies.setCookie('kakao', response.headers['authorization']);
-        Cookies.setCookie('currentLogin', 'kakao');
-        setGoToFeed(true);
+        const result = await KakaoLogin.login();
+        const response = await axios.post('http://3.39.145.210/member/oauth', {
+          thirdPartyName: 'kakao',
+          token: result.accessToken,
+        });
+        console.log(response.data.userId);
+        console.log(response.headers['authorization']);
+        try {
+          Cookies.setCookie('kakao', response.headers['authorization']);
+          Cookies.setCookie('currentLogin', 'kakao');
+          setAutoLogin(true);
+          setGoToFeed(true);
+        } catch (err) {
+          console.log(err);
+        }
       } catch (err) {
         console.log(err);
       }
-    } catch (err) {
-      console.log(err);
     }
   };
 
   onPressGoogle = async () => {
     Cookies.removeCookie('currentLogin');
-    GoogleSignin.configure({
-      webClientId:
-        '1001943377543-q3ed3vrdtg2hhmc8edp88c6eggh48bcs.apps.googleusercontent.com',
-      iosClientId:
-        '1001943377543-qs201dq0br81qia9j80b2bdi2b1q0rfj.apps.googleusercontent.com',
-      offlineAccess: true,
-    });
+    setLoginMethod('google');
+    setContractAlertFormVisible(!contractAlertFormVisible);
 
-    try {
-      await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      // console.log(userInfo);
-      // console.log(userInfo.idToken);
-      const response = await axios.post('http://3.39.145.210/member/oauth', {
-        thirdPartyName: 'google',
-        token: userInfo.idToken,
+    if (ifChecked1 && ifChecked2) {
+      GoogleSignin.configure({
+        webClientId:
+          '1001943377543-q3ed3vrdtg2hhmc8edp88c6eggh48bcs.apps.googleusercontent.com',
+        iosClientId:
+          '1001943377543-qs201dq0br81qia9j80b2bdi2b1q0rfj.apps.googleusercontent.com',
+        offlineAccess: true,
       });
-      console.log(response.data.userId);
-      console.log(response.headers['authorization']);
+
       try {
-        Cookies.setCookie('google', response.headers['authorization']);
-        Cookies.setCookie('currentLogin', 'google');
-        setGoToFeed(true);
+        await GoogleSignin.hasPlayServices();
+        const userInfo = await GoogleSignin.signIn();
+        const response = await axios.post('http://3.39.145.210/member/oauth', {
+          thirdPartyName: 'google',
+          token: userInfo.idToken,
+        });
+        console.log(response.data.userId);
+        console.log(response.headers['authorization']);
+        try {
+          Cookies.setCookie('google', response.headers['authorization']);
+          Cookies.setCookie('currentLogin', 'google');
+          setAutoLogin(true);
+          setGoToFeed(true);
+        } catch (err) {
+          console.log(err);
+        }
       } catch (err) {
-        console.log(err);
+        console.log(err.response.data);
       }
-    } catch (err) {
-      console.log(err.response.data);
     }
   };
 
   onPressApple = async () => {
     Cookies.removeCookie('currentLogin');
-    try {
-        const appleAuthRequestResponse = await appleAuth.performRequest({
-            requestedOperation: appleAuth.Operation.LOGIN,
-            requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
-        });
-        console.log('appleAuthRequestResponse: ', appleAuthRequestResponse);
-        const response = await axios.post('http://3.39.145.210/member/oauth', {
-            thirdPartyName: 'apple',
-            token: appleAuthRequestResponse.identityToken,
-        });
-        console.log(response.data.userId);
-        console.log(response.headers['authorization']);
-        try {
-            Cookies.setCookie("apple", response.headers["authorization"]);
-            Cookies.setCookie("currentLogin", "apple");
-            setGoToFeed(true);
-        } catch (err) {
-            console.log(err);
-        }
-    } catch (err) {
-        console.log(err);
+    setLoginMethod('apple');
+    setContractAlertFormVisible(!contractAlertFormVisible);
+
+    if (ifChecked1 && ifChecked2) {
+      try {
+          const appleAuthRequestResponse = await appleAuth.performRequest({
+              requestedOperation: appleAuth.Operation.LOGIN,
+              requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
+          });
+          console.log('appleAuthRequestResponse: ', appleAuthRequestResponse);
+          const response = await axios.post('http://3.39.145.210/member/oauth', {
+              thirdPartyName: 'apple',
+              token: appleAuthRequestResponse.identityToken,
+          });
+          console.log(response.data.userId);
+          console.log(response.headers['authorization']);
+          try {
+              Cookies.setCookie("apple", response.headers["authorization"]);
+              Cookies.setCookie("currentLogin", "apple");
+              setAutoLogin(true);
+              setGoToFeed(true);
+          } catch (err) {
+              console.log(err);
+          }
+      } catch (err) {
+          console.log(err);
+      }
     }
   };
 
@@ -151,6 +182,7 @@ export default function Login1({setGoToFeed}) {
       </View>
 
       <View style={tw`w-[70%] h-[10%] flex-row justify-around self-center`}>
+        <ContractAlertForm modalVisible={contractAlertFormVisible} setModalVisible={setContractAlertFormVisible} ifChecked1={ifChecked1} ifChecked2={ifChecked2} setIfChecked1={setIfChecked1} setIfChecked2={setIfChecked2} setIsAllChecked={setIsAllChecked} />
         <Pressable onPress={onPressKakao}>
           <Image
             style={{width: 48, height: 48}}
