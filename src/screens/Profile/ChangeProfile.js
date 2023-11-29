@@ -5,7 +5,7 @@ import tw from 'twrnc';
 
 import { useNavigation } from '@react-navigation/native';
 
-import { profileUpload, memberSummary, updateMember, duplicateNickname } from "@functions/api";
+import { memberSummary, updateMember, duplicateNickname } from "@functions/api";
 import * as Cookies from '@functions/cookie';
 import { removeAutoLogin } from '@functions/autoLogin';
 
@@ -23,17 +23,13 @@ export default function ChangeProfile({isCookie, setGoToFeed}) {
     const [prevNickname, setPrevNickname] = useState('');
     const [profileImage, setProfileImage] = useState('');
     const [nickname, setNickname] = useState('');
-    const [nicknamePlaceholder, setNicknamePlaceholder] = useState('닉네임을 설정해주세요');
     const [introduce, setIntroduce] = useState('');
-    const [introducePlaceholder, setIntroducePlaceholder] = useState('소개 글을 입력해주세요!');
 
     useEffect (() => {
         memberSummary().then((newMemberInfo) => {
             setProfileImage(() => newMemberInfo.imageUrl);
             setNickname(() => newMemberInfo.nickname);
-            setNicknamePlaceholder(() => newMemberInfo.nickname);
             setIntroduce(() => newMemberInfo.introduce);
-            setIntroducePlaceholder(() => newMemberInfo.introduce);
             setPrevNickname(() => newMemberInfo.nickname);
         }).catch((err) => {
             console.log(err);
@@ -107,9 +103,6 @@ export default function ChangeProfile({isCookie, setGoToFeed}) {
     const [modalVisible, setModalVisible] = useState(false);
     const [imageChangeModalVisible, setImageChangeModalVisible] = useState(false);
 
-    const [borderColor, setBorderColor] = useState('#B6B6B6');
-    const [buttonColor, setButtonColor] = useState('#FFF');
-    const [buttonTextColor, setButtonTextColor] = useState('#B6B6B6');
     const [buttonText, setButtonText] = useState('중복확인');
     const [ifButtonID, setIfButtonID] = useState(false);
 
@@ -170,7 +163,6 @@ export default function ChangeProfile({isCookie, setGoToFeed}) {
     }
 
     const reappearButton = () => {
-        setBorderColor('#ABABAB');
         setIfButtonID(true);
     };
 
@@ -191,23 +183,28 @@ export default function ChangeProfile({isCookie, setGoToFeed}) {
             setModalVisible(modalVisible);
             }, 1000);
         } else {
-            setModalVisible(!modalVisible);
-            setAlertImage(require('@images/check.png'));
-            setAlertText('사용 가능한 닉네임입니다.');
-            setTimeout(() => {
-            setModalVisible(modalVisible);
-            }, 1000);
-            setIfCheckNickname(true);
-            setIfButtonID(false);
+            if (nickname.length === 0) {
+                setModalVisible(!modalVisible);
+                setAlertImage(require('@images/x_red.png'));
+                setAlertText('닉네임을 입력해주세요.');
+                setTimeout(() => {
+                setModalVisible(modalVisible);
+                }, 1000);
+            } else {
+                setModalVisible(!modalVisible);
+                setAlertImage(require('@images/check.png'));
+                setAlertText('사용 가능한 닉네임입니다.');
+                setTimeout(() => {
+                setModalVisible(modalVisible);
+                }, 1000);
+                setIfCheckNickname(true);
+                setIfButtonID(false);
 
-            setIfWriting(prevIfWriting => ({
-                ...prevIfWriting,
-                nickname: true,
-            }));
-
-            setBorderColor('#B6B6B6');
-            setButtonColor('#FFF');
-            setButtonTextColor('#191919');
+                setIfWriting(prevIfWriting => ({
+                    ...prevIfWriting,
+                    nickname: true,
+                }));
+            }
         }
     };
 
@@ -254,7 +251,7 @@ export default function ChangeProfile({isCookie, setGoToFeed}) {
             <ScrollView contentContainerStyle={styles.contentContainer}>
                 <NicknameInputForm
                     image={require('@images/nickname.png')}
-                    placeholder={nicknamePlaceholder}
+                    placeholder={nickname ? undefined : '닉네임을 설정해주세요'}
                     setValue={setNickname}
                     reappearButton={reappearButton}
                     inputCount={inputCount}
@@ -262,24 +259,26 @@ export default function ChangeProfile({isCookie, setGoToFeed}) {
                     inputSizeColor={inputSizeColor.nickname}
                     ifWriting={ifWriting.nickname}
                     ifButton={ifButtonID}
-                    borderColor={borderColor}
-                    buttonColor={buttonColor}
-                    buttonTextColor={buttonTextColor}
+                    borderColor="#D3D4D3"
+                    buttonColor="#FFFFFF"
+                    buttonTextColor="#191919"
                     buttonText={buttonText}
                     onPressButton={checkDuplicate}
                     ifCheck={ifCheckNickname}
-                    value={nickname}>
+                    value={nickname}
+                    >
                 </NicknameInputForm>
                 <View style={tw`h-[20px]`}></View>
                 <IntroduceInputForm
                     image={require('@images/write_gray.png')}
-                    placeholder={introducePlaceholder}
+                    placeholder={introduce ? undefined : '소개 글을 입력해주세요!'}
                     setValue={setIntroduce}
                     inputSize={inputSize.introduce}
                     inputSizeColor={inputSizeColor.introduce}
                     inputCount={inputCount}
                     ifWriting={ifWriting.introduce}
-                    value={introduce}>
+                    value={introduce}
+                    >
                 </IntroduceInputForm>
             </ScrollView>
         </SafeAreaView>
