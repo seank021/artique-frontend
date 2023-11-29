@@ -85,7 +85,7 @@ export function ShortReviewForm(props) {
     };
 
     const onPressProfile = () => {
-        nav.navigate('Mypage', { otherMemberId: props.reviewInfo.memberId });
+        nav.push('Mypage', { otherMemberId: props.reviewInfo.memberId });
     }
 
     const onPressArrowCircledRight = () => {
@@ -230,7 +230,7 @@ export function ShortReviewFormInFeed(props) {
     }
 
     const onPressProfile = () => {
-        nav.navigate('Mypage', { otherMemberId: props.reviewInfo.memberId });
+        nav.push('Mypage', { otherMemberId: props.reviewInfo.memberId });
     }
 
     return (
