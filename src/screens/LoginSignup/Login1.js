@@ -11,6 +11,7 @@ import axios from 'axios';
 
 import * as Cookies from '@functions/cookie';
 import { setAutoLogin } from '@functions/autoLogin';
+import { setIfCheckedContractsInSocialLogin, getIfCheckedContractsInSocialLogin } from '@functions/contract';
 
 import {useNavigation} from '@react-navigation/native';
 
@@ -53,11 +54,12 @@ export default function Login1({setGoToFeed}) {
   }, [ifChecked1, ifChecked2, isAllChecked]);
 
   onPressKakao = async () => {
-    Cookies.removeCookie('currentLogin');
     setLoginMethod('kakao');
-    setContractAlertFormVisible(!contractAlertFormVisible);
+    Cookies.removeCookie('currentLogin');
 
-    if (ifChecked1 && ifChecked2) {
+    const seeModal = await getIfCheckedContractsInSocialLogin("Kakao");
+
+    if (seeModal === 'true') {
       try {
         const result = await KakaoLogin.login();
         const response = await axios.post('http://3.39.145.210/member/oauth', {
@@ -70,6 +72,7 @@ export default function Login1({setGoToFeed}) {
           Cookies.setCookie('kakao', response.headers['authorization']);
           Cookies.setCookie('currentLogin', 'kakao');
           setAutoLogin(true);
+          setIfCheckedContractsInSocialLogin(true, "Kakao");
           setGoToFeed(true);
         } catch (err) {
           console.log(err);
@@ -78,14 +81,41 @@ export default function Login1({setGoToFeed}) {
         console.log(err);
       }
     }
+    else {
+      setContractAlertFormVisible(!contractAlertFormVisible);
+
+      if (ifChecked1 && ifChecked2) {
+        try {
+          const result = await KakaoLogin.login();
+          const response = await axios.post('http://3.39.145.210/member/oauth', {
+            thirdPartyName: 'kakao',
+            token: result.accessToken,
+          });
+          console.log(response.data.userId);
+          console.log(response.headers['authorization']);
+          try {
+            Cookies.setCookie('kakao', response.headers['authorization']);
+            Cookies.setCookie('currentLogin', 'kakao');
+            setAutoLogin(true);
+            setIfCheckedContractsInSocialLogin(true, "Kakao");
+            setGoToFeed(true);
+          } catch (err) {
+            console.log(err);
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    }
   };
 
   onPressGoogle = async () => {
-    Cookies.removeCookie('currentLogin');
     setLoginMethod('google');
-    setContractAlertFormVisible(!contractAlertFormVisible);
+    Cookies.removeCookie('currentLogin');
 
-    if (ifChecked1 && ifChecked2) {
+    const seeModal = await getIfCheckedContractsInSocialLogin("Google");
+
+    if (seeModal === 'true') {
       GoogleSignin.configure({
         webClientId:
           '1001943377543-q3ed3vrdtg2hhmc8edp88c6eggh48bcs.apps.googleusercontent.com',
@@ -107,6 +137,7 @@ export default function Login1({setGoToFeed}) {
           Cookies.setCookie('google', response.headers['authorization']);
           Cookies.setCookie('currentLogin', 'google');
           setAutoLogin(true);
+          setIfCheckedContractsInSocialLogin(true, "Google");
           setGoToFeed(true);
         } catch (err) {
           console.log(err);
@@ -115,37 +146,104 @@ export default function Login1({setGoToFeed}) {
         console.log(err.response.data);
       }
     }
+    else {
+      setContractAlertFormVisible(!contractAlertFormVisible);
+
+      if (ifChecked1 && ifChecked2) {
+        GoogleSignin.configure({
+          webClientId:
+            '1001943377543-q3ed3vrdtg2hhmc8edp88c6eggh48bcs.apps.googleusercontent.com',
+          iosClientId:
+            '1001943377543-qs201dq0br81qia9j80b2bdi2b1q0rfj.apps.googleusercontent.com',
+          offlineAccess: true,
+        });
+
+        try {
+          await GoogleSignin.hasPlayServices();
+          const userInfo = await GoogleSignin.signIn();
+          const response = await axios.post('http://3.39.145.210/member/oauth', {
+            thirdPartyName: 'google',
+            token: userInfo.idToken,
+          });
+          console.log(response.data.userId);
+          console.log(response.headers['authorization']);
+          try {
+            Cookies.setCookie('google', response.headers['authorization']);
+            Cookies.setCookie('currentLogin', 'google');
+            setAutoLogin(true);
+            setIfCheckedContractsInSocialLogin(true, "Google");
+            setGoToFeed(true);
+          } catch (err) {
+            console.log(err);
+          }
+        } catch (err) {
+          console.log(err.response.data);
+        }
+      }
+    }
   };
 
   onPressApple = async () => {
     if (Platform.OS === 'ios') {
       Cookies.removeCookie('currentLogin');
       setLoginMethod('apple');
-      setContractAlertFormVisible(!contractAlertFormVisible);
 
-      if (ifChecked1 && ifChecked2) {
+      const seeModal = await getIfCheckedContractsInSocialLogin("Apple");
+
+      if (seeModal === 'true') {
         try {
-            const appleAuthRequestResponse = await appleAuth.performRequest({
-                requestedOperation: appleAuth.Operation.LOGIN,
-                requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
-            });
-            console.log('appleAuthRequestResponse: ', appleAuthRequestResponse);
-            const response = await axios.post('http://3.39.145.210/member/oauth', {
-                thirdPartyName: 'apple',
-                token: appleAuthRequestResponse.identityToken,
-            });
-            console.log(response.data.userId);
-            console.log(response.headers['authorization']);
-            try {
-                Cookies.setCookie("apple", response.headers["authorization"]);
-                Cookies.setCookie("currentLogin", "apple");
-                setAutoLogin(true);
-                setGoToFeed(true);
-            } catch (err) {
-                console.log(err);
-            }
-        } catch (err) {
+          const appleAuthRequestResponse = await appleAuth.performRequest({
+              requestedOperation: appleAuth.Operation.LOGIN,
+              requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
+          });
+          console.log('appleAuthRequestResponse: ', appleAuthRequestResponse);
+          const response = await axios.post('http://3.39.145.210/member/oauth', {
+              thirdPartyName: 'apple',
+              token: appleAuthRequestResponse.identityToken,
+          });
+          console.log(response.data.userId);
+          console.log(response.headers['authorization']);
+          try {
+              Cookies.setCookie("apple", response.headers["authorization"]);
+              Cookies.setCookie("currentLogin", "apple");
+              setAutoLogin(true);
+              setIfCheckedContractsInSocialLogin(true, "Apple");
+              setGoToFeed(true);
+          } catch (err) {
             console.log(err);
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
+      else {
+        setContractAlertFormVisible(!contractAlertFormVisible);
+
+        if (ifChecked1 && ifChecked2) {
+          try {
+              const appleAuthRequestResponse = await appleAuth.performRequest({
+                  requestedOperation: appleAuth.Operation.LOGIN,
+                  requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
+              });
+              console.log('appleAuthRequestResponse: ', appleAuthRequestResponse);
+              const response = await axios.post('http://3.39.145.210/member/oauth', {
+                  thirdPartyName: 'apple',
+                  token: appleAuthRequestResponse.identityToken,
+              });
+              console.log(response.data.userId);
+              console.log(response.headers['authorization']);
+              try {
+                  Cookies.setCookie("apple", response.headers["authorization"]);
+                  Cookies.setCookie("currentLogin", "apple");
+                  setAutoLogin(true);
+                  setIfCheckedContractsInSocialLogin(true, "Apple");
+                  setGoToFeed(true);
+              } catch (err) {
+                  console.log(err);
+              }
+          } catch (err) {
+              console.log(err);
+          }
         }
       }
     }
