@@ -44,7 +44,7 @@ export default function ReviewUpdate1({ isCookie, reviewInfo, reviewInfo2, setGo
     const [day, setDay] = useState(parseInt(reviewInfo2?.viewDate.substring(8, 10)));
 
     // 별점 평가
-    const [star, setStar] = useState(parseInt(reviewInfo2?.rating));
+    const [star, setStar] = useState(parseFloat(reviewInfo2?.rating));
 
     // console.log(reviewInfo2);
 
