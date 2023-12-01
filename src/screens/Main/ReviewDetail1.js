@@ -34,6 +34,8 @@ export default function ReviewDetail1({isCookie, reviewId, memberId, setReviewIn
 
     useEffect(() => {
         reviewDetail(reviewId).then((newReviewDetail) => {
+            console.log(newReviewDetail);
+            console.log(memberId)
             setReviewInfo_(() => newReviewDetail);
             setIsMine(newReviewDetail.memberId === memberId);
         }).catch((err) => {
