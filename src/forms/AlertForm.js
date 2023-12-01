@@ -1017,6 +1017,12 @@ export const ContractAlertForm = (props) => {
                     <Pressable onPress={onPressConfirm} style={tw`w-[90%] h-[40px] bg-[#E94A4B] rounded-[15px] justify-center items-center mt-[20px]`}>
                         <Text style={tw`text-base font-medium text-white`}>확인</Text>
                     </Pressable>
+                    {Platform.OS === 'ios' && 
+                        <>
+                            <ContractForm modalVisible={contractModal1Visible} setModalVisible={setContractModal1Visible} contractNum={1} />
+                            <ContractForm modalVisible={contractModal2Visible} setModalVisible={setContractModal2Visible} contractNum={2} />
+                        </>
+                    }
                 </View>
             </Modal>
         </>
