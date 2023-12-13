@@ -15,6 +15,9 @@ import { useNavigation, useRoute, useIsFocused } from "@react-navigation/native"
 export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }) {
   const nav = useNavigation();
 
+  const route = useRoute();
+  const otherMemberId = route.params?.otherMemberId;
+
   const [refreshing, setRefreshing] = useState(false);
   const isFocused = useIsFocused();
   const [firstFocus, setFirstFocus] = useState(true);
@@ -100,7 +103,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }
   }, [refreshing, otherMemberId, memberInfo, memberStat, shortReviewInfo]);
 
   const goBack = () => {
-    nav.goBack();
+    nav.reset();
   }
 
   const goToChangeProfile = () => {
@@ -145,39 +148,31 @@ export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }
   const [alertText, setAlertText] = useState("로그인이 필요한 서비스입니다.");
   const [reportModalVisible, setReportModalVisible] = useState(false);
 
-  const route = useRoute();
-  const otherMemberId = route.params?.otherMemberId;
-
   useEffect(() => {
-      if (otherMemberId) {
-        memberSummary(otherMemberId).then((newMemberInfo) => {
-          setMemberInfo(() => newMemberInfo);
-        }).catch((err) => {
-          console.log(err);
-        });
-      } else {
-        memberSummary().then((newMemberInfo) => {
-          setMemberInfo(() => newMemberInfo);
-        }).catch((err) => {
-          console.log(err);
-        });
-      }
-    }, [otherMemberId]);
+    const fetchData = async () => {
+      try {
+        let newMemberInfo;
+        let newMemberStat;
+        let newShortThumbReviews;
   
-  useEffect(() => {
-    if (otherMemberId) {
-      memberStatistics(otherMemberId).then((newMemberStat) => {
-        setMemberStat(() => newMemberStat);
-      }).catch((err) => {
-        console.log(err);
-      });
-    } else {
-      memberStatistics().then((newMemberStat) => {
-        setMemberStat(() => newMemberStat);
-      }).catch((err) => {
-        console.log(err);
+        if (otherMemberId) {
+          newMemberInfo = await memberSummary(otherMemberId);
+          newMemberStat = await memberStatistics(otherMemberId);
+          newShortThumbReviews = await memberShortThumbReviews(otherMemberId);
+        } else {
+          newMemberInfo = await memberSummary();
+          newMemberStat = await memberStatistics();
+          newShortThumbReviews = await memberShortThumbReviews();
+        }
+  
+        setMemberInfo(newMemberInfo);
+        setMemberStat(newMemberStat);
+        setShortReviewInfo(newShortThumbReviews);
+      } catch (err) {
+        console.error(err);
       }
-    )}
+    };
+    fetchData();
   }, [otherMemberId]);
 
   useEffect(() => {
@@ -186,22 +181,6 @@ export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }
     setMaxStarRate(memberStat.maxStarRate);
   }
   , [memberStat]);
-
-  useEffect(() => {
-    if (otherMemberId) {
-    memberShortThumbReviews(otherMemberId).then((newShortThumbReviews) => {
-      setShortReviewInfo(() => newShortThumbReviews);
-    }).catch((err) => {
-      console.log(err);
-    });
-  } else {
-    memberShortThumbReviews().then((newShortThumbReviews) => {
-      setShortReviewInfo(() => newShortThumbReviews);
-    }).catch((err) => {
-      console.log(err);
-    });
-  }
-  }, [otherMemberId]);
 
   const onPressReport = () => {
     if (!isCookie) {
