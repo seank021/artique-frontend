@@ -52,7 +52,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }
         setRefreshing(false);
       });
     } else {
-      memberSummary().then((newMemberInfo) => {
+      memberSummary(memberId).then((newMemberInfo) => {
         setMemberInfo(() => newMemberInfo);
       }).catch((err) => {
         console.log(err);
@@ -70,7 +70,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }
         setRefreshing(false);
       });
     } else {
-      memberStatistics().then((newMemberStat) => {
+      memberStatistics(memberId).then((newMemberStat) => {
         setMemberStat(() => newMemberStat);
       }).catch((err) => {
         console.log(err);
@@ -88,7 +88,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }
         setRefreshing(false);
       });
     } else {
-      memberShortThumbReviews().then((newShortThumbReviews) => {
+      memberShortThumbReviews(memberId).then((newShortThumbReviews) => {
         setShortReviewInfo(() => newShortThumbReviews);
       }).catch((err) => {
         console.log(err);
@@ -154,15 +154,18 @@ export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }
         let newMemberInfo;
         let newMemberStat;
         let newShortThumbReviews;
+        let otherMemberId = route.params?.otherMemberId;
+        console.log(otherMemberId);
+        console.log(memberId)
   
         if (otherMemberId) {
           newMemberInfo = await memberSummary(otherMemberId);
           newMemberStat = await memberStatistics(otherMemberId);
           newShortThumbReviews = await memberShortThumbReviews(otherMemberId);
         } else {
-          newMemberInfo = await memberSummary();
-          newMemberStat = await memberStatistics();
-          newShortThumbReviews = await memberShortThumbReviews();
+          newMemberInfo = await memberSummary(memberId);
+          newMemberStat = await memberStatistics(memberId);
+          newShortThumbReviews = await memberShortThumbReviews(memberId);
         }
   
         setMemberInfo(newMemberInfo);
@@ -170,7 +173,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }
         setShortReviewInfo(newShortThumbReviews);
       } catch (err) {
         console.error(err);
-      }
+      } 
     };
     fetchData();
   }, [otherMemberId]);

@@ -179,22 +179,29 @@ const Navigation = () => {
         }, []);
 
         useEffect(() => {
-            const memberId = async () => {
+            const fetchMemberId = async () => {
                 const memberId = await memberIdInMypage();
                 setMemberId(memberId);
             };
-            memberId();
+            fetchMemberId();
         }, []);
 
         return (
             <Stack.Navigator initialRouteName="Mypage" screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="Mypage" children={() => <Mypage isCookie={isCookie} memberId={memberId} setReviewId={setReviewId} setGoToFeed={setGoToFeed}/>} />
-                <Stack.Screen name="ChangeProfile" children={() => <ChangeProfile isCookie={isCookie} setGoToFeed={setGoToFeed}/>} />
+                <Stack.Screen 
+                    name="Mypage" 
+                    children={() => memberId ? 
+                        <Mypage isCookie={isCookie} memberId={memberId} setReviewId={setReviewId} setGoToFeed={setGoToFeed}/> 
+                        : null
+                    } 
+                    />
+                <Stack.Screen name="ChangeProfile" children={() => <ChangeProfile isCookie={isCookie} memberId={memberId} setGoToFeed={setGoToFeed}/>} />
                 <Stack.Screen name="MyReviews" children={() => <MyReviews isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId} setReviewInfo={setReviewInfo} setReviewInfo2={setReviewInfo2} setGoToFeed={setGoToFeed}/>} />
                 <Stack.Screen name="MyReviewSearch" children={() => <MyReviewSearch isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId} setReviewInfo={setReviewInfo} setReviewInfo2={setReviewInfo2} setGoToFeed={setGoToFeed}/>} />
                 <Stack.Screen name="MyThumbs" children={() => <MyThumbs isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId} setReviewInfo={setReviewInfo} setReviewInfo2={setReviewInfo2} setGoToFeed={setGoToFeed}/>} />
                 <Stack.Screen name="MyThumbsSearch" children={() => <MyThumbsSearch isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId} setReviewInfo={setReviewInfo} setReviewInfo2={setReviewInfo2} setGoToFeed={setGoToFeed}/>} />
                 
+                <Stack.Screen name="Feed1" children={() => <Feed1 isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId} setReviewInfo={setReviewInfo} setReviewInfo2={setReviewInfo2} setGoToFeed={setGoToFeed}/>} />
                 <Stack.Screen name="MusicalDetail1" children={() => <MusicalDetail1 isCookie={isCookie} musicalId={musicalId} setMusicalId={setMusicalId} setMusicalPoster={setMusicalPoster} setMusicalTitle={setMusicalTitle} setReviewId={setReviewId}/>} />
                 <Stack.Screen name="MusicalDetail2" children={() => <MusicalDetail2 isCookie={isCookie} musicalId={musicalId} setMusicalId={setMusicalId} setMusicalPoster={setMusicalPoster} setMusicalTitle={setMusicalTitle} setReviewId={setReviewId}/>} />
                 <Stack.Screen name="ReviewDetail1" children={() => <ReviewDetail1 isCookie={isCookie} reviewId={reviewId} memberId={memberId} setReviewInfo={setReviewInfo} setReviewInfo2={setReviewInfo2} setGoToFeed={setGoToFeed}/>} />
@@ -211,9 +218,6 @@ const Navigation = () => {
                 <Stack.Screen name="ArtiqueInfo" children={() => <ArtiqueInfo isCookie={isCookie} />} />
                 <Stack.Screen name="Terms" children={() => <Terms isCookie={isCookie} />} />
                 <Stack.Screen name="Privacy" children={() => <Privacy isCookie={isCookie} />} />
-
-                <Stack.Screen name="Feed1" children={() => <Feed1 isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId} setReviewInfo={setReviewInfo} setReviewInfo2={setReviewInfo2} setGoToFeed={setGoToFeed}/>} />
-                <Stack.Screen name="Login2" children={() => <Login2 setGoToFeed={setGoToFeed} />} />
             </Stack.Navigator>
         )
     };
@@ -240,7 +244,7 @@ const Navigation = () => {
                 setAlertModalVisible(false);
             }, 1000);
             setTimeout(() => {
-                nav.navigate('Feed1');
+                nav.navigate('MainTab', { screen: 'Feed1' });
             }, 1500);        
         }
 
