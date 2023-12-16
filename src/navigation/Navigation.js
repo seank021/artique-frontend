@@ -150,6 +150,7 @@ const Navigation = () => {
                 <Stack.Screen name="MusicalDetail2" children={() => <MusicalDetail2 isCookie={isCookie} musicalId={musicalId} setMusicalId={setMusicalId} setMusicalPoster={setMusicalPoster} setMusicalTitle={setMusicalTitle} setReviewId={setReviewId}/>} />
                 <Stack.Screen name="ReviewDetail1" children={() => <ReviewDetail1 isCookie={isCookie} reviewId={reviewId} memberId={memberId} setReviewInfo={setReviewInfo} setReviewInfo2={setReviewInfo2} setGoToFeed={setGoToFeed}/>} />
                 <Stack.Screen name="ReviewWrite1" children={() => <ReviewWrite1 isCookie={isCookie} musicalId={musicalId} musicalPoster={musicalPoster} musicalTitle={musicalTitle}/>} />
+                <Stack.Screen name="ReviewUpdate1" children={() => <ReviewUpdate1 isCookie={isCookie} reviewInfo={reviewInfo} reviewInfo2={reviewInfo2} setGoToFeed={setGoToFeed}/>}/>
 
                 <Stack.Screen name="Mypage" children={() => <Mypage isCookie={isCookie} memberId={memberId} setReviewId={setReviewId} setGoToFeed={setGoToFeed}/>} />
                 <Stack.Screen name="MyReviews" children={() => <MyReviews isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId} setReviewInfo={setReviewInfo} setReviewInfo2={setReviewInfo2} setGoToFeed={setGoToFeed}/>} />
