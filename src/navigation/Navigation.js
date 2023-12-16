@@ -265,7 +265,7 @@ const Navigation = () => {
                 screenOptions={{
                     headerShown: false,
                     tabBarStyle: {
-                        height: "10%",
+                        height: 70,
                         borderBlockColor: "#e5e5e5",
                         backgroundColor: "#FAFAFA",
                     },
@@ -277,7 +277,7 @@ const Navigation = () => {
                     component={SearchStack}
                     options={{
                         tabBarIcon: ({focused}) => (
-                            focused ? <Image source={require("@images/search_focused.png")} style={tw`w-[58px] h-[69px]`} /> : <Image source={require("@images/search.png")} style={tw`w-[24px] h-[24px]`} />
+                            focused ? <Image source={require("@images/search_focused.png")} style={tw`w-[58px] h-[70px]`} /> : <Image source={require("@images/search.png")} style={tw`w-[24px] h-[24px]`} />
                         ),
                     }}
                 />
