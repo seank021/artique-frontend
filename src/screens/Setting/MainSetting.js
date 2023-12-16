@@ -42,6 +42,7 @@ export default function MainSetting ({setIsCookie, setGoToFeed}) {
     const currentLogin = await Cookies.getCurrentLogin();
     await Cookies.removeCookie(currentLogin);
     await removeAutoLogin();
+    nav.navigate('MainTab', { screen: 'Feed1' });
     setGoToFeed(false);
   }
 

@@ -12,7 +12,7 @@ import { removeAutoLogin } from '@functions/autoLogin';
 import { NicknameInputForm, IntroduceInputForm } from '@forms/InputForm';
 import AlertForm, { ProfileChangeForm } from '@forms/AlertForm';
 
-export default function ChangeProfile({isCookie, setGoToFeed}) {
+export default function ChangeProfile({isCookie, memberId, setGoToFeed}) {
     const nav = useNavigation();
 
     const goBack = () => {
@@ -26,7 +26,7 @@ export default function ChangeProfile({isCookie, setGoToFeed}) {
     const [introduce, setIntroduce] = useState('');
 
     useEffect (() => {
-        memberSummary().then((newMemberInfo) => {
+        memberSummary(memberId).then((newMemberInfo) => {
             setProfileImage(() => newMemberInfo.imageUrl);
             setNickname(() => newMemberInfo.nickname);
             setIntroduce(() => newMemberInfo.introduce);

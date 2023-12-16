@@ -6,8 +6,8 @@ import tw from "twrnc";
 import { useNavigation } from "@react-navigation/native";
 import { AlertFormForConfirm } from "@forms/AlertForm";
 import { clearCookie, getCurrentLogin } from "@functions/cookie";
+import { removeAutoLogin } from "@functions/autoLogin";
 import { exit } from "@functions/api";
-import { login } from "@react-native-seoul/kakao-login";
 
 export default function MyAccount ({ isCookie, setGoToFeed, memberId }) {
   const nav = useNavigation();
@@ -29,6 +29,9 @@ export default function MyAccount ({ isCookie, setGoToFeed, memberId }) {
 
   const onPressExitConfirm = async () => {
     await exit();
+    const currentLogin = await getCurrentLogin();
+    await removeAutoLogin();
+    await clearCookie(currentLogin);
     setGoToFeed(false);
   }
 
