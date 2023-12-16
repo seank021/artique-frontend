@@ -98,7 +98,7 @@ export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId
         console.log(err);
       });
     } else {
-      memberStatistics().then((newMemberStat) => {
+      memberStatistics(memberId).then((newMemberStat) => {
         setTotalReviewCount(newMemberStat.totalReviewCount);
       }).catch((err) => {
         console.log(err);
@@ -164,7 +164,7 @@ export default function MyReviews({isCookie, memberId, setMusicalId, setReviewId
         setRefreshing(false);
       });
     } else {
-      memberStatistics().then((newMemberStat) => {
+      memberStatistics(memberId).then((newMemberStat) => {
         setTotalReviewCount(newMemberStat.totalReviewCount);
       }).catch((err) => {
         console.log(err);

@@ -226,14 +226,8 @@ const memberIdInMypage = async () => {
   }
 }
 
-const memberSummary = async (otherMemberId) => {
+const memberSummary = async (memberId) => {
   try {
-    let memberId;
-    if (otherMemberId) {
-      memberId = otherMemberId;
-    } else {
-      memberId = await memberIdInMypage();
-    }
     const myHeaders = await getHeaders();
     const response = await axios.get(`http://3.39.145.210/member/summary?member-id=${memberId}`, {
       headers: myHeaders.map,
@@ -244,14 +238,8 @@ const memberSummary = async (otherMemberId) => {
   }
 };
 
-const memberStatistics = async (otherMemberId) => {
+const memberStatistics = async (memberId) => {
   try {
-    let memberId;
-    if (otherMemberId) {
-      memberId = otherMemberId;
-    } else {
-      memberId = await memberIdInMypage();
-    }
     const myHeaders = await getHeaders();
     const response = await axios.get(`http://3.39.145.210/member/summary/statistics?member-id=${memberId}`, {
       headers: myHeaders.map,
@@ -262,14 +250,8 @@ const memberStatistics = async (otherMemberId) => {
   }
 };
 
-const memberShortThumbReviews = async (otherMemberId) => {
+const memberShortThumbReviews = async (memberId) => {
   try {
-    let memberId;
-    if (otherMemberId) {
-      memberId = otherMemberId;
-    } else {
-      memberId = await memberIdInMypage();
-    }
     const myHeaders = await getHeaders();
     const response = await axios.get(`http://3.39.145.210/member/review/thumbs/short?member-id=${memberId}`, {
       headers: myHeaders.map,

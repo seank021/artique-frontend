@@ -44,6 +44,7 @@ import Privacy from "@screens/Setting/ArtiqueInfo/Privacy";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { SafeAreaProvider, useSafeAreaInsets } from "react-native-safe-area-context";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -150,6 +151,7 @@ const Navigation = () => {
                 <Stack.Screen name="MusicalDetail2" children={() => <MusicalDetail2 isCookie={isCookie} musicalId={musicalId} setMusicalId={setMusicalId} setMusicalPoster={setMusicalPoster} setMusicalTitle={setMusicalTitle} setReviewId={setReviewId}/>} />
                 <Stack.Screen name="ReviewDetail1" children={() => <ReviewDetail1 isCookie={isCookie} reviewId={reviewId} memberId={memberId} setReviewInfo={setReviewInfo} setReviewInfo2={setReviewInfo2} setGoToFeed={setGoToFeed}/>} />
                 <Stack.Screen name="ReviewWrite1" children={() => <ReviewWrite1 isCookie={isCookie} musicalId={musicalId} musicalPoster={musicalPoster} musicalTitle={musicalTitle}/>} />
+                <Stack.Screen name="ReviewUpdate1" children={() => <ReviewUpdate1 isCookie={isCookie} reviewInfo={reviewInfo} reviewInfo2={reviewInfo2} setGoToFeed={setGoToFeed}/>}/>
 
                 <Stack.Screen name="Mypage" children={() => <Mypage isCookie={isCookie} memberId={memberId} setReviewId={setReviewId} setGoToFeed={setGoToFeed}/>} />
                 <Stack.Screen name="MyReviews" children={() => <MyReviews isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId} setReviewInfo={setReviewInfo} setReviewInfo2={setReviewInfo2} setGoToFeed={setGoToFeed}/>} />
@@ -179,21 +181,29 @@ const Navigation = () => {
         }, []);
 
         useEffect(() => {
-            const memberId = async () => {
+            const fetchMemberId = async () => {
                 const memberId = await memberIdInMypage();
                 setMemberId(memberId);
             };
-            memberId();
+            fetchMemberId();
         }, []);
 
         return (
             <Stack.Navigator initialRouteName="Mypage" screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="Mypage" children={() => <Mypage isCookie={isCookie} memberId={memberId} setReviewId={setReviewId} setGoToFeed={setGoToFeed}/>} />
-                <Stack.Screen name="ChangeProfile" children={() => <ChangeProfile isCookie={isCookie} setGoToFeed={setGoToFeed}/>} />
+                <Stack.Screen 
+                    name="Mypage" 
+                    children={() => memberId ? 
+                        <Mypage isCookie={isCookie} memberId={memberId} setReviewId={setReviewId} setGoToFeed={setGoToFeed}/> 
+                        : null
+                    } 
+                    />
+                <Stack.Screen name="ChangeProfile" children={() => <ChangeProfile isCookie={isCookie} memberId={memberId} setGoToFeed={setGoToFeed}/>} />
                 <Stack.Screen name="MyReviews" children={() => <MyReviews isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId} setReviewInfo={setReviewInfo} setReviewInfo2={setReviewInfo2} setGoToFeed={setGoToFeed}/>} />
                 <Stack.Screen name="MyReviewSearch" children={() => <MyReviewSearch isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId} setReviewInfo={setReviewInfo} setReviewInfo2={setReviewInfo2} setGoToFeed={setGoToFeed}/>} />
                 <Stack.Screen name="MyThumbs" children={() => <MyThumbs isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId} setReviewInfo={setReviewInfo} setReviewInfo2={setReviewInfo2} setGoToFeed={setGoToFeed}/>} />
                 <Stack.Screen name="MyThumbsSearch" children={() => <MyThumbsSearch isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId} setReviewInfo={setReviewInfo} setReviewInfo2={setReviewInfo2} setGoToFeed={setGoToFeed}/>} />
+                
+                <Stack.Screen name="Feed1" children={() => <Feed1 isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId} setReviewInfo={setReviewInfo} setReviewInfo2={setReviewInfo2} setGoToFeed={setGoToFeed}/>} />
                 <Stack.Screen name="MusicalDetail1" children={() => <MusicalDetail1 isCookie={isCookie} musicalId={musicalId} setMusicalId={setMusicalId} setMusicalPoster={setMusicalPoster} setMusicalTitle={setMusicalTitle} setReviewId={setReviewId}/>} />
                 <Stack.Screen name="MusicalDetail2" children={() => <MusicalDetail2 isCookie={isCookie} musicalId={musicalId} setMusicalId={setMusicalId} setMusicalPoster={setMusicalPoster} setMusicalTitle={setMusicalTitle} setReviewId={setReviewId}/>} />
                 <Stack.Screen name="ReviewDetail1" children={() => <ReviewDetail1 isCookie={isCookie} reviewId={reviewId} memberId={memberId} setReviewInfo={setReviewInfo} setReviewInfo2={setReviewInfo2} setGoToFeed={setGoToFeed}/>} />
@@ -210,15 +220,13 @@ const Navigation = () => {
                 <Stack.Screen name="ArtiqueInfo" children={() => <ArtiqueInfo isCookie={isCookie} />} />
                 <Stack.Screen name="Terms" children={() => <Terms isCookie={isCookie} />} />
                 <Stack.Screen name="Privacy" children={() => <Privacy isCookie={isCookie} />} />
-
-                <Stack.Screen name="Feed1" children={() => <Feed1 isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId} setReviewInfo={setReviewInfo} setReviewInfo2={setReviewInfo2} setGoToFeed={setGoToFeed}/>} />
-                <Stack.Screen name="Login2" children={() => <Login2 setGoToFeed={setGoToFeed} />} />
             </Stack.Navigator>
         )
     };
 
     const Tabs = () => {
         const nav = useNavigation();
+        const insets = useSafeAreaInsets();
 
         const [isCookie, setIsCookie] = useState(true);
         const [alertModalVisible, setAlertModalVisible] = useState(false);
@@ -237,10 +245,7 @@ const Navigation = () => {
             setAlertModalVisible(true);
             setTimeout(() => {
                 setAlertModalVisible(false);
-            }, 1000);
-            setTimeout(() => {
-                nav.navigate('Feed1');
-            }, 1500);        
+            }, 1000);       
         }
 
         return (
@@ -260,9 +265,11 @@ const Navigation = () => {
                 screenOptions={{
                     headerShown: false,
                     tabBarStyle: {
-                        height: "10%",
+                        height: insets.bottom > 0 ? insets.bottom : 70,
                         borderBlockColor: "#e5e5e5",
                         backgroundColor: "#FAFAFA",
+                        borderTopWidth: 0,
+                        paddingBottom: insets.bottom > 0 ? 70 - insets.bottom : 0,
                     },
                     tabBarShowLabel: false,
                 }}
@@ -272,7 +279,7 @@ const Navigation = () => {
                     component={SearchStack}
                     options={{
                         tabBarIcon: ({focused}) => (
-                            focused ? <Image source={require("@images/search_focused.png")} style={tw`w-[58px] h-[69px]`} /> : <Image source={require("@images/search.png")} style={tw`w-[24px] h-[24px]`} />
+                            focused ? <Image source={require("@images/search_focused.png")} style={tw`w-[58px] h-[70px]`} /> : <Image source={require("@images/search.png")} style={tw`w-[24px] h-[24px]`} />
                         ),
                     }}
                 />
@@ -294,7 +301,7 @@ const Navigation = () => {
                         ),
                         tabBarButton: (props) => {
                             if (!isCookie) {
-                                return <TouchableOpacity {...props} onPress={() => {{handleAlert()}}} />;
+                                return <TouchableOpacity {...props} onPress={handleAlert} />;
                             } else {
                             return <TouchableOpacity {...props} />;
                             }
@@ -307,9 +314,11 @@ const Navigation = () => {
     };
 
     return (        
-        <NavigationContainer>
-            {goToFeed ? <Tabs /> : <AuthStack />}
-        </NavigationContainer>
+        <SafeAreaProvider>
+            <NavigationContainer>
+                {goToFeed ? <Tabs /> : <AuthStack />}
+            </NavigationContainer>
+        </SafeAreaProvider>
     )
 }
 
