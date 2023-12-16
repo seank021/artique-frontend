@@ -265,11 +265,11 @@ const Navigation = () => {
                 screenOptions={{
                     headerShown: false,
                     tabBarStyle: {
-                        height: insets.bottom,
+                        height: insets.bottom > 0 ? insets.bottom : 70,
                         borderBlockColor: "#e5e5e5",
                         backgroundColor: "#FAFAFA",
-                        paddingBottom: 40,
-                        borderTopWidth: 0,
+                        borderTopWidth: 0.5,
+                        paddingBottom: insets.bottom > 0 ? 70 - insets.bottom : 0,
                     },
                     tabBarShowLabel: false,
                 }}
