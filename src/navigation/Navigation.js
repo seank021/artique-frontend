@@ -268,7 +268,7 @@ const Navigation = () => {
                         height: insets.bottom > 0 ? insets.bottom : 70,
                         borderBlockColor: "#e5e5e5",
                         backgroundColor: "#FAFAFA",
-                        borderTopWidth: 0.5,
+                        borderTopWidth: 0,
                         paddingBottom: insets.bottom > 0 ? 70 - insets.bottom : 0,
                     },
                     tabBarShowLabel: false,
