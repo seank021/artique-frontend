@@ -438,9 +438,9 @@ export function ShortReviewFormInMyReviews(props) {
                             <View style={tw`flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mt-[5px] mb-[14px] p-[6px] rounded-2 w-[95%]`}>
                                 {seeSpoiler ?
                                     wasSpoiler ?
-                                        <Text onPress={(e)=> { e.stopPropagation(); setSeeSpoiler(!seeSpoiler)}} numberOfLines={1} style={tw`text-[#191919] text-sm font-medium leading-[24px] w-full`}>"{props.reviewInfo.shortReview}"</Text>
+                                        <Text onPress={(e)=> { e.stopPropagation(); setSeeSpoiler(!seeSpoiler)}} numberOfLines={2} style={tw`text-[#191919] text-sm font-medium leading-[24px] w-full`}>"{props.reviewInfo.shortReview}"</Text>
                                         :
-                                        <Text numberOfLines={1} style={tw`text-[#191919] text-sm font-medium leading-[24px] w-full`}>"{props.reviewInfo.shortReview}"</Text>
+                                        <Text numberOfLines={2} style={tw`text-[#191919] text-sm font-medium leading-[24px] w-full`}>"{props.reviewInfo.shortReview}"</Text>
                                     :
                                     <Text onPress={(e)=> { e.stopPropagation(); setSeeSpoiler(!seeSpoiler)}} style={[tw`text-[#B6B6B6] font-medium leading-[22px] underline`, {fontSize: getFontSize(14)}]}>스포일러 포함</Text>
                                 }
