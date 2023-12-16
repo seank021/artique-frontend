@@ -15,7 +15,8 @@
 		7699B88040F8A987B510C191 /* libPods-Artique-ArtiqueTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-Artique-ArtiqueTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		AC0C6E6E2A96226800803031 /* SwiftBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0C6E6D2A96226800803031 /* SwiftBridge.swift */; };
-		AC327FA62B2DEDBB0048E2D2 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = AC327FA52B2DEDBB0048E2D2 /* main.jsbundle */; };
+		AC327FDA2B2E00280048E2D2 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = AC327FD92B2E00280048E2D2 /* assets */; };
+		AC327FDC2B2E00340048E2D2 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = AC327FDB2B2E00340048E2D2 /* main.jsbundle */; };
 		AC7C710F2A95DD8D009F6CAE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AC7C710E2A95DD8D009F6CAE /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
@@ -48,7 +49,10 @@
 		89C6BE57DB24E9ADA2F236DE /* Pods-Artique-ArtiqueTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artique-ArtiqueTests.release.xcconfig"; path = "Target Support Files/Pods-Artique-ArtiqueTests/Pods-Artique-ArtiqueTests.release.xcconfig"; sourceTree = "<group>"; };
 		AC0C6E6C2A96226700803031 /* Artique-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Artique-Bridging-Header.h"; sourceTree = "<group>"; };
 		AC0C6E6D2A96226800803031 /* SwiftBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftBridge.swift; sourceTree = "<group>"; };
-		AC327FA52B2DEDBB0048E2D2 /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
+		AC327FD42B2DFA490048E2D2 /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
+		AC327FD62B2DFCBF0048E2D2 /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; name = images; path = assets/assets/images; sourceTree = "<group>"; };
+		AC327FD92B2E00280048E2D2 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
+		AC327FDB2B2E00340048E2D2 /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		AC7304742A999E4900184BDC /* Artique.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Artique.entitlements; path = Artique/Artique.entitlements; sourceTree = "<group>"; };
 		AC7C710E2A95DD8D009F6CAE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -128,7 +132,10 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				AC327FA52B2DEDBB0048E2D2 /* main.jsbundle */,
+				AC327FDB2B2E00340048E2D2 /* main.jsbundle */,
+				AC327FD92B2E00280048E2D2 /* assets */,
+				AC327FD62B2DFCBF0048E2D2 /* images */,
+				AC327FD42B2DFA490048E2D2 /* main.jsbundle */,
 				13B07FAE1A68108700A75B9A /* Artique */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* ArtiqueTests */,
@@ -256,7 +263,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AC327FA62B2DEDBB0048E2D2 /* main.jsbundle in Resources */,
+				AC327FDC2B2E00340048E2D2 /* main.jsbundle in Resources */,
+				AC327FDA2B2E00280048E2D2 /* assets in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				AC7C710F2A95DD8D009F6CAE /* GoogleService-Info.plist in Resources */,
@@ -507,7 +515,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Artique/Artique.entitlements;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 79BVW9WXU3;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Artique/Info.plist;
@@ -539,7 +547,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Artique/Artique.entitlements;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 79BVW9WXU3;
 				INFOPLIST_FILE = Artique/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Artique;
