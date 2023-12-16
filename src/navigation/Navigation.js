@@ -242,10 +242,7 @@ const Navigation = () => {
             setAlertModalVisible(true);
             setTimeout(() => {
                 setAlertModalVisible(false);
-            }, 1000);
-            setTimeout(() => {
-                nav.navigate('MainTab', { screen: 'Feed1' });
-            }, 1500);        
+            }, 1000);       
         }
 
         return (
@@ -299,7 +296,7 @@ const Navigation = () => {
                         ),
                         tabBarButton: (props) => {
                             if (!isCookie) {
-                                return <TouchableOpacity {...props} onPress={handleAlert()} />;
+                                return <TouchableOpacity {...props} onPress={handleAlert} />;
                             } else {
                             return <TouchableOpacity {...props} />;
                             }
