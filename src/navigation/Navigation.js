@@ -44,6 +44,7 @@ import Privacy from "@screens/Setting/ArtiqueInfo/Privacy";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { SafeAreaProvider, useSafeAreaInsets } from "react-native-safe-area-context";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -224,6 +225,7 @@ const Navigation = () => {
 
     const Tabs = () => {
         const nav = useNavigation();
+        const insets = useSafeAreaInsets();
 
         const [isCookie, setIsCookie] = useState(true);
         const [alertModalVisible, setAlertModalVisible] = useState(false);
@@ -262,9 +264,11 @@ const Navigation = () => {
                 screenOptions={{
                     headerShown: false,
                     tabBarStyle: {
-                        height: 70,
+                        height: insets.bottom,
                         borderBlockColor: "#e5e5e5",
                         backgroundColor: "#FAFAFA",
+                        paddingBottom: 40,
+                        borderTopWidth: 0,
                     },
                     tabBarShowLabel: false,
                 }}
@@ -309,9 +313,11 @@ const Navigation = () => {
     };
 
     return (        
-        <NavigationContainer>
-            {goToFeed ? <Tabs /> : <AuthStack />}
-        </NavigationContainer>
+        <SafeAreaProvider>
+            <NavigationContainer>
+                {goToFeed ? <Tabs /> : <AuthStack />}
+            </NavigationContainer>
+        </SafeAreaProvider>
     )
 }
 
