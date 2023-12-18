@@ -103,7 +103,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }
   }, [refreshing, otherMemberId, memberInfo, memberStat, shortReviewInfo]);
 
   const goBack = () => {
-    nav.reset();
+    nav.goBack();
   }
 
   const goToChangeProfile = () => {
