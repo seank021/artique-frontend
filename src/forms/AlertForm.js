@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, Pressable, ScrollView, TextInput, PixelRatio, Platform, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, Image, Pressable, ScrollView, TextInput, PixelRatio, Platform, TouchableWithoutFeedback, Linking } from 'react-native';
 import Modal from 'react-native-modal';
 
 import tw from 'twrnc';
@@ -1121,6 +1121,32 @@ export const EmailVerityForm = (props) => {
                         <AlertForm modalVisible={verificationFailModal} setModalVisible={setVerificationFailModal} borderColor="#FAFAFA" bgColor="#FAFAFA" image={require("@images/x_red.png")} textColor="#191919" text="인증번호가 일치하지 않습니다" />
                     </View>
                 </View>
+            </View>
+        </Modal>
+    )
+}
+
+// props: modalVisible, setModalVisible, version, newVersion, text, linkingURL
+export const AlertFormForUpdate = (props) => {
+    const [updateModalVisible, setUpdateModalVisible] = useState(false);
+
+    const onPressConfirm = () => {
+        setUpdateModalVisible(!updateModalVisible);
+        setTimeout(() => {
+            setUpdateModalVisible(updateModalVisible);
+        }, 1000);
+        Linking.openURL(props.linkingURL);
+    }
+
+    return (
+        <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.8}>
+            <View style={tw`flex flex-col w-[90%] h-[180px] bg-white rounded-[15px] items-center justify-center self-center`}>
+                <Text style={tw`text-base font-medium text-[#191919]`}>버전 {props.newVersion}가 새로 나왔어요!</Text>
+                <Text style={tw`text-sm font-normal text-[#191919]`}>(현재 {props.version}을 사용하고 있어요)</Text>
+                <Text style={tw`text-sm font-normal text-[#191919] my-[15px]`}>{props.text}</Text>
+                <Pressable onPress={onPressConfirm} style={tw`w-[90%] h-[40px] bg-[#E94A4B] rounded-[10px] justify-center items-center`}>
+                    <Text style={tw`text-base font-medium text-white`}>업데이트 하러 가기</Text>
+                </Pressable>
             </View>
         </Modal>
     )
