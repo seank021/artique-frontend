@@ -169,14 +169,16 @@ export const LongReviewForm = (props) => {
                 <SafeAreaView style={styles.container}>
                     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? "padding" : "height"} style={tw`flex-1`} keyboardVerticalOffset={statusBarHeight+15}>  
                         <View style={tw`flex-row items-center justify-between mt-5 mb-[14px]`}>
-                            <Pressable onPress={goBack} style={tw`flex-row`}>
-                                <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] mr-[8px] w-[10px] h-[18px] tint-[#191919]`}></Image>
-                                <View style={tw`px-[20px]`}></View>
+                            <Pressable style={tw`flex-row`}>
+                                <Text style={tw`text-[#FAFAFA]`}>저장</Text>
+                                <View style={tw`px-[10px]`}></View>
                             </Pressable>
                             <Text style={tw`text-[#191919] text-base font-medium`}>긴줄평 적기</Text>
                             <View style={tw`flex-row`}>
-                                <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] mr-[8px] w-[10px] h-[18px] tint-[#FAFAFA]`}></Image>
-                                <View style={tw`px-[20px]`}></View>
+                                <Pressable onPress={goBack}>
+                                    <Text style={tw`text-[#191919] text-sm`}>저장</Text>
+                                </Pressable>
+                                <View style={tw`px-[10px]`}></View>
                             </View>
                         </View>
                         <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
