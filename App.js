@@ -25,7 +25,6 @@ const App = () => {
 
     VersionCheck.needUpdate()
     .then(async res => {
-      console.log(res.isNeeded);
       setVersion(res.currentVersion);
       setNewVersion(res.latestVersion);
       setLinkingURL(res.storeUrl);
