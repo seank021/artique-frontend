@@ -88,7 +88,7 @@ PODS:
   - hermes-engine (0.72.3):
     - hermes-engine/Pre-built (= 0.72.3)
   - hermes-engine/Pre-built (0.72.3)
-  - kakao-login (5.3.0):
+  - kakao-login (5.3.1):
     - KakaoSDKAuth (= 2.11.1)
     - KakaoSDKCommon (= 2.11.1)
     - KakaoSDKUser (= 2.11.1)
@@ -106,7 +106,7 @@ PODS:
     - KakaoSDKAuth (= 2.11.1)
   - libevent (2.1.12)
   - lottie-ios (4.3.3)
-  - lottie-react-native (6.4.0):
+  - lottie-react-native (6.4.1):
     - lottie-ios (~> 4.3.3)
     - React-Core
   - OpenSSL-Universal (1.1.1100)
@@ -412,9 +412,9 @@ PODS:
     - glog
   - react-native-cookies (6.2.1):
     - React-Core
-  - react-native-image-picker (7.0.0):
+  - react-native-image-picker (7.0.3):
     - React-Core
-  - react-native-safe-area-context (4.7.1):
+  - react-native-safe-area-context (4.7.4):
     - React-Core
   - react-native-splash-screen (3.3.0):
     - React-Core
@@ -528,16 +528,17 @@ PODS:
     - React-jsi (= 0.72.3)
     - React-logger (= 0.72.3)
     - React-perflogger (= 0.72.3)
-  - RNAppleAuthentication (2.2.2):
+  - RNAppleAuthentication (2.3.0):
     - React-Core
-  - RNCAsyncStorage (1.19.3):
+  - RNCAsyncStorage (1.19.7):
     - React-Core
-  - RNGestureHandler (2.12.1):
+  - RNGestureHandler (2.13.4):
+    - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - RNGoogleSignin (2.1.1):
     - GoogleSignIn (~> 5.0.0)
     - React
-  - RNReanimated (3.4.2):
+  - RNReanimated (3.5.4):
     - DoubleConversion
     - FBLazyVector
     - glog
@@ -566,10 +567,11 @@ PODS:
     - React-RCTText
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.24.0):
+  - RNScreens (3.27.0):
+    - RCT-Folly (= 2021.07.22.00)
     - React-Core
-    - React-RCTImage
-  - RNVectorIcons (10.0.0):
+  - RNVectorIcons (10.0.2):
+    - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - SocketRocket (0.6.1)
   - Yoga (1.14.0)
@@ -811,13 +813,13 @@ SPEC CHECKSUMS:
   GTMAppAuth: 0ff230db599948a9ad7470ca667337803b3fc4dd
   GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
   hermes-engine: 10fbd3f62405c41ea07e71973ea61e1878d07322
-  kakao-login: 3d7afeb8d49d4fa9a3ee579edb1b68c65bf20dac
+  kakao-login: d3dad7a7bc1a3d187cedb4de83b1ec2e9b1cda30
   KakaoSDKAuth: bb2dfa7be30daa8403c9cfc8001aa6fde7a5b779
   KakaoSDKCommon: 555e1bb46595b842ded01cf7888cc17bbae4e113
   KakaoSDKUser: 08c0a4f40bebdebdf948a9e3d0e44ed5c2754f99
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   lottie-ios: 25e7b2675dad5c3ddad369ac9baab03560c5bfdd
-  lottie-react-native: 3a3084faddd3891c276f23fd6e797b83f2021bbc
+  lottie-react-native: a2ae9c27c273b060b2affff2957bc0ff7fdca353
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
   RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
   RCTRequired: a2faf4bad4e438ca37b2040cb8f7799baa065c18
@@ -835,8 +837,8 @@ SPEC CHECKSUMS:
   React-jsinspector: b511447170f561157547bc0bef3f169663860be7
   React-logger: c5b527272d5f22eaa09bb3c3a690fee8f237ae95
   react-native-cookies: f54fcded06bb0cda05c11d86788020b43528a26c
-  react-native-image-picker: ddbbe4d226d9c82a82360f5de66bf71a657a42e6
-  react-native-safe-area-context: 9697629f7b2cda43cf52169bb7e0767d330648c2
+  react-native-image-picker: 2381c008bbb09e72395a2d043c147b11bd1523d9
+  react-native-safe-area-context: 2cd91d532de12acdb0a9cbc8d43ac72a8e4c897c
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
   React-NativeModulesApple: c57f3efe0df288a6532b726ad2d0322a9bf38472
   React-perflogger: 6bd153e776e6beed54c56b0847e1220a3ff92ba5
@@ -855,13 +857,13 @@ SPEC CHECKSUMS:
   React-runtimescheduler: 837c1bebd2f84572db17698cd702ceaf585b0d9a
   React-utils: bcb57da67eec2711f8b353f6e3d33bd8e4b2efa3
   ReactCommon: 3ccb8fb14e6b3277e38c73b0ff5e4a1b8db017a9
-  RNAppleAuthentication: 0571c08da8c327ae2afc0261b48b4a515b0286a6
-  RNCAsyncStorage: c913ede1fa163a71cea118ed4670bbaaa4b511bb
-  RNGestureHandler: c0d04458598fcb26052494ae23dda8f8f5162b13
+  RNAppleAuthentication: e99eaf3c4c01ad8ecb6125dd6f0cfd98871685b5
+  RNCAsyncStorage: 348091a63d38ec34b89998379a467ee3a5edbd4c
+  RNGestureHandler: 6e46dde1f87e5f018a54fe5d40cd0e0b942b49ee
   RNGoogleSignin: 6baed9bb19c9c54614bef63bdc55c381b4e33c44
-  RNReanimated: 726395a2fa2f04cea340274ba57a4e659bc0d9c1
-  RNScreens: b21dc57dfa2b710c30ec600786a3fc223b1b92e7
-  RNVectorIcons: 8b5bb0fa61d54cd2020af4f24a51841ce365c7e9
+  RNReanimated: ab2e96c6d5591c3dfbb38a464f54c8d17fb34a87
+  RNScreens: 3c2d122f5e08c192e254c510b212306da97d2581
+  RNVectorIcons: 23b6e11af4aaf104d169b1b0afa7e5cf96c676ce
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: 8796b55dba14d7004f980b54bcc9833ee45b28ce
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
