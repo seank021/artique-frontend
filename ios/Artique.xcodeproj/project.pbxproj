@@ -608,8 +608,8 @@
 					"\"$(PODS_ROOT)/Headers/Public/hermes-engine\"",
 					"\"$(PODS_ROOT)/../../node_modules/react-native/ReactCommon\"",
 					"\"$(PODS_ROOT)/Headers/Private/React-Core\"",
-					"\"$(PODS_TARGET_SRCROOT)/include/\"/**",
-					"$(SRCROOT)/../node_modules/react-native/React",
+					"\"$(PODS_TARGET_SRCROOT)/include/\"",
+					"$(SRCROOT)/../node_modules/react-native/React/**",
 				);
 				INFOPLIST_FILE = Artique/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Artique;
@@ -712,8 +712,8 @@
 					"\"$(PODS_ROOT)/Headers/Public/hermes-engine\"",
 					"\"$(PODS_ROOT)/../../node_modules/react-native/ReactCommon\"",
 					"\"$(PODS_ROOT)/Headers/Private/React-Core\"",
-					"\"$(PODS_TARGET_SRCROOT)/include/\"/**",
-					"$(SRCROOT)/../node_modules/react-native/React",
+					"\"$(PODS_TARGET_SRCROOT)/include/\"",
+					"$(SRCROOT)/../node_modules/react-native/React/**",
 				);
 				INFOPLIST_FILE = Artique/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Artique;
