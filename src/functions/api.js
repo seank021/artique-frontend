@@ -4,7 +4,6 @@ import * as Cookies from "@functions/cookie"
 import { getPort } from "@functions/port";
 
 const PORT = getPort();
-console.log("PORT:", PORT);
 
 async function getMemberId() {
   try {
