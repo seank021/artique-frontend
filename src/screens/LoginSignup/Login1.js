@@ -12,6 +12,7 @@ import axios from 'axios';
 import * as Cookies from '@functions/cookie';
 import { setAutoLogin } from '@functions/autoLogin';
 import { setIfCheckedContractsInSocialLogin, getIfCheckedContractsInSocialLogin } from '@functions/contract';
+import { getPort } from '@functions/port';
 
 import {useNavigation} from '@react-navigation/native';
 
@@ -20,6 +21,7 @@ import { ContractAlertForm } from '@forms/AlertForm';
 
 export default function Login1({setGoToFeed}) {
   const nav = useNavigation();
+  const PORT = getPort();
 
   const [contractAlertFormVisible, setContractAlertFormVisible] = useState(false);
 
@@ -62,7 +64,7 @@ export default function Login1({setGoToFeed}) {
     if (seeModal === 'true') {
       try {
         const result = await KakaoLogin.login();
-        const response = await axios.post('http://3.39.145.210/member/oauth', {
+        const response = await axios.post(`${PORT}/member/oauth`, {
           thirdPartyName: 'kakao',
           token: result.accessToken,
         });
@@ -87,7 +89,7 @@ export default function Login1({setGoToFeed}) {
       if (ifChecked1 && ifChecked2) {
         try {
           const result = await KakaoLogin.login();
-          const response = await axios.post('http://3.39.145.210/member/oauth', {
+          const response = await axios.post(`${PORT}/member/oauth`, {
             thirdPartyName: 'kakao',
             token: result.accessToken,
           });
@@ -127,7 +129,7 @@ export default function Login1({setGoToFeed}) {
       try {
         await GoogleSignin.hasPlayServices();
         const userInfo = await GoogleSignin.signIn();
-        const response = await axios.post('http://3.39.145.210/member/oauth', {
+        const response = await axios.post(`${PORT}/member/oauth`, {
           thirdPartyName: 'google',
           token: userInfo.idToken,
         });
@@ -161,7 +163,7 @@ export default function Login1({setGoToFeed}) {
         try {
           await GoogleSignin.hasPlayServices();
           const userInfo = await GoogleSignin.signIn();
-          const response = await axios.post('http://3.39.145.210/member/oauth', {
+          const response = await axios.post(`${PORT}/member/oauth`, {
             thirdPartyName: 'google',
             token: userInfo.idToken,
           });
@@ -197,7 +199,7 @@ export default function Login1({setGoToFeed}) {
               requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
           });
           console.log('appleAuthRequestResponse: ', appleAuthRequestResponse);
-          const response = await axios.post('http://3.39.145.210/member/oauth', {
+          const response = await axios.post(`${PORT}/member/oauth`, {
               thirdPartyName: 'apple',
               token: appleAuthRequestResponse.identityToken,
           });
@@ -226,7 +228,7 @@ export default function Login1({setGoToFeed}) {
                   requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
               });
               console.log('appleAuthRequestResponse: ', appleAuthRequestResponse);
-              const response = await axios.post('http://3.39.145.210/member/oauth', {
+              const response = await axios.post(`${PORT}/member/oauth`, {
                   thirdPartyName: 'apple',
                   token: appleAuthRequestResponse.identityToken,
               });

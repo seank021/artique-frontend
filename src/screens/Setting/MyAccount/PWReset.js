@@ -5,11 +5,14 @@ import tw from "twrnc";
 
 import axios from "axios";
 
+import { getPort } from "@functions/port";
+
 import { useNavigation } from "@react-navigation/native";
 import AlertForm from "@forms/AlertForm";
 
 export default function PWReset ({ isCookie }) {
   const nav = useNavigation();
+  const PORT = getPort();
 
   const goBack = () => {
     nav.goBack();
@@ -32,7 +35,7 @@ export default function PWReset ({ isCookie }) {
     } 
 
     try {
-      const response = await axios.post(`http://3.39.145.210/member/password/renew?member-email=${email}`);
+      const response = await axios.post(`${PORT}/member/password/renew?member-email=${email}`);
       if (response.data === "ok") {
         setModalVisible(!modalVisible);
         setAlertImage(require('@images/check.png'));
@@ -53,21 +56,12 @@ export default function PWReset ({ isCookie }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <AlertForm
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        borderColor="#FAFAFA"
-        bgColor="#FAFAFA"
-        image={alertImage}
-        text={alertText}
-        textColor="#191919"
-      />
+      <AlertForm modalVisible={modalVisible} setModalVisible={setModalVisible} borderColor="#FAFAFA" bgColor="#FAFAFA" image={alertImage} text={alertText} textColor="#191919" />
+      
       {/* 상단 바 */}
       <View style={tw`flex-row items-center justify-between mt-5 mb-[14px]`}>
           <Pressable onPress={goBack} style={tw`flex-row`}>
-              <Image 
-                source={require('@images/chevron_left.png')} 
-                style={tw`ml-[20px] mr-[8px] w-[10px] h-[18px] tint-[#191919]`}></Image>
+              <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] mr-[8px] w-[10px] h-[18px] tint-[#191919]`}></Image>
               <View style={tw`ml-[20px]`}></View>
           </Pressable>
           <Text style={tw`text-[#191919] text-base font-medium`}>비밀번호 초기화</Text>

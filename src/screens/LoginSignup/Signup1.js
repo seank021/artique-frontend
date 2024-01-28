@@ -9,14 +9,16 @@ import axios from 'axios';
 
 import hash from '@functions/hash';
 import * as Cookies from '@functions/cookie';
+import { getPort } from '@functions/port';
 
 import { useNavigation } from '@react-navigation/native';
 
 import InputForm from '@forms/InputForm';
 import AlertForm, { ContractForm, EmailVerityForm } from '@forms/AlertForm';
 
-export default function Login1() {
+export default function Signup1() {
   const nav = useNavigation();
+  const PORT = getPort();
 
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
@@ -85,7 +87,7 @@ export default function Login1() {
   const checkDuplicate = async () => {
     try {
       const response = await axios.get(
-        `http://3.39.145.210/member/duplicate?member-id=${id}`,
+        `${PORT}/member/duplicate?member-id=${id}`,
       );
       console.log(response.data);
     } catch (error) {
@@ -176,7 +178,7 @@ export default function Login1() {
       const hashedPW = hash(password);
       Cookies.clearCookie();
       try {
-        const response = await axios.post('http://3.39.145.210/member/join', {
+        const response = await axios.post(`${PORT}/member/join`, {
           memberId: id,
           memberPW: hashedPW,
         });
@@ -272,7 +274,7 @@ export default function Login1() {
     }
 
     try {
-      const response = await axios.post('http://3.39.145.210/member/join/email', {
+      const response = await axios.post(`${PORT}/member/join/email`, {
         "mailAddress": id,
       });
       if (response.data === "ok") {
@@ -286,69 +288,27 @@ export default function Login1() {
   return (
     <SafeAreaView style={styles.container}>
       <View>
-        <AlertForm
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-          borderColor="#F5F8F5"
-          bgColor="#F5F8F5"
-          image={alertImage}
-          textColor="#191919"
-          text={alertText}></AlertForm>
+        <AlertForm modalVisible={modalVisible} setModalVisible={setModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
       </View>
       <View style={tw`flex-row items-center justify-between mt-5 mb-3`}>
         <Pressable onPress={goBack} style={tw`flex-row items-center`}>
-          <Image
-            source={require('@images/chevron_left.png')}
-            style={tw`mx-[10px] w-[10px] h-[18px]`}></Image>
+          <Image source={require('@images/chevron_left.png')} style={tw`mx-[10px] w-[10px] h-[18px]`}></Image>
           <Text style={tw`text-[#F5F8F5] text-sm`}>로그인</Text>
         </Pressable>
         <Text style={tw`text-[#F5F8F5] text-lg`}>회원가입</Text>
         <View style={tw`flex-row`}>
-          <Image
-            source={require('@images/chevron_left.png')}
-            style={tw`mr-[10px] w-[10px] h-[18px] tint-[#3A3D52]`}></Image>
+          <Image source={require('@images/chevron_left.png')} style={tw`mr-[10px] w-[10px] h-[18px] tint-[#3A3D52]`}></Image>
           <Text style={tw`text-[#3A3D52] text-sm mr-2`}>로그인</Text>
         </View>
       </View>
       <View style={tw`border-solid border-b border-[#323546]`}></View>
 
-      <Image
-        source={require('@images/logo_small.png')}
-        style={tw`self-center mt-7 mb-7 w-[110px] h-[38px]`}></Image>
+      <Image source={require('@images/logo_small.png')} style={tw`self-center mt-7 mb-7 w-[110px] h-[38px]`}></Image>
 
       <ScrollView contentContainerStyle={styles.contentContainer}>
-        <InputForm
-          image={require('@images/id.png')}
-          placeholder={'이메일을 입력해주세요'}
-          setValue={setId}
-          compareValue={nullFunc}
-          reappearButton={reappearButton}
-          ifButton={ifButtonID}
-          borderColor="#F5F8F5"
-          buttonColor="#F5F8F5"
-          buttonTextColor="#191919"
-          buttonText={buttonText}
-          onPressButton={checkDuplicate}
-          ifCheck={ifCheckID}
-          style={tw`mb-2.5`}></InputForm>
-        <InputForm
-          image={require('@images/password.png')}
-          placeholder={'비밀번호를 설정해주세요 (7자 이상)'}
-          secureTextEntry={true}
-          setValue={setPassword}
-          compareValue={comparePW}
-          reappearButton={nullFunc}
-          style={tw`mb-2.5`}></InputForm>
-        <InputForm
-          image={require('@images/password.png')}
-          placeholder={'비밀번호를 다시 확인해주세요'}
-          secureTextEntry={true}
-          setValue={setPassword_}
-          compareValue={comparePW_}
-          reappearButton={nullFunc}
-          ifCheck={ifCheckPW}
-          ifX={ifXPW}
-          style={tw`mb-2.5`}></InputForm>
+        <InputForm image={require('@images/id.png')} placeholder={'이메일을 입력해주세요'} setValue={setId} compareValue={nullFunc} reappearButton={reappearButton} ifButton={ifButtonID} borderColor="#F5F8F5" buttonColor="#F5F8F5" buttonTextColor="#191919" buttonText={buttonText} onPressButton={checkDuplicate} ifCheck={ifCheckID} style={tw`mb-2.5`}></InputForm>
+        <InputForm image={require('@images/password.png')} placeholder={'비밀번호를 설정해주세요 (7자 이상)'} secureTextEntry={true} setValue={setPassword} compareValue={comparePW} reappearButton={nullFunc} style={tw`mb-2.5`}></InputForm>
+        <InputForm image={require('@images/password.png')} placeholder={'비밀번호를 다시 확인해주세요'} secureTextEntry={true} setValue={setPassword_} compareValue={comparePW_} reappearButton={nullFunc} ifCheck={ifCheckPW} ifX={ifXPW} style={tw`mb-2.5`}></InputForm>
 
         <View style={tw`flex-row items-center self-start ml-[5%] mt-2.5 mb-1`}>
           <Pressable onPress={checkRectangle1}>
@@ -364,9 +324,7 @@ export default function Login1() {
             <Image source={rectangle2} style={tw`mr-2 w-[16px] h-[16px]`}></Image>
           </Pressable>
           <Pressable onPress={onPressContract2}>
-            <Text style={tw`text-[#ABABAB] text-sm underline`}>
-              개인정보 처리 방침 (필수)
-            </Text>
+            <Text style={tw`text-[#ABABAB] text-sm underline`}>개인정보 처리 방침 (필수)</Text>
           </Pressable>
           <ContractForm modalVisible={contractModal2Visible} setModalVisible={setContractModal2Visible} contractNum={2}></ContractForm>
         </View>

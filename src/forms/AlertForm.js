@@ -13,11 +13,14 @@ import { Contract1, Contract2 } from '@forms/ContractContents';
 import { reviewDetail, reviewDelete, reviewReport, userReport, profileUpload } from '@functions/api';
 import { addReviewBlock, addUserBlock, clearWholeBlockList } from '@functions/block';
 import * as Cookies from '@functions/cookie';
+import { getPort } from '@functions/port';
 
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 
 const fontScale = PixelRatio.getFontScale();
 const getFontSize = size => size / fontScale;
+
+const PORT = getPort();
 
 // props: modalVisible, setModalVisible / borderColor, bgColor, image, textColor, text
 export default function AlertForm(props) {
@@ -1062,7 +1065,7 @@ export const EmailVerityForm = (props) => {
         }, 1000);
 
         try {
-            const response = await axios.post('http://3.39.145.210/member/join/email', {
+            const response = await axios.post(`${PORT}/member/join/email`, {
                 "mailAddress": props.email,
             });
             console.log(response.data)
@@ -1075,7 +1078,7 @@ export const EmailVerityForm = (props) => {
         setCount(300);
 
         try {
-            const response = await axios.post('http://3.39.145.210/member/join/email/verify', {
+            const response = await axios.post(`${PORT}/member/join/email/verify`, {
                 "email": props.email,
                 "code": verificationNumber,
             });

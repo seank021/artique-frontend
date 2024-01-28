@@ -1,6 +1,11 @@
 import axios from "axios";
 import * as Cookies from "@functions/cookie"
 
+import { getPort } from "@functions/port";
+
+const PORT = getPort();
+console.log("PORT:", PORT);
+
 async function getMemberId() {
   try {
     const cookies = await Cookies.getCurrentLoginCookie();
@@ -27,7 +32,7 @@ const getHeaders = async () => {
 const feedReviews = async (page) => {
   try {
     const myHeaders = await getHeaders();
-    const response = await axios.get(`http://3.39.145.210/feed?page=${page}&size=15`, {
+    const response = await axios.get(`${PORT}/feed?page=${page}&size=15`, {
         headers: myHeaders.map,
     });
     return response.data;
@@ -39,7 +44,7 @@ const feedReviews = async (page) => {
 const musicalReviewsAll = async (musicalId, page, orderBy) => {
   try {
     const myHeaders = await getHeaders();
-    const response = await axios.get(`http://3.39.145.210/musical/reviews/all?musical-id=${musicalId}&page=${page}&size=10&order-by=${orderBy}`, {
+    const response = await axios.get(`${PORT}/musical/reviews/all?musical-id=${musicalId}&page=${page}&size=10&order-by=${orderBy}`, {
         headers: myHeaders.map,
       });
     return response.data.reviews;
@@ -51,7 +56,7 @@ const musicalReviewsAll = async (musicalId, page, orderBy) => {
 const musicalReviews = async (musicalId) => {
   try {
     const myHeaders = await getHeaders();
-    const response = await axios.get(`http://3.39.145.210/musical/reviews?musical-id=${musicalId}`, {
+    const response = await axios.get(`${PORT}/musical/reviews?musical-id=${musicalId}`, {
         headers:  myHeaders.map,
       });
     return response.data;
@@ -62,7 +67,7 @@ const musicalReviews = async (musicalId) => {
 
 const musicalDetails = async (musicalId) => {
   try {
-    const response = await axios.get(`http://3.39.145.210/musical/detail?musical-id=${musicalId}`);
+    const response = await axios.get(`${PORT}/musical/detail?musical-id=${musicalId}`);
     return response.data;
   } catch (err) {
     console.log(err.response.data);
@@ -71,7 +76,7 @@ const musicalDetails = async (musicalId) => {
 
 const musicalRateStatistics = async (musicalId) => {
   try {
-    const response = await axios.get(`http://3.39.145.210/musical/rate/statistics?musical-id=${musicalId}`);
+    const response = await axios.get(`${PORT}/musical/rate/statistics?musical-id=${musicalId}`);
     return response.data;
   } catch (err) {
     console.log(err.response.data);
@@ -81,7 +86,7 @@ const musicalRateStatistics = async (musicalId) => {
 const thumbsUp = async (reviewId, isThumbsUp) => {
   try {
     const myHeaders = await getHeaders();
-    const response = await axios.post(`http://3.39.145.210/thumbs`, {
+    const response = await axios.post(`${PORT}/thumbs`, {
         reviewId: reviewId,
         thumbsUp: isThumbsUp,
       }, {
@@ -100,7 +105,7 @@ const thumbsUp = async (reviewId, isThumbsUp) => {
 const reviewWrite = async (starRating, shortReview, longReview, casting, viewDate, seat, musicalId, shortSpoiler, longSpoiler) => {
     try {
         const myHeaders = await getHeaders();
-        const response = await axios.post(`http://3.39.145.210/write/review`, {
+        const response = await axios.post(`${PORT}/write/review`, {
             starRating: starRating,
             shortReview: shortReview,
             longReview: longReview,
@@ -124,7 +129,7 @@ const reviewWrite = async (starRating, shortReview, longReview, casting, viewDat
 const reviewUpdate = async (reviewId, starRating, shortReview, longReview, casting, viewDate, seat, shortSpoiler, longSpoiler) => {
     try {
         const myHeaders = await getHeaders();
-        const response = await axios.post(`http://3.39.145.210/update/review`, {
+        const response = await axios.post(`${PORT}/update/review`, {
             reviewId: reviewId,
             starRating: starRating,
             shortReview: shortReview,
@@ -149,7 +154,7 @@ const reviewUpdate = async (reviewId, starRating, shortReview, longReview, casti
 const reviewDelete = async (reviewId) => {
     try {
         const myHeaders = await getHeaders();
-        const response = await axios.delete(`http://3.39.145.210/delete/review?review-id=${reviewId}`, {
+        const response = await axios.delete(`${PORT}/delete/review?review-id=${reviewId}`, {
             headers: myHeaders.map,
         });
     } catch (err) {
@@ -163,7 +168,7 @@ const reviewDelete = async (reviewId) => {
 const reviewReport = async (reviewId, reportReason) => {
     try {
         const myHeaders = await getHeaders();
-        const response = await axios.post(`http://3.39.145.210/report/review?review-id=${reviewId}&type=${reportReason}`, {}, {
+        const response = await axios.post(`${PORT}/report/review?review-id=${reviewId}&type=${reportReason}`, {}, {
             headers: myHeaders.map,
         });
         console.log(response.data);
@@ -178,7 +183,7 @@ const reviewReport = async (reviewId, reportReason) => {
 const userReport = async (reportedMemberId, reportReason) => {
   try {
       const myHeaders = await getHeaders();
-      const response = await axios.post(`http://3.39.145.210/report/member?member-id=${reportedMemberId}&type=${reportReason}`, {}, {
+      const response = await axios.post(`${PORT}/report/member?member-id=${reportedMemberId}&type=${reportReason}`, {}, {
           headers: myHeaders.map,
       });
       console.log(response.data);
@@ -193,7 +198,7 @@ const userReport = async (reportedMemberId, reportReason) => {
 const reviewDetail = async (reviewId) => {
     try {
         const myHeaders = await getHeaders();
-        const response = await axios.get(`http://3.39.145.210/review?review-id=${reviewId}`, {
+        const response = await axios.get(`${PORT}/review?review-id=${reviewId}`, {
             headers: myHeaders.map,
         });
         return response.data;
@@ -204,7 +209,7 @@ const reviewDetail = async (reviewId) => {
 
 const searchMusicals = async (keyword, orderBy) => {
   try {
-    const response = await axios.get(`http://3.39.145.210/search?key-word=${keyword}&order-by=${orderBy}`);
+    const response = await axios.get(`${PORT}/search?key-word=${keyword}&order-by=${orderBy}`);
     return response.data;
   } catch (err) {
     console.log(err.response.data);
@@ -217,7 +222,7 @@ const memberIdInMypage = async () => {
     if (myHeaders.map.authorization === "") {
       return null
     }
-    const response = await axios.get(`http://3.39.145.210/member/id`, {
+    const response = await axios.get(`${PORT}/member/id`, {
       headers: myHeaders.map,
     });
     return response.data;
@@ -229,7 +234,7 @@ const memberIdInMypage = async () => {
 const memberSummary = async (memberId) => {
   try {
     const myHeaders = await getHeaders();
-    const response = await axios.get(`http://3.39.145.210/member/summary?member-id=${memberId}`, {
+    const response = await axios.get(`${PORT}/member/summary?member-id=${memberId}`, {
       headers: myHeaders.map,
     });
     return response.data;
@@ -241,7 +246,7 @@ const memberSummary = async (memberId) => {
 const memberStatistics = async (memberId) => {
   try {
     const myHeaders = await getHeaders();
-    const response = await axios.get(`http://3.39.145.210/member/summary/statistics?member-id=${memberId}`, {
+    const response = await axios.get(`${PORT}/member/summary/statistics?member-id=${memberId}`, {
       headers: myHeaders.map,
     });
     return response.data;
@@ -253,7 +258,7 @@ const memberStatistics = async (memberId) => {
 const memberShortThumbReviews = async (memberId) => {
   try {
     const myHeaders = await getHeaders();
-    const response = await axios.get(`http://3.39.145.210/member/review/thumbs/short?member-id=${memberId}`, {
+    const response = await axios.get(`${PORT}/member/review/thumbs/short?member-id=${memberId}`, {
       headers: myHeaders.map,
     });
     return response.data;
@@ -265,7 +270,7 @@ const memberShortThumbReviews = async (memberId) => {
 const myReviewsAll = async (memberId, page, orderBy) => {
   try {
     const myHeaders = await getHeaders();
-    const response = await axios.get(`http://3.39.145.210/member/review/create/all?member-id=${memberId}&page=${page}&size=10&order-by=${orderBy}`, {
+    const response = await axios.get(`${PORT}/member/review/create/all?member-id=${memberId}&page=${page}&size=10&order-by=${orderBy}`, {
       headers: myHeaders.map,
     });
     return response.data;
@@ -277,7 +282,7 @@ const myReviewsAll = async (memberId, page, orderBy) => {
 const searchCreatedReviews = async (memberId, page, keyword, orderBy) => {
   try {
     const myHeaders = await getHeaders();
-    const response = await axios.get(`http://3.39.145.210/member/review/create/search?member-id=${memberId}&page=${page}&size=10&keyword=${keyword}&order-by=${orderBy}`, {
+    const response = await axios.get(`${PORT}/member/review/create/search?member-id=${memberId}&page=${page}&size=10&keyword=${keyword}&order-by=${orderBy}`, {
       headers: myHeaders.map,
     });
     return response.data;
@@ -289,7 +294,7 @@ const searchCreatedReviews = async (memberId, page, keyword, orderBy) => {
 const myThumbsAll = async (memberId, page) => {
   try {
     const myHeaders = await getHeaders();
-    const response = await axios.get(`http://3.39.145.210/member/review/thumbs/all?member-id=${memberId}&page=${page}&size=10`, {
+    const response = await axios.get(`${PORT}/member/review/thumbs/all?member-id=${memberId}&page=${page}&size=10`, {
       headers: myHeaders.map,
     });
     return response.data;
@@ -301,7 +306,7 @@ const myThumbsAll = async (memberId, page) => {
 const searchThumbReviews = async (memberId, page, keyword) => {
   try {
     const myHeaders = await getHeaders();
-    const response = await axios.get(`http://3.39.145.210/member/review/thumbs/search?member-id=${memberId}&page=${page}&size=10&keyword=${keyword}`, {
+    const response = await axios.get(`${PORT}/member/review/thumbs/search?member-id=${memberId}&page=${page}&size=10&keyword=${keyword}`, {
       headers: myHeaders.map,
     });
     return response.data;
@@ -323,7 +328,7 @@ const profileUpload = async (formdata) => {
       redirect: 'follow'
     };
 
-    const response = await fetch("http://3.39.145.210/image", requestOptions)
+    const response = await fetch("${PORT}/image", requestOptions)
       .catch(error => console.log('error', error));
     console.log("response:", response)
     const result = await response.json();
@@ -339,7 +344,7 @@ const updateMember = async (nickname, imageUrl, introduce) => {
   try {
     const myHeaders = await getHeaders();
     const memberId = await memberIdInMypage();
-    const response = await axios.post(`http://3.39.145.210/update/member`,
+    const response = await axios.post(`${PORT}/update/member`,
       {
         memberId: memberId,
         nickname: nickname,
@@ -363,7 +368,7 @@ const updatePW = async (password) => {
   try {
     const myHeaders = await getHeaders();
     const memberId = await memberIdInMypage();
-    const response = await axios.post(`http://3.39.145.210/update/member`,
+    const response = await axios.post(`${PORT}/update/member`,
       {
         memberId: memberId,
         password: password,
@@ -384,7 +389,7 @@ const updatePW = async (password) => {
 const duplicateNickname = async (nickname) => {
   try {
     const myHeaders = await getHeaders();
-    const response = await axios.get(`http://3.39.145.210/member/nickname/duplicate?nickname=${nickname}`, {
+    const response = await axios.get(`${PORT}/member/nickname/duplicate?nickname=${nickname}`, {
       headers: myHeaders.map,
     });
     return response.data;
@@ -395,7 +400,7 @@ const duplicateNickname = async (nickname) => {
 
 const announcementList = async () => {
   try {
-    const response = await axios.get(`http://3.39.145.210/config/notice`);
+    const response = await axios.get(`${PORT}/config/notice`);
     return response.data;
   } catch (err) {
     console.log(err.response.data);
@@ -405,7 +410,7 @@ const announcementList = async () => {
 const currentPWCheck = async (password) => {
   try {
     const myHeaders = await getHeaders();
-    const response = await axios.post(`http://3.39.145.210/validation/member/password`,
+    const response = await axios.post(`${PORT}/validation/member/password`,
       {
         password: password
       },
@@ -425,7 +430,7 @@ const currentPWCheck = async (password) => {
 const exit = async () => {
   try {
     const myHeaders = await getHeaders();
-    const response = await axios.delete(`http://3.39.145.210/delete/member`, {
+    const response = await axios.delete(`${PORT}/delete/member`, {
       headers: myHeaders.map,
     });
     return response.data;

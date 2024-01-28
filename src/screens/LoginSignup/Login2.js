@@ -8,6 +8,7 @@ import axios from 'axios';
 import hash from '@functions/hash';
 import * as Cookies from '@functions/cookie';
 import { setAutoLogin } from '@functions/autoLogin';
+import { getPort } from '@functions/port';
 
 import { useNavigation } from '@react-navigation/native';
 
@@ -15,8 +16,9 @@ import InputForm from '@forms/InputForm';
 import ButtonForm from '@forms/ButtonForm';
 import AlertForm from '@forms/AlertForm';
 
-export default function Login1({setGoToFeed, setIsCookie}) {
+export default function Login2({setGoToFeed, setIsCookie}) {
   const nav = useNavigation();
+  const PORT = getPort();
 
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
@@ -70,7 +72,7 @@ export default function Login1({setGoToFeed, setIsCookie}) {
     const hashedPW = hash(password);
     Cookies.removeCookie('currentLogin');
     try {
-      const response = await axios.post('http://3.39.145.210/member/login', {
+      const response = await axios.post(`${PORT}/member/login`, {
         memberId: id,
         memberPW: hashedPW,
       });
