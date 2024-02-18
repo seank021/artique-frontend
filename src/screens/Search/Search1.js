@@ -114,7 +114,7 @@ export default function Search1({ isCookie, setMusicalId }) {
     }
 
     const MusicalsList = ({ data }) => {
-        {data.length % 3 === 1 ? data.push({musicalId: 0, posterUrl: '', title: ''}, {musicalId: 0, posterUrl: '', title: ''}) : data.length % 3 === 2 ? data.push({musicalId: 0, posterUrl: '', title: ''}) : null}
+        {data.length % 3 === 1 ? data.push({musicalId: 0, posterUrl: '', title: '', duration: ''}, {musicalId: 0, posterUrl: '', title: '', duration: ''}) : data.length % 3 === 2 ? data.push({musicalId: 0, posterUrl: '', title: '', duration: ''}) : null}
         return (
             <FlatList
                 data={data}
@@ -125,12 +125,11 @@ export default function Search1({ isCookie, setMusicalId }) {
                     item.musicalId === 0 ?
                         <View style={{ width: 110, height: 157.90323 }}></View>
                     :
-                    <View>
-                        <Pressable onPress={() => onPressMusical(item.musicalId)}>
-                            <Image source={{ uri: item.posterUrl }} style={{ width: 110, height: 157.90323, borderRadius: 10, marginBottom: 10.1 }} />
-                            <Text numberOfLines={2} ellipsizeMode="tail" style={{ width: 110, color: '#191919', fontSize: 12, marginBottom: 30 }}>{item.title}</Text>
-                        </Pressable>
-                    </View>
+                    <Pressable onPress={() => onPressMusical(item.musicalId)}>
+                        <Image source={{ uri: item.posterUrl }} style={{ width: 110, height: 157.90323, borderRadius: 10, marginBottom: 10.1 }} />
+                        <Text numberOfLines={1} ellipsizeMode="tail" style={{ width: 110, color: '#191919', fontSize: 12, textAlign: "center" }}>{item.title}</Text>
+                        <Text numberOfLines={1} ellipsizeMode="tail" style={{ width: 110, color: '#ABABAB', fontSize: 10, textAlign: "center", marginBottom: 30 }}>{item.duration}</Text>
+                    </Pressable>
                 )}
                 keyExtractor={(item) => item.musicalId}
             />
