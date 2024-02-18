@@ -41,6 +41,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }
 
     setMemberInfo({});
     setMemberStat({});
+    setWrittenReviewInfo([]);
     setShortReviewInfo([]);
 
     if (otherMemberId) {
@@ -174,21 +175,22 @@ export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }
         let newMemberStat;
         let newShortThumbReviews;
         let otherMemberId = route.params?.otherMemberId;
-        console.log(otherMemberId);
-        console.log(memberId)
   
         if (otherMemberId) {
           newMemberInfo = await memberSummary(otherMemberId);
           newMemberStat = await memberStatistics(otherMemberId);
+          newWrittenReviews = await myReviewsAll(otherMemberId, 1, "THUMBS");
           newShortThumbReviews = await memberShortThumbReviews(otherMemberId);
         } else {
           newMemberInfo = await memberSummary(memberId);
           newMemberStat = await memberStatistics(memberId);
+          newWrittenReviews = await myReviewsAll(memberId, 1, "THUMBS");
           newShortThumbReviews = await memberShortThumbReviews(memberId);
         }
   
         setMemberInfo(newMemberInfo);
         setMemberStat(newMemberStat);
+        setWrittenReviewInfo(newWrittenReviews);
         setShortReviewInfo(newShortThumbReviews);
       } catch (err) {
         console.error(err);
@@ -201,8 +203,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }
     setAverageRate(memberStat.averageRate);
     setTotalReviewCount(memberStat.totalReviewCount);
     setMaxStarRate(memberStat.maxStarRate);
-  }
-  , [memberStat]);
+  }, [memberStat]);
 
   const onPressReport = () => {
     if (!isCookie) {
