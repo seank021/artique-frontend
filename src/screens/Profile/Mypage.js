@@ -253,7 +253,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }
             <Text style={tw`text-xs text-[#191919] font-normal w-55 leading-5`}>{memberInfo.introduce}</Text>
           </View>
         </View>
-        <Pressable onPress={goToChangeProfile} style={tw`self-center w-[90%] h-[33px] mt-[25px] rounded-3xl bg-[#FFF] shadow`}>
+        <Pressable onPress={goToChangeProfile} style={tw`self-center w-[90%] h-[33px] mt-[15px] rounded-3xl bg-[#FFF] shadow`}>
           <Text style={tw`text-xs text-[#191919] font-normal text-center leading-[33px]`}>프로필 수정하기</Text>
         </Pressable>
           
