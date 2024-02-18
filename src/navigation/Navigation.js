@@ -14,6 +14,7 @@ import Login2 from "@screens/LoginSignup/Login2";
 import ChangePW1 from "@screens/LoginSignup/ChangePW1";
 import Signup1 from "@screens/LoginSignup/Signup1";
 
+import Main1 from "@screens/Main/Main1";
 import Feed1 from "@screens/Main/Feed1";
 import MusicalDetail1 from "@screens/Main/MusicalDetail1";
 import MusicalDetail2 from "@screens/Main/MusicalDetail2";
@@ -104,7 +105,8 @@ const Navigation = () => {
         }, []);
 
         return (
-            <Stack.Navigator initialRouteName="Feed1" screenOptions={{ headerShown: false }}>
+            <Stack.Navigator initialRouteName="Main1" screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="Main1" children={() => <Main1 isCookie={isCookie} />} />
                 <Stack.Screen name="Feed1" children={() => <Feed1 isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId} setReviewInfo={setReviewInfo} setReviewInfo2={setReviewInfo2} setGoToFeed={setGoToFeed}/>} />
                 <Stack.Screen name="MusicalDetail1" children={() => <MusicalDetail1 isCookie={isCookie} musicalId={musicalId} setMusicalId={setMusicalId} setMusicalPoster={setMusicalPoster} setMusicalTitle={setMusicalTitle} setReviewId={setReviewId} setGoToFeed={setGoToFeed}/>} />
                 <Stack.Screen name="MusicalDetail2" children={() => <MusicalDetail2 isCookie={isCookie} musicalId={musicalId} setMusicalId={setMusicalId} setMusicalPoster={setMusicalPoster} setMusicalTitle={setMusicalTitle} setReviewId={setReviewId} setGoToFeed={setGoToFeed}/>} />
