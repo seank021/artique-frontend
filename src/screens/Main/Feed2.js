@@ -13,9 +13,9 @@ import * as Cookies from "@functions/cookie";
 import { removeAutoLogin } from "@functions/autoLogin";
 import { getIfTutorialRead } from "@functions/tutorial";
 
-// Feed1: 최신순
-export default function Feed1({ isCookie, memberId, setMusicalId, setReviewId, setReviewInfo, setReviewInfo2, setGoToFeed }) {
-    console.log("최신순");
+// Feed2: 공감순 - TODO: api connection
+export default function Feed2({ isCookie, memberId, setMusicalId, setReviewId, setReviewInfo, setReviewInfo2, setGoToFeed }) {
+    console.log("공감순");
 
     const [refreshing, setRefreshing] = useState(false);
     const isFocused = useIsFocused();

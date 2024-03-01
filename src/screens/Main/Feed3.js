@@ -13,10 +13,10 @@ import * as Cookies from "@functions/cookie";
 import { removeAutoLogin } from "@functions/autoLogin";
 import { getIfTutorialRead } from "@functions/tutorial";
 
-// Feed1: 최신순
-export default function Feed1({ isCookie, memberId, setMusicalId, setReviewId, setReviewInfo, setReviewInfo2, setGoToFeed }) {
-    console.log("최신순");
-
+// Feed3: 긴줄평 있는 리뷰 - TODO: api connection
+export default function Feed3({ isCookie, memberId, setMusicalId, setReviewId, setReviewInfo, setReviewInfo2, setGoToFeed }) {
+    console.log("긴줄평 있는 리뷰");
+    
     const [refreshing, setRefreshing] = useState(false);
     const isFocused = useIsFocused();
     const [firstFocus, setFirstFocus] = useState(true);

@@ -15,7 +15,10 @@ import ChangePW1 from "@screens/LoginSignup/ChangePW1";
 import Signup1 from "@screens/LoginSignup/Signup1";
 
 import Main1 from "@screens/Main/Main1";
-import Feed1 from "@screens/Main/Feed1";
+import Feed1 from "@screens/Main/Feed1"; // 최신순
+import Feed2 from "@screens/Main/Feed2"; // 공감순
+import Feed3 from "@screens/Main/Feed3"; // 긴줄평 있는 리뷰
+import Feed4 from "@screens/Main/Feed4"; // 별점 5점 리뷰
 import MusicalDetail1 from "@screens/Main/MusicalDetail1";
 import MusicalDetail2 from "@screens/Main/MusicalDetail2";
 import ReviewDetail1 from "@screens/Main/ReviewDetail1";
@@ -106,8 +109,11 @@ const Navigation = () => {
 
         return (
             <Stack.Navigator initialRouteName="Main1" screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="Main1" children={() => <Main1 isCookie={isCookie} />} />
+                <Stack.Screen name="Main1" children={() => <Main1 isCookie={isCookie} setGoToFeed={setGoToFeed} setReviewId={setReviewId} setMusicalId={setMusicalId} />} />
                 <Stack.Screen name="Feed1" children={() => <Feed1 isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId} setReviewInfo={setReviewInfo} setReviewInfo2={setReviewInfo2} setGoToFeed={setGoToFeed}/>} />
+                <Stack.Screen name="Feed2" children={() => <Feed2 isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId} setReviewInfo={setReviewInfo} setReviewInfo2={setReviewInfo2} setGoToFeed={setGoToFeed}/>} />
+                <Stack.Screen name="Feed3" children={() => <Feed3 isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId} setReviewInfo={setReviewInfo} setReviewInfo2={setReviewInfo2} setGoToFeed={setGoToFeed}/>} />
+                <Stack.Screen name="Feed4" children={() => <Feed4 isCookie={isCookie} memberId={memberId} setMusicalId={setMusicalId} setReviewId={setReviewId} setReviewInfo={setReviewInfo} setReviewInfo2={setReviewInfo2} setGoToFeed={setGoToFeed}/>} />
                 <Stack.Screen name="MusicalDetail1" children={() => <MusicalDetail1 isCookie={isCookie} musicalId={musicalId} setMusicalId={setMusicalId} setMusicalPoster={setMusicalPoster} setMusicalTitle={setMusicalTitle} setReviewId={setReviewId} setGoToFeed={setGoToFeed}/>} />
                 <Stack.Screen name="MusicalDetail2" children={() => <MusicalDetail2 isCookie={isCookie} musicalId={musicalId} setMusicalId={setMusicalId} setMusicalPoster={setMusicalPoster} setMusicalTitle={setMusicalTitle} setReviewId={setReviewId} setGoToFeed={setGoToFeed}/>} />
                 <Stack.Screen name="ReviewDetail1" children={() => <ReviewDetail1 isCookie={isCookie} reviewId={reviewId} memberId={memberId} setReviewInfo={setReviewInfo} setReviewInfo2={setReviewInfo2} setGoToFeed={setGoToFeed}/>} />
