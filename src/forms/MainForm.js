@@ -64,7 +64,7 @@ export function MainMusicalForm({ title, contents, setMusicalId }) {
     };
 
     return (
-        <View style={tw`flex flex-col`}>
+        <View style={tw`flex flex-col my-[15px]`}>
             <View style={tw`flex-row items-center mx-[5%] gap-[7px]`}>
                 <Image source={require('@images/main_artique.png')} style={tw`w-[22px] h-[31px]`} />
                 <Text style={tw`text-lg font-semibold text-[#191919]`}>{title}</Text>
