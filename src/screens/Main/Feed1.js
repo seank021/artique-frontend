@@ -24,6 +24,7 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
 
     const [page, setPage] = useState(0);
     const [updatePage, setUpdatePage] = useState(true);
+    const [scrollPosition, setScrollPosition] = useState(0);
     const [feeds, setFeeds] = useState([]);
     
     const [tutorialModalVisible, setTutorialModalVisible] = useState(false);
@@ -42,6 +43,8 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
     const [alertModalVisible, setAlertModalVisible] = useState(false);
     const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
     const [alertText, setAlertText] = useState('신고 누적으로 사용이 정지된 회원입니다.');
+
+    const ScrollViewRef = React.useRef();
 
     useEffect(() => {
         if (firstFocus) {
@@ -94,8 +97,11 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
 
         setTimeout(() => {
             setRefreshing(false);
+            if (ScrollViewRef.current !== null && scrollPosition > 0) {
+                ScrollViewRef.current.scrollTo({ y: scrollPosition, animated: false });
+            }
         }, 1000);
-    }, [refreshing, page, updatePage]);
+    }, [refreshing, page, updatePage, scrollPosition, ScrollViewRef]);
 
     const goToMusicalDetail1 = musicalId => {
         // console.log(musicalId);
@@ -149,6 +155,7 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
         }
 
         let updateScroll = e.nativeEvent.contentOffset.y;
+        setScrollPosition(updateScroll);
         if (updateScroll === 0) {
             return;
         }
@@ -193,7 +200,12 @@ export default function Feed1 ({ isCookie, memberId, setMusicalId, setReviewId, 
             </View>
             <View style={tw`border-[0.5px] border-[#D3D4D3]`}></View>
 
-            <ScrollView showsVerticalScrollIndicator={false} onScroll={detectScroll} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
+            <ScrollView 
+                ref={ScrollViewRef}
+                showsVerticalScrollIndicator={false} 
+                onScroll={detectScroll} 
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
+                >
                 {feeds.map((feed, index) => (
                     // console.log(feed),
                     <Fragment key={index}>
