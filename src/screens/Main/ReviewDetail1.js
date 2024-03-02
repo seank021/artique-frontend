@@ -7,7 +7,8 @@ import { useNavigation, useIsFocused } from "@react-navigation/native";
 
 import { MusicalInfoFormInReviewDetail } from "@forms/ReviewForm";
 
-import { reviewDetail } from "@functions/api";
+import * as Cookies from "@functions/cookie";
+import { reviewDetail, thumbsUp } from "@functions/api";
 import AlertForm, { AlertFormForModifyAndDeleteInReviewDetail1, AlertFormForReportInReviewDetail1 } from "@forms/AlertForm";
 
 export default function ReviewDetail1({isCookie, reviewId, memberId, setReviewInfo, setReviewInfo2, setGoToFeed}) {
@@ -34,8 +35,6 @@ export default function ReviewDetail1({isCookie, reviewId, memberId, setReviewIn
 
     useEffect(() => {
         reviewDetail(reviewId).then((newReviewDetail) => {
-            console.log(newReviewDetail);
-            console.log(memberId)
             setReviewInfo_(() => newReviewDetail);
             setIsMine(newReviewDetail.memberId === memberId);
         }).catch((err) => {
@@ -95,6 +94,42 @@ export default function ReviewDetail1({isCookie, reviewId, memberId, setReviewIn
         else setReportModalVisible(!reportModalVisible);
     }
 
+    const logout = async () => {
+        const currentLogin = await Cookies.getCurrentLogin();
+        await Cookies.removeCookie(currentLogin);
+        await removeAutoLogin();
+        setGoToFeed(false);
+    }
+
+    const onPressThumbsUp = (reviewId, isThumbsUp) => {
+        // isThumbsUp이 true: 이미 공감되어 있음 -> 공감 버튼 누른다는 것: 공감 취소
+        // isThumbsUp이 false: 공감 안 되어 있음 -> 공감 버튼 누른다는 것: 공감
+        thumbsUp(reviewId, !isThumbsUp).then((res) => {
+            if (res === "banned member") {
+                setModalVisible(!modalVisible);
+                setAlertImage(require('@images/x_red.png'));
+                setAlertText('신고 누적으로 사용이 정지된 회원입니다.');
+                setTimeout(() => {
+                    setModalVisible(modalVisible);
+                }, 1000);
+                setTimeout(() => {
+                    logout();
+                }, 2000);
+                return;
+            }
+
+            setReviewInfo_((prevReviewInfo) => {
+                return {
+                    ...prevReviewInfo,
+                    isThumbsUp: !prevReviewInfo.isThumbsUp,
+                    thumbsCount: prevReviewInfo.isThumbsUp ? prevReviewInfo.thumbsCount - 1 : prevReviewInfo.thumbsCount + 1
+                };
+            });
+        }).catch((err) => {
+            console.log(err);
+        });
+    };
+
     return (
         <SafeAreaView style={styles.container}>
             <AlertForm modalVisible={modalVisible} setModalVisible={setModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
@@ -114,7 +149,9 @@ export default function ReviewDetail1({isCookie, reviewId, memberId, setReviewIn
             <View style={tw`border-solid border-b border-[#D3D4D3] z-20 mb-[2%]`}></View>
             <View style={tw`h-[90%] z-10`}>
                 <MusicalInfoFormInReviewDetail 
+                    isCookie={isCookie}
                     reviewInfo={reviewInfo}
+                    onPressThumbsUp={() => onPressThumbsUp(reviewInfo.id, reviewInfo.isThumbsUp)}
                     isShortReviewSpoiler={reviewInfo.shortSpoiler}
                     isLongReviewSpoiler={reviewInfo.longSpoiler}
                     />

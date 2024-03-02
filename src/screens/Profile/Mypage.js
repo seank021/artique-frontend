@@ -8,7 +8,7 @@ import makeBarChart from "@functions/makeBarChart";
 import UserTendency from "@forms/UserTendency";
 import AlertForm, { AlertFormForReportUser } from "@forms/AlertForm";
 
-import { memberSummary, memberStatistics, memberShortThumbReviews } from "@functions/api";
+import { memberSummary, memberStatistics, memberShortThumbReviews, myReviewsAll } from "@functions/api";
 
 import { useNavigation, useRoute, useIsFocused } from "@react-navigation/native";
 
@@ -41,6 +41,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }
 
     setMemberInfo({});
     setMemberStat({});
+    setWrittenReviewInfo([]);
     setShortReviewInfo([]);
 
     if (otherMemberId) {
@@ -80,6 +81,24 @@ export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }
     }
 
     if (otherMemberId) {
+      myReviewsAll(otherMemberId, 1, "THUMBS").then((newWrittenReviews) => {
+        setWrittenReviewInfo(() => newWrittenReviews);
+      }).catch((err) => {
+        console.log(err);
+      }).finally(() => {
+        setRefreshing(false);
+      });
+    } else {
+      myReviewsAll(memberId, 1, "THUMBS").then((newWrittenReviews) => {
+        setWrittenReviewInfo(() => newWrittenReviews);
+      }).catch((err) => {
+        console.log(err);
+      }).finally(() => {
+        setRefreshing(false);
+      });
+    }
+
+    if (otherMemberId) {
       memberShortThumbReviews(otherMemberId).then((newShortThumbReviews) => {
         setShortReviewInfo(() => newShortThumbReviews);
       }).catch((err) => {
@@ -100,7 +119,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }
     setTimeout(() => {
       setRefreshing(false);
     }, 1000);
-  }, [refreshing, otherMemberId, memberInfo, memberStat, shortReviewInfo]);
+  }, [refreshing, otherMemberId, memberInfo, memberStat, writtenReviewInfo, shortReviewInfo]);
 
   const goBack = () => {
     nav.goBack();
@@ -141,6 +160,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }
   const [totalReviewCount, setTotalReviewCount] = useState(0);
   const [maxStarRate, setMaxStarRate] = useState(0);
 
+  const [writtenReviewInfo, setWrittenReviewInfo] = useState([]);
   const [shortReviewInfo, setShortReviewInfo] = useState([]);
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -155,21 +175,22 @@ export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }
         let newMemberStat;
         let newShortThumbReviews;
         let otherMemberId = route.params?.otherMemberId;
-        console.log(otherMemberId);
-        console.log(memberId)
   
         if (otherMemberId) {
           newMemberInfo = await memberSummary(otherMemberId);
           newMemberStat = await memberStatistics(otherMemberId);
+          newWrittenReviews = await myReviewsAll(otherMemberId, 1, "THUMBS");
           newShortThumbReviews = await memberShortThumbReviews(otherMemberId);
         } else {
           newMemberInfo = await memberSummary(memberId);
           newMemberStat = await memberStatistics(memberId);
+          newWrittenReviews = await myReviewsAll(memberId, 1, "THUMBS");
           newShortThumbReviews = await memberShortThumbReviews(memberId);
         }
   
         setMemberInfo(newMemberInfo);
         setMemberStat(newMemberStat);
+        setWrittenReviewInfo(newWrittenReviews);
         setShortReviewInfo(newShortThumbReviews);
       } catch (err) {
         console.error(err);
@@ -182,8 +203,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }
     setAverageRate(memberStat.averageRate);
     setTotalReviewCount(memberStat.totalReviewCount);
     setMaxStarRate(memberStat.maxStarRate);
-  }
-  , [memberStat]);
+  }, [memberStat]);
 
   const onPressReport = () => {
     if (!isCookie) {
@@ -218,14 +238,9 @@ export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }
       ) : (
         <View style={tw`flex-row justify-between items-center mx-5 my-5`}>
           <Text style={tw`text-lg text-[#191919] font-medium`}>마이페이지</Text>
-          <View style={tw`flex-row`}>
-              <Pressable onPress={goToChangeProfile}>
-                <Image source={require('@images/profilechange.png')} style={tw`w-[18px] h-[18px] mr-4.5`} />
-              </Pressable>
-              <Pressable onPress={goToMainSetting}>
-                <Image source={require('@images/settings.png')} style={tw`w-[18px] h-[18px]`} />
-              </Pressable>
-          </View>
+          <Pressable onPress={goToMainSetting}>
+            <Image source={require('@images/settings.png')} style={tw`w-[18px] h-[18px]`} />
+          </Pressable>
         </View>
       )}
       <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
@@ -239,8 +254,8 @@ export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }
             <Text style={tw`text-xs text-[#191919] font-normal w-55 leading-5`}>{memberInfo.introduce}</Text>
           </View>
         </View>
-        <Pressable onPress={goToMyReviews} style={tw`self-center w-[90%] h-[33px] mt-[25px] rounded-3xl bg-[#FFF] shadow`}>
-          <Text style={tw`text-xs text-[#191919] font-normal text-center leading-[33px]`}>작성한 리뷰 모아보기</Text>
+        <Pressable onPress={goToChangeProfile} style={tw`self-center w-[90%] h-[33px] mt-[15px] rounded-3xl bg-[#FFF] shadow`}>
+          <Text style={tw`text-xs text-[#191919] font-normal text-center leading-[33px]`}>프로필 수정하기</Text>
         </Pressable>
           
         {/* 평점 */}
@@ -268,8 +283,36 @@ export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }
           </View>
         </View>
 
-        {/* 공감한 한줄평 */}
+        {/* 작성한 리뷰 */}
         <View style={tw`flex-row justify-between mt-11.5 mx-5`}>
+          <Text style={tw`text-sm text-[#191919] font-medium`}>작성한 리뷰</Text>
+          <Pressable onPress={goToMyReviews} style={tw`w-[50px] h-[21px]`}>
+            <Text style={tw`text-xs text-[#191919] font-normal`}>전체보기</Text>
+          </Pressable>
+        </View>
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={tw`mt-3 ml-5`}>
+          {writtenReviewInfo.reviews?.map((review, index) => {
+            if (index < 5) {
+              return (
+                <ShortReviewFormInMypage 
+                  key={index}
+                  review={review}
+                  musicalName={review.musicalName} 
+                  starRating={review.starRating} 
+                  shortReview={review.shortReview} 
+                  onPressShortReview={() => goToReviewDetail1(review.reviewId)}
+                  isShortReviewSpoiler={review.reviewSpoiler}
+                  />
+              )}
+            }
+          )}
+          {writtenReviewInfo.reviews?.length === 0 && (
+            <Text style={tw`text-xs text-[#ABABAB] font-normal ml-2 mb-10`}>작성한 리뷰가 없습니다.</Text>
+          )}
+        </ScrollView>
+
+        {/* 공감한 한줄평 */}
+        <View style={tw`flex-row justify-between mt-6 mx-5`}>
           <Text style={tw`text-sm text-[#191919] font-medium`}>공감한 한줄평</Text>
           <Pressable onPress={goToMyThumbs} style={tw`w-[50px] h-[21px]`}>
             <Text style={tw`text-xs text-[#191919] font-normal`}>전체보기</Text>
@@ -290,6 +333,9 @@ export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }
                   />
               )}
             }
+          )}
+          {shortReviewInfo.reviews?.length === 0 && (
+            <Text style={tw`text-xs text-[#ABABAB] font-normal ml-2 mb-10`}>공감한 한줄평이 없습니다.</Text>
           )}
         </ScrollView>
       </ScrollView>

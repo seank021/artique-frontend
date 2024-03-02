@@ -13,10 +13,10 @@ import * as Cookies from "@functions/cookie";
 import { removeAutoLogin } from "@functions/autoLogin";
 import { getIfTutorialRead } from "@functions/tutorial";
 
-// Feed1: 최신순
-export default function Feed1({ isCookie, memberId, setMusicalId, setReviewId, setReviewInfo, setReviewInfo2, setGoToFeed }) {
-    console.log("최신순");
-
+// Feed4: 별점 5점 리뷰 - TODO: api connection
+export default function Feed4({ isCookie, memberId, setMusicalId, setReviewId, setReviewInfo, setReviewInfo2, setGoToFeed }) {
+    console.log("별점 5점 리뷰");
+    
     const [refreshing, setRefreshing] = useState(false);
     const isFocused = useIsFocused();
     const [firstFocus, setFirstFocus] = useState(true);
@@ -26,7 +26,6 @@ export default function Feed1({ isCookie, memberId, setMusicalId, setReviewId, s
 
     const [page, setPage] = useState(0);
     const [updatePage, setUpdatePage] = useState(true);
-    const [scrollPosition, setScrollPosition] = useState(0);
     const [feeds, setFeeds] = useState([]);
     
     const [tutorialModalVisible, setTutorialModalVisible] = useState(false);
@@ -45,8 +44,6 @@ export default function Feed1({ isCookie, memberId, setMusicalId, setReviewId, s
     const [alertModalVisible, setAlertModalVisible] = useState(false);
     const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
     const [alertText, setAlertText] = useState('신고 누적으로 사용이 정지된 회원입니다.');
-
-    const ScrollViewRef = React.useRef();
 
     useEffect(() => {
         if (firstFocus) {
@@ -99,11 +96,8 @@ export default function Feed1({ isCookie, memberId, setMusicalId, setReviewId, s
 
         setTimeout(() => {
             setRefreshing(false);
-            if (ScrollViewRef.current !== null && scrollPosition > 0) {
-                ScrollViewRef.current.scrollTo({ y: scrollPosition, animated: false });
-            }
         }, 1000);
-    }, [refreshing, page, updatePage, scrollPosition, ScrollViewRef]);
+    }, [refreshing, page, updatePage]);
 
     const goToMusicalDetail1 = musicalId => {
         // console.log(musicalId);
@@ -157,7 +151,6 @@ export default function Feed1({ isCookie, memberId, setMusicalId, setReviewId, s
         }
 
         let updateScroll = e.nativeEvent.contentOffset.y;
-        setScrollPosition(updateScroll);
         if (updateScroll === 0) {
             return;
         }
@@ -198,12 +191,7 @@ export default function Feed1({ isCookie, memberId, setMusicalId, setReviewId, s
 
             <HeaderWithBorder isCookie={isCookie} onPressExit={onPressExit} />
 
-            <ScrollView 
-                ref={ScrollViewRef}
-                showsVerticalScrollIndicator={false} 
-                onScroll={detectScroll} 
-                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
-                >
+            <ScrollView showsVerticalScrollIndicator={false} onScroll={detectScroll} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
                 {feeds.map((feed, index) => (
                     // console.log(feed),
                     <Fragment key={index}>

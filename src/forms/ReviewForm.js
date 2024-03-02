@@ -6,10 +6,12 @@ import AlertForm, { LongReviewForm } from '@forms/AlertForm';
 
 import { makeStars, makeStarsForEachReview } from '@functions/makeStars';
 import { ifReviewBlocked, ifUserBlocked } from '@functions/block';
+import * as Cookies from '@functions/cookie';
 
 import { useNavigation } from "@react-navigation/native";
 
 import { AlertFormForModifyAndDelete, AlertFormForReport } from '@forms/AlertForm';
+import { thumbsUp } from '@functions/api';
 
 {/*기본 화면 설정*/}
 const windowWidth = Dimensions.get('window').width;
@@ -154,7 +156,6 @@ export function ShortReviewFormInFeed(props) {
     const [thumbsUpImg, setThumbsUpImg] = useState(require('@images/like_gray_small.png'));
 
     const [modalVisible, setModalVisible] = useState(false);
-
     const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
     const [alertText, setAlertText] = useState('로그인이 필요한 서비스입니다.');
 
@@ -301,7 +302,7 @@ export function ShortReviewFormInFeed(props) {
                     <Pressable onPress={onPressThumbsUp}>
                         <Image source={thumbsUpImg} style={tw`w-[25.72288px] h-[18px] mr-[10.28px]`}></Image>
                     </Pressable>
-                    <Text style={tw`text-[10px] text-[#191919]`}>공감 {thumbsCount}회</Text>
+                    <Text style={tw`text-[10px] text-[#191919]`}>공감 {thumbsCount} 회</Text>
                 </View>
             </View>
 
@@ -312,7 +313,6 @@ export function ShortReviewFormInFeed(props) {
 
 // props: reviewInfo, onPressThumbsUp, isCookie, goToReviewDetail1, goToMusicalDetail1
 export function ShortReviewFormInMyReviews(props) {
-    
     const [isCookie, setIsCookie] = useState(props.isCookie);
     const [isThumbsUp, setIsThumbsUp] = useState(props.reviewInfo.isThumbsUp);
     const [thumbsCount, setThumbsCount] = useState(props.reviewInfo.thumbsCount);
@@ -464,91 +464,139 @@ export function ShortReviewFormInMyReviews(props) {
 
 export function MusicalInfoFormInReviewDetail(props) {
     const [longReviewModalVisible, setLongReviewModalVisible] = useState(false);
-    // console.log("PROPS", !props?.isShortReviewSpoiler, props?.isLongReviewSpoiler)
     const [seeShortSpoiler, setSeeShortSpoiler] = useState(false);
     const [seeLongSpoiler, setSeeLongSpoiler] = useState(false);
+
+    const [isCookie, setIsCookie] = useState(props.isCookie);
+    const [isThumbsUp, setIsThumbsUp] = useState(props.reviewInfo.isThumbsUp);
+    const [thumbsCount, setThumbsCount] = useState(props.reviewInfo.thumbsCount);
+    const [thumbsUpImg, setThumbsUpImg] = useState(require('@images/like_gray_small.png'));
+
+    const [modalVisible, setModalVisible] = useState(false);
+    const [alertImage, setAlertImage] = useState(require('@images/x_red.png'));
+    const [alertText, setAlertText] = useState('로그인이 필요한 서비스입니다.');
+
+    useEffect(() => {
+        setIsCookie(props.isCookie);
+    }, [props.isCookie]);
+
+    // thumbsCount useEffect로 설정
+    useEffect(() => {
+        setThumbsCount(props.reviewInfo.thumbsCount);
+    }, [props.reviewInfo.thumbsCount]);
+
+    // thumbsUpImg useEffect로 설정
+    useEffect(() => {
+        setThumbsUpImg(props.reviewInfo.isThumbsUp ? require('@images/like_red_small.png') : require('@images/like_gray_small.png'));
+    }, [props.reviewInfo.isThumbsUp]);
 
     useEffect(() => {
         setSeeShortSpoiler(!props?.isShortReviewSpoiler);
         setSeeLongSpoiler(!props?.isLongReviewSpoiler);
     }, [props.isShortReviewSpoiler, props.isLongReviewSpoiler]);
+
+    const onPressThumbsUp = () => {
+        if (!props.isCookie) {
+            setModalVisible(!modalVisible);
+            setAlertImage(require('@images/x_red.png'));
+            setAlertText('로그인이 필요한 서비스입니다.');
+            setTimeout(() => {
+                setModalVisible(modalVisible);
+            }, 1000);
+            return;
+        }
+        
+        props.onPressThumbsUp(props.reviewInfo.id);
+    };
     
     return (
-        <View style={tw`w-[90%] h-[95%] rounded-3xl bg-white mx-auto my-auto`}>
-            <Image source={require("@images/half_circle.png")} style={tw`w-[60px] h-[30px] tint-[#F5F5F5] self-center absolute top-0`}></Image>
-            
-            {/*뮤지컬 정보*/}
-            <View style={tw`border border-gray-900 border-[0.7px] self-center w-[85%] mt-13`}></View>
-            <View style={tw`flex-col items-start mt-3 mx-[10%] z-20`}>
-                <Text style={tw`text-1.375rem text-gray-900 font-medium mb-4`}>{props.reviewInfo.musicalTitle}</Text>
-                {(props.reviewInfo.casting === '' || props.reviewInfo.casting === undefined) ?
-                    <Text style={tw`text-[#B6B6B6] text-sm text-justify font-normal leading-6`}>캐스팅 정보가 없습니다.</Text>
-                    :
-                    <Text numberOfLines={1} style={tw`text-sm text-gray-900 mb-1.5 w-[95%]`}>
-                        {props.reviewInfo.casting.split(',').map((item, index) => {
-                            if (index === 0) return item;
-                            else return ', ' + item;
-                        })}
-                    </Text>
-                }
-                {(props.reviewInfo.seat === '') ? 
-                    <Text style={tw`text-[#B6B6B6] text-sm text-justify font-normal leading-6`}>좌석 정보가 없습니다.</Text>
-                    :
-                    <Text style={tw`text-sm text-gray-900 mb-1.5`}>{props.reviewInfo.seat}</Text>
-                }
-                <Text style={tw`text-sm text-gray-900`}>{props.reviewInfo.viewDate}</Text>
+        <>
+            <View>
+                <AlertForm modalVisible={modalVisible} setModalVisible={setModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
             </View>
-            <View style={tw`border border-gray-900 border-[0.7px] self-center w-[85%] mt-3`}></View>
-            
-            {/*평점, 한줄평*/}
-            <View style={tw`flex flex-col items-start mt-5`}>
-                <View style={tw`flex flex-row w-[100%] justify-between`}>
-                    <Text style={tw`text-gray-900 text-sm self-start ml-[10%]`}>평점</Text>
-                    <View style={tw`mr-[10%]`}>{makeStarsForEachReview(props.reviewInfo.rating)}</View>
-                </View>
-                <View style={tw`flex flex-row items-start w-[100%] min-h-1/7 justify-between mt-4`}>
-                    <Text style={tw`text-gray-900 text-sm leading-6 ml-[10%] mr-[7.5%]`}>한줄평</Text>
-                    {seeShortSpoiler ?
-                        <Text numberOfLines={5} style={tw`w-[60%] h-[120px] text-gray-900 text-sm text-center font-medium leading-6 self-center mr-[5%]`}>"{props.reviewInfo.shortReview}"</Text>
+
+            <View style={tw`w-[90%] h-[95%] rounded-3xl bg-white mx-auto my-auto`}>            
+                <Image source={require("@images/half_circle.png")} style={tw`w-[60px] h-[30px] tint-[#F5F5F5] self-center absolute top-0`}></Image>
+                
+                {/*뮤지컬 정보*/}
+                <View style={tw`border border-gray-900 border-[0.7px] self-center w-[85%] mt-13`}></View>
+                <View style={tw`flex-col items-start mt-3 mx-[10%] z-20`}>
+                    <Text style={tw`text-1.375rem text-gray-900 font-medium mb-4`}>{props.reviewInfo.musicalTitle}</Text>
+                    {(props.reviewInfo.casting === '' || props.reviewInfo.casting === undefined) ?
+                        <Text style={tw`text-[#B6B6B6] text-sm text-justify font-normal leading-6`}>캐스팅 정보가 없습니다.</Text>
                         :
-                        <Pressable onTouchEnd={(e)=> { e.stopPropagation(); setSeeShortSpoiler(true)}} style={tw`w-[200px] h-auto justify-center mr-[5%]`}>
-                            <Text style={[tw`text-[#B6B6B6] font-medium text-center leading-[22px] underline`, {fontSize: getFontSize(14)}]}>스포일러 포함</Text>
-                        </Pressable>
+                        <Text numberOfLines={1} style={tw`text-sm text-gray-900 mb-1.5 w-[95%]`}>
+                            {props.reviewInfo.casting.split(',').map((item, index) => {
+                                if (index === 0) return item;
+                                else return ', ' + item;
+                            })}
+                        </Text>
                     }
+                    {(props.reviewInfo.seat === '') ? 
+                        <Text style={tw`text-[#B6B6B6] text-sm text-justify font-normal leading-6`}>좌석 정보가 없습니다.</Text>
+                        :
+                        <Text style={tw`text-sm text-gray-900 mb-1.5`}>{props.reviewInfo.seat}</Text>
+                    }
+                    <View style={tw`flex flex-row w-full items-center justify-between`}>
+                        <Text style={tw`text-sm text-gray-900`}>{props.reviewInfo.viewDate}</Text>
+                        <Pressable style={tw`flex flex-row items-center gap-[6px]`} onPress={onPressThumbsUp}>
+                            <Image source={thumbsUpImg} style={tw`w-[23px] h-[16px]`}></Image>
+                            <Text style={tw`text-xs text-gray-900 font-medium`}>공감 {thumbsCount} 회</Text>
+                        </Pressable>
+                    </View>
                 </View>
-            </View>
-
-            {/*구분선*/}
-            <View style={tw`flex flex-row items-center absolute left--2.5 right--2.5 bottom-[25%] justify-between`}>
-                <View style={tw`w-5 h-5 rounded-full bg-[#F5F5F5]`}></View>
-                {Array(15).fill().map((_, index) => (
-                    <View key={index} style={tw`w-3 h-3 rounded-full bg-[#F5F5F5]`} />
-                ))}
-                <View style={tw`w-5 h-5 rounded-full bg-[#F5F5F5]`}></View>
-            </View>
-            
-            {/*긴줄평*/}
-            <View style={tw`flex flex-row items-start ml-[10%] mr-[7.5%] absolute bottom-[7%]`}>
-                <View style={tw`flex flex-row items-start w-[100%] justify-between z-20`}>
-                    <Text style={tw`text-gray-900 text-sm leading-6 mr-[7.5%]`}>긴줄평</Text>
-                    <ScrollView style={tw`h-[100px]`} showsVerticalScrollIndicator={false} onTouchEnd={() => setLongReviewModalVisible(true)} onMomentumScrollBegin={() => setLongReviewModalVisible(true)}>
-                        {(props.reviewInfo.longReview === '') ? (
-                            <Text style={tw`text-[#B6B6B6] text-sm text-center font-normal leading-6 ml-7.5`}>작성된 긴줄평이 없습니다.</Text>
-                        ) : (
-                            seeLongSpoiler ?
-                                <Text style={tw`text-gray-900 text-sm text-center font-normal leading-6 ml-7.5`}>{props.reviewInfo.longReview}</Text>
-                                :
-                                <Pressable onTouchEnd={(e)=> { e.stopPropagation(); setSeeLongSpoiler(true)}} style={tw`w-[200px] h-auto ml-[7.5%] self-center justify-center`}>
-                                    <Text style={[tw`text-[#B6B6B6] font-medium text-center leading-[22px] underline`, {fontSize: getFontSize(14)}]}>스포일러 포함</Text>
-                                </Pressable>
-                        )}
-                    </ScrollView>
-                    <LongReviewForm seeLongSpoiler={seeLongSpoiler} setSeeLongSpoiler={setSeeLongSpoiler} longReviewModalVisible={longReviewModalVisible} setLongReviewModalVisible={setLongReviewModalVisible} longReview={props.reviewInfo.longReview}></LongReviewForm>
+                <View style={tw`border border-gray-900 border-[0.7px] self-center w-[85%] mt-3`}></View>
+                
+                {/*평점, 한줄평*/}
+                <View style={tw`flex flex-col items-start mt-5`}>
+                    <View style={tw`flex flex-row w-[100%] justify-between`}>
+                        <Text style={tw`text-gray-900 text-sm self-start ml-[10%]`}>평점</Text>
+                        <View style={tw`mr-[10%]`}>{makeStarsForEachReview(props.reviewInfo.rating)}</View>
+                    </View>
+                    <View style={tw`flex flex-row items-start w-[100%] min-h-1/7 justify-between mt-4`}>
+                        <Text style={tw`text-gray-900 text-sm leading-6 ml-[10%] mr-[7.5%]`}>한줄평</Text>
+                        {seeShortSpoiler ?
+                            <Text numberOfLines={5} style={tw`w-[60%] h-[120px] text-gray-900 text-sm text-center font-medium leading-6 self-center mr-[5%]`}>"{props.reviewInfo.shortReview}"</Text>
+                            :
+                            <Pressable onTouchEnd={(e)=> { e.stopPropagation(); setSeeShortSpoiler(true)}} style={tw`w-[200px] h-auto justify-center mr-[5%]`}>
+                                <Text style={[tw`text-[#B6B6B6] font-medium text-center leading-[22px] underline`, {fontSize: getFontSize(14)}]}>스포일러 포함</Text>
+                            </Pressable>
+                        }
+                    </View>
                 </View>
-            </View>
 
-            <Image source={require("@images/half_circle_usd.png")} style={tw`w-[60px] h-[30px] tint-[#F5F5F5] self-center absolute top-[95%]`}></Image>
-        </View>
+                {/*구분선*/}
+                <View style={tw`flex flex-row items-center absolute left--2.5 right--2.5 bottom-[25%] justify-between`}>
+                    <View style={tw`w-5 h-5 rounded-full bg-[#F5F5F5]`}></View>
+                    {Array(15).fill().map((_, index) => (
+                        <View key={index} style={tw`w-3 h-3 rounded-full bg-[#F5F5F5]`} />
+                    ))}
+                    <View style={tw`w-5 h-5 rounded-full bg-[#F5F5F5]`}></View>
+                </View>
+                
+                {/*긴줄평*/}
+                <View style={tw`flex flex-row items-start ml-[10%] mr-[7.5%] absolute bottom-[7%]`}>
+                    <View style={tw`flex flex-row items-start w-[100%] justify-between z-20`}>
+                        <Text style={tw`text-gray-900 text-sm leading-6 mr-[7.5%]`}>긴줄평</Text>
+                        <ScrollView style={tw`h-[100px]`} showsVerticalScrollIndicator={false} onTouchEnd={() => setLongReviewModalVisible(true)} onMomentumScrollBegin={() => setLongReviewModalVisible(true)}>
+                            {(props.reviewInfo.longReview === '') ? (
+                                <Text style={tw`text-[#B6B6B6] text-sm text-center font-normal leading-6 ml-7.5`}>작성된 긴줄평이 없습니다.</Text>
+                            ) : (
+                                seeLongSpoiler ?
+                                    <Text style={tw`text-gray-900 text-sm text-center font-normal leading-6 ml-7.5`}>{props.reviewInfo.longReview}</Text>
+                                    :
+                                    <Pressable onTouchEnd={(e)=> { e.stopPropagation(); setSeeLongSpoiler(true)}} style={tw`w-[200px] h-auto ml-[7.5%] self-center justify-center`}>
+                                        <Text style={[tw`text-[#B6B6B6] font-medium text-center leading-[22px] underline`, {fontSize: getFontSize(14)}]}>스포일러 포함</Text>
+                                    </Pressable>
+                            )}
+                        </ScrollView>
+                        <LongReviewForm seeLongSpoiler={seeLongSpoiler} setSeeLongSpoiler={setSeeLongSpoiler} longReviewModalVisible={longReviewModalVisible} setLongReviewModalVisible={setLongReviewModalVisible} longReview={props.reviewInfo.longReview}></LongReviewForm>
+                    </View>
+                </View>
+
+                <Image source={require("@images/half_circle_usd.png")} style={tw`w-[60px] h-[30px] tint-[#F5F5F5] self-center absolute top-[95%]`}></Image>
+            </View>
+        </>
     )
 }
 
