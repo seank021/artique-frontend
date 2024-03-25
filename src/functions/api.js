@@ -28,6 +28,84 @@ const getHeaders = async () => {
     }
 }
 
+const getHomeRecentReviews = async () => {
+  try {
+    const myHeaders = await getHeaders();
+    const response = await axios.get(`${PORT}/home/review/recent`, {
+        headers: myHeaders.map,
+    });
+    // console.log(response.data);
+    return response.data.reviews;
+  } catch (err) {
+    console.log(err.response.data);
+  }
+};
+
+const getHomeThumbsReviews = async () => {
+  try {
+    const myHeaders = await getHeaders();
+    const response = await axios.get(`${PORT}/home/review/many-thumbs`, {
+      headers: myHeaders.map,
+    });
+    // console.log(response.data);
+    return response.data.reviews;
+  } catch (err) {
+    console.log(err.response.data);
+  }
+};
+
+const getHomeRecommendMusicals = async () => {
+  try {
+    const myHeaders = await getHeaders();
+    const response = await axios.get(`${PORT}/home/recommend`, {
+      headers: myHeaders.map,
+    });
+    // console.log(response.data);
+    return response.data.recommendMusicals;
+  } catch (err) {
+    console.log(err.response.data);
+  }
+};
+
+const getHomeLongReviews = async () => {
+  try {
+    const myHeaders = await getHeaders();
+    const response = await axios.get(`${PORT}/home/review/long`, {
+      headers: myHeaders.map,
+    });
+    // console.log(response.data);
+    return response.data.reviews;
+  } catch (err) {
+    console.log(err.response.data);
+  }
+};
+
+const getHomeFiveStarReviews = async () => {
+  try {
+    const myHeaders = await getHeaders();
+    const response = await axios.get(`${PORT}/home/review/five-star-rating`, {
+      headers: myHeaders.map,
+    });
+    // console.log(response.data);
+    return response.data.reviews;
+  } catch (err) {
+    console.log(err.response.data);
+  }
+};
+
+const getHomeBanners = async () => {
+  try {
+    const myHeaders = await getHeaders();
+    const response = await axios.get(`${PORT}/home/banner`, {
+      headers: myHeaders.map,
+    });
+    console.log(response.data);
+    return response.data;
+  } catch (err) {
+    console.log(err.response.data);
+  }
+};
+
 const feedReviews = async (page) => {
   try {
     const myHeaders = await getHeaders();
@@ -438,4 +516,4 @@ const exit = async () => {
   }
 }
 
-export { feedReviews, musicalReviews, musicalDetails, musicalRateStatistics, musicalReviewsAll, thumbsUp, reviewWrite, reviewUpdate, reviewDelete, reviewReport, userReport, reviewDetail, searchMusicals, memberSummary, memberStatistics, memberShortThumbReviews, memberIdInMypage, myReviewsAll, searchCreatedReviews, myThumbsAll, searchThumbReviews, profileUpload, updateMember, updatePW, duplicateNickname, announcementList, currentPWCheck, exit };
+export { getHomeRecentReviews, getHomeThumbsReviews, getHomeRecommendMusicals, getHomeLongReviews, getHomeFiveStarReviews, getHomeBanners, feedReviews, musicalReviews, musicalDetails, musicalRateStatistics, musicalReviewsAll, thumbsUp, reviewWrite, reviewUpdate, reviewDelete, reviewReport, userReport, reviewDetail, searchMusicals, memberSummary, memberStatistics, memberShortThumbReviews, memberIdInMypage, myReviewsAll, searchCreatedReviews, myThumbsAll, searchThumbReviews, profileUpload, updateMember, updatePW, duplicateNickname, announcementList, currentPWCheck, exit };
