@@ -276,14 +276,25 @@ export default function ReviewWrite1({isCookie, musicalId, musicalPoster, musica
                 <Text style={tw`text-[#B6B6B6] text-xs`}>스포일러 포함</Text>
             </View>
 
-            <View style={tw`absolute bottom-[20px] w-[90%] h-[33px] border-solid self-center`}>
-                <Pressable onPress={onPressLongReview}>
-                    <View style={tw`w-[100%] h-[100%] shadow-sm rounded-[24px] bg-[#FFF] justify-center items-center`}>
-                        <Text style={tw`text-[#191919] text-xs`}>긴줄평 적기</Text>
-                    </View>
-                </Pressable>
-                <LongReviewForm modalVisible={longReviewModalVisible} setModalVisible={setLongReviewModalVisible} longReview={longReview} setFinalLongReview={setLongReview} isLongReviewSpoiler={isLongReviewSpoiler} setIsFinalLongReviewSpoiler={setIsLongReviewSpoiler} />
-            </View>
+            { Platform.OS == 'ios' ? (
+                <View style={tw`absolute bottom-[50px] w-[90%] h-[33px] border-solid self-center`}>
+                    <Pressable onPress={onPressLongReview}>
+                        <View style={tw`w-[100%] h-[100%] shadow-sm rounded-[24px] bg-[#FFF] justify-center items-center`}>
+                            <Text style={tw`text-[#191919] text-xs`}>긴줄평 적기</Text>
+                        </View>
+                    </Pressable>
+                    <LongReviewForm modalVisible={longReviewModalVisible} setModalVisible={setLongReviewModalVisible} longReview={longReview} setFinalLongReview={setLongReview} isLongReviewSpoiler={isLongReviewSpoiler} setIsFinalLongReviewSpoiler={setIsLongReviewSpoiler} />
+                </View>
+            ) : (
+                <View style={tw`absolute bottom-[20px] w-[90%] h-[33px] border-solid self-center`}>
+                    <Pressable onPress={onPressLongReview}>
+                        <View style={tw`w-[100%] h-[100%] shadow-sm rounded-[24px] bg-[#FFF] justify-center items-center`}>
+                            <Text style={tw`text-[#191919] text-xs`}>긴줄평 적기</Text>
+                        </View>
+                    </Pressable>
+                    <LongReviewForm modalVisible={longReviewModalVisible} setModalVisible={setLongReviewModalVisible} longReview={longReview} setFinalLongReview={setLongReview} isLongReviewSpoiler={isLongReviewSpoiler} setIsFinalLongReviewSpoiler={setIsLongReviewSpoiler} />
+                </View>
+            )}
         </SafeAreaView>
     )
 }
