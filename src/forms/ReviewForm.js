@@ -523,7 +523,7 @@ export function MusicalInfoFormInReviewDetail(props) {
                 <Image source={require("@images/half_circle.png")} style={tw`w-[60px] h-[30px] tint-[#F5F5F5] self-center absolute top-0`}></Image>
                 
                 {/*뮤지컬 정보*/}
-                <View style={tw`border border-gray-900 border-[0.7px] self-center w-[85%] mt-13`}></View>
+                <View style={tw`border-b border-gray-900 border-[0.7px] self-center w-[85%] mt-13`}></View>
                 <View style={tw`flex-col items-start mt-3 mx-[10%] z-20`}>
                     <Text style={tw`text-1.375rem text-gray-900 font-medium mb-4`}>{props.reviewInfo.musicalTitle}</Text>
                     {(props.reviewInfo.casting === '' || props.reviewInfo.casting === undefined) ?
@@ -598,7 +598,7 @@ export function MusicalInfoFormInReviewDetail(props) {
                     </View>
                 </View>
 
-                <Image source={require("@images/half_circle_usd.png")} style={tw`w-[60px] h-[30px] tint-[#F5F5F5] self-center absolute top-[95%]`}></Image>
+                <Image source={require("@images/half_circle_usd.png")} style={tw`w-[60px] h-[30px] tint-[#F5F5F5] self-center absolute bottom-0`}></Image>
             </View>
         </>
     )
