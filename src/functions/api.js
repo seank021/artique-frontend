@@ -392,30 +392,30 @@ const searchThumbReviews = async (memberId, page, keyword) => {
   }
 };
 
-const profileUpload = async (formdata) => {
-  try {
-    const myHeaders = await getHeaders();
-    const requestOptions = {
-      method: 'POST',
-      body: formdata,
-      headers: {
-        'Authorization': myHeaders.map.authorization,
-        'Content-Type': 'multipart/form-data',
-      },
-      redirect: 'follow'
-    };
+// const profileUpload = async (formdata) => {
+//   try {
+//     const myHeaders = await getHeaders();
+//     const requestOptions = {
+//       method: 'POST',
+//       body: formdata,
+//       headers: {
+//         'Authorization': myHeaders.map.authorization,
+//         'Content-Type': 'multipart/form-data',
+//       },
+//       redirect: 'follow'
+//     };
 
-    const response = await fetch("${PORT}/image", requestOptions)
-      .catch(error => console.log('error', error));
-    console.log("response:", response)
-    const result = await response.json();
-    console.log("result:", result)
-    return result.url;
-  } catch (err) {
-    console.log("ERROR:", err)
-    console.log(err.response.data);
-  }
-};
+//     const response = await fetch("${PORT}/image", requestOptions)
+//       .catch(error => console.log('error', error));
+//     console.log("response:", response)
+//     const result = await response.json();
+//     console.log("result:", result)
+//     return result.url;
+//   } catch (err) {
+//     console.log("ERROR:", err)
+//     console.log(err.response.data);
+//   }
+// };
 
 const updateMember = async (nickname, imageUrl, introduce) => {
   try {
@@ -516,4 +516,4 @@ const exit = async () => {
   }
 }
 
-export { getHomeRecentReviews, getHomeThumbsReviews, getHomeRecommendMusicals, getHomeLongReviews, getHomeFiveStarReviews, getHomeBanners, feedReviews, musicalReviews, musicalDetails, musicalRateStatistics, musicalReviewsAll, thumbsUp, reviewWrite, reviewUpdate, reviewDelete, reviewReport, userReport, reviewDetail, searchMusicals, memberSummary, memberStatistics, memberShortThumbReviews, memberIdInMypage, myReviewsAll, searchCreatedReviews, myThumbsAll, searchThumbReviews, profileUpload, updateMember, updatePW, duplicateNickname, announcementList, currentPWCheck, exit };
+export { getHomeRecentReviews, getHomeThumbsReviews, getHomeRecommendMusicals, getHomeLongReviews, getHomeFiveStarReviews, getHomeBanners, feedReviews, musicalReviews, musicalDetails, musicalRateStatistics, musicalReviewsAll, thumbsUp, reviewWrite, reviewUpdate, reviewDelete, reviewReport, userReport, reviewDetail, searchMusicals, memberSummary, memberStatistics, memberShortThumbReviews, memberIdInMypage, myReviewsAll, searchCreatedReviews, myThumbsAll, searchThumbReviews, updateMember, updatePW, duplicateNickname, announcementList, currentPWCheck, exit };

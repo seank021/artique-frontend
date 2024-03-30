@@ -241,12 +241,12 @@ export default function ChangeProfile({isCookie, memberId, setGoToFeed}) {
             </View>
             <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
 
-            {/* <Pressable onPress={onPressProfileChange}> */}
+            <Pressable onPress={onPressProfileChange}>
                 <Image 
                     source={profileImage !== '' ? { uri: profileImage } : require('@images/newprofile.png')}
                     style={tw`w-[100px] h-[100px] rounded-full mx-auto mt-[20px] mb-[64px]`}>
                 </Image>
-            {/* </Pressable> */}
+            </Pressable>
 
             <ScrollView contentContainerStyle={styles.contentContainer}>
                 <NicknameInputForm

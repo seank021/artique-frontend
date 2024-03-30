@@ -10,12 +10,10 @@ import { useNavigation } from '@react-navigation/native';
 
 import { Contract1, Contract2 } from '@forms/ContractContents';
 
-import { reviewDetail, reviewDelete, reviewReport, userReport, profileUpload } from '@functions/api';
+import { reviewDetail, reviewDelete, reviewReport, userReport } from '@functions/api';
 import { addReviewBlock, addUserBlock, clearWholeBlockList } from '@functions/block';
 import * as Cookies from '@functions/cookie';
 import { getPort } from '@functions/port';
-
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 
 const fontScale = PixelRatio.getFontScale();
 const getFontSize = size => size / fontScale;
@@ -173,43 +171,10 @@ export function LongReviewForm(props) {
 
 export function ProfileChangeForm(props) {
 
-    const onPressSelect = async () => {
-        const options = {
-            mediaType: 'photo',
-            // includeBase64: true,
-        }
-
-        const image = {
-            uri: '',
-            type: '',
-            name: '',
-        }
-
-        await launchImageLibrary(options, (res) => {          
-            if (res.didCancel) {
-                console.log('User cancelled image picker');
-            } 
-            else if (res.errorCode) {
-                console.log('ImagePicker Error: ', res.errorMessage);
-            }
-            else if (res.assets) {
-                image.uri = Platform.OS === 'android' ? res.assets[0].uri : res.assets[0].uri.replace('file://', '');
-                image.type = res.assets[0].type;
-                image.name = res.assets[0].fileName;
-            }
-        });
-
-        const formdata = new FormData();
-        formdata.append('file', image);
-
-        try {
-            console.log("formdata:", formdata);
-            const res = await profileUpload(formdata);
-            props.setProfileImage(res);
-            props.setModalVisible(false);
-        } catch (err) {
-            console.log(err.response.data);
-        }
+    const onPressSelect = async (image) => {
+        const res = Image.resolveAssetSource(image).uri;
+        props.setProfileImage(res);
+        props.setModalVisible(false);
     }
 
     const onPressDelete = () => {
@@ -218,13 +183,24 @@ export function ProfileChangeForm(props) {
 
     return(
         <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={() => props.setModalVisible(false)}>
-            <View style={tw`flex flex-col w-[65%] h-[110px] bg-white rounded-[15px] self-center items-center justify-evenly`}>
-                <Pressable onPress={onPressSelect}>
-                    <Text style={tw`text-sm text-[#191919] font-normal`}>라이브러리에서 선택</Text>
+            <View style={tw`flex-row flex-wrap w-[75%] bg-white rounded-[15px] self-center items-center justify-center gap-4 py-[20px]`}>
+                <Pressable onPress={() => onPressSelect(require('@images/simpson1.png'))}>
+                    <Image source={require('@images/simpson1.png')} style={tw`w-[70px] h-[70px] rounded-full`}></Image>
                 </Pressable>
-                <View style={tw`border-solid border-b border-[#D3D4D3] w-[100%]`}></View>
+                <Pressable onPress={() => onPressSelect(require('@images/simpson2.png'))}>
+                    <Image source={require('@images/simpson2.png')} style={tw`w-[70px] h-[70px] rounded-full`}></Image>
+                </Pressable>
+                <Pressable onPress={() => onPressSelect(require('@images/simpson3.png'))}>
+                    <Image source={require('@images/simpson3.png')} style={tw`w-[70px] h-[70px] rounded-full`}></Image>
+                </Pressable>
+                <Pressable onPress={() => onPressSelect(require('@images/simpson4.png'))}>
+                    <Image source={require('@images/simpson4.png')} style={tw`w-[70px] h-[70px] rounded-full`}></Image>
+                </Pressable>
+                <Pressable onPress={() => onPressSelect(require('@images/simpson5.png'))}>
+                    <Image source={require('@images/simpson5.png')} style={tw`w-[70px] h-[70px] rounded-full`}></Image>
+                </Pressable>
                 <Pressable onPress={onPressDelete}>
-                    <Text style={tw`text-sm text-[#191919] font-normal`}>현재 사진 삭제</Text>
+                    <Image source={require('@images/profile_X.png')} style={tw`w-[70px] h-[70px] rounded-full`}></Image>
                 </Pressable>
             </View>
         </Modal>
