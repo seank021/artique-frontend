@@ -215,6 +215,7 @@ export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setMu
                             reviewInfo={review}
                             onPressThumbsUp={() => onPressThumbsUp(review.reviewId, review.isThumbsUp)}
                             onPressArrowCircledRight={() => goToReviewDetail1(review.reviewId)}
+                            onPressShortReview={() => goToReviewDetail1(review.reviewId)}
                             isCookie={isCookie}
                             isShortReviewSpoiler={review.reviewSpoiler}
                         />
