@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Pressable, Text, Image, StyleSheet, BackHandler, ScrollView, Linking } from "react-native";
+import { View, Pressable, Image, StyleSheet, BackHandler, ScrollView, Linking } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import Swiper from "react-native-swiper";
@@ -70,19 +70,9 @@ export default function Main1({ isCookie, setGoToFeed, setReviewId, setMusicalId
             setFiveStars(res);
         });
         getHomeBanners().then((res) => {
-            setBanners(res);
+            setBanners(res.banners);
         });
     }, []);
-
-
-
-    // type: 0(외부링크) - link: url, 1(내부뮤지컬) - link: musicalId, 2(내부리뷰) - link: reviewId
-    // const banners = [
-    //     { "bannerimg": require("@images/bannerimg.png"), "type": 0, "link": "http://www.playdb.co.kr/artistdb/detail.asp?ManNo=27064" },
-    //     { "bannerimg": require("@images/bannerimg2.png"), "type": 0, "link": "https://litt.ly/artique" },
-    //     { "bannerimg": require("@images/bannerimg3.png"), "type": 1, "link": "PF222698" },
-    //     { "bannerimg": require("@images/bannerimg4.png"), "type": 2, "link": 68 },
-    // ]
 
     const openLink = (type, link) => {
         if (type === 0) {
@@ -103,13 +93,15 @@ export default function Main1({ isCookie, setGoToFeed, setReviewId, setMusicalId
             <Header isCookie={isCookie} onPressExit={onPressExit} />
 
             <ScrollView style={tw`flex flex-col`} showsVerticalScrollIndicator={false}>
-                {/* <Swiper style={tw`h-[300px]`} autoplay={true} autoplayTimeout={5} showsPagination={true} dotColor="#BDBDBD" activeDotColor="#FF5C55">
-                    {banners.map((banner, index) => (
-                        <Pressable key={index} style={tw`flex flex-col items-center justify-center`} onPress={() => openLink(banner.type, banner.link)}>
-                            <Image source={banner.bannerimg} style={tw`w-[100%] h-[300px]`}></Image>
-                        </Pressable>
-                    ))}
-                </Swiper> */}
+                <Swiper style={tw`h-[300px]`} autoplay={true} autoplayTimeout={5} showsPagination={true} dotColor="#BDBDBD" activeDotColor="#FF5C55">
+                    {banners && 
+                        banners.map((banner, index) => (
+                            <Pressable key={index} style={tw`flex flex-col items-center justify-center`} onPress={() => openLink(banner.type, banner.link)}>
+                                <Image source={{ uri: banner.bannerImg }} style={tw`w-[100%] h-[300px]`}></Image>
+                            </Pressable>
+                        ))
+                    }
+                </Swiper>
                 <View style={tw`h-[30px]`} />
 
                 <MainForm title="최신 리뷰" onPressMore={goToLatest} contents={latest} setMusicalId={setMusicalId} setReviewId={setReviewId} />

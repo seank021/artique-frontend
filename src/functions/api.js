@@ -99,17 +99,53 @@ const getHomeBanners = async () => {
     const response = await axios.get(`${PORT}/home/banner`, {
       headers: myHeaders.map,
     });
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (err) {
     console.log(err.response.data);
   }
 };
 
-const feedReviews = async (page) => {
+const feedReviewsRecent = async (page) => { // 최신순
   try {
     const myHeaders = await getHeaders();
-    const response = await axios.get(`${PORT}/feed?page=${page}&size=15`, {
+    const response = await axios.get(`${PORT}/feed/recent?page=${page}&size=15`, {
+        headers: myHeaders.map,
+    });
+    return response.data;
+  } catch (err) {
+    console.log(err.response.data);
+  }
+};
+
+const feedReviewsManyThumbs = async (page) => { // 공감순
+  try {
+    const myHeaders = await getHeaders();
+    const response = await axios.get(`${PORT}/feed/many-thumbs?page=${page}&size=15`, {
+        headers: myHeaders.map,
+    });
+    return response.data;
+  } catch (err) {
+    console.log(err.response.data);
+  }
+};
+
+const feedReviewsLong = async (page) => { // 긴줄평 있는 리뷰
+  try {
+    const myHeaders = await getHeaders();
+    const response = await axios.get(`${PORT}/feed/long?page=${page}&size=15`, {
+        headers: myHeaders.map,
+    });
+    return response.data;
+  } catch (err) {
+    console.log(err.response.data);
+  }
+};
+
+const feedReviewsFiveStars = async (page) => { // 별점 5점 리뷰
+  try {
+    const myHeaders = await getHeaders();
+    const response = await axios.get(`${PORT}/feed/five-star-rating?page=${page}&size=15`, {
         headers: myHeaders.map,
     });
     return response.data;
@@ -516,4 +552,4 @@ const exit = async () => {
   }
 }
 
-export { getHomeRecentReviews, getHomeThumbsReviews, getHomeRecommendMusicals, getHomeLongReviews, getHomeFiveStarReviews, getHomeBanners, feedReviews, musicalReviews, musicalDetails, musicalRateStatistics, musicalReviewsAll, thumbsUp, reviewWrite, reviewUpdate, reviewDelete, reviewReport, userReport, reviewDetail, searchMusicals, memberSummary, memberStatistics, memberShortThumbReviews, memberIdInMypage, myReviewsAll, searchCreatedReviews, myThumbsAll, searchThumbReviews, profileUpload, updateMember, updatePW, duplicateNickname, announcementList, currentPWCheck, exit };
+export { getHomeRecentReviews, getHomeThumbsReviews, getHomeRecommendMusicals, getHomeLongReviews, getHomeFiveStarReviews, getHomeBanners, feedReviewsRecent, feedReviewsManyThumbs, feedReviewsLong, feedReviewsFiveStars, musicalReviews, musicalDetails, musicalRateStatistics, musicalReviewsAll, thumbsUp, reviewWrite, reviewUpdate, reviewDelete, reviewReport, userReport, reviewDetail, searchMusicals, memberSummary, memberStatistics, memberShortThumbReviews, memberIdInMypage, myReviewsAll, searchCreatedReviews, myThumbsAll, searchThumbReviews, profileUpload, updateMember, updatePW, duplicateNickname, announcementList, currentPWCheck, exit };
