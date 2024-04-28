@@ -24,8 +24,10 @@ export default function Feed2({ isCookie, memberId, setMusicalId, setReviewId, s
 
     const [page, setPage] = useState(0);
     const [updatePage, setUpdatePage] = useState(true);
-    const [scrollPosition, setScrollPosition] = useState(0);
     const [feeds, setFeeds] = useState([]);
+
+    const [scrollPosition, setScrollPosition] = useState(0);
+    const [prevPage, setPrevPage] = useState(0);
     
     const [tutorialModalVisible, setTutorialModalVisible] = useState(false);
     useEffect(() => {
@@ -80,28 +82,48 @@ export default function Feed2({ isCookie, memberId, setMusicalId, setReviewId, s
         }
 
         setRefreshing(true);
-
         setFeeds([]);
-        setPage(0);
-        setUpdatePage(true);
 
-        if (updatePage && page === 0) {
-            feedReviewsManyThumbs(page).then((newFeeds) => {
-                setFeeds((prevFeeds) => [...prevFeeds, ...newFeeds.feeds]);
+        let promises = [];
+
+        if (updatePage && page === 0 && feeds.length === 0) {
+            promises.push(feedReviewsManyThumbs(page).then((newFeeds) => {
+                return newFeeds.feeds;
             }).catch((err) => {
                 console.log(err);
-            }).finally(() => {
-                setRefreshing(false);
-            });
+            }));
+        } else {
+            for (let i = 0; i < prevPage + 1; i++) {
+                promises.push(feedReviewsManyThumbs(i).then((response) => {
+                    return response.feeds;
+                }).catch((err) => {
+                    console.log(err);
+                    return [];
+                }));
+            }
         }
 
+        Promise.all(promises)
+            .then((responses) => {
+                const newFeeds = responses.flatMap((feeds) => feeds);
+                setFeeds(newFeeds);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+            .finally(() => {
+                setRefreshing(false);
+            }
+        );
+            
         setTimeout(() => {
-            setRefreshing(false);
+            console.log("scrollPosition", scrollPosition)
             if (ScrollViewRef.current !== null && scrollPosition > 0) {
-              ScrollViewRef.current.scrollTo({ y: scrollPosition, animated: false });
-          }
+                ScrollViewRef.current.scrollTo({ y: scrollPosition, animated: false });
+            }
         }, 1000);
-    }, [refreshing, page, updatePage, scrollPosition, ScrollViewRef]);
+    
+    }, [refreshing, page, updatePage, scrollPosition, ScrollViewRef, prevPage, feeds]);
 
     const goToMusicalDetail1 = musicalId => {
         // console.log(musicalId);
@@ -156,6 +178,7 @@ export default function Feed2({ isCookie, memberId, setMusicalId, setReviewId, s
 
         let updateScroll = e.nativeEvent.contentOffset.y;
         setScrollPosition(updateScroll);
+        
         if (updateScroll === 0) {
             return;
         }
@@ -169,8 +192,10 @@ export default function Feed2({ isCookie, memberId, setMusicalId, setReviewId, s
                 return;
             };
             setUpdatePage(false);
+
             const nextPage = page + 1;
             setPage(nextPage);
+            setPrevPage(nextPage);
             
             feedReviewsManyThumbs(nextPage).then((newFeeds) => {
                 setFeeds((prevFeeds) => [...prevFeeds, ...newFeeds.feeds]);
@@ -197,10 +222,10 @@ export default function Feed2({ isCookie, memberId, setMusicalId, setReviewId, s
             <HeaderWithBorder isCookie={isCookie} onPressExit={onPressExit} />
 
             <ScrollView 
-              ref={ScrollViewRef}
-              showsVerticalScrollIndicator={false} 
-              onScroll={detectScroll} 
-              refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
+                ref={ScrollViewRef}
+                showsVerticalScrollIndicator={false} 
+                onScroll={detectScroll} 
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
                 {feeds.map((feed, index) => (
                     // console.log(feed),
                     <Fragment key={index}>

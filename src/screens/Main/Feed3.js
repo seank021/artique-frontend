@@ -24,8 +24,10 @@ export default function Feed3({ isCookie, memberId, setMusicalId, setReviewId, s
 
     const [page, setPage] = useState(0);
     const [updatePage, setUpdatePage] = useState(true);
-    const [scrollPosition, setScrollPosition] = useState(0);
     const [feeds, setFeeds] = useState([]);
+
+    const [scrollPosition, setScrollPosition] = useState(0);
+    const [prevPage, setPrevPage] = useState(0);
     
     const [tutorialModalVisible, setTutorialModalVisible] = useState(false);
     useEffect(() => {
@@ -78,30 +80,50 @@ export default function Feed3({ isCookie, memberId, setMusicalId, setReviewId, s
         if (refreshing) {
             return;
         }
-
+    
         setRefreshing(true);
-
         setFeeds([]);
-        setPage(0);
-        setUpdatePage(true);
 
-        if (updatePage && page === 0) {
-            feedReviewsLong(page).then((newFeeds) => {
-                setFeeds((prevFeeds) => [...prevFeeds, ...newFeeds.feeds]);
+        const promises = [];
+
+        if (updatePage && page === 0 && feeds.length === 0) {
+            promises.push(feedReviewsLong(page).then((newFeeds) => {
+                return newFeeds.feeds;
             }).catch((err) => {
                 console.log(err);
-            }).finally(() => {
-                setRefreshing(false);
-            });
+            }));
+        } else {
+            for (let i = 0; i < prevPage + 1; i++) {
+                promises.push(feedReviewsLong(i).then((response) => {
+                    return response.feeds;
+                }).catch((err) => {
+                    console.log(err);
+                    return [];
+                }));
+            }
         }
 
+        Promise.all(promises)
+            .then((responses) => {
+                const newFeeds = responses.flatMap((feeds) => feeds);
+                setFeeds(newFeeds);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+            .finally(() => {
+                setRefreshing(false);
+            }
+        );
+            
         setTimeout(() => {
-            setRefreshing(false);
+            console.log("scrollPosition", scrollPosition)
             if (ScrollViewRef.current !== null && scrollPosition > 0) {
                 ScrollViewRef.current.scrollTo({ y: scrollPosition, animated: false });
             }
         }, 1000);
-    }, [refreshing, page, updatePage, scrollPosition, ScrollViewRef]);
+    
+    }, [refreshing, page, updatePage, scrollPosition, ScrollViewRef, prevPage, feeds]);
 
     const goToMusicalDetail1 = musicalId => {
         // console.log(musicalId);
@@ -156,6 +178,7 @@ export default function Feed3({ isCookie, memberId, setMusicalId, setReviewId, s
 
         let updateScroll = e.nativeEvent.contentOffset.y;
         setScrollPosition(updateScroll);
+        
         if (updateScroll === 0) {
             return;
         }
@@ -169,8 +192,10 @@ export default function Feed3({ isCookie, memberId, setMusicalId, setReviewId, s
                 return;
             };
             setUpdatePage(false);
+            
             const nextPage = page + 1;
             setPage(nextPage);
+            setPrevPage(nextPage);
             
             feedReviewsLong(nextPage).then((newFeeds) => {
                 setFeeds((prevFeeds) => [...prevFeeds, ...newFeeds.feeds]);
