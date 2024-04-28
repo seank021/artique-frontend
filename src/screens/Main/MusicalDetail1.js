@@ -176,14 +176,14 @@ export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setMu
                 <AlertForm modalVisible={modalVisible} setModalVisible={setModalVisible} borderColor="#F5F8F5" bgColor="#F5F8F5" image={alertImage} textColor="#191919" text={alertText}></AlertForm>
             </View>
             <View style={tw`flex-row items-center justify-between mt-5 mb-[14px]`}>
-                <Pressable onPress={goBack} style={tw`flex-row`}>
+                <Pressable onPress={goBack} style={tw`flex-row`} hitSlop={20}>
                     <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] mr-[8px] w-[10px] h-[18px] tint-[#191919]`}></Image>
                     <View style={tw`px-[20px]`}></View>
                 </Pressable>
                 <Text numberOfLines={1} style={tw`text-[#191919] text-base font-medium w-[50%] text-center`}>
                     {musicalInfo.title}
                 </Text>
-                <Pressable onPress={onPressWrite} style={tw`flex-row`}>
+                <Pressable onPress={onPressWrite} style={tw`flex-row`} hitSlop={20}>
                     <View style={tw`px-[20px]`}></View>
                     <Image source={require('@images/write.png')} style={tw`mr-[20px] w-[18px] h-[17.121px] tint-[#191919]`}></Image>
                 </Pressable>
@@ -204,7 +204,7 @@ export default function MusicalDetail1({isCookie, musicalId, setMusicalId, setMu
                 <View style={tw`mb-[35px]`}></View>
                 <View style={tw`flex flex-row w-[90%] justify-between items-center self-center mb-[10px]`}>
                     <Text style={tw`text-[#191919] text-base font-medium`}>리뷰 ({totalReviewCount})</Text>
-                    <Pressable onPress={() => goToMusicalDetail2(musicalId)}>
+                    <Pressable onPress={() => goToMusicalDetail2(musicalId)} hitSlop={20}>
                         <Text style={tw`text-xs text-[#191919]`}>전체보기</Text>
                     </Pressable>
                 </View>

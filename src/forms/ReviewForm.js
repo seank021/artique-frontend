@@ -132,12 +132,12 @@ export function ShortReviewForm(props) {
                 </Pressable>
                 <View style={tw`flex-row justify-between items-center`}>
                     <View style={tw`flex-row justify-between items-center`}>
-                        <Pressable onPress={onPressThumbsUp}>
+                        <Pressable onPress={onPressThumbsUp} hitSlop={20}>
                             <Image source={thumbsUpImg} style={tw`w-[22.86469px] h-[16.00034px] mr-[11.14px]`}></Image>
                         </Pressable>
                         <Text style={tw`text-[10px] text-[#191919]`}>공감 {thumbsCount}회</Text>
                     </View>
-                    <Pressable onPress={onPressArrowCircledRight}>
+                    <Pressable onPress={onPressArrowCircledRight} hitSlop={20}>
                         <Image
                         source={require('@images/arrow_circled_right.png')}
                         style={tw`w-[20px] h-[20px]`}></Image>
