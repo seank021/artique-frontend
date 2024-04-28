@@ -141,13 +141,13 @@ export default function Search1({ isCookie, setMusicalId }) {
             {isBeforeSearch ?
                 <>
                     <View style={tw`mx-[5%] mt-[17px] mb-[11px]`}>
-                        <View style={tw`flex-row justify-between bg-[#E6E6E6] min-h-[34px] rounded-[19.5px]`}>
+                        <View style={tw`flex-row justify-between bg-[#E6E6E6] min-h-[40px] rounded-[19.5px]`}>
                             <View style={tw`flex-row w-[90%] h-[100%] items-center`}>
                                 <Image source={require('@images/search.png')} style={tw`ml-[18px] w-[18px] h-[18px] tint-[#ABABAB]`} />
                                 <TextInput ref={(text) => this.textInput = text} onChangeText={(text) => onChangeText(text)} onSubmitEditing={() => onPressSearch(value)} returnKeyType="done" placeholder='작품명이나 배우를 검색해보세요' style={tw`ml-[14px] w-[100%] shrink`}  />
                             </View>
                             <View style={tw`self-center`}>
-                                {ifX ? <Pressable onPress={deleteTextInput}><Image source={require('@images/x.png')} style={tw`mr-[12px] w-[16px] h-[16px] tint-[#ABABAB]`} /></Pressable> : null}
+                                {ifX ? <Pressable onPress={deleteTextInput} hitSlop={50}><Image source={require('@images/x.png')} style={tw`mr-[12px] w-[16px] h-[16px] tint-[#ABABAB]`} /></Pressable> : null}
                             </View>
                         </View>
                     </View>
@@ -178,12 +178,12 @@ export default function Search1({ isCookie, setMusicalId }) {
                 <>
                     <View style={tw`flex-row items-center mx-[5%] mt-[17px] mb-[11px]`}>
                         <Pressable onPress={()=> {setIsBeforeSearch(true); setSortCriteria('최신순'); setIfX(false);}}><Image source={require('@images/chevron_left.png')} style={tw`w-[10px] h-[18px] mr-[22.5px] tint-[#191919]`} /></Pressable>
-                        <View style={tw`flex-row w-[90%] h-[100%] justify-between bg-[#E6E6E6] min-h-[34px] rounded-[19.5px]`}>
+                        <View style={tw`flex-row w-[90%] h-[100%] justify-between bg-[#E6E6E6] min-h-[40px] rounded-[19.5px]`}>
                             <View style={tw`flex-row items-center`}>
                                 <TextInput style={tw`mx-[14px] font-medium`} defaultValue={placeholderValue} width="80%" onFocus={searchAgain} ref={(text) => this.textInput = text} onChangeText={(text) => onChangeText(text)} onSubmitEditing={() => onPressSearch(value)} returnKeyType="done" />
                             </View>
                             <View style={tw`self-center`}>
-                                <Pressable onPress={()=> {setIsBeforeSearch(true); setSortCriteria('최신순');}}><Image source={require('@images/x.png')} style={tw`mr-[12px] w-[16px] h-[16px] tint-[#ABABAB]`} /></Pressable>
+                                <Pressable onPress={()=> {setIsBeforeSearch(true); setSortCriteria('최신순');}} hitSlop={20}><Image source={require('@images/x.png')} style={tw`mr-[12px] w-[16px] h-[16px] tint-[#ABABAB]`} /></Pressable>
                             </View>
                         </View>
                     </View>
