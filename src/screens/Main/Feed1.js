@@ -24,8 +24,10 @@ export default function Feed1({ isCookie, memberId, setMusicalId, setReviewId, s
 
     const [page, setPage] = useState(0);
     const [updatePage, setUpdatePage] = useState(true);
-    const [scrollPosition, setScrollPosition] = useState(0);
     const [feeds, setFeeds] = useState([]);
+
+    const [scrollPosition, setScrollPosition] = useState(0);
+    const [prevPage, setPrevPage] = useState(0);
     
     const [tutorialModalVisible, setTutorialModalVisible] = useState(false);
     useEffect(() => {
@@ -80,28 +82,47 @@ export default function Feed1({ isCookie, memberId, setMusicalId, setReviewId, s
         }
 
         setRefreshing(true);
-
         setFeeds([]);
-        setPage(0);
-        setUpdatePage(true);
 
-        if (updatePage && page === 0) {
-            feedReviewsRecent(page).then((newFeeds) => {
-                setFeeds((prevFeeds) => [...prevFeeds, ...newFeeds.feeds]);
+        let promises = [];
+
+        if (updatePage && page === 0 && feeds.length === 0) {
+            promises.push(feedReviewsRecent(page).then((newFeeds) => {
+                return newFeeds.feeds;
             }).catch((err) => {
                 console.log(err);
-            }).finally(() => {
-                setRefreshing(false);
-            });
+            }));
+        } else {
+            for (let i = 0; i <= prevPage + 1; i++) {
+                promises.push(feedReviewsRecent(i).then((response) => {
+                    return response.feeds;
+                }).catch((err) => {
+                    console.log(err);
+                }));
+            }
         }
 
+        Promise.all(promises)
+            .then((responses) => {
+                const newFeeds = responses.flatMap((feeds) => feeds);
+                setFeeds(newFeeds);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+            .finally(() => {
+                setRefreshing(false);
+            }
+        );
+            
         setTimeout(() => {
-            setRefreshing(false);
             if (ScrollViewRef.current !== null && scrollPosition > 0) {
                 ScrollViewRef.current.scrollTo({ y: scrollPosition, animated: false });
             }
         }, 1000);
-    }, [refreshing, page, updatePage, scrollPosition, ScrollViewRef]);
+    
+    }, [refreshing, page, updatePage, scrollPosition, ScrollViewRef, prevPage, feeds]);
+    
 
     const goToMusicalDetail1 = musicalId => {
         // console.log(musicalId);
@@ -169,8 +190,10 @@ export default function Feed1({ isCookie, memberId, setMusicalId, setReviewId, s
                 return;
             };
             setUpdatePage(false);
+
             const nextPage = page + 1;
             setPage(nextPage);
+            setPrevPage(page);
             
             feedReviewsRecent(nextPage).then((newFeeds) => {
                 setFeeds((prevFeeds) => [...prevFeeds, ...newFeeds.feeds]);
@@ -203,7 +226,6 @@ export default function Feed1({ isCookie, memberId, setMusicalId, setReviewId, s
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
                 >
                 {feeds.map((feed, index) => (
-                    // console.log(feed),
                     <Fragment key={index}>
                         <ShortReviewFormInFeed
                             reviewInfo={feed}

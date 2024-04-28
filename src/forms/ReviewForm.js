@@ -19,7 +19,7 @@ const windowHeight = Dimensions.get('window').height;
 const fontScale = PixelRatio.getFontScale();
 const getFontSize = size => size / fontScale;
 
-// props: reviewInfo, onPressThumbsUp, onPressArrowCircledRight, isCookie, isShortReviewSpoiler
+// props: reviewInfo, onPressThumbsUp, onPressArrowCircledRight, onPressShortReview, isCookie, isShortReviewSpoiler
 export function ShortReviewForm(props) {
     const nav = useNavigation();
 
@@ -94,6 +94,10 @@ export function ShortReviewForm(props) {
         props.onPressArrowCircledRight(props.reviewInfo.reviewId);
     };
 
+    const onPressShortReview = () => {
+        props.onPressShortReview(props.reviewInfo.reviewId);
+    }
+
     return (
         !blockedReview && !blockedUser &&
         <>
@@ -116,16 +120,16 @@ export function ShortReviewForm(props) {
                         <Text style={tw`text-[#191919] text-sm`}>{props.reviewInfo.starRating.toFixed(1)}</Text>
                     </View>
                 </View>
-                <View style={tw`flex flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mb-[15px] items-center p-[6px] rounded-2`}>
+                <Pressable onPress={onPressShortReview} style={tw`flex flex-row rounded-sm bg-[#F5F5F5] border-2 border-[#F5F5F5] mb-[15px] items-center p-[6px] rounded-2`}>
                     {seeSpoiler ?
                         wasSpoiler ?
-                            <Text onPress={(e)=> { e.stopPropagation(); setSeeSpoiler(!seeSpoiler)}} numberOfLines={2} style={tw`text-[#191919] text-sm font-medium leading-[24px] w-full`}>"{props.reviewInfo.shortReview}"</Text>
+                            <Text onPress={(e)=> { e.stopPropagation(); setSeeSpoiler(!seeSpoiler)}} numberOfLines={2} style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>"{props.reviewInfo.shortReview}"</Text>
                             :
                             <Text style={tw`text-[#191919] text-sm font-medium leading-[24px]`}>"{props.reviewInfo.shortReview}"</Text>
                         :
                         <Text onPress={(e)=> { e.stopPropagation(); setSeeSpoiler(!seeSpoiler)}} style={tw`text-[#B6B6B6] text-sm font-medium leading-[24px] underline`}>스포일러 포함</Text>
                     }
-                </View>
+                </Pressable>
                 <View style={tw`flex-row justify-between items-center`}>
                     <View style={tw`flex-row justify-between items-center`}>
                         <Pressable onPress={onPressThumbsUp}>
@@ -519,7 +523,7 @@ export function MusicalInfoFormInReviewDetail(props) {
                 <Image source={require("@images/half_circle.png")} style={tw`w-[60px] h-[30px] tint-[#F5F5F5] self-center absolute top-0`}></Image>
                 
                 {/*뮤지컬 정보*/}
-                <View style={tw`border border-gray-900 border-[0.7px] self-center w-[85%] mt-13`}></View>
+                <View style={tw`border-b border-gray-900 border-[0.7px] self-center w-[85%] mt-13`}></View>
                 <View style={tw`flex-col items-start mt-3 mx-[10%] z-20`}>
                     <Text style={tw`text-1.375rem text-gray-900 font-medium mb-4`}>{props.reviewInfo.musicalTitle}</Text>
                     {(props.reviewInfo.casting === '' || props.reviewInfo.casting === undefined) ?
@@ -594,7 +598,7 @@ export function MusicalInfoFormInReviewDetail(props) {
                     </View>
                 </View>
 
-                <Image source={require("@images/half_circle_usd.png")} style={tw`w-[60px] h-[30px] tint-[#F5F5F5] self-center absolute top-[95%]`}></Image>
+                <Image source={require("@images/half_circle_usd.png")} style={tw`w-[60px] h-[30px] tint-[#F5F5F5] self-center absolute bottom-0`}></Image>
             </View>
         </>
     )
