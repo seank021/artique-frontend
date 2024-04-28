@@ -8,15 +8,13 @@ import { ShortReviewFormInFeed } from "@forms/ReviewForm";
 import { HeaderWithBorder } from "@forms/Header";
 import { TutorialModal1 } from "@screens/Main/Tutorial1";
 
-import { feedReviews, thumbsUp } from "@functions/api";
+import { feedReviewsRecent, thumbsUp } from "@functions/api";
 import * as Cookies from "@functions/cookie";
 import { removeAutoLogin } from "@functions/autoLogin";
 import { getIfTutorialRead } from "@functions/tutorial";
 
 // Feed1: 최신순
 export default function Feed1({ isCookie, memberId, setMusicalId, setReviewId, setReviewInfo, setReviewInfo2, setGoToFeed }) {
-    console.log("최신순");
-
     const [refreshing, setRefreshing] = useState(false);
     const isFocused = useIsFocused();
     const [firstFocus, setFirstFocus] = useState(true);
@@ -68,7 +66,7 @@ export default function Feed1({ isCookie, memberId, setMusicalId, setReviewId, s
 
     useEffect(() => {
         if (updatePage && page === 0) {
-            feedReviews(page).then((newFeeds) => {
+            feedReviewsRecent(page).then((newFeeds) => {
                 setFeeds((prevFeeds) => [...prevFeeds, ...newFeeds.feeds]);
             }).catch((err) => {
                 console.log(err);
@@ -88,7 +86,7 @@ export default function Feed1({ isCookie, memberId, setMusicalId, setReviewId, s
         setUpdatePage(true);
 
         if (updatePage && page === 0) {
-            feedReviews(page).then((newFeeds) => {
+            feedReviewsRecent(page).then((newFeeds) => {
                 setFeeds((prevFeeds) => [...prevFeeds, ...newFeeds.feeds]);
             }).catch((err) => {
                 console.log(err);
@@ -174,7 +172,7 @@ export default function Feed1({ isCookie, memberId, setMusicalId, setReviewId, s
             const nextPage = page + 1;
             setPage(nextPage);
             
-            feedReviews(nextPage).then((newFeeds) => {
+            feedReviewsRecent(nextPage).then((newFeeds) => {
                 setFeeds((prevFeeds) => [...prevFeeds, ...newFeeds.feeds]);
                 setUpdatePage(true);
             }).catch((err) => {
