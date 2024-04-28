@@ -14,7 +14,7 @@ export default function StoryForm(props) {
                     <Text style={tw`text-[#191919] text-sm text-justify leading-[23px]`}>
                         {isExpanded ? props.story : props.story.slice(0, 100) + '···'}
                     </Text>
-                    <Pressable onPress={() => { setIsExpanded(!isExpanded); }} style={tw`ml-[-20px]`}>
+                    <Pressable onPress={() => { setIsExpanded(!isExpanded); }} style={tw`ml-[-20px]`} hitSlop={20}>
                         <Image
                             source={isExpanded ? require('@images/chevron_up.png') : require('@images/chevron_down.png')}
                             style={tw`w-[14.4px] h-[8px]`}

@@ -107,10 +107,10 @@ export function ShortReviewForm(props) {
             <View style={tw`flex flex-col w-[90%] self-center my-[20px]`}>
                 <View style={tw`flex-row justify-between items-center mb-[15px]`}>
                     <View style={tw`flex-row justify-between items-center`}>
-                        <Pressable onPress={onPressProfile}>
+                        <Pressable onPress={onPressProfile} hitSlop={20}>
                             <Image source={{uri: props.reviewInfo.memberImageUrl}} style={tw`w-[24px] h-[24px] rounded-full mr-[10px]`}></Image>
                         </Pressable>
-                        <Pressable onPress={onPressProfile}>
+                        <Pressable onPress={onPressProfile} hitSlop={20}>
                             <Text style={tw`text-[#191919] text-sm mr-[15px]`}>{props.reviewInfo.memberNickname}</Text>
                         </Pressable>
                         <Text style={tw`text-[#ABABAB] text-xs`}>{props.reviewInfo.viewDate}</Text>
@@ -132,12 +132,12 @@ export function ShortReviewForm(props) {
                 </Pressable>
                 <View style={tw`flex-row justify-between items-center`}>
                     <View style={tw`flex-row justify-between items-center`}>
-                        <Pressable onPress={onPressThumbsUp}>
+                        <Pressable onPress={onPressThumbsUp} hitSlop={20}>
                             <Image source={thumbsUpImg} style={tw`w-[22.86469px] h-[16.00034px] mr-[11.14px]`}></Image>
                         </Pressable>
                         <Text style={tw`text-[10px] text-[#191919]`}>공감 {thumbsCount}회</Text>
                     </View>
-                    <Pressable onPress={onPressArrowCircledRight}>
+                    <Pressable onPress={onPressArrowCircledRight} hitSlop={30}>
                         <Image
                         source={require('@images/arrow_circled_right.png')}
                         style={tw`w-[20px] h-[20px]`}></Image>
@@ -248,15 +248,15 @@ export function ShortReviewFormInFeed(props) {
             <View style={tw`flex flex-col w-[90%] self-center my-[20px]`}>
                 <View style={tw`flex-row justify-between items-center mb-[10px] z-20`}>
                     <View style={tw`flex-row justify-between items-center`}>
-                        <Pressable onPress={onPressProfile}>
+                        <Pressable onPress={onPressProfile} hitSlop={20}>
                             <Image source={{uri: props.reviewInfo.memberImageUrl}} style={tw`w-[24px] h-[24px] rounded-full mr-[10px]`}></Image>
                         </Pressable>
-                        <Pressable onPress={onPressProfile}>
+                        <Pressable onPress={onPressProfile} hitSlop={20}>
                             <Text style={tw`text-[#191919] text-sm mr-[15px]`}>{props.reviewInfo.memberNickname}</Text>
                         </Pressable>
                         <Text style={tw`text-[#ABABAB] text-xs`}>{props.reviewInfo.viewDate}</Text>
                     </View>
-                    <Pressable onPress={onPressMore}><Image style={tw`w-[30px] h-[30px]`} source={require("@images/dots_more.png")}></Image></Pressable>
+                    <Pressable onPress={onPressMore} hitSlop={30}><Image style={tw`w-[30px] h-[30px]`} source={require("@images/dots_more.png")}></Image></Pressable>
                 </View>
                 {props.isMine ?
                     <AlertFormForModifyAndDelete modalVisible={modifynDeleteModalVisible} setModalVisible={setModifynDeleteModalVisible} reviewInfo={props.reviewInfo} setReviewInfo={props.setReviewInfo} setReviewInfo2={props.setReviewInfo2} setOnRefreshWhenDelete={props.setOnRefreshWhenDelete} setGoToFeed={props.setGoToFeed}></AlertFormForModifyAndDelete>
@@ -303,7 +303,7 @@ export function ShortReviewFormInFeed(props) {
                 </View>
 
                 <View style={tw`flex-row items-center z-20`}>
-                    <Pressable onPress={onPressThumbsUp}>
+                    <Pressable onPress={onPressThumbsUp} hitSlop={20}>
                         <Image source={thumbsUpImg} style={tw`w-[25.72288px] h-[18px] mr-[10.28px]`}></Image>
                     </Pressable>
                     <Text style={tw`text-[10px] text-[#191919]`}>공감 {thumbsCount} 회</Text>
@@ -407,7 +407,7 @@ export function ShortReviewFormInMyReviews(props) {
             <View style={tw`flex flex-col w-[90%] self-center my-[20px]`}>
                 <View style={tw`flex-row justify-between items-center mb-[10px] z-20`}>
                     <Text style={tw`text-[#ABABAB] text-xs`}>{props.reviewInfo.viewDate}</Text>
-                    <Pressable onPress={onPressMore}><Image style={tw`w-[30px] h-[20px]`} source={require("@images/dots_more.png")}></Image></Pressable>
+                    <Pressable onPress={onPressMore} hitSlop={30}><Image style={tw`w-[30px] h-[20px]`} source={require("@images/dots_more.png")}></Image></Pressable>
                 </View>
                 {props.isMine ?
                     <AlertFormForModifyAndDelete modalVisible={modifynDeleteModalVisible} setModalVisible={setModifynDeleteModalVisible} reviewInfo={props.reviewInfo} setReviewInfo={props.setReviewInfo} setReviewInfo2={props.setReviewInfo2} setOnRefreshWhenDelete={props.setOnRefreshWhenDelete} setGoToFeed={props.setGoToFeed}></AlertFormForModifyAndDelete>
@@ -454,7 +454,7 @@ export function ShortReviewFormInMyReviews(props) {
                 </View>
 
                 <View style={tw`flex-row items-center z-20`}>
-                    <Pressable onPress={onPressThumbsUp}>
+                    <Pressable onPress={onPressThumbsUp} hitSlop={20}>
                         <Image source={thumbsUpImg} style={tw`w-[25.72288px] h-[18px] mr-[10.28px]`}></Image>
                     </Pressable>
                     <Text style={tw`text-[10px] text-[#191919]`}>공감 {thumbsCount}회</Text>
@@ -543,7 +543,7 @@ export function MusicalInfoFormInReviewDetail(props) {
                     }
                     <View style={tw`flex flex-row w-full items-center justify-between`}>
                         <Text style={tw`text-sm text-gray-900`}>{props.reviewInfo.viewDate}</Text>
-                        <Pressable style={tw`flex flex-row items-center gap-[6px]`} onPress={onPressThumbsUp}>
+                        <Pressable style={tw`flex flex-row items-center gap-[6px]`} onPress={onPressThumbsUp} hitSlop={20}>
                             <Image source={thumbsUpImg} style={tw`w-[23px] h-[16px]`}></Image>
                             <Text style={tw`text-xs text-gray-900 font-medium`}>공감 {thumbsCount} 회</Text>
                         </Pressable>

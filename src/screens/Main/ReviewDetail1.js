@@ -137,13 +137,13 @@ export default function ReviewDetail1({isCookie, reviewId, memberId, setReviewIn
             <AlertFormForModifyAndDeleteInReviewDetail1 modalVisible={modifynDeleteModalVisible} setModalVisible={setModifynDeleteModalVisible} reviewInfo={reviewInfo} setReviewInfo={setReviewInfo} setReviewInfo2={setReviewInfo2} setOnRefreshWhenDelete={setOnRefreshWhenDelete} setGoToFeed={setGoToFeed}></AlertFormForModifyAndDeleteInReviewDetail1>
 
             <View style={tw`flex-row items-center justify-between py-[5%] z-20 bg-[#FAFAFA]`}>
-                <Pressable onPress={goBack} style={tw`flex-row`}>
+                <Pressable onPress={goBack} style={tw`flex-row`} hitSlop={20}>
                     <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] mr-[8px] w-[10px] h-[18px] tint-[#191919]`}></Image>
                     <View style={tw`px-[15px]`}></View>
                 </Pressable>
                 <Text style={tw`text-[#191919] text-base font-medium`}>{reviewInfo?.memberNickname} 님의 리뷰</Text>
                 <View style={tw`flex-row`}>
-                    <Pressable onPress={onPressMore}><Image style={tw`w-[30px] h-[30px] mr-[20px]`} source={require("@images/dots_more.png")}></Image></Pressable>
+                    <Pressable onPress={onPressMore} hitSlop={20}><Image style={tw`w-[30px] h-[30px] mr-[20px]`} source={require("@images/dots_more.png")}></Image></Pressable>
                 </View>
             </View>
             <View style={tw`border-solid border-b border-[#D3D4D3] z-20 mb-[2%]`}></View>

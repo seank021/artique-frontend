@@ -58,6 +58,7 @@ export function NicknameInputForm(props) {
                     placeholderTextColor={"#B6B6B6"} 
                     color={"#191919"} 
                     style={tw`h-[40px] text-[#191919] text-sm font-normal`}
+                    hitSlop={20}
                     value={props.value}>
                 </TextInput>
             </View>
@@ -93,6 +94,7 @@ export function IntroduceInputForm(props) {
                     placeholderTextColor={"#B6B6B6"}
                     color={"#191919"}
                     style={[tw`shrink text-[#191919] leading-[22px] text-sm font-normal mb-[5px]`]}
+                    hitSlop={20}
                     multiline={true}
                     value={props.value}
                     >
