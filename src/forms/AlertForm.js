@@ -183,24 +183,39 @@ export function ProfileChangeForm(props) {
 
     return(
         <Modal animationIn={"fadeIn"} animationOut={"fadeOut"} transparent={true} isVisible={props.modalVisible} hasBackdrop={true} backdropOpacity={0.5} onBackdropPress={() => props.setModalVisible(false)}>
-            <View style={tw`flex-row flex-wrap w-[75%] bg-white rounded-[15px] self-center items-center justify-center gap-4 py-[20px]`}>
-                <Pressable onPress={() => onPressSelect(require('@images/simpson1.png'))}>
-                    <Image source={require('@images/simpson1.png')} style={tw`w-[70px] h-[70px] rounded-full`}></Image>
+            <View style={tw`flex-row flex-wrap w-[80%] bg-white rounded-[15px] self-center items-center justify-center gap-4 py-[20px]`}>
+                <Pressable onPress={() => onPressSelect(require('@images/profile1.png'))}>
+                    <Image source={require('@images/profile1.png')} style={tw`w-[50px] h-[50px] rounded-full`}></Image>
                 </Pressable>
-                <Pressable onPress={() => onPressSelect(require('@images/simpson2.png'))}>
-                    <Image source={require('@images/simpson2.png')} style={tw`w-[70px] h-[70px] rounded-full`}></Image>
+                <Pressable onPress={() => onPressSelect(require('@images/profile2.png'))}>
+                    <Image source={require('@images/profile2.png')} style={tw`w-[50px] h-[50px] rounded-full`}></Image>
                 </Pressable>
-                <Pressable onPress={() => onPressSelect(require('@images/simpson3.png'))}>
-                    <Image source={require('@images/simpson3.png')} style={tw`w-[70px] h-[70px] rounded-full`}></Image>
+                <Pressable onPress={() => onPressSelect(require('@images/profile3.png'))}>
+                    <Image source={require('@images/profile3.png')} style={tw`w-[50px] h-[50px] rounded-full`}></Image>
                 </Pressable>
-                <Pressable onPress={() => onPressSelect(require('@images/simpson4.png'))}>
-                    <Image source={require('@images/simpson4.png')} style={tw`w-[70px] h-[70px] rounded-full`}></Image>
+                <Pressable onPress={() => onPressSelect(require('@images/profile4.png'))}>
+                    <Image source={require('@images/profile4.png')} style={tw`w-[50px] h-[50px] rounded-full`}></Image>
                 </Pressable>
-                <Pressable onPress={() => onPressSelect(require('@images/simpson5.png'))}>
-                    <Image source={require('@images/simpson5.png')} style={tw`w-[70px] h-[70px] rounded-full`}></Image>
+                <Pressable onPress={() => onPressSelect(require('@images/profile5.png'))}>
+                    <Image source={require('@images/profile5.png')} style={tw`w-[50px] h-[50px] rounded-full`}></Image>
+                </Pressable>
+                <Pressable onPress={() => onPressSelect(require('@images/profile6.png'))}>
+                    <Image source={require('@images/profile6.png')} style={tw`w-[50px] h-[50px] rounded-full`}></Image>
+                </Pressable>
+                <Pressable onPress={() => onPressSelect(require('@images/profile7.png'))}>
+                    <Image source={require('@images/profile7.png')} style={tw`w-[50px] h-[50px] rounded-full`}></Image>
+                </Pressable>
+                <Pressable onPress={() => onPressSelect(require('@images/profile8.png'))}>
+                    <Image source={require('@images/profile8.png')} style={tw`w-[50px] h-[50px] rounded-full`}></Image>
+                </Pressable>
+                <Pressable onPress={() => onPressSelect(require('@images/profile9.png'))}>
+                    <Image source={require('@images/profile9.png')} style={tw`w-[50px] h-[50px] rounded-full`}></Image>
+                </Pressable>
+                <Pressable onPress={() => onPressSelect(require('@images/profile10.png'))}>
+                    <Image source={require('@images/profile10.png')} style={tw`w-[50px] h-[50px] rounded-full`}></Image>
                 </Pressable>
                 <Pressable onPress={onPressDelete}>
-                    <Image source={require('@images/profile_X.png')} style={tw`w-[70px] h-[70px] rounded-full`}></Image>
+                    <Image source={require('@images/profile_X.png')} style={tw`w-[50px] h-[50px] rounded-full`}></Image>
                 </Pressable>
             </View>
         </Modal>
