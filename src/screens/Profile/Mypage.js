@@ -238,7 +238,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }
       ) : (
         <View style={tw`flex-row justify-between items-center mx-5 my-5`}>
           <Text style={tw`text-lg text-[#191919] font-medium`}>마이페이지</Text>
-          <Pressable onPress={goToMainSetting}>
+          <Pressable onPress={goToMainSetting} hitSlop={20}>
             <Image source={require('@images/settings.png')} style={tw`w-[18px] h-[18px]`} />
           </Pressable>
         </View>
@@ -286,7 +286,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }
         {/* 작성한 리뷰 */}
         <View style={tw`flex-row justify-between mt-11.5 mx-5`}>
           <Text style={tw`text-sm text-[#191919] font-medium`}>작성한 리뷰</Text>
-          <Pressable onPress={goToMyReviews} style={tw`w-[50px] h-[21px]`}>
+          <Pressable onPress={goToMyReviews} style={tw`w-[50px] h-[21px]`} hitSlop={20}>
             <Text style={tw`text-xs text-[#191919] font-normal`}>전체보기</Text>
           </Pressable>
         </View>
@@ -314,7 +314,7 @@ export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }
         {/* 공감한 한줄평 */}
         <View style={tw`flex-row justify-between mt-6 mx-5`}>
           <Text style={tw`text-sm text-[#191919] font-medium`}>공감한 한줄평</Text>
-          <Pressable onPress={goToMyThumbs} style={tw`w-[50px] h-[21px]`}>
+          <Pressable onPress={goToMyThumbs} style={tw`w-[50px] h-[21px]`} hitSlop={20}>
             <Text style={tw`text-xs text-[#191919] font-normal`}>전체보기</Text>
           </Pressable>
         </View>
