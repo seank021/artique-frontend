@@ -136,7 +136,7 @@ export default function Main1({ isCookie, setGoToFeed, setReviewId, setMusicalId
 
             <ScrollView style={tw`flex flex-col`} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
                 {banners && banners[0] !== undefined && banners[1] !== undefined && banners[2] !== undefined &&
-                    <Swiper style={tw`h-[300px]`} showsPagination={true} dotColor="#BDBDBD" activeDotColor="#FF5C55">
+                    <Swiper style={tw`h-[300px]`} showsPagination={true} dotColor="#BDBDBD" activeDotColor="#FF5C55" autoplay={true} autoplayTimeout={3} loop={true}>
                         <Pressable style={tw`flex flex-col items-center justify-center`} onPress={() => openLink(banners[0].type, banners[0].link)}>
                             <Image source={{ uri: banners[0].bannerImg }} style={tw`w-[100%] h-[300px]`}></Image>
                         </Pressable>
