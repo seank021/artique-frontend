@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { StyleSheet, ScrollView, RefreshControl } from "react-native";
+import { StyleSheet, ScrollView, RefreshControl, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 
@@ -212,6 +212,15 @@ export default function Feed2({ isCookie, memberId, setMusicalId, setReviewId, s
 
     const ifReviewBlocked = async (reviewId) => {
         await ifReviewBlocked(reviewId);
+    }
+    
+    if (feeds.length === 0) {
+        return (
+            <SafeAreaView style={styles.container}>
+                <HeaderWithBorder isCookie={isCookie} onPressExit={onPressExit} />
+                <ActivityIndicator size="large" color="#000000" style={{flex: 1, justifyContent: 'center', alignItems: 'center'}} />
+            </SafeAreaView>
+        );
     }
 
     return (

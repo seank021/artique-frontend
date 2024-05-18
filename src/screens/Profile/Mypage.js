@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, StyleSheet, ScrollView, Pressable, RefreshControl } from "react-native";
+import { View, Text, Image, StyleSheet, ScrollView, Pressable, RefreshControl, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
 
@@ -216,6 +216,24 @@ export default function Mypage ({ isCookie, memberId, setReviewId, setGoToFeed }
         return;
     }
     setReportModalVisible(!reportModalVisible);
+  }
+
+  if (!memberInfo || !memberStat) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={tw`flex-row justify-between items-center mt-5 mb-[14px]`}>
+            <Pressable onPress={goBack}>
+                <Image source={require('@images/chevron_left.png')} style={tw`ml-[20px] mr-[20px] w-[10px] h-[18px] tint-[#191919]`}></Image>
+            </Pressable>
+            <Text style={tw`text-[#191919] text-base font-medium text-center`}>마이페이지</Text>
+            <Pressable onPress={goToMainSetting}>
+                <Image source={require('@images/settings.png')} style={tw`mr-[20px] w-[18px] h-[18px]`}></Image>
+            </Pressable>
+        </View>
+        <View style={tw`border-solid border-b border-[#D3D4D3]`}></View>
+        <ActivityIndicator size="large" color="#000000" style={{flex: 1, justifyContent: 'center', alignItems: 'center'}} />
+      </SafeAreaView>
+    )
   }
 
   return (
