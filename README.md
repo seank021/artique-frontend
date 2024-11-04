@@ -1,3 +1,6 @@
+# 공연(뮤지컬/연극) 리뷰 플랫폼 Artique 프론트엔드
+
+
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
 # Getting Started
